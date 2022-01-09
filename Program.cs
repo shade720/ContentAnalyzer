@@ -6,6 +6,7 @@ public static class Program
     {
         var client = new ApiClient();
         client.Auth();
-        client.GetPosts();
+        client.GetComments(client.GetLastPostId());
+        client.LogOut();
     }
 }
