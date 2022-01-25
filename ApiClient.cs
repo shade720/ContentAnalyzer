@@ -9,12 +9,13 @@ namespace VkAPITester;
 public class ApiClient
 {
     private readonly VkApi _api = new();
+    private static long _requestCount;
 
     public async Task Auth(ulong applicationId, string secureKey, string serviceAccessKey)
     {
         if (applicationId <= 0 || string.IsNullOrEmpty(secureKey) || string.IsNullOrEmpty(serviceAccessKey))
         {
-            throw new ArgumentException("Incorrect input data");
+            throw new ArgumentException($"Incorrect input data {nameof(Auth)}");
         }
 
         if (_api.IsAuthorized)
@@ -23,7 +24,7 @@ public class ApiClient
             return;
         }
         
-        async Task Func()
+        async Task<int> Func()
         {
             await _api.AuthorizeAsync(new ApiAuthParams
             {
@@ -33,20 +34,20 @@ public class ApiClient
                 Settings = Settings.All
             });
             Console.WriteLine("Auth completed success");
+            return 0;
         }
-
         await Try(Func);
     }
 
-    public async Task<int> GetCommentsCount(long sourceId, long postId)
+    public async Task<int> GetCommentsCount(long groupId, long postId)
     {
-        if (sourceId == 0 || postId <= 0)
+        if (groupId == 0 || postId <= 0)
         {
-            throw new ArgumentException("Incorrect input data");
+            throw new ArgumentException($"Incorrect input data {nameof(GetCommentsCount)}");
         }
         async Task<int> Func()
         {
-            var post= await _api.Wall.GetByIdAsync(new[] { sourceId + "_" + postId });
+            var post= await _api.Wall.GetByIdAsync(new[] { groupId + "_" + postId });
             return post.WallPosts[0].Comments.Count;
         }
         return await Try(Func);
@@ -59,10 +60,11 @@ public class ApiClient
             Console.WriteLine("User is already logged out!");
             return;
         }
-        async Task Func()
+        async Task<int> Func()
         {
             await _api.LogOutAsync();
             Console.WriteLine("Log out completed success");
+            return 0;
         }
         await Try(Func);
     }
@@ -71,7 +73,7 @@ public class ApiClient
     {
         if (ownerId is null)
         {
-            throw new ArgumentException("Incorrect input data");
+            throw new ArgumentException($"Incorrect input data {nameof(GetPostId)}");
         }
         async Task<long> Func()
         {
@@ -85,7 +87,7 @@ public class ApiClient
     {
         if (count <= 0 || offset < 0 || ownerId is null || postId <= 0)
         {
-            throw new ArgumentException("Incorrect input data");
+            throw new ArgumentException($"Incorrect input data {nameof(GetComments)}");
         }
 
         async Task<WallGetCommentsResult> Func()
@@ -103,7 +105,7 @@ public class ApiClient
         return await Try(Func);
     }
 
-    private static T Try<T>(Func<T> apiFunc)
+    private static async Task<T> Try<T>(Func<Task<T>> apiFunc)
     {
         var attempts = 0;
         const int retryDelayMs = 3000;
@@ -111,11 +113,12 @@ public class ApiClient
         {
             try
             {
-                return apiFunc.Invoke();
+                Console.WriteLine($"Request counter: {_requestCount++}");
+                return await apiFunc().ConfigureAwait(false);
             }
             catch (Exception e)
             {
-                if (attempts > 3) throw;
+                if (attempts > 10) throw;
                 Thread.Sleep(retryDelayMs);
                 Console.WriteLine(e.Message, e.StackTrace);
                 attempts++;

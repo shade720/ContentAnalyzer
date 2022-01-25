@@ -74,7 +74,7 @@ namespace VkAPITester
             {
                 while (!UnsubscribeToken.IsCancellationRequested)
                 {
-                    Console.WriteLine($"ping pong");
+                    Console.WriteLine("ping pong");
                     Thread.Sleep(60000);
 
                     if (UnsubscribeToken.IsCancellationRequested || _receivedCommentIds.Count >= _client.GetCommentsCount(_sourceId, PostId).Result) continue;
@@ -82,11 +82,10 @@ namespace VkAPITester
                     FinishBranch(storageForRealtimeAddition, out var mainBranch);
                     foreach (var comment in mainBranch.Items.Where(x => x.Thread.Count <= _receivedCommentIds[x.Id]))
                         FinishBranch(storageForRealtimeAddition, out _, comment.Id);
-
                 }
                 Console.WriteLine($"Unsubscribe {PostId}");
             }, UnsubscribeToken.Token);
-            Console.WriteLine($"exit from method");
+            Console.WriteLine("Exit from method");
         }
 
         private void FinishBranch(AnalyzedDataStorage storageForRealtimeAddition, out WallGetCommentsResult branch, long? commentId = null)

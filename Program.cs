@@ -34,7 +34,7 @@ public static class Program
         }
 
         queue.Clear();
-        client.LogOut();
+        var b = client.LogOut();
         Console.ReadLine();
     }
 }
