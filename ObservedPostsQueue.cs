@@ -37,7 +37,7 @@ public class ObservedPostsQueue
         for (var i = 0; i < _queue.Count; i++)
         {
             RemoveDataSource(out var result);
-            Console.WriteLine($"Delete and unsub post {result.PostId}");
+            Console.WriteLine($"Delete and unsubscribe post {result.PostId}");
         }
     }
 }

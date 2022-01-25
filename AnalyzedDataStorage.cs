@@ -10,13 +10,13 @@ namespace VkAPITester
 
         public void AddEntry(Comment incomeRawDataEntry)
         {
-            _data.Add(new DataEntry
-            {
-                Id = incomeRawDataEntry.Id, 
-                AuthorId = incomeRawDataEntry.OwnerId ?? 0,
-                PostDate = incomeRawDataEntry.Date ?? new DateTime(0,0,0),
-                Text = incomeRawDataEntry.Text
-            });
+            _data.Add(new DataEntry(
+                incomeRawDataEntry.Id, 
+                incomeRawDataEntry.PostId ?? 0, 
+                incomeRawDataEntry.OwnerId ?? 0,
+                incomeRawDataEntry.FromId ?? 0, 
+                incomeRawDataEntry.Text, 
+                incomeRawDataEntry.Date ?? new DateTime(0,0,0)));
         }
 
         public void AddRange(List<Comment> list)

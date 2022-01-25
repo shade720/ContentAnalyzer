@@ -10,7 +10,7 @@ namespace VkAPITester
         
         private readonly ApiClient _client;
         private readonly Dictionary<long, long?> _receivedCommentIds = new();
-        public CancellationTokenSource UnsubscribeToken = new();
+        public CancellationTokenSource UnsubscribeToken { get; } = new();
 
         public DataLoader(ApiClient client, long sourceId, long postId) => (_client, _sourceId, PostId) = (client, sourceId, postId);
 
@@ -22,50 +22,9 @@ namespace VkAPITester
             foreach (var comment in comments.Where(comment => comment.Thread.Count > 0)) additionalComments.AddRange(GetBranch(comment.Id));
             comments.AddRange(additionalComments);
 
-            foreach (var comment in comments) Console.WriteLine($"add {comment.Text} {comment.Date} {comment.Id}");
+            foreach (var comment in comments) Console.WriteLine($"add {comment.Id} {comment.PostId} {comment.OwnerId} {comment.FromId} {comment.Text} {comment.Date}");
             return comments;
         }
-
-        //public async Task DownloadIncomeComments(AnalyzedDataStorage storageForRealtimeAddition)
-        //{
-        //    await Task.Run(() =>
-        //    {
-        //        while (!UnsubscribeToken.IsCancellationRequested)
-        //        {
-        //            Thread.Sleep(60000);
-        //            Console.WriteLine($"ping pong {PostId}");
-        //            Console.WriteLine($"comments {_receivedCommentIds.Count}");
-        //            if (_receivedCommentIds.Count >= _client.GetCommentsCount(_sourceId, PostId)) continue;
-
-        //            Console.WriteLine($"opa new comment");
-        //            var mainBranch = _client.GetComments(PostId, 100, _sourceId, 0, SortOrderBy.Asc);
-        //            foreach (var comment in mainBranch.Items)
-        //            {
-        //                var currentCommentId = comment.Id;
-        //                if (!_receivedCommentIds.ContainsKey(currentCommentId))
-        //                {
-        //                    storageForRealtimeAddition.AddEntry(comment);
-        //                    _receivedCommentIds.Add(comment.Id, comment.Thread.Count);
-        //                    Console.WriteLine($"add {comment.Text}");
-        //                    continue;
-        //                }
-        //                if (comment.Thread.Count <= _receivedCommentIds[currentCommentId]) continue;
-        //                var otherBranch = _client.GetComments(PostId, 100, _sourceId, 0, SortOrderBy.Asc, currentCommentId);
-        //                foreach (var commentOtherBranch in otherBranch.Items)
-        //                {
-        //                    var currentOtherCommentId = commentOtherBranch.Id;
-        //                    if (_receivedCommentIds.ContainsKey(currentOtherCommentId)) continue;
-        //                    storageForRealtimeAddition.AddEntry(commentOtherBranch);
-        //                    _receivedCommentIds.Add(currentOtherCommentId, 0);
-        //                    _receivedCommentIds[currentCommentId]++;
-        //                    Console.WriteLine($"add {commentOtherBranch.Text}");
-        //                }
-        //            }
-        //        }
-        //        Console.WriteLine($"exit cycle");
-        //    }, UnsubscribeToken.Token);
-        //    Console.WriteLine($"exit from method");
-        //}
 
 
         public async Task WaitOtherComments(AnalyzedDataStorage storageForRealtimeAddition)
@@ -80,7 +39,7 @@ namespace VkAPITester
                     if (UnsubscribeToken.IsCancellationRequested || _receivedCommentIds.Count >= _client.GetCommentsCount(_sourceId, PostId)) continue;
 
                     FinishBranch(storageForRealtimeAddition, out var mainBranch);
-                    foreach (var comment in mainBranch.Items.Where(x => x.Thread.Count <= _receivedCommentIds[x.Id]))
+                    foreach (var comment in mainBranch.Items.Where(x => x.Thread.Count > _receivedCommentIds[x.Id]))
                         FinishBranch(storageForRealtimeAddition, out _, comment.Id);
                 }
                 Console.WriteLine($"Unsubscribe {PostId}");
@@ -91,13 +50,15 @@ namespace VkAPITester
         private void FinishBranch(AnalyzedDataStorage storageForRealtimeAddition, out WallGetCommentsResult branch, long? commentId = null)
         {
             branch = _client.GetComments(PostId, 100, _sourceId, 0, SortOrderBy.Asc, commentId);
+            if (branch.Count == 0) return;
+
             var sortedBranch = branch.Items.Reverse().ToArray();
-            for (var i = 0; sortedBranch.Length > 0 && i < _receivedCommentIds.Count && !_receivedCommentIds.ContainsKey(sortedBranch[i].Id); i++)
+            for (var i = 0; i < sortedBranch.Length && !_receivedCommentIds.ContainsKey(sortedBranch[i].Id); i++)
             {
                 var comment = sortedBranch[i];
                 storageForRealtimeAddition.AddEntry(comment);
-                Console.WriteLine($"add {comment.Text} {comment.Date} {comment.Id}");
-                _receivedCommentIds.TryAdd(comment.Id, comment.Thread.Count);
+                Console.WriteLine($"add {comment.Id} {comment.PostId} {comment.OwnerId} {comment.FromId} {comment.Text} {comment.Date}");
+                _receivedCommentIds.TryAdd(comment.Id, comment.Thread is null ? 0 : comment.Thread.Count);
             }
         }
 
