@@ -77,7 +77,7 @@ namespace VkAPITester
                     Console.WriteLine("ping pong");
                     Thread.Sleep(60000);
 
-                    if (UnsubscribeToken.IsCancellationRequested || _receivedCommentIds.Count >= _client.GetCommentsCount(_sourceId, PostId).Result) continue;
+                    if (UnsubscribeToken.IsCancellationRequested || _receivedCommentIds.Count >= _client.GetCommentsCount(_sourceId, PostId)) continue;
 
                     FinishBranch(storageForRealtimeAddition, out var mainBranch);
                     foreach (var comment in mainBranch.Items.Where(x => x.Thread.Count <= _receivedCommentIds[x.Id]))
@@ -90,7 +90,7 @@ namespace VkAPITester
 
         private void FinishBranch(AnalyzedDataStorage storageForRealtimeAddition, out WallGetCommentsResult branch, long? commentId = null)
         {
-            branch = _client.GetComments(PostId, 100, _sourceId, 0, SortOrderBy.Asc, commentId).Result;
+            branch = _client.GetComments(PostId, 100, _sourceId, 0, SortOrderBy.Asc, commentId);
             var sortedBranch = branch.Items.Reverse().ToArray();
             for (var i = 0; sortedBranch.Length > 0 && i < _receivedCommentIds.Count && !_receivedCommentIds.ContainsKey(sortedBranch[i].Id); i++)
             {
@@ -107,7 +107,7 @@ namespace VkAPITester
             long count = 100;
             for (var i = 0; i < count; i += 100)
             {
-                var reply = _client.GetComments(PostId, 100, _sourceId, i, SortOrderBy.Asc, commentId).Result;
+                var reply = _client.GetComments(PostId, 100, _sourceId, i, SortOrderBy.Asc, commentId);
                 comments.AddRange(reply.Items);
                 foreach (var comment in reply.Items) _receivedCommentIds.TryAdd(comment.Id, comment.Thread?.Count ?? 0);
                 count = reply.Count;

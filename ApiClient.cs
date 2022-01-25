@@ -11,7 +11,7 @@ public class ApiClient
     private readonly VkApi _api = new();
     private static long _requestCount;
 
-    public async Task Auth(ulong applicationId, string secureKey, string serviceAccessKey)
+    public void Auth(ulong applicationId, string secureKey, string serviceAccessKey)
     {
         if (applicationId <= 0 || string.IsNullOrEmpty(secureKey) || string.IsNullOrEmpty(serviceAccessKey))
         {
@@ -24,9 +24,9 @@ public class ApiClient
             return;
         }
         
-        async Task<int> Func()
+        int Func()
         {
-            await _api.AuthorizeAsync(new ApiAuthParams
+            _api.AuthorizeAsync(new ApiAuthParams
             {
                 ClientSecret = secureKey,
                 AccessToken = serviceAccessKey,
@@ -36,63 +36,63 @@ public class ApiClient
             Console.WriteLine("Auth completed success");
             return 0;
         }
-        await Try(Func);
+        Try(Func);
     }
 
-    public async Task<int> GetCommentsCount(long groupId, long postId)
+    public int GetCommentsCount(long groupId, long postId)
     {
         if (groupId == 0 || postId <= 0)
         {
             throw new ArgumentException($"Incorrect input data {nameof(GetCommentsCount)}");
         }
-        async Task<int> Func()
+        int Func()
         {
-            var post= await _api.Wall.GetByIdAsync(new[] { groupId + "_" + postId });
+            var post= _api.Wall.GetById(new[] { groupId + "_" + postId });
             return post.WallPosts[0].Comments.Count;
         }
-        return await Try(Func);
+        return Try(Func);
     }
 
-    public async Task LogOut()
+    public void LogOut()
     {
         if (!_api.IsAuthorized)
         {
             Console.WriteLine("User is already logged out!");
             return;
         }
-        async Task<int> Func()
+        int Func()
         {
-            await _api.LogOutAsync();
+            _api.LogOut();
             Console.WriteLine("Log out completed success");
             return 0;
         }
-        await Try(Func);
+        Try(Func);
     }
 
-    public async Task<long> GetPostId(ulong offset, long? ownerId)
+    public long GetPostId(ulong offset, long? ownerId)
     {
         if (ownerId is null)
         {
             throw new ArgumentException($"Incorrect input data {nameof(GetPostId)}");
         }
-        async Task<long> Func()
+        long Func()
         {
-            var id = await _api.Wall.GetAsync(new WallGetParams {OwnerId = ownerId, Count = 1, Extended = false, Offset = offset});
+            var id = _api.Wall.Get(new WallGetParams {OwnerId = ownerId, Count = 1, Extended = false, Offset = offset});
             return id.WallPosts[0].Id.GetValueOrDefault(0);
         }
-        return await Try(Func);
+        return Try(Func);
     }
 
-    public async Task<WallGetCommentsResult> GetComments(long postId, int count, long? ownerId, int offset, SortOrderBy sort, long? commentId = null)
+    public WallGetCommentsResult GetComments(long postId, int count, long? ownerId, int offset, SortOrderBy sort, long? commentId = null)
     {
         if (count <= 0 || offset < 0 || ownerId is null || postId <= 0)
         {
             throw new ArgumentException($"Incorrect input data {nameof(GetComments)}");
         }
 
-        async Task<WallGetCommentsResult> Func()
+        WallGetCommentsResult Func()
         {
-            return await _api.Wall.GetCommentsAsync(new WallGetCommentsParams
+            return _api.Wall.GetComments(new WallGetCommentsParams
             {
                 PostId = postId,
                 Count = count,
@@ -102,10 +102,10 @@ public class ApiClient
                 Sort = sort
             });
         } 
-        return await Try(Func);
+        return Try(Func);
     }
 
-    private static async Task<T> Try<T>(Func<Task<T>> apiFunc)
+    private static T Try<T>(Func<T> apiFunc)
     {
         var attempts = 0;
         const int retryDelayMs = 3000;
@@ -114,7 +114,7 @@ public class ApiClient
             try
             {
                 Console.WriteLine($"Request counter: {_requestCount++}");
-                return await apiFunc().ConfigureAwait(false);
+                return apiFunc.Invoke();
             }
             catch (Exception e)
             {
