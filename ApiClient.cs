@@ -1,4 +1,5 @@
 ﻿using VkNet;
+using VkNet.Enums;
 using VkNet.Enums.Filters;
 using VkNet.Model;
 using VkNet.Model.RequestParams;
@@ -8,94 +9,117 @@ namespace VkAPITester;
 public class ApiClient
 {
     private readonly VkApi _api = new();
-    
-    public void Auth()
+
+    public async Task Auth(ulong applicationId, string secureKey, string serviceAccessKey)
     {
+        if (applicationId <= 0 || string.IsNullOrEmpty(secureKey) || string.IsNullOrEmpty(serviceAccessKey))
+        {
+            throw new ArgumentException("Incorrect input data");
+        }
+
         if (_api.IsAuthorized)
         {
-            Console.WriteLine("Пользователь уже авторизирован");
+            Console.WriteLine("User already logged in");
             return;
         }
-        const ulong applicationId = 8046073;
-        const string secureKey = "rvSXQVVe9QI7Xq1hjKNm";
-        const string serviceAccessKey = "041d6301041d6301041d6301940467a6f80041d041d630165c7f58fa7908b5e485a8377";
-        var settings = Settings.All;
-        try
+        
+        async Task Func()
         {
-            _api.Authorize(new ApiAuthParams
+            await _api.AuthorizeAsync(new ApiAuthParams
             {
-                ClientSecret = secureKey, 
-                AccessToken = serviceAccessKey, 
-                ApplicationId = applicationId, 
-                Settings = settings
+                ClientSecret = secureKey,
+                AccessToken = serviceAccessKey,
+                ApplicationId = applicationId,
+                Settings = Settings.All
             });
-            Console.WriteLine("Авторизация прошла успешно");
+            Console.WriteLine("Auth completed success");
         }
-        catch (Exception e)
-        {
-            Console.WriteLine("Авторизация прошла неудачно {0}, {1}", e.Message,e.StackTrace);
-        }
+
+        await Try(Func);
     }
 
-    public void LogOut()
+    public async Task<int> GetCommentsCount(long sourceId, long postId)
+    {
+        if (sourceId == 0 || postId <= 0)
+        {
+            throw new ArgumentException("Incorrect input data");
+        }
+        async Task<int> Func()
+        {
+            var post= await _api.Wall.GetByIdAsync(new[] { sourceId + "_" + postId });
+            return post.WallPosts[0].Comments.Count;
+        }
+        return await Try(Func);
+    }
+
+    public async Task LogOut()
     {
         if (!_api.IsAuthorized)
         {
-            Console.WriteLine("Пользователь уже не в системе");
+            Console.WriteLine("User is already logged out!");
             return;
         }
-        _api.LogOut();
-        Console.WriteLine("Выход произведён успешно");
-    }
-
-    public long GetLastPostId()
-    {
-        var id = _api.Wall.Get(new WallGetParams {OwnerId = -29573241, Count = 1, Extended = false}).WallPosts[0].Id;
-        if (id is not null)
+        async Task Func()
         {
-            return (long)id;
+            await _api.LogOutAsync();
+            Console.WriteLine("Log out completed success");
         }
-        Console.WriteLine("Ошибка получения индекса");
-        return 0;
+        await Try(Func);
     }
 
-    public List<Comment> GetComments(long postId)
+    public async Task<long> GetPostId(ulong offset, long? ownerId)
     {
-        var comments = new List<Comment>();
-        long count = 100;
-        for (var i = 0; i < count; i += 100)
+        if (ownerId is null)
         {
-            var reply = _api.Wall.GetComments(new WallGetCommentsParams
+            throw new ArgumentException("Incorrect input data");
+        }
+        async Task<long> Func()
+        {
+            var id = await _api.Wall.GetAsync(new WallGetParams {OwnerId = ownerId, Count = 1, Extended = false, Offset = offset});
+            return id.WallPosts[0].Id.GetValueOrDefault(0);
+        }
+        return await Try(Func);
+    }
+
+    public async Task<WallGetCommentsResult> GetComments(long postId, int count, long? ownerId, int offset, SortOrderBy sort, long? commentId = null)
+    {
+        if (count <= 0 || offset < 0 || ownerId is null || postId <= 0)
+        {
+            throw new ArgumentException("Incorrect input data");
+        }
+
+        async Task<WallGetCommentsResult> Func()
+        {
+            return await _api.Wall.GetCommentsAsync(new WallGetCommentsParams
             {
-                PostId = postId, 
-                Count = 100,
-                OwnerId = -29573241, 
-                Offset = i
+                PostId = postId,
+                Count = count,
+                OwnerId = ownerId,
+                Offset = offset,
+                CommentId = commentId,
+                Sort = sort
             });
-            comments.AddRange(reply.Items);
-            count = reply.Count;
-        }
+        } 
+        return await Try(Func);
+    }
 
-        var additionalComments = new List<Comment>();
-
-        foreach (var comment in comments.Where(comment => comment.Thread.Count > 0))
+    private static T Try<T>(Func<T> apiFunc)
+    {
+        var attempts = 0;
+        const int retryDelayMs = 3000;
+        while (true)
         {
-            for (var i = 0; i < count; i += 100)
+            try
             {
-                var reply = _api.Wall.GetComments(new WallGetCommentsParams
-                {
-                    PostId = postId,
-                    Count = 100,
-                    OwnerId = -29573241,
-                    Offset = i,
-                    CommentId = comment.Id
-                });
-                additionalComments.AddRange(reply.Items);
-                count = reply.Count;
+                return apiFunc.Invoke();
+            }
+            catch (Exception e)
+            {
+                if (attempts > 3) throw;
+                Thread.Sleep(retryDelayMs);
+                Console.WriteLine(e.Message, e.StackTrace);
+                attempts++;
             }
         }
-
-        comments.AddRange(additionalComments);
-        return comments;
     }
 }
