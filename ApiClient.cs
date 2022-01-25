@@ -8,6 +8,9 @@ namespace VkAPITester;
 
 public class ApiClient
 {
+    /// <summary>
+    ///async variant
+    /// </summary>
     private readonly VkApi _api = new();
     private static long _requestCount;
 
