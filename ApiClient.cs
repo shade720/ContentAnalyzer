@@ -8,28 +8,26 @@ namespace VkAPITester;
 
 public class ApiClient
 {
-    /// <summary>
-    ///async variant
-    /// </summary>
     private readonly VkApi _api = new();
-    private static long _requestCount;
+    //private static int CurrentHour => DateTime.Now.Hour;
+    //private static long _requestCount;
+    //private static int _lastRequestHour;
+    //private const int RequestPerHour = 400;
 
-    public void Auth(ulong applicationId, string secureKey, string serviceAccessKey)
+    public async Task Auth(ulong applicationId, string secureKey, string serviceAccessKey)
     {
-        if (applicationId <= 0 || string.IsNullOrEmpty(secureKey) || string.IsNullOrEmpty(serviceAccessKey))
-        {
-            throw new ArgumentException($"Incorrect input data {nameof(Auth)}");
-        }
-
         if (_api.IsAuthorized)
         {
             Console.WriteLine("User already logged in");
             return;
         }
-        
-        int Func()
+        if (applicationId <= 0 || string.IsNullOrEmpty(secureKey) || string.IsNullOrEmpty(serviceAccessKey))
         {
-            _api.AuthorizeAsync(new ApiAuthParams
+            throw new ArgumentException($"Incorrect input data {nameof(Auth)}");
+        }
+        async Task<int> Func()
+        {
+            await _api.AuthorizeAsync(new ApiAuthParams
             {
                 ClientSecret = secureKey,
                 AccessToken = serviceAccessKey,
@@ -39,63 +37,63 @@ public class ApiClient
             Console.WriteLine("Auth completed success");
             return 0;
         }
-        Try(Func);
+        await Try(Func);
     }
 
-    public int GetCommentsCount(long groupId, long postId)
+    public async Task<int> GetCommentsCount(long groupId, long postId)
     {
         if (groupId == 0 || postId <= 0)
         {
             throw new ArgumentException($"Incorrect input data {nameof(GetCommentsCount)}");
         }
-        int Func()
+        async Task<int> Func()
         {
-            var post= _api.Wall.GetById(new[] { groupId + "_" + postId });
+            var post = await _api.Wall.GetByIdAsync(new[] { groupId + "_" + postId });
             return post.WallPosts[0].Comments.Count;
         }
-        return Try(Func);
+        return await Try(Func);
     }
 
-    public void LogOut()
+    public async Task LogOut()
     {
         if (!_api.IsAuthorized)
         {
             Console.WriteLine("User is already logged out!");
             return;
         }
-        int Func()
+        async Task<int> Func()
         {
-            _api.LogOut();
+            await _api.LogOutAsync();
             Console.WriteLine("Log out completed success");
             return 0;
         }
-        Try(Func);
+        await Try(Func);
     }
 
-    public long GetPostId(ulong offset, long? ownerId)
+    public async Task<long> GetPostId(ulong offset, long? ownerId)
     {
         if (ownerId is null)
         {
             throw new ArgumentException($"Incorrect input data {nameof(GetPostId)}");
         }
-        long Func()
+        async Task<long> Func()
         {
-            var id = _api.Wall.Get(new WallGetParams {OwnerId = ownerId, Count = 1, Extended = false, Offset = offset});
+            var id = await _api.Wall.GetAsync(new WallGetParams { OwnerId = ownerId, Count = 1, Extended = false, Offset = offset });
             return id.WallPosts[0].Id.GetValueOrDefault(0);
         }
-        return Try(Func);
+        return await Try(Func);
     }
 
-    public WallGetCommentsResult GetComments(long postId, int count, long? ownerId, int offset, SortOrderBy sort, long? commentId = null)
+    public async Task<WallGetCommentsResult> GetComments(long postId, int count, long? ownerId, int offset, SortOrderBy sort, long? commentId = null)
     {
         if (count <= 0 || offset < 0 || ownerId is null || postId <= 0)
         {
             throw new ArgumentException($"Incorrect input data {nameof(GetComments)}");
         }
 
-        WallGetCommentsResult Func()
+        async Task<WallGetCommentsResult> Func()
         {
-            return _api.Wall.GetComments(new WallGetCommentsParams
+            return await _api.Wall.GetCommentsAsync(new WallGetCommentsParams
             {
                 PostId = postId,
                 Count = count,
@@ -104,20 +102,19 @@ public class ApiClient
                 CommentId = commentId,
                 Sort = sort
             });
-        } 
-        return Try(Func);
+        }
+        return await Try(Func);
     }
 
-    private static T Try<T>(Func<T> apiFunc)
+    private static async Task<T> Try<T>(Func<Task<T>> apiFunc)
     {
         var attempts = 0;
-        const int retryDelayMs = 3000;
+        const int retryDelayMs = 5000;
         while (true)
         {
             try
             {
-                Console.WriteLine($"Request counter: {_requestCount++}");
-                return apiFunc.Invoke();
+                return await apiFunc().ConfigureAwait(false);
             }
             catch (Exception e)
             {
@@ -128,4 +125,16 @@ public class ApiClient
             }
         }
     }
+
+    //private static bool IsSpeedLimitExceeded()
+    //{
+    //    if(_requestCount >= RequestPerHour && CurrentHour == _lastRequestHour)
+    //    {
+    //        Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+    //        Thread.Sleep(5000);
+    //        return false;
+    //    }
+    //    _lastRequestHour = CurrentHour;
+    //    return true;
+    //}
 }

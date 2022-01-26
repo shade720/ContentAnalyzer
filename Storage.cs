@@ -3,14 +3,14 @@ using VkNet.Model;
 
 namespace VkAPITester
 {
-    public class AnalyzedDataStorage
+    public class Storage
     {
-        private readonly ConcurrentBag<DataEntry> _data = new();
+        private readonly ConcurrentDictionary<int, DataEntry> _data = new();
         public int Count => _data.Count;
 
         public void AddEntry(Comment incomeRawDataEntry)
         {
-            _data.Add(new DataEntry(
+            _data.TryAdd(Count, new DataEntry(
                 incomeRawDataEntry.Id, 
                 incomeRawDataEntry.PostId ?? 0, 
                 incomeRawDataEntry.OwnerId ?? 0,
@@ -26,7 +26,7 @@ namespace VkAPITester
 
         public bool Contains(Comment item)
         {
-            return _data.Any(x => x.Id == item.Id);
+            return _data.Any(x => x.Value.Id == item.Id);
         }
     }
 }

@@ -3,16 +3,16 @@ using VkNet.Model;
 
 namespace VkAPITester
 {
-    public class DataLoader
+    public class DataCollector
     {
         public long PostId { get; }
-        private readonly long _sourceId;
-        
+        public long GroupId { get; }
+
         private readonly ApiClient _client;
         private readonly Dictionary<long, long?> _receivedCommentIds = new();
         public CancellationTokenSource UnsubscribeToken { get; } = new();
 
-        public DataLoader(ApiClient client, long sourceId, long postId) => (_client, _sourceId, PostId) = (client, sourceId, postId);
+        public DataCollector(ApiClient client, long postId, long groupId) => (_client, PostId, GroupId) = (client, postId, groupId);
 
         public List<Comment> GetPresentComments()
         {
@@ -26,17 +26,14 @@ namespace VkAPITester
             return comments;
         }
 
-
-        public async Task WaitOtherComments(AnalyzedDataStorage storageForRealtimeAddition)
+        public async Task WaitOtherComments(Storage storageForRealtimeAddition)
         {
             await Task.Run(() =>
             {
                 while (!UnsubscribeToken.IsCancellationRequested)
                 {
-                    Console.WriteLine("ping pong");
                     Thread.Sleep(60000);
-
-                    if (UnsubscribeToken.IsCancellationRequested || _receivedCommentIds.Count >= _client.GetCommentsCount(_sourceId, PostId)) continue;
+                    if (UnsubscribeToken.IsCancellationRequested || _receivedCommentIds.Count >= _client.GetCommentsCount(GroupId, PostId).Result) continue;
 
                     FinishBranch(storageForRealtimeAddition, out var mainBranch);
                     foreach (var comment in mainBranch.Items.Where(x => x.Thread.Count > _receivedCommentIds[x.Id]))
@@ -47,9 +44,9 @@ namespace VkAPITester
             Console.WriteLine("Exit from method");
         }
 
-        private void FinishBranch(AnalyzedDataStorage storageForRealtimeAddition, out WallGetCommentsResult branch, long? commentId = null)
+        private void FinishBranch(Storage storageForRealtimeAddition, out WallGetCommentsResult branch, long? commentId = null)
         {
-            branch = _client.GetComments(PostId, 100, _sourceId, 0, SortOrderBy.Asc, commentId);
+            branch = _client.GetComments(PostId, 100, GroupId, 0, SortOrderBy.Asc, commentId).Result;
             if (branch.Count == 0) return;
 
             var sortedBranch = branch.Items.Reverse().ToArray();
@@ -68,7 +65,7 @@ namespace VkAPITester
             long count = 100;
             for (var i = 0; i < count; i += 100)
             {
-                var reply = _client.GetComments(PostId, 100, _sourceId, i, SortOrderBy.Asc, commentId);
+                var reply = _client.GetComments(PostId, 100, GroupId, i, SortOrderBy.Asc, commentId).Result;
                 comments.AddRange(reply.Items);
                 foreach (var comment in reply.Items) _receivedCommentIds.TryAdd(comment.Id, comment.Thread?.Count ?? 0);
                 count = reply.Count;
