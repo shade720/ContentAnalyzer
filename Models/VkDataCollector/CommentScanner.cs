@@ -1,7 +1,8 @@
-﻿using VkNet.Enums;
+﻿using VkAPITester.Models.Storages;
+using VkNet.Enums;
 using VkNet.Model;
 
-namespace VkAPITester;
+namespace VkAPITester.Models.VkDataCollector;
 
 public class CommentScanner
 {

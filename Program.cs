@@ -1,4 +1,7 @@
-﻿namespace VkAPITester;
+﻿using VkAPITester.Models.Storages;
+using VkAPITester.Models.VkDataCollector;
+
+namespace VkAPITester;
 
 public static class Program
 {

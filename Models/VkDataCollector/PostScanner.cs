@@ -1,4 +1,6 @@
-﻿namespace VkAPITester;
+﻿using VkAPITester.Models.Storages;
+
+namespace VkAPITester.Models.VkDataCollector;
 
 public class PostScanner
 {

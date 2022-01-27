@@ -1,4 +1,4 @@
-﻿namespace VkAPITester;
+﻿namespace VkAPITester.Models.VkDataCollector;
 
 public class Config
 {

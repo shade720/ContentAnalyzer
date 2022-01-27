@@ -1,6 +1,4 @@
-﻿using VkNet.Model;
-
-namespace VkAPITester
+﻿namespace VkAPITester.Models.Storages
 {
     public interface IStorage
     {
