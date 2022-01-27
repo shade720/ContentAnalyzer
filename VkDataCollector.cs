@@ -2,25 +2,31 @@
 
 public class VkDataCollector
 {
-    private readonly ApiClient _apiClient;
-    private readonly List<CommunityAnalyzer> _analyzers;
-    private readonly Storage _storage;
+    private readonly VkApi _vkApi;
+    private readonly List<PostScanner> _postScanners;
+    private readonly IStorage _storage;
+    private Config? _config;
 
-    public VkDataCollector(ApiClient vkApi, Storage storage) => (_apiClient, _analyzers, _storage) = (vkApi, new List<CommunityAnalyzer>(), storage);
+    public VkDataCollector(IStorage storage) => (_vkApi, _postScanners, _storage) = (new VkApi(), new List<PostScanner>(), storage);
 
+    public void Configure(Config configure) => _config = configure;
+    
     public void AddCommunity(long communityId)
     {
-        _analyzers.Add(new CommunityAnalyzer(communityId, _apiClient, _storage, 3));
+        if (_config is null) throw new ArgumentException("Configuration is missing");
+        _postScanners.Add(new PostScanner(communityId, _vkApi, _storage, _config));
     }
 
     public void StartCollecting()
     {
-        foreach (var analyzer in _analyzers) analyzer.Start();
+        if (_config is null) throw new ArgumentException("Configuration is missing");
+        var a = _vkApi.Auth(_config.ApplicationId, _config.SecureKey, _config.ServiceAccessKey);
+        foreach (var scanner in _postScanners) scanner.StartScan();
     }
 
     public void StopCollecting()
     {
-        foreach (var analyzer in _analyzers) analyzer.Stop();
+        foreach (var scanner in _postScanners) scanner.StopScan();
+        var a = _vkApi.LogOut();
     }
-
 }

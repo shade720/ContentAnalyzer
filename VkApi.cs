@@ -1,18 +1,13 @@
-﻿using VkNet;
-using VkNet.Enums;
+﻿using VkNet.Enums;
 using VkNet.Enums.Filters;
 using VkNet.Model;
 using VkNet.Model.RequestParams;
 
 namespace VkAPITester;
 
-public class ApiClient
+public class VkApi
 {
-    private readonly VkApi _api = new();
-    //private static int CurrentHour => DateTime.Now.Hour;
-    //private static long _requestCount;
-    //private static int _lastRequestHour;
-    //private const int RequestPerHour = 400;
+    private readonly VkNet.VkApi _api = new();
 
     public async Task Auth(ulong applicationId, string secureKey, string serviceAccessKey)
     {
@@ -125,16 +120,4 @@ public class ApiClient
             }
         }
     }
-
-    //private static bool IsSpeedLimitExceeded()
-    //{
-    //    if(_requestCount >= RequestPerHour && CurrentHour == _lastRequestHour)
-    //    {
-    //        Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-    //        Thread.Sleep(5000);
-    //        return false;
-    //    }
-    //    _lastRequestHour = CurrentHour;
-    //    return true;
-    //}
 }
