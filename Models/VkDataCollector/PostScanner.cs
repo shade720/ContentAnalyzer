@@ -2,47 +2,46 @@
 
 namespace VkAPITester.Models.VkDataCollector;
 
-public class PostScanner
+public class PostScanner : Scanner
 {
-    private readonly long _communityId;
     private readonly CommentScannersQueue _commentScannersQueue;
 
-    private readonly CancellationTokenSource _stopScanToken;
+    public PostScanner(long communityId, VkApi vkApi, IStorage storage, Config configuration) : base(communityId, vkApi,
+        storage, new CancellationTokenSource(), configuration) =>
+        _commentScannersQueue = new CommentScannersQueue(configuration.QueueSize);
 
-    private readonly IStorage _storage;
-    private readonly VkApi _vkApi;
-    private readonly Config _configuration;
+    public override void StartScan()
+    {
+        var result = StartScanAsync();
+    }
 
-    public PostScanner(long communityId, VkApi vkApi, IStorage storage, Config configuration) =>
-        (_commentScannersQueue, _stopScanToken, _communityId, _vkApi, _storage, _configuration) = (new CommentScannersQueue(configuration.QueueSize),
-            new CancellationTokenSource(), communityId, vkApi, storage, configuration);
-    
-    public async Task StartScan()
+    private async Task StartScanAsync()
     {
         await Task.Run(() =>
         {
-            while (!_stopScanToken.Token.IsCancellationRequested)
+            while (!StopScanToken.Token.IsCancellationRequested)
             {
                 if (IsNewPost(out var postId))
                 {
-                    Console.WriteLine($"New post released {postId} group {_communityId}");
-                    _commentScannersQueue.AddScanner(new CommentScanner(_communityId, postId, _vkApi, _storage, _configuration));
+                    Console.WriteLine($"New post released {postId} group {CommunityId}");
+                    _commentScannersQueue.AddScanner(new CommentScanner(CommunityId, postId, ClientApi, Storage, Configuration));
                 }
-                Thread.Sleep(_configuration.ScanPostDelay);
+                Thread.Sleep(Configuration.ScanPostDelay);
             }
             StopScan();
-        }, _stopScanToken.Token);
+        }, StopScanToken.Token);
     }
 
     private bool IsNewPost(out long postId)
     {
-        postId = _vkApi.GetPostId(1, _communityId).Result;
+        postId = ClientApi.GetPostId(1, CommunityId).Result;
         return !_commentScannersQueue.Contains(postId) && postId != 0;
     }
 
-    public void StopScan()
+    public override void StopScan()
     {
-        _stopScanToken.Cancel();
+        StopScanToken.Cancel();
+        Console.WriteLine("Stop post scanning");
         _commentScannersQueue.Clear();
     }
 }

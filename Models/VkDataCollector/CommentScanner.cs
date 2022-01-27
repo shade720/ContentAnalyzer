@@ -4,35 +4,28 @@ using VkNet.Model;
 
 namespace VkAPITester.Models.VkDataCollector;
 
-public class CommentScanner
+public class CommentScanner : Scanner
 {
     public long PostId { get; }
-    private long GroupId { get; }
-
-    private readonly VkApi _client;
-    private readonly IStorage _storage;
-
-    private readonly CancellationTokenSource _stopScanToken;
-    private readonly Config _configuration;
-
+    
     private readonly Dictionary<long, long?> _receivedCommentIds = new();
 
-    public CommentScanner(long groupId, long postId, VkApi client, IStorage storage, Config configuration) =>
-        (GroupId, PostId, _client, _storage, _stopScanToken, _configuration) = (groupId, postId, client, storage,
-            new CancellationTokenSource(), configuration);
+    public CommentScanner(long communityId, long postId, VkApi vkApi, IStorage storage, Config configuration) : base(
+        communityId, vkApi, storage, new CancellationTokenSource(), configuration) =>
+        PostId = postId;
 
-    public void StartScan()
+    public override void StartScan()
     {
-        _storage.AddRange(DictionaryStorage.ConvertAll(GetPresentComments()));
+        Storage.AddRange(DictionaryStorage.ConvertAll(GetPresentComments()));
         var scanResult = ScanComments();
     }
 
-    public void StopScan()
+    public override void StopScan()
     {
-        _stopScanToken.Cancel();
+        StopScanToken.Cancel();
     }
 
-    private List<Comment> GetPresentComments()
+    private IEnumerable<Comment> GetPresentComments()
     {
         var comments = GetBranch();
 
@@ -40,10 +33,7 @@ public class CommentScanner
         foreach (var comment in comments.Where(comment => comment.Thread.Count > 0))
             additionalComments.AddRange(GetBranch(comment.Id));
         comments.AddRange(additionalComments);
-
-        foreach (var comment in comments)
-            Console.WriteLine(
-                $"add {comment.Id} {comment.PostId} {comment.OwnerId} {comment.FromId} {comment.Text} {comment.Date}");
+        foreach (var comment in comments) Console.WriteLine($"Add {comment.Id} {comment.PostId} {comment.OwnerId} {comment.FromId} {comment.Text} {comment.Date}");
         return comments;
     }
 
@@ -51,34 +41,31 @@ public class CommentScanner
     {
         await Task.Run(() =>
         {
-            while (!_stopScanToken.IsCancellationRequested)
+            while (!StopScanToken.IsCancellationRequested)
             {
-                Thread.Sleep(_configuration.ScanCommentsDelay);
-                if (_stopScanToken.IsCancellationRequested ||
-                    _receivedCommentIds.Count >= _client.GetCommentsCount(GroupId, PostId).Result) continue;
+                Thread.Sleep(Configuration.ScanCommentsDelay);
+                if (StopScanToken.IsCancellationRequested ||
+                    _receivedCommentIds.Count >= ClientApi.GetCommentsCount(CommunityId, PostId).Result) continue;
 
                 ScanBranch(out var mainBranch);
                 foreach (var comment in mainBranch.Items.Where(x => x.Thread.Count > _receivedCommentIds[x.Id]))
                     ScanBranch(out _, comment.Id);
             }
-
-            Console.WriteLine($"Unsubscribe {PostId}");
-        }, _stopScanToken.Token);
-        Console.WriteLine("Exit from method");
+        }, StopScanToken.Token);
+        Console.WriteLine("Scan comments stopped");
     }
 
     private void ScanBranch(out WallGetCommentsResult branch, long? commentId = null)
     {
-        branch = _client.GetComments(PostId, 100, GroupId, 0, SortOrderBy.Asc, commentId).Result;
+        branch = ClientApi.GetComments(PostId, 100, CommunityId, 0, SortOrderBy.Asc, commentId).Result;
         if (branch.Count == 0) return;
 
         var sortedBranch = branch.Items.Reverse().ToArray();
         for (var i = 0; i < sortedBranch.Length && !_receivedCommentIds.ContainsKey(sortedBranch[i].Id); i++)
         {
             var comment = sortedBranch[i];
-            _storage.Add(DictionaryStorage.Convert(comment));
-            Console.WriteLine(
-                $"add {comment.Id} {comment.PostId} {comment.OwnerId} {comment.FromId} {comment.Text} {comment.Date}");
+            Storage.Add(DictionaryStorage.Convert(comment));
+            Console.WriteLine($"Add {comment.Id} {comment.PostId} {comment.OwnerId} {comment.FromId} {comment.Text} {comment.Date}");
             _receivedCommentIds.TryAdd(comment.Id, comment.Thread is null ? 0 : comment.Thread.Count);
         }
     }
@@ -89,12 +76,11 @@ public class CommentScanner
         long count = 100;
         for (var i = 0; i < count; i += 100)
         {
-            var reply = _client.GetComments(PostId, 100, GroupId, i, SortOrderBy.Asc, commentId).Result;
+            var reply = ClientApi.GetComments(PostId, 100, CommunityId, i, SortOrderBy.Asc, commentId).Result;
             comments.AddRange(reply.Items);
             foreach (var comment in reply.Items) _receivedCommentIds.TryAdd(comment.Id, comment.Thread?.Count ?? 0);
             count = reply.Count;
         }
-
         return comments;
     }
 }

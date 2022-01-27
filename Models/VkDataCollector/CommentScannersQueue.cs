@@ -24,7 +24,7 @@ public class CommentScannersQueue
     {
         result = _queue.Dequeue();
         result.StopScan();
-        Console.WriteLine($"Delete and unsubscribe comment scanner {result.PostId}");
+        Console.WriteLine($"Stop and delete comment scanner {result.PostId}");
     }
     public void Clear()
     {
@@ -32,5 +32,6 @@ public class CommentScannersQueue
         {
             RemoveScanner(out _);
         }
+        Console.WriteLine("Queue cleared");
     }
 }

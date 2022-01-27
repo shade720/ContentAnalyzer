@@ -23,11 +23,13 @@ public class VkDataCollector
         if (_config is null) throw new ArgumentException("Configuration is missing");
         var a = _vkApi.Auth(_config.ApplicationId, _config.SecureKey, _config.ServiceAccessKey);
         foreach (var scanner in _postScanners) scanner.StartScan();
+        Console.WriteLine("Data collection has begun");
     }
 
     public void StopCollecting()
     {
         foreach (var scanner in _postScanners) scanner.StopScan();
         var a = _vkApi.LogOut();
+        Console.WriteLine("Data collection has stopped");
     }
 }
