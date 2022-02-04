@@ -1,4 +1,6 @@
-﻿namespace VkAPITester.Models.VkDataCollector;
+﻿using VkDataCollector.Scanners;
+
+namespace VkDataCollector.ScannerManager;
 
 internal class CommentScannersQueue
 {

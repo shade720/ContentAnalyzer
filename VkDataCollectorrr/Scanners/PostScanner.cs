@@ -1,13 +1,13 @@
-﻿using VkAPITester.Models.Storages;
+﻿using VkDataCollector.ScannerManager;
 
-namespace VkAPITester.Models.VkDataCollector;
+namespace VkDataCollector.Scanners;
 
 internal class PostScanner : Scanner
 {
     private readonly CommentScannersQueue _commentScannersQueue;
 
-    public PostScanner(long communityId, VkApi vkApi, IStorage storage, Config configuration) : base(communityId, vkApi,
-        storage, new CancellationTokenSource(), configuration) =>
+    public PostScanner(long communityId, VkApi vkApi, global::VkDataCollector.Data.DataManager dataManager, Config configuration) : base(communityId, vkApi,
+        dataManager, new CancellationTokenSource(), configuration) =>
         _commentScannersQueue = new CommentScannersQueue(configuration.QueueSize);
 
     public override void StartScan()
@@ -24,7 +24,7 @@ internal class PostScanner : Scanner
                 if (IsNewPost(out var postId))
                 {
                     Console.WriteLine($"New post released {postId} group {CommunityId}");
-                    _commentScannersQueue.AddScanner(new CommentScanner(CommunityId, postId, ClientApi, Storage, Configuration));
+                    _commentScannersQueue.AddScanner(new CommentScanner(CommunityId, postId, ClientApi, DataManager, Configuration));
                 }
                 Thread.Sleep(Configuration.ScanPostDelay);
             }

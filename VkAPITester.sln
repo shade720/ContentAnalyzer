@@ -3,7 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31919.166
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VkAPITester", "VkAPITester.csproj", "{D232CC56-3B86-4EA3-BCAD-8FC65D89191E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataCollectionService", "..\DataCollectionService\DataCollectionService.csproj", "{CBBDF00B-8CDA-4B33-BD7B-A211D84E732C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAnalysisService", "DataAnalysisService\DataAnalysisService.csproj", "{E0578F12-DEF2-452B-8B28-6FEB46E903BE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VkDataCollector", "VkDataCollectorrr\VkDataCollector.csproj", "{FA428A6E-2938-4F90-A878-6D2DD6D1200C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Interfaces", "Interfaces\Interfaces.csproj", "{EBB20676-817D-4169-9B10-328FBE78BC24}"
+EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "Testtt", "Testtt\Testtt.pyproj", "{50BB89B9-3441-4BA7-BE02-42FBA2C4BD09}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DataCollectors", "DataCollectors", "{4AAB536F-48E1-4A69-9627-79C47134E9ED}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DataAnalyzers", "DataAnalyzers", "{1F8F79EC-E92F-49E5-B1E9-AA8DCF8F7D6D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,13 +23,31 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{D232CC56-3B86-4EA3-BCAD-8FC65D89191E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D232CC56-3B86-4EA3-BCAD-8FC65D89191E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D232CC56-3B86-4EA3-BCAD-8FC65D89191E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D232CC56-3B86-4EA3-BCAD-8FC65D89191E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CBBDF00B-8CDA-4B33-BD7B-A211D84E732C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CBBDF00B-8CDA-4B33-BD7B-A211D84E732C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CBBDF00B-8CDA-4B33-BD7B-A211D84E732C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CBBDF00B-8CDA-4B33-BD7B-A211D84E732C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E0578F12-DEF2-452B-8B28-6FEB46E903BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E0578F12-DEF2-452B-8B28-6FEB46E903BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E0578F12-DEF2-452B-8B28-6FEB46E903BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E0578F12-DEF2-452B-8B28-6FEB46E903BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA428A6E-2938-4F90-A878-6D2DD6D1200C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA428A6E-2938-4F90-A878-6D2DD6D1200C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA428A6E-2938-4F90-A878-6D2DD6D1200C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA428A6E-2938-4F90-A878-6D2DD6D1200C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EBB20676-817D-4169-9B10-328FBE78BC24}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EBB20676-817D-4169-9B10-328FBE78BC24}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EBB20676-817D-4169-9B10-328FBE78BC24}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EBB20676-817D-4169-9B10-328FBE78BC24}.Release|Any CPU.Build.0 = Release|Any CPU
+		{50BB89B9-3441-4BA7-BE02-42FBA2C4BD09}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50BB89B9-3441-4BA7-BE02-42FBA2C4BD09}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{FA428A6E-2938-4F90-A878-6D2DD6D1200C} = {4AAB536F-48E1-4A69-9627-79C47134E9ED}
+		{50BB89B9-3441-4BA7-BE02-42FBA2C4BD09} = {1F8F79EC-E92F-49E5-B1E9-AA8DCF8F7D6D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4EE07DFF-0494-494B-9662-4080114B39F0}

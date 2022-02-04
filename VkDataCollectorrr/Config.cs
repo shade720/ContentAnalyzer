@@ -1,6 +1,6 @@
-﻿namespace VkAPITester.Models.VkDataCollector;
+﻿namespace VkDataCollector;
 
-internal class Config
+public class Config
 {
     public ulong ApplicationId { get; init; }
     public string SecureKey { get; init; }

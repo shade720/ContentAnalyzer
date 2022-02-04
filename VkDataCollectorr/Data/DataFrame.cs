@@ -1,6 +1,6 @@
-﻿namespace VkAPITester.Models.Storages
+﻿namespace VkDataCollector.Data
 {
-    public class DataEntry
+    public class DataFrame : IDataFrame
     {
         public long Id { get; }
         public long PostId { get; }
@@ -9,7 +9,7 @@
         public string Text { get; }
         public DateTime PostDate { get; }
 
-        public DataEntry(long id, long postId, long groupId, long authorId, string text, DateTime postDate)
+        public DataFrame(long id, long postId, long groupId, long authorId, string text, DateTime postDate)
         {
             Id = id;
             PostId = postId;

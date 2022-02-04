@@ -1,8 +1,8 @@
-﻿using VkAPITester.Models.Storages;
+﻿using VkDataCollector.Data;
 using VkNet.Enums;
 using VkNet.Model;
 
-namespace VkAPITester.Models.VkDataCollector;
+namespace VkDataCollector.Scanners;
 
 internal class CommentScanner : Scanner
 {
@@ -10,13 +10,13 @@ internal class CommentScanner : Scanner
     
     private readonly Dictionary<long, long?> _receivedCommentIds = new();
 
-    public CommentScanner(long communityId, long postId, VkApi vkApi, IStorage storage, Config configuration) : base(
-        communityId, vkApi, storage, new CancellationTokenSource(), configuration) =>
+    public CommentScanner(long communityId, long postId, VkApi vkApi, DataManager dataManager, Config configuration) : base(
+        communityId, vkApi, dataManager, new CancellationTokenSource(), configuration) =>
         PostId = postId;
 
     public override void StartScan()
     {
-        Storage.AddRange(DictionaryStorage.ConvertAll(GetPresentComments()));
+        DataManager.SendAllData(DataManager.ConvertAll(GetPresentComments()));
         var scanResult = ScanComments();
     }
 
@@ -70,7 +70,7 @@ internal class CommentScanner : Scanner
         for (var i = 0; i < sortedBranch.Length && !_receivedCommentIds.ContainsKey(sortedBranch[i].Id); i++)
         {
             var comment = sortedBranch[i];
-            Storage.Add(DictionaryStorage.Convert(comment));
+            DataManager.SendData(DataManager.Convert(comment));
             Console.WriteLine($"Add {comment.Id} {comment.PostId} {comment.OwnerId} {comment.FromId} {comment.Text} {comment.Date}");
             _receivedCommentIds.TryAdd(comment.Id, comment.Thread is null ? 0 : comment.Thread.Count);
         }

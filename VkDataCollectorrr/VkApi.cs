@@ -3,7 +3,7 @@ using VkNet.Enums.Filters;
 using VkNet.Model;
 using VkNet.Model.RequestParams;
 
-namespace VkAPITester.Models.VkDataCollector;
+namespace VkDataCollector;
 
 internal class VkApi
 {

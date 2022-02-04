@@ -1,19 +1,19 @@
-﻿using VkAPITester.Models.Storages;
+﻿using VkDataCollector.Data;
 
-namespace VkAPITester.Models.VkDataCollector;
+namespace VkDataCollector.Scanners;
 
 internal abstract class Scanner
 {
     protected readonly long CommunityId;
     protected readonly VkApi ClientApi;
-    protected readonly IStorage Storage;
+    protected readonly DataManager DataManager;
     protected readonly CancellationTokenSource StopScanToken;
     protected readonly Config Configuration;
 
-    protected Scanner(long communityId, VkApi clientApi, IStorage storage, CancellationTokenSource stopScanToken, Config configuration)
+    protected Scanner(long communityId, VkApi clientApi, DataManager dataManager, CancellationTokenSource stopScanToken, Config configuration)
     {
         ClientApi = clientApi;
-        Storage = storage;
+        DataManager = dataManager;
         StopScanToken = stopScanToken;
         Configuration = configuration;
         CommunityId = communityId;
