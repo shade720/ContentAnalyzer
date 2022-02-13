@@ -12,8 +12,8 @@ namespace DataAnalysisService.Databases
 
         private readonly List<long> _receivedIDs = new();
 
-        public delegate void OnDataReceived(IDataFrame data);
-        public event OnDataReceived OnDataReceivedEvent;
+        private delegate void OnDataReceived(IDataFrame data);
+        private event OnDataReceived OnDataReceivedEvent;
 
         public void Connect()
         {
@@ -30,7 +30,7 @@ namespace DataAnalysisService.Databases
             _connection.Close();
         }
 
-        public void LoadData()
+        public void StartLoading()
         {
             using var command = new SqlCommand("SELECT Id, CommentId, PostId, GroupId, AuthorId, Content, Date FROM [dbo].[Table]", _connection);
             using var reader = command.ExecuteReader();
@@ -47,15 +47,18 @@ namespace DataAnalysisService.Databases
                     Convert.ToInt64(reader["AuthorId"]),
                     Convert.ToDateTime(reader["Date"])
                 ));
-                
             }
         }
 
         private void OnDependencyChange(object sender, SqlNotificationEventArgs e)
         {
-            LoadData();
+            StartLoading();
         }
 
+        public void SetIncomingDataHandler(Action<IDataFrame> handler)
+        {
+            OnDataReceivedEvent += handler.Invoke;
+        }
 
         public void Clear()
         {

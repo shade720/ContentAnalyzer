@@ -15,7 +15,9 @@ public class M_USE_Analyzer : IDataAnalyzer
     private CancellationTokenSource _cancellationToken;
     private bool _isDisposeCalled;
 
-    public void Configure(string scriptPath, string interpreterPath, Action<PredictResult> predictResultHandler,
+    private AnalyzeContextStack _analyzerContextQueue;
+
+    public void Configure(string scriptPath, string interpreterPath, Action<PredictResult> predictResultHandler, 
         Action<string> errorHandler) => (_interpreterPath, _scriptPath, _predictResultHandler, _errorHandler) =
         (interpreterPath, scriptPath, predictResultHandler, errorHandler);
 
@@ -36,6 +38,7 @@ public class M_USE_Analyzer : IDataAnalyzer
         _runner.OnOutputReceivedEvent += RunnerOnOutputReceivedEvent;
         Console.WriteLine("Script started");
     }
+
     public void Dispose()
     {
         _isDisposeCalled = true;
@@ -46,18 +49,21 @@ public class M_USE_Analyzer : IDataAnalyzer
         Console.WriteLine("Script stopped");
     }
 
-    public void Analyze(string analyzedText) => _runner.WriteToScript(analyzedText);
-        
+    public void Analyze(IDataFrame analyzedText)
+    {
+        _analyzerContextQueue.Push(analyzedText);
+        _runner.WriteToScript(analyzedText.Text);
+    }
+
     private void RunnerOnExitEvent()
     {
         if (!_isDisposeCalled) Initialize();
     }
     private void RunnerOnErrorReceivedEvent(string errorMessage) => _errorHandler.Invoke(errorMessage);
 
-    private void RunnerOnOutputReceivedEvent(string outputMessage)
+    private void RunnerOnOutputReceivedEvent(string predictResult)
     {
-        var splited = outputMessage.Split('|');
-        _predictResultHandler.Invoke(new PredictResult {Text = splited[0], Toxicity = splited[1]});
+        var context = _analyzerContextQueue.Pop();
+        _predictResultHandler.Invoke(new PredictResult {DataFrame = context, Toxicity = predictResult });
     }
-    
 }

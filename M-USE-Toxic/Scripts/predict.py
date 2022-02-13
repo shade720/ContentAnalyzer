@@ -30,4 +30,4 @@ with tf.Session() as session:
         c = input()
         predict = model.predict(np.asarray([c]))
         a = list(predict)
-        print(c, float(a[0][1])*100, sep='|')
+        print(float(a[0][1])*100)

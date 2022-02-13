@@ -12,31 +12,27 @@ public static class Startup
         var service = new DataAnalysisService();
         var database = new Database(ConfigurationManager.ConnectionStrings["AllCommentsDatabase"].ConnectionString);
 
-        database.Connect();
-        service.AddDataAnalyzer(Analyzers.M_USE_Analysis, () =>
+        service.AddDataAnalyzer("M_USE_Analysis", () =>
         {
             var museAnalyzer = new M_USE_Analyzer();
             museAnalyzer.Configure(
                 Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), ConfigurationManager.AppSettings["PredictScriptPath"]),
                 Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), ConfigurationManager.AppSettings["InterpreterPath"]),
-                result => Console.WriteLine($"Analyze {result.Text} -> {result.Toxicity}%"),
+                result => Console.WriteLine($"Analyze {result.DataFrame.Text} -> {result.Toxicity}%"),
                 Console.WriteLine);
-            database.OnDataReceivedEvent += data =>
-            {
-                museAnalyzer.Analyze(data.Text);
-            };
             return museAnalyzer;
         });
+        DataAnalysisService.SetCurrentAnalyzer("M_USE_Analysis");
 
-        service.SetCurrentAnalyzer(Analyzers.M_USE_Analysis);
-        
+        database.SetIncomingDataHandler(service.Analyze);
 
+        database.Connect();
         service.Start();
-        database.LoadData();
+        database.StartLoading();
 
-        while (true)
+        for (var i = 0; i < 720; i++)
         {
-            Thread.Sleep(5000);
+            Thread.Sleep(60000);
         }
 
         database.Disconnect();
