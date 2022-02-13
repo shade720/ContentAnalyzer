@@ -2,11 +2,13 @@
 using System.Data.SqlClient;
 using Interfaces;
 
-namespace DataCollectionService.Databases.MSSQLDB
+namespace DataCollectionService.Databases.SqlServer
 {
-    public class MSSQLDB
+    public class Database
     {
-        private readonly SqlConnection _connection = new(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=E:\Projects\Prototype\ContentAnalyzer\DataCollectionService\Databases\MSSQLDB\MSSQLDB.mdf;Integrated Security=True");
+        public Database(string connectionString) => _connection = new SqlConnection(connectionString);
+
+        private readonly SqlConnection _connection;
 
         public void Connect()
         {
@@ -20,6 +22,7 @@ namespace DataCollectionService.Databases.MSSQLDB
 
         public void Add(IDataFrame dataFrame)
         {
+            if (IsDataFrameInvalid(dataFrame)) return;
             var command = _connection.CreateCommand();
             command.CommandText = @"INSERT INTO [dbo].[Table] (CommentId, PostId, GroupId, AuthorId, Content, Date) VALUES (@CommentId, @PostId, @GroupId, @AuthorId, @Content, @Date)";
             command.Parameters.Add("@CommentId", SqlDbType.BigInt).Value = dataFrame.Id;
@@ -36,6 +39,13 @@ namespace DataCollectionService.Databases.MSSQLDB
             var command = _connection.CreateCommand();
             command.CommandText = "TRUNCATE TABLE [Table]";
             command.ExecuteNonQuery();
+        }
+
+        private static bool IsDataFrameInvalid(IDataFrame dataFrame)
+        {
+            var result = string.IsNullOrEmpty(dataFrame.Text) || string.IsNullOrWhiteSpace(dataFrame.Text) ||
+                         dataFrame.Text.Length < 5;
+            return result;
         }
     }
 }

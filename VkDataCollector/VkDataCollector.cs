@@ -9,7 +9,7 @@ public class VkDataCollector : IDataCollector
     private readonly VkApi _vkApi;
     private readonly List<Scanner> _postScanners;
     private readonly DataManager _dataSender;
-    private Config _config;
+    private Config? _config;
 
     public VkDataCollector() => (_vkApi, _postScanners, _dataSender) = (new VkApi(), new List<Scanner>(), new DataManager());
     

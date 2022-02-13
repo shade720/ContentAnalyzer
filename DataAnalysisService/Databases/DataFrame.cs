@@ -1,6 +1,6 @@
 ﻿using Interfaces;
 
-namespace DataAnalysisService;
+namespace DataAnalysisService.Databases;
 
 public class DataFrame : IDataFrame
 {

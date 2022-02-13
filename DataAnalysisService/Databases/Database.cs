@@ -1,15 +1,19 @@
-﻿using Interfaces;
-using System.Data.SqlClient;
+﻿using System.Data.SqlClient;
+using Interfaces;
 
-namespace DataAnalysisService
+namespace DataAnalysisService.Databases
 {
-    public class MSSQLDB
+    public class Database
     {
-        private readonly SqlConnection _connection = new(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=E:\Projects\Prototype\ContentAnalyzer\DataCollectionService\Databases\MSSQLDB\MSSQLDB.mdf;Integrated Security=SSPI");
+        public Database(string connectionString) => _connection = new SqlConnection(connectionString);
+        private readonly SqlConnection _connection;
+
+        private SqlDependency? _dependency;
+
+        private readonly List<long> _receivedIDs = new();
+
         public delegate void OnDataReceived(IDataFrame data);
         public event OnDataReceived OnDataReceivedEvent;
-        private SqlDependency _dependency;
-        private readonly List<long> _receivedIDs = new();
 
         public void Connect()
         {

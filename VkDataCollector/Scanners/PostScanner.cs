@@ -6,7 +6,7 @@ internal class PostScanner : Scanner
 {
     private readonly CommentScannersQueue _commentScannersQueue;
 
-    public PostScanner(long communityId, VkApi vkApi, global::VkDataCollector.Data.DataManager dataManager, Config configuration) : base(communityId, vkApi,
+    public PostScanner(long communityId, VkApi vkApi, Data.DataManager dataManager, Config configuration) : base(communityId, vkApi,
         dataManager, new CancellationTokenSource(), configuration) =>
         _commentScannersQueue = new CommentScannersQueue(configuration.QueueSize);
 

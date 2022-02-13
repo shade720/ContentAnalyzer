@@ -1,5 +1,6 @@
 ﻿using System.Configuration;
 using System.Reflection;
+using DataAnalysisService.Databases;
 using M_USE_Toxic;
 
 namespace DataAnalysisService;
@@ -9,7 +10,7 @@ public static class Startup
     public static void Main()
     {
         var service = new DataAnalysisService();
-        var database = new MSSQLDB();
+        var database = new Database(ConfigurationManager.ConnectionStrings["AllCommentsDatabase"].ConnectionString);
 
         database.Connect();
         service.AddDataAnalyzer(Analyzers.M_USE_Analysis, () =>
@@ -22,9 +23,7 @@ public static class Startup
                 Console.WriteLine);
             database.OnDataReceivedEvent += data =>
             {
-                var a = data.Text;
-                if (a.Contains('[')) a = a.Remove(a.IndexOf('['), a.IndexOf(']') - a.IndexOf('[') + 2).Trim();
-                if (!string.IsNullOrEmpty(a)) museAnalyzer.Analyze(a);
+                museAnalyzer.Analyze(data.Text);
             };
             return museAnalyzer;
         });
