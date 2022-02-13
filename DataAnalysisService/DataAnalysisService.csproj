@@ -8,7 +8,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="IronPython" Version="2.7.11" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="6.0.0" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Interfaces\Interfaces.csproj" />
+    <ProjectReference Include="..\M-USE-Toxic\M-USE-Toxic.csproj" />
   </ItemGroup>
 
 </Project>

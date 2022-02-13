@@ -1,0 +1,73 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31919.166
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAnalysisService", "DataAnalysisService\DataAnalysisService.csproj", "{E0578F12-DEF2-452B-8B28-6FEB46E903BE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Interfaces", "Interfaces\Interfaces.csproj", "{EBB20676-817D-4169-9B10-328FBE78BC24}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataCollectionService", "DataCollectionService\DataCollectionService.csproj", "{F09844D4-D889-43FA-BFEE-B863CDA2F91C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DataAnalysisServiceFolder", "DataAnalysisServiceFolder", "{063712E5-0654-40EB-BC62-70547BD2AC5A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DataAnalyzers", "DataAnalyzers", "{51AAF98C-7433-4E89-B804-FED4DAD3CC75}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "M-USE-Toxic", "M-USE-Toxic\M-USE-Toxic.csproj", "{5430810F-02BA-4F7A-A037-6F471E3AF9A7}"
+EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "Environment", "Environment\Environment.pyproj", "{24B8A00F-6AFF-4238-BA3C-5F54E192F0D2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DataCollectionServiceFolder", "DataCollectionServiceFolder", "{D348BA3E-D07B-475E-9C06-51B3E53083BD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DataCollectors", "DataCollectors", "{4DEBF723-4EC3-429D-958C-498170434DBF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VkDataCollector", "VkDataCollector\VkDataCollector.csproj", "{F158F0E2-F620-4A4F-9235-DCB97FCEB136}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{93CC78CF-C537-4630-A2CA-EE6858803787}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E0578F12-DEF2-452B-8B28-6FEB46E903BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E0578F12-DEF2-452B-8B28-6FEB46E903BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E0578F12-DEF2-452B-8B28-6FEB46E903BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E0578F12-DEF2-452B-8B28-6FEB46E903BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EBB20676-817D-4169-9B10-328FBE78BC24}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EBB20676-817D-4169-9B10-328FBE78BC24}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EBB20676-817D-4169-9B10-328FBE78BC24}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EBB20676-817D-4169-9B10-328FBE78BC24}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F09844D4-D889-43FA-BFEE-B863CDA2F91C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F09844D4-D889-43FA-BFEE-B863CDA2F91C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F09844D4-D889-43FA-BFEE-B863CDA2F91C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F09844D4-D889-43FA-BFEE-B863CDA2F91C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5430810F-02BA-4F7A-A037-6F471E3AF9A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5430810F-02BA-4F7A-A037-6F471E3AF9A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5430810F-02BA-4F7A-A037-6F471E3AF9A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5430810F-02BA-4F7A-A037-6F471E3AF9A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{24B8A00F-6AFF-4238-BA3C-5F54E192F0D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{24B8A00F-6AFF-4238-BA3C-5F54E192F0D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F158F0E2-F620-4A4F-9235-DCB97FCEB136}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F158F0E2-F620-4A4F-9235-DCB97FCEB136}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F158F0E2-F620-4A4F-9235-DCB97FCEB136}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F158F0E2-F620-4A4F-9235-DCB97FCEB136}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E0578F12-DEF2-452B-8B28-6FEB46E903BE} = {063712E5-0654-40EB-BC62-70547BD2AC5A}
+		{EBB20676-817D-4169-9B10-328FBE78BC24} = {93CC78CF-C537-4630-A2CA-EE6858803787}
+		{F09844D4-D889-43FA-BFEE-B863CDA2F91C} = {D348BA3E-D07B-475E-9C06-51B3E53083BD}
+		{51AAF98C-7433-4E89-B804-FED4DAD3CC75} = {063712E5-0654-40EB-BC62-70547BD2AC5A}
+		{5430810F-02BA-4F7A-A037-6F471E3AF9A7} = {51AAF98C-7433-4E89-B804-FED4DAD3CC75}
+		{24B8A00F-6AFF-4238-BA3C-5F54E192F0D2} = {51AAF98C-7433-4E89-B804-FED4DAD3CC75}
+		{4DEBF723-4EC3-429D-958C-498170434DBF} = {D348BA3E-D07B-475E-9C06-51B3E53083BD}
+		{F158F0E2-F620-4A4F-9235-DCB97FCEB136} = {4DEBF723-4EC3-429D-958C-498170434DBF}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4EE07DFF-0494-494B-9662-4080114B39F0}
+	EndGlobalSection
+EndGlobal
