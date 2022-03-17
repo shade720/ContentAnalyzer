@@ -17,12 +17,12 @@ internal class PostScanner : Scanner
 
     private async Task StartScanAsync()
     {
-        await Task.Run(() =>
+        await Task.Run( () =>
         {
             while (!StopScanToken.Token.IsCancellationRequested)
             {
                 if (IsNewPost(out var postId))
-                {
+                { 
                     Console.WriteLine($"New post released {postId} group {CommunityId}");
                     _commentScannersQueue.AddScanner(new CommentScanner(CommunityId, postId, ClientApi, DataManager, Configuration));
                 }

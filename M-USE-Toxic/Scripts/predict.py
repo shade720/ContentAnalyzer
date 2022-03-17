@@ -14,7 +14,7 @@ def UniversalEmbedding(x):
 input_text = Input(shape=(1,), dtype=tf.string)
 embedding = Lambda(UniversalEmbedding, output_shape=(512, ))(input_text)
 dense = Dense(256, activation='relu')(embedding)
-pred = Dense(2, activation='softmax')(dense)
+pred = Dense(4, activation='softmax')(dense)
 model = Model(inputs=[input_text], outputs=pred)
 model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 
@@ -27,7 +27,11 @@ with tf.Session() as session:
     print("ready")
     c = " "
     while c != "":
-        c = input()
-        predict = model.predict(np.asarray([c]))
-        a = list(predict)
-        print(float(a[0][1])*100)
+        try:
+            c = input()
+            predict = model.predict(np.asarray([c]))
+            a = list(predict)
+            print(a[0])
+        except Exception:
+            print(0)
+

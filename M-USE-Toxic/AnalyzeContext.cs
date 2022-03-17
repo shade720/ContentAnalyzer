@@ -2,11 +2,11 @@
 
 namespace M_USE_Toxic;
 
-internal class AnalyzeContextStack
+internal class AnalyzeContextDictionary
 {
-    private readonly Stack<IDataFrame> _contextDataFrames = new();
+    private readonly Dictionary<long,IDataFrame> _contextDataFrames = new();
 
-    public void Push(IDataFrame dataFrame) => _contextDataFrames.Push(dataFrame);
+    public void Add(IDataFrame dataFrame) => _contextDataFrames.Add(dataFrame.Id, dataFrame);
 
-    public IDataFrame Pop() => _contextDataFrames.Pop();
+    public IDataFrame Get(long id) => _contextDataFrames[id];
 }

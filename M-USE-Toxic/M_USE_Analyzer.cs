@@ -14,15 +14,13 @@ public class M_USE_Analyzer : IDataAnalyzer
 
     private CancellationTokenSource _cancellationToken;
     private bool _isDisposeCalled;
-
-    private AnalyzeContextStack _analyzerContextQueue;
-
-    public void Configure(string scriptPath, string interpreterPath, Action<PredictResult> predictResultHandler, 
-        Action<string> errorHandler) => (_interpreterPath, _scriptPath, _predictResultHandler, _errorHandler) =
-        (interpreterPath, scriptPath, predictResultHandler, errorHandler);
+    
+    public void Configure(string scriptPath, string interpreterPath, Action<PredictResult> predictResultHandler, Action<string> errorHandler) => 
+        (_interpreterPath, _scriptPath, _predictResultHandler, _errorHandler) = (interpreterPath, scriptPath, predictResultHandler, errorHandler);
 
     public void Initialize()
     {
+        Console.WriteLine("Start initialization... ");
         var isReady = false;
         _isDisposeCalled = false;
         _cancellationToken = new CancellationTokenSource();
@@ -30,12 +28,12 @@ public class M_USE_Analyzer : IDataAnalyzer
 
         var result = _runner.Run(_scriptPath, _cancellationToken.Token);
 
-        _runner.OnErrorReceivedEvent += RunnerOnErrorReceivedEvent;
-        _runner.OnExitEvent += RunnerOnExitEvent;
-        _runner.OnInitializedEvent += () => isReady = true;
+        _runner.OnErrorReceivedEvent += RunnerOnErrorReceivedEventHandler;
+        _runner.OnExitEvent += RunnerOnExitEventHandler;
 
+        _runner.OnInitializationEndedEvent += () => isReady = true;
         while (!isReady) Thread.Sleep(1000);
-        _runner.OnOutputReceivedEvent += RunnerOnOutputReceivedEvent;
+
         Console.WriteLine("Script started");
     }
 
@@ -43,27 +41,26 @@ public class M_USE_Analyzer : IDataAnalyzer
     {
         _isDisposeCalled = true;
         _cancellationToken.Cancel();
-        _runner.OnErrorReceivedEvent -= RunnerOnErrorReceivedEvent;
-        _runner.OnOutputReceivedEvent -= RunnerOnOutputReceivedEvent;
-        _runner.OnExitEvent -= RunnerOnExitEvent;
-        Console.WriteLine("Script stopped");
+        _runner.OnErrorReceivedEvent -= RunnerOnErrorReceivedEventHandler;
+        _runner.OnExitEvent -= RunnerOnExitEventHandler;
+        Console.WriteLine("Script disposed");
     }
 
-    public void Analyze(IDataFrame analyzedText)
+    public void Analyze(IDataFrame dataFrame)
     {
-        _analyzerContextQueue.Push(analyzedText);
-        _runner.WriteToScript(analyzedText.Text);
+        _runner.RequestPredict(dataFrame.Text);
+        _predictResultHandler.Invoke(new PredictResult { DataFrame = dataFrame, Toxicity = _runner.GetPredict() });
     }
 
-    private void RunnerOnExitEvent()
+    private void RunnerOnExitEventHandler()
     {
+        Console.WriteLine("Exit from script");
+        Dispose();
         if (!_isDisposeCalled) Initialize();
     }
-    private void RunnerOnErrorReceivedEvent(string errorMessage) => _errorHandler.Invoke(errorMessage);
 
-    private void RunnerOnOutputReceivedEvent(string predictResult)
+    private void RunnerOnErrorReceivedEventHandler(string errorMessage)
     {
-        var context = _analyzerContextQueue.Pop();
-        _predictResultHandler.Invoke(new PredictResult {DataFrame = context, Toxicity = predictResult });
+        _errorHandler.Invoke(errorMessage);
     }
 }

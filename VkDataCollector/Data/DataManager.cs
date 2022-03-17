@@ -40,7 +40,7 @@ internal class DataManager
     private static string ClearText(string text)
     {
         var result = UnicodeToUtf8(ProcessString(text));
-        if (result.Contains('[')) result = result.Remove(result.IndexOf('['), result.IndexOf(']') - result.IndexOf('[') + 2).Trim();
+        if (result.StartsWith('[')) result = result.Remove(result.IndexOf('['), result.IndexOf(']') - result.IndexOf('[') + 2).Trim();
         //result = result.Replace("?", "");
         return result;
     }

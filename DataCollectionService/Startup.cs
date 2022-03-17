@@ -9,7 +9,7 @@ public static class Startup
     public static void Main()
     {
         var collectionService = new DataCollectionService();
-        var database = new Database(ConfigurationManager.ConnectionStrings["AllCommentsDatabase"].ConnectionString);
+        var database = new AllCommentsDatabaseClient(ConfigurationManager.ConnectionStrings["AllCommentsDatabase"].ConnectionString);
 
         collectionService.AddDataCollector(() =>
         {
@@ -24,7 +24,8 @@ public static class Startup
                 QueueSize = Convert.ToInt32(ConfigurationManager.AppSettings["PostQueueSize"])
             });
             vkDataCollector.AddCommunity(Convert.ToInt64(ConfigurationManager.AppSettings["NRGroupId"]));
-            vkDataCollector.AddCommunity(Convert.ToInt64(ConfigurationManager.AppSettings["LentachGroupId"]));
+            //vkDataCollector.AddCommunity(Convert.ToInt64(ConfigurationManager.AppSettings["LentachGroupId"]));
+            vkDataCollector.AddCommunity(Convert.ToInt64(ConfigurationManager.AppSettings["CSGOHS"]));
             vkDataCollector.Subscribe(entry =>
             {
                 database.Add(entry);
@@ -36,7 +37,7 @@ public static class Startup
         database.Clear();
         collectionService.Start();
         
-        for (var i = 0; i < 720; i++) 
+        for (var i = 0; i < 1440; i++) 
         {
             Thread.Sleep(60000);
         }

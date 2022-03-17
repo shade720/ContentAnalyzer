@@ -40,7 +40,7 @@ internal class CommentScanner : Scanner
 
     private async Task ScanComments()
     {
-        Console.WriteLine("Start scanning comments");
+        await Console.Out.WriteLineAsync("Start scanning comments");
         await Task.Run(() =>
         {
             while (!StopScanToken.IsCancellationRequested)
@@ -53,7 +53,7 @@ internal class CommentScanner : Scanner
                     ScanBranch(out _, comment.Id);
             }
         }, StopScanToken.Token);
-        Console.WriteLine("Scan comments stopped");
+        await Console.Out.WriteLineAsync("Scan comments stopped");
     }
 
     private bool AnyNewComments()

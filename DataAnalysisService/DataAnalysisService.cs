@@ -16,8 +16,11 @@ public class DataAnalysisService
 
     public void Start()
     {
-        if (string.IsNullOrEmpty(_currentAnalyzer)) throw new Exception("Current analyzer is not set");
-        _dataAnalyzers[_currentAnalyzer].Initialize();
+        foreach (var analyzer in _dataAnalyzers)
+        {
+            analyzer.Value.Initialize();
+        }
+        Console.WriteLine("Service started");
     }
 
     public void Analyze(IDataFrame dataFrame)
@@ -28,7 +31,10 @@ public class DataAnalysisService
 
     public void Stop()
     {
-        if (string.IsNullOrEmpty(_currentAnalyzer)) throw new Exception("Current analyzer is not set");
-        _dataAnalyzers[_currentAnalyzer].Dispose();
+        foreach (var analyzer in _dataAnalyzers)
+        {
+            analyzer.Value.Dispose();
+        }
+        Console.WriteLine("Service stopped");
     }
 }

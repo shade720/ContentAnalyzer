@@ -9,6 +9,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Scripts\Old\**" />
+    <EmbeddedResource Remove="Scripts\Old\**" />
+    <None Remove="Scripts\Old\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="6.0.0" />
   </ItemGroup>
 

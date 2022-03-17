@@ -115,7 +115,7 @@ internal class VkApi
             {
                 if (attempts > 10) throw;
                 Thread.Sleep(retryDelayMs);
-                Console.WriteLine(e.Message, e.StackTrace);
+                await Console.Out.WriteLineAsync($"{e.Message} {e.StackTrace}");
                 attempts++;
             }
         }

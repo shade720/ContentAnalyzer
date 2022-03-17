@@ -7,23 +7,20 @@ internal class PythonRunner
     private readonly string _interpreter;
 
     private StreamWriter _writer;
+    private StreamReader _reader;
 
     public delegate void OnErrorReceived(string errorMessage);
     public event OnErrorReceived OnErrorReceivedEvent;
-
-    public delegate void OnOutputReceived(string outputMessage);
-    public event OnOutputReceived OnOutputReceivedEvent;
 
     public delegate void OnExit();
     public event OnExit OnExitEvent;
 
     public delegate void OnInitialized();
-    public event OnInitialized OnInitializedEvent;
-
+    public event OnInitialized OnInitializationEndedEvent;
 
     public PythonRunner(string interpreter)
     {
-        if (interpreter == null)
+        if (interpreter is null)
         {
             throw new ArgumentNullException(nameof(interpreter));
         }
@@ -38,7 +35,7 @@ internal class PythonRunner
     {
         await Task.Run(() =>
         {
-            if (script == null)
+            if (script is null)
             {
                 throw new ArgumentNullException(nameof(script));
             }
@@ -63,23 +60,19 @@ internal class PythonRunner
             };
             try
             {
-                void OnReady(object sender, DataReceivedEventArgs e)
-                {
-                    OnInitializedEvent.Invoke();
-                    process.OutputDataReceived -= OnReady;
-                    process.OutputDataReceived += OnOutputDataReceivedHandler;
-                }
                 process.ErrorDataReceived += OnErrorDataReceivedHandler;
-                process.OutputDataReceived += OnReady;
                 
                 process.Start();
 
+                _reader = process.StandardOutput;
                 _writer = process.StandardInput;
                 _writer.AutoFlush = true;
 
                 process.BeginErrorReadLine();
-                process.BeginOutputReadLine();
-                
+
+                _reader.ReadLine();
+                OnInitializationEndedEvent.Invoke();
+
                 while (!token.IsCancellationRequested) Thread.Sleep(5000);
             }
             catch (Exception exception)
@@ -89,23 +82,13 @@ internal class PythonRunner
             finally
             {
                 process.ErrorDataReceived -= OnErrorDataReceivedHandler;
-                OnExitEvent.Invoke();
+                OnExitEvent?.Invoke();
             }
         }, token);
     }
 
-    private void OnOutputDataReceivedHandler(object sender, DataReceivedEventArgs e)
-    {
-        OnOutputReceivedEvent?.Invoke(e.Data ?? string.Empty);
-    }
+    private void OnErrorDataReceivedHandler(object sender, DataReceivedEventArgs e) => OnErrorReceivedEvent?.Invoke(e.Data ?? string.Empty);
+    public string GetPredict() => _reader.ReadLine();
+    public void RequestPredict(string text) => _writer.WriteLine(text);
 
-    private void OnErrorDataReceivedHandler(object sender, DataReceivedEventArgs e)
-    {
-        OnErrorReceivedEvent?.Invoke(e.Data ?? string.Empty);
-    }
-
-    public void WriteToScript(string text)
-    {
-        _writer.WriteLine(text);
-    }
 }
