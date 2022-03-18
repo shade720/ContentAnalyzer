@@ -1,39 +1,38 @@
-﻿using Interfaces;
+﻿using System.Configuration;
+using Interfaces;
 namespace DataAnalysisService;
 
 public class DataAnalysisService
 {
-    private static string _currentAnalyzer;
-        
-    public static void SetCurrentAnalyzer(string analyzerName) => _currentAnalyzer = analyzerName;
+    private readonly List<IAnalyzeModel> _analyzeModels = new();
 
-    private readonly Dictionary<string, IDataAnalyzer> _dataAnalyzers = new();
-
-    public void AddDataAnalyzer(string name, Func<IDataAnalyzer> dataAnalyzerConfiguration)
+    public void AddModel(IAnalyzeModel model)
     {
-        _dataAnalyzers.Add(name, dataAnalyzerConfiguration.Invoke());
+        _analyzeModels.Add(model);
     }
 
     public void Start()
     {
-        foreach (var analyzer in _dataAnalyzers)
+        foreach (var model in _analyzeModels)
         {
-            analyzer.Value.Initialize();
+            model.StartPredictiveListenerScriptAsync(ConfigurationManager.AppSettings["Predict1"], ConfigurationManager.AppSettings["Model1"]);
         }
         Console.WriteLine("Service started");
     }
 
     public void Analyze(IDataFrame dataFrame)
     {
-        if (string.IsNullOrEmpty(_currentAnalyzer)) throw new Exception("Current analyzer is not set");
-        _dataAnalyzers[_currentAnalyzer].Analyze(dataFrame);
+        foreach (var model in _analyzeModels)
+        {
+            model.Predict(dataFrame);
+        }
     }
 
     public void Stop()
     {
-        foreach (var analyzer in _dataAnalyzers)
+        foreach (var model in _analyzeModels)
         {
-            analyzer.Value.Dispose();
+            model.AbortScript();
         }
         Console.WriteLine("Service stopped");
     }

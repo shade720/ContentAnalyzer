@@ -23,8 +23,8 @@ public static class Startup
                 ScanPostDelay = Convert.ToInt32(ConfigurationManager.AppSettings["ScanPostDelay"]),
                 QueueSize = Convert.ToInt32(ConfigurationManager.AppSettings["PostQueueSize"])
             });
-            vkDataCollector.AddCommunity(Convert.ToInt64(ConfigurationManager.AppSettings["NRGroupId"]));
-            //vkDataCollector.AddCommunity(Convert.ToInt64(ConfigurationManager.AppSettings["LentachGroupId"]));
+            //vkDataCollector.AddCommunity(Convert.ToInt64(ConfigurationManager.AppSettings["NRGroupId"]));
+            vkDataCollector.AddCommunity(Convert.ToInt64(ConfigurationManager.AppSettings["LentachGroupId"]));
             vkDataCollector.AddCommunity(Convert.ToInt64(ConfigurationManager.AppSettings["CSGOHS"]));
             vkDataCollector.Subscribe(entry =>
             {
@@ -34,7 +34,7 @@ public static class Startup
             return vkDataCollector;
         });
         database.Connect();
-        database.Clear();
+        //database.Clear();
         collectionService.Start();
         
         for (var i = 0; i < 1440; i++) 
@@ -43,7 +43,6 @@ public static class Startup
         }
 
         collectionService.Stop();
-        database.Clear();
         database.Disconnect();
     }
 }

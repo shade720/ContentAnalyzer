@@ -14,7 +14,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Interfaces\Interfaces.csproj" />
-    <ProjectReference Include="..\M-USE-Toxic\M-USE-Toxic.csproj" />
   </ItemGroup>
 
 </Project>

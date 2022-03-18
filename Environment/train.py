@@ -42,11 +42,11 @@ y = data.iloc[:,[1,2,3,4]]
 x_enc = x
 y_enc = y
 
-x_train = np.asarray(x_enc[:75000])
-y_train = np.asarray(y_enc[:75000])
+x_train = np.asarray(x_enc[:200000])
+y_train = np.asarray(y_enc[:200000])
 
-x_test = np.asarray(x_enc[75000:100000])
-y_test = np.asarray(y_enc[75000:100000])
+x_test = np.asarray(x_enc[40000:])
+y_test = np.asarray(y_enc[40000:])
 
 
 from keras.layers import Input, Lambda, Dense

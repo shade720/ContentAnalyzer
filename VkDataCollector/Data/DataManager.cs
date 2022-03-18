@@ -47,8 +47,9 @@ internal class DataManager
 
     private static string UnicodeToUtf8(string text)
     {
-        var bytes = Encoding.UTF8.GetBytes(text);
-        return Encoding.UTF8.GetString(bytes);
+        Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+        var bytes = Encoding.GetEncoding(1251).GetBytes(text);
+        return Encoding.GetEncoding(1251).GetString(bytes);
     }
 
     private static string ProcessString(string str)

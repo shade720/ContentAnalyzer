@@ -22,7 +22,7 @@ with tf.Session() as session:
     K.set_session(session)
     session.run(tf.global_variables_initializer())
     session.run(tf.tables_initializer())
-    model.load_weights('newmodel.h5')
+    model.load_weights('model.h5')
 
     print("ready")    
     c = " "

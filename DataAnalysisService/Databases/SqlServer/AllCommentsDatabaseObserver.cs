@@ -23,7 +23,7 @@ public class AllCommentsDatabaseObserver
     {
         _connection.Open();
         _cancellation = new CancellationTokenSource();
-        var result = ObserveLoop(_cancellation.Token);
+        var result = LoadingLoop(_cancellation.Token);
     }
 
     public void StopLoading()
@@ -32,14 +32,14 @@ public class AllCommentsDatabaseObserver
         _connection.Close();
     }
 
-    public void SetIncomingDataHandler(Action<IDataFrame> handler)
+    public void OnDataArrived(Action<IDataFrame> handler)
     {
         OnDataReceivedEvent += handler.Invoke;
     }
 
     #endregion
 
-    private async Task ObserveLoop(CancellationToken cancellationToken)
+    private async Task LoadingLoop(CancellationToken cancellationToken)
     {
         await Task.Run(() =>
         {
