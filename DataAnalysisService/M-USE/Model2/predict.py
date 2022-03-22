@@ -24,14 +24,13 @@ with tf.Session() as session:
     session.run(tf.tables_initializer())
     model.load_weights(input())
 
-    print("ready")
     expression = " "
     while expression != "":
         try:
             expression = input()
             predict = model.predict(np.asarray([expression]))
             a = list(predict)
-            print(float(a[0][1])*100)
+            print(a[0])
         except Exception:
             print(0)
 

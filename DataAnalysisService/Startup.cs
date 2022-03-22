@@ -1,6 +1,6 @@
-﻿using System.Configuration;
-using DataAnalysisService.AnalyzeModelController;
+﻿using DataAnalysisService.AnalyzeModelController;
 using DataAnalysisService.Databases.SqlServer;
+using System.Configuration;
 
 namespace DataAnalysisService;
 
@@ -8,36 +8,58 @@ public static class Startup
 {
     public static void Main()
     {
-        var service = new DataAnalysisService();
-        var sourceDatabase = new AllCommentsDatabaseObserver(ConfigurationManager.ConnectionStrings["AllCommentsDatabase"].ConnectionString, 60000); 
-        var dangerCommentsDatabase = new DangerCommentsDatabaseClient(ConfigurationManager.ConnectionStrings["DangerCommentsDatabase"].ConnectionString);
+        DataAnalysisService.RegisterSourceDatabase(new AllCommentsDatabaseObserver(ConfigurationManager.ConnectionStrings["AllCommentsDatabase"].ConnectionString, 60000));
+        DataAnalysisService.RegisterSaveDatabase(new DangerCommentsDatabaseServerClient(ConfigurationManager.ConnectionStrings["DangerCommentsDatabase"].ConnectionString));
 
-        service.AddModel(new AnalyzeModel
-            (
-            ConfigurationManager.AppSettings["Interpreter"],
-            new []{"Нормально","Оскорбление","Угроза","Домогательство"},
-            //Console.WriteLine,
-            val => { },
-            predictResult => Console.WriteLine($"Predict {predictResult.DataFrame.Text} ----> {predictResult}\n\n"),
-            evaluateResult => dangerCommentsDatabase.Add(evaluateResult)
-            )
-        );
+        DataAnalysisService.AddModel("InsultThreatObscenityCategories",
+            () =>
+            {
+                var insultThreatObscenityModel = new MultilingualUniversalSentenceEncoderModel
+                (
+                    ConfigurationManager.AppSettings["Interpreter"],
+                    ConfigurationManager.AppSettings["Predict1"],
+                    ConfigurationManager.AppSettings["Train1"],
+                    ConfigurationManager.AppSettings["Dataset1"],
+                    ConfigurationManager.AppSettings["Model1"],
+                    new[] {"Normal", "Insult", "Threat", "Obscenity"}
+                );
+                insultThreatObscenityModel.Subscribe(
+                    predictResult => Console.WriteLine($"Predict {predictResult.DataFrame.Text} ----> {predictResult}\n\n"),
+                    evaluateResultHandler => Console.WriteLine($"Predict {evaluateResultHandler.DataFrame.Text} ----> {evaluateResultHandler}!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"),
+                    errorHandler => { });
+                return insultThreatObscenityModel;
+            }
         
-        sourceDatabase.OnDataArrived(service.Analyze);
+        );
+        DataAnalysisService.AddModel("ToxicCategory",
+            () =>
+            {
+                var toxicModel = new MultilingualUniversalSentenceEncoderModel
+                (
+                    ConfigurationManager.AppSettings["Interpreter"],
+                    ConfigurationManager.AppSettings["Predict2"],
+                    ConfigurationManager.AppSettings["Train2"],
+                    ConfigurationManager.AppSettings["Dataset2"],
+                    ConfigurationManager.AppSettings["Model2"],
+                    new[] {"Normal", "Toxic"}
+                );
+                toxicModel.Subscribe(
+                    predictResult => Console.WriteLine($"Predict {predictResult.DataFrame.Text} ----> {predictResult}\n\n"),
+                    evaluateResultHandler => Console.WriteLine($"Predict {evaluateResultHandler.DataFrame.Text} ----> {evaluateResultHandler}!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"),
+                    errorHandler => { });
+                return toxicModel;
+            }
+        );
 
-        dangerCommentsDatabase.Connect();
-        dangerCommentsDatabase.Clear();
+        DataAnalysisService.StartService();
 
-        service.Start();
-        sourceDatabase.StartLoading();
-
-        for (var i = 0; i < 1440; i++)
+        while (Console.ReadLine() != "+")
         {
-            Thread.Sleep(60000);
+            Thread.Sleep(5000);
         }
 
-        sourceDatabase.StopLoading();
-        service.Stop();
-        dangerCommentsDatabase.Disconnect();
+        Console.WriteLine("Service stops work...");
+
+        DataAnalysisService.StopService();
     }
 }

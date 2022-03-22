@@ -1,4 +1,6 @@
-﻿namespace DataAnalysisService.AnalyzeModelController;
+﻿using Interfaces;
+
+namespace DataAnalysisService.AnalyzeModelController;
 
 public class Category
 {

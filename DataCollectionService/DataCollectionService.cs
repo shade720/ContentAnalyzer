@@ -2,26 +2,38 @@
 
 namespace DataCollectionService;
 
-public class DataCollectionService
+public static class DataCollectionService
 {
-    private readonly List<IDataCollector> _dataCollectors = new();
+    private static readonly List<IDataCollector> DataCollectors = new();
+    private static IDatabaseClient? _saveDatabase;
 
-    public void AddDataCollector(Func<IDataCollector> dataCollectorConfiguration)
+    public static void RegisterSaveDatabase(IDatabaseClient? database)
     {
-        _dataCollectors.Add(dataCollectorConfiguration.Invoke());
+        _saveDatabase = database;
     }
 
-    public void Start()
+    public static void AddDataCollector(Func<IDataCollector> dataCollectorConfiguration)
     {
-        foreach (var dataCollector in _dataCollectors)
+        DataCollectors.Add(dataCollectorConfiguration.Invoke());
+        DataCollectors[^1].Subscribe(dataFrame => _saveDatabase.Add(dataFrame));
+    }
+
+    public static void Start()
+    {
+        if (_saveDatabase is null) throw new Exception("Save database are not registered");
+        _saveDatabase.Connect();
+        _saveDatabase.Clear();
+        foreach (var dataCollector in DataCollectors)
         {
             dataCollector.StartCollecting();
         }
     }
 
-    public void Stop()
+    public static void Stop()
     {
-        foreach (var dataCollector in _dataCollectors)
+        if (_saveDatabase is null) throw new Exception("Save database are not registered");
+        _saveDatabase.Disconnect();
+        foreach (var dataCollector in DataCollectors)
         {
             dataCollector.StopCollecting();
         }

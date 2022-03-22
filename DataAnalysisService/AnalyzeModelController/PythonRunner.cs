@@ -3,7 +3,7 @@ using System.Text;
 
 namespace DataAnalysisService.AnalyzeModelController;
 
-internal class PythonRunner
+public class PythonRunner
 {
     private readonly string _interpreter;
 
@@ -15,11 +15,11 @@ internal class PythonRunner
     public delegate void OnErrorReceived(string errorMessage);
     public event OnErrorReceived? OnErrorReceivedEvent;
 
-    public delegate void OnExit();
-    public event OnExit? OnExitEvent;
+    public delegate void OnExited();
+    public event OnExited? OnExitedEvent;
+    public delegate void OnStarted(bool isStarted);
+    public event OnStarted? OnStartedEvent;
 
-    private bool _waiter = true;
-    
     public PythonRunner(string interpreter)
     {
         if (interpreter is null)
@@ -35,7 +35,7 @@ internal class PythonRunner
 
     #region PublicInterface
 
-    public bool Run(string script, string resourcePath, bool waitOnEnd)
+    public void Run(string script, string resourcePath)
     {
         Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
         if (script is null)
@@ -64,7 +64,6 @@ internal class PythonRunner
         };
         try
         {
-            _waiter = true;
             _pythonProcess.ErrorDataReceived += OnErrorDataReceivedHandler;
             _pythonProcess.Start();
 
@@ -73,9 +72,11 @@ internal class PythonRunner
             _writer.AutoFlush = true;
             _pythonProcess.BeginErrorReadLine();
 
+            OnStartedEvent?.Invoke(true);
+
             _writer.WriteLine(resourcePath);
 
-            while (_waiter && waitOnEnd) Thread.Sleep(5000);
+            _pythonProcess.WaitForExit(-1);
         }
         catch (Exception exception)
         {
@@ -83,9 +84,19 @@ internal class PythonRunner
         }
         finally
         {
-            ProcessTermination();
+            _pythonProcess?.CancelErrorRead();
+            _reader?.Close();
+            _writer?.Close();
+            _pythonProcess.ErrorDataReceived -= OnErrorDataReceivedHandler;
+            _pythonProcess.Kill();
+            OnExitedEvent?.Invoke();
+            Console.WriteLine("Script stopped");
         }
-        return true;
+    }
+
+    public async Task RunAsync(string script, string resourcePath)
+    {
+        await Task.Run(() => Run(script, resourcePath));
     }
 
     public string ReadFromScript()
@@ -101,20 +112,12 @@ internal class PythonRunner
         if (_writer is null) throw new Exception($"Writer was null {nameof(WriteToScript)}");
         if (string.IsNullOrEmpty(text)) throw new Exception($"Trying write null or empty to script {nameof(WriteToScript)}");
         _writer.WriteLine(text);
-    } 
-    public void Abort() => ProcessTermination();
+    }
+
+    public void Abort() => _pythonProcess?.Kill();
+
 
     #endregion
 
-    private void ProcessTermination()
-    {
-        _waiter = false;
-        _reader?.Close();
-        _writer?.Close();
-        _pythonProcess?.CancelErrorRead();
-        _pythonProcess.ErrorDataReceived -= OnErrorDataReceivedHandler;
-        _pythonProcess?.Dispose();
-        OnExitEvent?.Invoke();
-    }
     private void OnErrorDataReceivedHandler(object sender, DataReceivedEventArgs e) => OnErrorReceivedEvent?.Invoke(e.Data ?? string.Empty);
 }

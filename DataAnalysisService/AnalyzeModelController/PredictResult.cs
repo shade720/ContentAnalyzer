@@ -3,7 +3,7 @@ using Interfaces;
 
 namespace DataAnalysisService.AnalyzeModelController;
 
-public class PredictResult
+public class PredictResult 
 {
     public IDataFrame DataFrame { get; }
     public Category[] Predicts { get; }
@@ -11,13 +11,11 @@ public class PredictResult
     public PredictResult(IDataFrame dataFrame, string predictResult, IReadOnlyList<string> categories)
     {
         DataFrame = dataFrame;
-
         var predictValues = ParsePredict(predictResult);
-
         Predicts = new Category[categories.Count];
         if (predictValues.Length == 0)
         {
-            for (var i = 0; i < categories.Count; i++) Predicts[i] = new Category {Title = categories[i], PredictValue = 0};
+            Initialize(categories);
             return;
         }
         for (var i = 0; i < categories.Count; i++) Predicts[i] = new Category {Title = categories[i], PredictValue = predictValues[i]};
@@ -28,6 +26,11 @@ public class PredictResult
         var clearResults = predict.Replace("[", "").Replace("]", "");
         var predictValues = clearResults.Split(' ');
         return predictValues.Where(x => x.Length > 1).Select(x => double.Parse(x, CultureInfo.InvariantCulture)).ToArray();
+    }
+
+    private void Initialize(IReadOnlyList<string> categories)
+    {
+        for (var i = 0; i < categories.Count; i++) Predicts[i] = new Category { Title = categories[i], PredictValue = 0 };
     }
 
     public override string ToString()

@@ -8,10 +8,9 @@ public static class Startup
 {
     public static void Main()
     {
-        var collectionService = new DataCollectionService();
-        var database = new AllCommentsDatabaseClient(ConfigurationManager.ConnectionStrings["AllCommentsDatabase"].ConnectionString);
+        DataCollectionService.RegisterSaveDatabase(new AllCommentsDatabaseClient(ConfigurationManager.ConnectionStrings["AllCommentsDatabase"].ConnectionString));
 
-        collectionService.AddDataCollector(() =>
+        DataCollectionService.AddDataCollector(() =>
         {
             var vkDataCollector = new VkDataCollector.VkDataCollector();
             vkDataCollector.Configure(new Config
@@ -26,23 +25,17 @@ public static class Startup
             //vkDataCollector.AddCommunity(Convert.ToInt64(ConfigurationManager.AppSettings["NRGroupId"]));
             vkDataCollector.AddCommunity(Convert.ToInt64(ConfigurationManager.AppSettings["LentachGroupId"]));
             vkDataCollector.AddCommunity(Convert.ToInt64(ConfigurationManager.AppSettings["CSGOHS"]));
-            vkDataCollector.Subscribe(entry =>
-            {
-                database.Add(entry);
-            });
-                
             return vkDataCollector;
         });
-        database.Connect();
-        //database.Clear();
-        collectionService.Start();
         
-        for (var i = 0; i < 1440; i++) 
-        {
-            Thread.Sleep(60000);
-        }
+        DataCollectionService.Start();
 
-        collectionService.Stop();
-        database.Disconnect();
+        while (Console.ReadLine() != "+")
+        {
+            Thread.Sleep(5000);
+        }
+        Console.WriteLine("Service stops work...");
+
+        DataCollectionService.Stop();
     }
 }

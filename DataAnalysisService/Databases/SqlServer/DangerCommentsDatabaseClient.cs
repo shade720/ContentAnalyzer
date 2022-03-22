@@ -1,43 +1,37 @@
-﻿using System.Data.SqlClient;
-using DataAnalysisService.AnalyzeModelController;
+﻿using DataAnalysisService.AnalyzeModelController;
+using Interfaces;
 
 namespace DataAnalysisService.Databases.SqlServer;
 
-public class DangerCommentsDatabaseClient
+public class DangerCommentsDatabaseServerClient : MsSqlServerClient
 {
-    public DangerCommentsDatabaseClient(string connectionString) => _connection = new SqlConnection(connectionString);
-
-    private readonly SqlConnection _connection;
-
-    public void Connect() => _connection.Open();
-    public void Disconnect() => _connection.Close();
-
-    public void Add(PredictResult result)
+    public DangerCommentsDatabaseServerClient(string connectionString) : base(connectionString) { }
+    public override void Add<T>(T result)
     {
-        var command1 = _connection.CreateCommand();
-        command1.CommandText = @"INSERT INTO [dbo].[DangerCommentsContent] (CommentId, PostId, GroupId, AuthorId, Content, Date) VALUES (@CommentId, @PostId, @GroupId, @AuthorId, @Content, @Date)";
-        command1.Parameters.AddWithValue("@CommentId", result.DataFrame.Id);
-        command1.Parameters.AddWithValue("@PostId", result.DataFrame.PostId);
-        command1.Parameters.AddWithValue("@GroupId", result.DataFrame.GroupId);
-        command1.Parameters.AddWithValue("@AuthorId", result.DataFrame.AuthorId);
-        command1.Parameters.AddWithValue("@Content", result.DataFrame.Text);
-        command1.Parameters.AddWithValue("@Date", result.DataFrame.PostDate);
-        command1.ExecuteNonQuery();
-
-        var command2 = _connection.CreateCommand();
-        command2.CommandText = @"INSERT INTO [dbo].[InsultCategories] (CommentId, Normal, Insult, Threat, Obscenity) VALUES (@CommentId, @Normal, @Insult, @Threat, @Obscenity)";
-        command2.Parameters.AddWithValue("@CommentId", result.DataFrame.Id);
-        command2.Parameters.AddWithValue("@Normal", result.Predicts[0].PredictValue);
-        command2.Parameters.AddWithValue("@Insult", result.Predicts[1].PredictValue);
-        command2.Parameters.AddWithValue("@Threat", result.Predicts[2].PredictValue);
-        command2.Parameters.AddWithValue("@Obscenity", result.Predicts[3].PredictValue);
-        command2.ExecuteNonQuery(); 
+        SafeAccess(()=>{
+            var predict = result as PredictResult;
+            var maxValue = predict.Predicts.MaxBy(x => x.PredictValue);
+            var command = Connection.CreateCommand();
+            command.CommandText = @"INSERT INTO [dbo].[DangerCommentsContent] (CommentId, PostId, GroupId, AuthorId, Content, Date, Category, Probability) VALUES (@CommentId, @PostId, @GroupId, @AuthorId, @Content, @Date, @Category, @Probability)";
+            command.Parameters.AddWithValue("@CommentId", predict.DataFrame.Id);
+            command.Parameters.AddWithValue("@PostId", predict.DataFrame.PostId);
+            command.Parameters.AddWithValue("@GroupId", predict.DataFrame.GroupId);
+            command.Parameters.AddWithValue("@AuthorId", predict.DataFrame.AuthorId);
+            command.Parameters.AddWithValue("@Content", predict.DataFrame.Text);
+            command.Parameters.AddWithValue("@Date", predict.DataFrame.PostDate);
+            command.Parameters.AddWithValue("@Category", maxValue.Title);
+            command.Parameters.AddWithValue("@Probability", maxValue.PredictValue);
+            command.ExecuteNonQuery();
+        });
     }
 
-    public void Clear()
+    public override void Clear()
     {
-        var command = _connection.CreateCommand();
-        command.CommandText = "TRUNCATE TABLE [dbo].[DangerCommentsContent]";
-        command.ExecuteNonQuery();
+        SafeAccess(() =>
+        {
+            var command = Connection.CreateCommand();
+            command.CommandText = "TRUNCATE TABLE [dbo].[DangerCommentsContent]";
+            command.ExecuteNonQuery();
+        });
     }
 }
