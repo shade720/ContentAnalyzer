@@ -5,12 +5,12 @@ namespace DataAnalysisService.AnalyzeModelController;
 
 public class PredictResult 
 {
-    public IDataFrame DataFrame { get; }
+    public ICommentData CommentData { get; }
     public Category[] Predicts { get; }
 
-    public PredictResult(IDataFrame dataFrame, string predictResult, IReadOnlyList<string> categories)
+    public PredictResult(ICommentData commentData, string predictResult, IReadOnlyList<string> categories)
     {
-        DataFrame = dataFrame;
+        CommentData = commentData;
         var predictValues = ParsePredict(predictResult);
         Predicts = new Category[categories.Count];
         if (predictValues.Length == 0)

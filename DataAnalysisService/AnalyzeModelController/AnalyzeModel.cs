@@ -30,18 +30,18 @@ public abstract class AnalyzeModel : IAnalyzeModel
         Model = Path.GetFullPath(model);
         Categories = categories;
     }
-    public void Subscribe(Action<PredictResult>? predictionResultHandler, Action<PredictResult> evaluateResultHandler, Action<string> errorHandler)
+    public void Subscribe(Action<PredictResult> predictionResultHandler, Action<PredictResult> evaluateResultHandler, Action<string> errorHandler)
     {
         OnErrorArrivedEvent += errorHandler.Invoke;
         OnPredictResultArrivedEvent += predictionResultHandler.Invoke;
         OnEvaluateResultArrivedEvent += evaluateResultHandler.Invoke;
     }
 
-    public abstract Task StartPredictiveListenerScriptAsync();
+    public abstract void StartPredictiveListenerScriptAsync();
 
-    public abstract Task StartTrainModelScriptAsync();
+    public abstract void StartTrainModelScriptAsync();
 
-    public abstract void Predict(IDataFrame text);
+    public abstract void Predict(ICommentData text);
 
     public abstract void AbortScript();
 }

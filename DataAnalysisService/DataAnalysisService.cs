@@ -7,35 +7,31 @@ namespace DataAnalysisService;
 public static class DataAnalysisService
 {
     private static readonly Dictionary<string, AnalyzeModel> AnalyzeModels = new();
-    private static IDatabaseObserver? _sourceDatabase;
-    private static IDatabaseClient? _targetDatabase;
+    private static IDatabaseObserver _sourceDatabase;
+    private static IDatabaseClient _targetDatabase;
 
-    public static async Task StartService()
+    public static void StartService()
     {
-        if (_sourceDatabase is null || _targetDatabase is null) throw new Exception("Not all databases is registered");
-        if (AnalyzeModels.Count == 0) throw new Exception("At least one analysis model must be added");
-
-        await StartAll();
-
+        if (_sourceDatabase is null || _targetDatabase is null) throw new ArgumentException("Not all databases is registered");
+        if (AnalyzeModels.Count == 0) throw new ArgumentException("At least one analysis model must be added");
         _sourceDatabase.OnDataArrived(AnalyzeByAny);
-        _sourceDatabase.StartLoading();
         _targetDatabase.Connect();
         _targetDatabase.Clear();
     }
 
-    public async static Task StartAll()
+    public static void StartAll()
     {
-        foreach (var model in AnalyzeModels) await StartModel(model.Key);
+        foreach (var model in AnalyzeModels) StartModel(model.Key);
     }
 
-    public static void AnalyzeByAny(IDataFrame dataFrame)
+    public static void AnalyzeByAny(ICommentData dataFrame)
     {
         foreach (var model in AnalyzeModels)
         {
             AnalyzeBy(model.Key, dataFrame);
         }
     }
-    public static void AnalyzeBy(string modelName, IDataFrame dataFrame)
+    public static void AnalyzeBy(string modelName, ICommentData dataFrame)
     {
         if (!AnalyzeModels[modelName].IsRunning)
         {
@@ -44,23 +40,25 @@ public static class DataAnalysisService
         }
         AnalyzeModels[modelName].Predict(dataFrame);
     }
-    public async static Task StartModel(string modelName)
+    public static void StartModel(string modelName)
     {
+        Console.WriteLine($"Starting model {modelName} listen predicts...");
         if (AnalyzeModels[modelName].IsRunning)
         {
             Console.WriteLine("Model already in work");
             return;
         }
-        await AnalyzeModels[modelName].StartPredictiveListenerScriptAsync();
+        AnalyzeModels[modelName].StartPredictiveListenerScriptAsync();
         Console.WriteLine($"Model {modelName} started listen predicts");
+        if (_sourceDatabase.IsLoadingStarted) return;
+        _sourceDatabase.StartLoading();
     }
 
     public static void StopService()
     {
-        if (_sourceDatabase is null || _targetDatabase is null) throw new Exception("Not all databases is registered");
+        if (_sourceDatabase is null || _targetDatabase is null) throw new ArgumentException("Not all databases is registered");
         _sourceDatabase.StopLoading();
         _targetDatabase.Disconnect();
-        StopAll();
         Console.WriteLine("All models stopped");
     }
 
@@ -94,7 +92,7 @@ public static class DataAnalysisService
     public static void TrainAll()
     {
         foreach (var model in AnalyzeModels)
-        {
+        { 
             TrainModel(model.Key);
         }
     }

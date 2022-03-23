@@ -13,11 +13,11 @@ public class PythonRunner
     private Process? _pythonProcess;
 
     public delegate void OnErrorReceived(string errorMessage);
-    public event OnErrorReceived? OnErrorReceivedEvent;
-
     public delegate void OnExited();
+    public delegate void OnStarted();
+
+    public event OnErrorReceived? OnErrorReceivedEvent;
     public event OnExited? OnExitedEvent;
-    public delegate void OnStarted(bool isStarted);
     public event OnStarted? OnStartedEvent;
 
     public PythonRunner(string interpreter)
@@ -72,7 +72,7 @@ public class PythonRunner
             _writer.AutoFlush = true;
             _pythonProcess.BeginErrorReadLine();
 
-            OnStartedEvent?.Invoke(true);
+            OnStartedEvent?.Invoke();
 
             _writer.WriteLine(resourcePath);
 

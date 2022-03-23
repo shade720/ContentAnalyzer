@@ -12,6 +12,7 @@
     <Name>Environment</Name>
     <RootNamespace>Environment</RootNamespace>
     <InterpreterId>MSBuild|env|$(MSBuildProjectFullPath)</InterpreterId>
+    <IsWindowsApplication>False</IsWindowsApplication>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -24,7 +25,6 @@
   <ItemGroup>
     <Compile Include="Environment.py" />
     <Compile Include="predict.py" />
-    <Compile Include="train.py" />
   </ItemGroup>
   <ItemGroup>
     <Interpreter Include="env\">

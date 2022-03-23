@@ -1,6 +1,6 @@
 ﻿namespace Interfaces
 {
-    public interface IDataFrame
+    public interface ICommentData
     {
         public long Id { get; }
         public long PostId { get; }

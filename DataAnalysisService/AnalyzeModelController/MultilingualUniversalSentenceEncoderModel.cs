@@ -4,8 +4,9 @@ namespace DataAnalysisService.AnalyzeModelController;
 
 internal class MultilingualUniversalSentenceEncoderModel : AnalyzeModel
 {
-    private const int EvaluateThreshold = 70;
-    private TaskCompletionSource<bool> _taskCompletion;
+    private static int _evaluateThreshold;
+    private readonly AutoResetEvent _scriptInitialize = new(false);
+
     #region PublicInterface
 
     public override bool IsRunning { get; protected set; }
@@ -15,41 +16,41 @@ internal class MultilingualUniversalSentenceEncoderModel : AnalyzeModel
         string trainScript, 
         string dataSet, 
         string model, 
-        string[] categories) : 
-        base(interpreter, predictScript, trainScript, dataSet, model, categories) { }
+        string[] categories,
+        int evaluateThresholdPercent = 70) : 
+        base(interpreter, predictScript, trainScript, dataSet, model, categories) 
+    { _evaluateThreshold = evaluateThresholdPercent; }
 
-    public override async Task StartPredictiveListenerScriptAsync()
+    public override void StartPredictiveListenerScriptAsync()
     {
         if (IsRunning) throw new Exception("Runner is already using script");
-        _taskCompletion = new TaskCompletionSource<bool>();
-
         Runner = new PythonRunner(Interpreter);
+
         Runner.OnErrorReceivedEvent += RunnerOnErrorReceivedEventHandler;
         Runner.OnExitedEvent += RunnerOnExitEventHandler;
         Runner.OnStartedEvent += RunnerOnStartedEventHandler;
 
         var result = Runner.RunAsync(Path.GetFullPath(PredictScript), Path.GetFullPath(Model));
 
-        await _taskCompletion.Task;
+        _scriptInitialize.WaitOne();
     }
 
-    public override async Task StartTrainModelScriptAsync()
+    public override void StartTrainModelScriptAsync()
     {
         if (IsRunning) throw new Exception("Runner is already using script");
 
-        _taskCompletion = new TaskCompletionSource<bool>();
-
         Runner = new PythonRunner(Interpreter);
+
         Runner.OnErrorReceivedEvent += RunnerOnErrorReceivedEventHandler;
         Runner.OnExitedEvent += RunnerOnExitEventHandler;
         Runner.OnStartedEvent += RunnerOnStartedEventHandler;
 
         var result = Runner.RunAsync(Path.GetFullPath(TrainScript), Path.GetFullPath(DataSet));
 
-        await _taskCompletion.Task;
+        _scriptInitialize.WaitOne();
     }
 
-    public override void Predict(IDataFrame dataFrame)
+    public override void Predict(ICommentData dataFrame)
     {
         if (!IsRunning) throw new Exception("Predict model not initialized");
         if (Runner is null) throw new Exception("Script not running");
@@ -80,13 +81,14 @@ internal class MultilingualUniversalSentenceEncoderModel : AnalyzeModel
     private static bool Evaluate(PredictResult predictResult)
     {
         for (var i = 1; i < predictResult.Predicts.Length; i++)
-            if (predictResult.Predicts[i].PredictValue > EvaluateThreshold / (double)100)
+            if (predictResult.Predicts[i].PredictValue > _evaluateThreshold / (double)100)
                 return true;
         return false;
     }
 
     private void RunnerOnExitEventHandler()
     {
+        _scriptInitialize.Reset();
         IsRunning = false;
         Console.WriteLine("Script ended");
     }
@@ -94,13 +96,16 @@ internal class MultilingualUniversalSentenceEncoderModel : AnalyzeModel
     private void RunnerOnErrorReceivedEventHandler(string errorMessage)
     {
         OnErrorArrivedEvent.Invoke(errorMessage);
-        if (errorMessage.Contains("Trace")) AbortScript();
+        if (errorMessage.Contains("Trace"))
+        {
+            AbortScript();
+        }
     }
 
-    private void RunnerOnStartedEventHandler(bool isStarted)
+    private void RunnerOnStartedEventHandler()
     {
+        _scriptInitialize.Set();
         IsRunning = true;
-        _taskCompletion.SetResult(isStarted);
         Console.WriteLine("Script started");
     }
 

@@ -71,7 +71,6 @@ internal class CommentScanner : Scanner
         {
             var comment = sortedBranch[i];
             DataManager.SendData(DataManager.Convert(comment));
-            Console.WriteLine($"Add {comment.Id} {comment.PostId} {comment.OwnerId} {comment.FromId} {comment.Text} {comment.Date}");
             _receivedCommentIds.TryAdd(comment.Id, comment.Thread is null ? 0 : comment.Thread.Count);
         }
     }

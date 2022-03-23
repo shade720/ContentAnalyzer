@@ -9,7 +9,7 @@ public class AllCommentsDatabaseClient : MsSqlServerClient
     {
         SafeAccess(() =>
         {
-            var dataFrameCast = dataFrame as IDataFrame;
+            var dataFrameCast = dataFrame as ICommentData;
             if (IsDataFrameInvalid(dataFrameCast)) return;
             var command = Connection.CreateCommand();
             command.CommandText = @"INSERT INTO [dbo].[AllComments] (CommentId, PostId, GroupId, AuthorId, Content, Date) VALUES (@CommentId, @PostId, @GroupId, @AuthorId, @Content, @Date)";
@@ -33,7 +33,7 @@ public class AllCommentsDatabaseClient : MsSqlServerClient
         });
     }
 
-    private static bool IsDataFrameInvalid(IDataFrame dataFrame)
+    private static bool IsDataFrameInvalid(ICommentData dataFrame)
     {
         var result = string.IsNullOrEmpty(dataFrame.Text) || string.IsNullOrWhiteSpace(dataFrame.Text) || dataFrame.Text.Length < 5;
         return result;

@@ -6,7 +6,7 @@ namespace DataCollectionService;
 
 public static class Startup
 {
-    public static void Main()
+    public static void ConfigureService()
     {
         DataCollectionService.RegisterSaveDatabase(new AllCommentsDatabaseClient(ConfigurationManager.ConnectionStrings["AllCommentsDatabase"].ConnectionString));
 
@@ -25,17 +25,8 @@ public static class Startup
             //vkDataCollector.AddCommunity(Convert.ToInt64(ConfigurationManager.AppSettings["NRGroupId"]));
             vkDataCollector.AddCommunity(Convert.ToInt64(ConfigurationManager.AppSettings["LentachGroupId"]));
             vkDataCollector.AddCommunity(Convert.ToInt64(ConfigurationManager.AppSettings["CSGOHS"]));
+            vkDataCollector.Subscribe(dataFrame => Console.WriteLine($"Add {dataFrame.Id} {dataFrame.Id} {dataFrame.PostId} {dataFrame.GroupId} {dataFrame.AuthorId} {dataFrame.Text} {dataFrame.PostDate}"));
             return vkDataCollector;
         });
-        
-        DataCollectionService.Start();
-
-        while (Console.ReadLine() != "+")
-        {
-            Thread.Sleep(5000);
-        }
-        Console.WriteLine("Service stops work...");
-
-        DataCollectionService.Stop();
     }
 }

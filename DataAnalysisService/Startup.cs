@@ -6,7 +6,7 @@ namespace DataAnalysisService;
 
 public static class Startup
 {
-    public static void Main()
+    public static void ConfigureService()
     {
         DataAnalysisService.RegisterSourceDatabase(new AllCommentsDatabaseObserver(ConfigurationManager.ConnectionStrings["AllCommentsDatabase"].ConnectionString, 60000));
         DataAnalysisService.RegisterSaveDatabase(new DangerCommentsDatabaseServerClient(ConfigurationManager.ConnectionStrings["DangerCommentsDatabase"].ConnectionString));
@@ -24,8 +24,8 @@ public static class Startup
                     new[] {"Normal", "Insult", "Threat", "Obscenity"}
                 );
                 insultThreatObscenityModel.Subscribe(
-                    predictResult => Console.WriteLine($"Predict {predictResult.DataFrame.Text} ----> {predictResult}\n\n"),
-                    evaluateResultHandler => Console.WriteLine($"Predict {evaluateResultHandler.DataFrame.Text} ----> {evaluateResultHandler}!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"),
+                    predictResult => Console.WriteLine($"Predict {predictResult.CommentData.Text} ----> {predictResult}\n\n"),
+                    evaluateResultHandler => { },
                     errorHandler => { });
                 return insultThreatObscenityModel;
             }
@@ -44,22 +44,12 @@ public static class Startup
                     new[] {"Normal", "Toxic"}
                 );
                 toxicModel.Subscribe(
-                    predictResult => Console.WriteLine($"Predict {predictResult.DataFrame.Text} ----> {predictResult}\n\n"),
-                    evaluateResultHandler => Console.WriteLine($"Predict {evaluateResultHandler.DataFrame.Text} ----> {evaluateResultHandler}!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"),
+                    predictResult =>
+                        Console.WriteLine($"Predict {predictResult.CommentData.Text} ----> {predictResult}\n\n"),
+                    evaluateResultHandler => { },
                     errorHandler => { });
                 return toxicModel;
             }
         );
-
-        DataAnalysisService.StartService();
-
-        while (Console.ReadLine() != "+")
-        {
-            Thread.Sleep(5000);
-        }
-
-        Console.WriteLine("Service stops work...");
-
-        DataAnalysisService.StopService();
     }
 }

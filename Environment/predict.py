@@ -22,14 +22,13 @@ with tf.Session() as session:
     K.set_session(session)
     session.run(tf.global_variables_initializer())
     session.run(tf.tables_initializer())
-    model.load_weights('model.h5')
+    model.load_weights(input())
 
-    print("ready")    
-    c = " "
-    while c != "":
+    expression = " "
+    while expression != "":
         try:
-            c = input()
-            predict = model.predict(np.asarray([c]))
+            expression = input()
+            predict = model.predict(np.asarray([expression]))
             a = list(predict)
             print(a[0])
         except Exception:

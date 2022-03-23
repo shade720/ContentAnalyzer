@@ -9,36 +9,40 @@ public class AllCommentsDatabaseObserver : IDatabaseObserver
     private readonly List<long> _receivedIDs = new();
     private readonly int _observeDelay;
     private CancellationTokenSource _cancellation;
+    private Action<ICommentData> _newDataHandler;
 
-    private delegate void OnDataReceived(IDataFrame data);
+    private delegate void OnDataReceived(ICommentData data);
     private event OnDataReceived OnDataReceivedEvent;
-    private bool _isRunning;
 
     public AllCommentsDatabaseObserver(string connectionString, int observeDelayMs) => (_connection, _observeDelay) = (new SqlConnection(connectionString), observeDelayMs);
 
     #region PublicInterface
 
+    public bool IsLoadingStarted { get; private set; }
+
     public void StartLoading()
     {
-        if(_isRunning) return;
-        _isRunning = true;
+        if(IsLoadingStarted) throw new Exception("Loading already started");
+        IsLoadingStarted = true;
+        OnDataReceivedEvent += _newDataHandler.Invoke;
         _connection.Open();
         _cancellation = new CancellationTokenSource();
         var result = LoadingLoop(_cancellation.Token);
+        Console.WriteLine($"Loading started on {_connection.ConnectionString} with delay {_observeDelay}");
     }
 
     public void StopLoading()
     {
-        if(!_isRunning) return;
-        _isRunning = false;
+        if(!IsLoadingStarted) throw new Exception($"Loading already stopped {nameof(StopLoading)}");
+        if (_newDataHandler is null) throw new Exception($"Handler not set {nameof(StopLoading)}");
+        IsLoadingStarted = false;
+        OnDataReceivedEvent -= _newDataHandler.Invoke;
         _cancellation.Cancel();
         _connection.Close();
+        Console.WriteLine($"Loading stopped on {_connection.ConnectionString}");
     }
 
-    public void OnDataArrived(Action<IDataFrame> handler)
-    {
-        OnDataReceivedEvent += handler.Invoke;
-    }
+    public void OnDataArrived(Action<ICommentData> handler) => _newDataHandler = handler;
 
     #endregion
 
@@ -65,7 +69,7 @@ public class AllCommentsDatabaseObserver : IDatabaseObserver
                 var receivedId = Convert.ToInt64(reader["Id"]);
                 if (_receivedIDs.Contains(receivedId)) break;
                 _receivedIDs.Add(receivedId);
-                OnDataReceivedEvent.Invoke(new DataFrame(
+                OnDataReceivedEvent.Invoke(new CommentData(
                     Convert.ToInt64(reader["CommentId"]),
                     reader["Content"].ToString() ?? string.Empty,
                     Convert.ToInt64(reader["PostId"]),

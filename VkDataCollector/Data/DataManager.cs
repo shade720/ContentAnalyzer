@@ -6,15 +6,15 @@ namespace VkDataCollector.Data;
 
 internal class DataManager
 {
-    public delegate void NewData(DataFrame entry);
+    public delegate void NewData(CommentData entry);
     public event NewData? OnNewDataArrivedEvent;
 
-    public void SendData(DataFrame entry)
+    public void SendData(CommentData entry)
     {
         OnNewDataArrivedEvent?.Invoke(entry);
     }
 
-    public void SendAllData(IEnumerable<DataFrame> entries)
+    public void SendAllData(IEnumerable<CommentData> entries)
     {
         foreach (var entry in entries)
         {
@@ -22,9 +22,9 @@ internal class DataManager
         }
     }
 
-    public static DataFrame Convert(Comment comment)
+    public static CommentData Convert(Comment comment)
     {
-        return new DataFrame(
+        return new CommentData(
             comment.Id,
             comment.PostId ?? 0,
             comment.OwnerId ?? 0,
@@ -32,7 +32,7 @@ internal class DataManager
             ClearText(comment.Text),
             comment.Date ?? new DateTime(0, 0, 0));
     }
-    public static IEnumerable<DataFrame> ConvertAll(IEnumerable<Comment>  comments)
+    public static IEnumerable<CommentData> ConvertAll(IEnumerable<Comment>  comments)
     {
         return comments.Select(Convert).ToList();
     }

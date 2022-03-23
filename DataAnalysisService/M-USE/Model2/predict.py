@@ -18,6 +18,7 @@ pred = Dense(2, activation='softmax')(dense)
 model = Model(inputs=[input_text], outputs=pred)
 model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 
+
 with tf.Session() as session:
     K.set_session(session)
     session.run(tf.global_variables_initializer())

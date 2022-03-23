@@ -2,9 +2,9 @@
 
 namespace DataAnalysisService.Databases.SqlServer;
 
-public class DataFrame : IDataFrame
+public class CommentData : ICommentData
 {
-    public DataFrame(long id, string text, long postId, long groupId, long authorId, DateTime postDate)
+    public CommentData(long id, string text, long postId, long groupId, long authorId, DateTime postDate)
     {
         Id = id;
         Text = text;

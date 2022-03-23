@@ -4,8 +4,8 @@ namespace DataAnalysisService.AnalyzeModelController;
 
 public interface IAnalyzeModel
 {
-    public Task StartPredictiveListenerScriptAsync();
-    public Task StartTrainModelScriptAsync();
-    public void Predict(IDataFrame text);
+    public void StartPredictiveListenerScriptAsync();
+    public void StartTrainModelScriptAsync();
+    public void Predict(ICommentData text);
     public void AbortScript();
 }

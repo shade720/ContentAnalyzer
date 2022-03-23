@@ -13,12 +13,12 @@ public class DangerCommentsDatabaseServerClient : MsSqlServerClient
             var maxValue = predict.Predicts.MaxBy(x => x.PredictValue);
             var command = Connection.CreateCommand();
             command.CommandText = @"INSERT INTO [dbo].[DangerCommentsContent] (CommentId, PostId, GroupId, AuthorId, Content, Date, Category, Probability) VALUES (@CommentId, @PostId, @GroupId, @AuthorId, @Content, @Date, @Category, @Probability)";
-            command.Parameters.AddWithValue("@CommentId", predict.DataFrame.Id);
-            command.Parameters.AddWithValue("@PostId", predict.DataFrame.PostId);
-            command.Parameters.AddWithValue("@GroupId", predict.DataFrame.GroupId);
-            command.Parameters.AddWithValue("@AuthorId", predict.DataFrame.AuthorId);
-            command.Parameters.AddWithValue("@Content", predict.DataFrame.Text);
-            command.Parameters.AddWithValue("@Date", predict.DataFrame.PostDate);
+            command.Parameters.AddWithValue("@CommentId", predict.CommentData.Id);
+            command.Parameters.AddWithValue("@PostId", predict.CommentData.PostId);
+            command.Parameters.AddWithValue("@GroupId", predict.CommentData.GroupId);
+            command.Parameters.AddWithValue("@AuthorId", predict.CommentData.AuthorId);
+            command.Parameters.AddWithValue("@Content", predict.CommentData.Text);
+            command.Parameters.AddWithValue("@Date", predict.CommentData.PostDate);
             command.Parameters.AddWithValue("@Category", maxValue.Title);
             command.Parameters.AddWithValue("@Probability", maxValue.PredictValue);
             command.ExecuteNonQuery();

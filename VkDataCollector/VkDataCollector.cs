@@ -14,7 +14,7 @@ public class VkDataCollector : IDataCollector
     public VkDataCollector() => (_vkApi, _postScanners, _dataSender) = (new VkApi(), new List<Scanner>(), new DataManager());
     
 
-    public void Subscribe(Action<IDataFrame> handler)
+    public void Subscribe(Action<ICommentData> handler)
     {
         _dataSender.OnNewDataArrivedEvent += handler.Invoke;
     }
