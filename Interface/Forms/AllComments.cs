@@ -7,6 +7,7 @@ public partial class AllCommentsForm : Form
     private readonly MainWindow _parent;
     private int _lastIndex;
     private CancellationTokenSource _cancellationTokenSource;
+    private int _rowDisplayed;
 
     public AllCommentsForm(MainWindow parent)
     {
@@ -59,38 +60,39 @@ public partial class AllCommentsForm : Form
                 comment.Text
             );
         }
+        DisplayedRowsLabel.Text = _rowDisplayed == 0 ? AllCommentsDataGridView.Rows.Count.ToString() : _rowDisplayed.ToString();
         _parent.CommentsFoundLabel.Text = AllCommentsDataGridView.Rows.Count.ToString();
     }
 
     private void SearchTextBox_TextChanged(object sender, EventArgs e)
     {
-        if (SearchTextBox.Text == "") return;
-        if (SearchComboBox.SelectedIndex is -1)
-        {
-            MessageBox.Show("Select Select a search category");
-            return;
-        }
         ShowAll();
+        if (SearchTextBox.Text == "") return;
         HideByColumn(SearchComboBox.SelectedIndex);
+        DisplayedRowsLabel.Text = _rowDisplayed.ToString();
     }
 
     private void ShowAll()
     {
+        _rowDisplayed = 0;
         foreach (DataGridViewRow row in AllCommentsDataGridView.Rows)
         {
              row.Visible = true;
         }
-        DisplayedRowsLabel.Text = AllCommentsDataGridView.Rows.Count.ToString();
     }
 
     private void HideByColumn(int columnNum)
     {
-        var displayedRowCount = 0;
         foreach (DataGridViewRow row in AllCommentsDataGridView.Rows)
         {
-            if (!row.Cells[columnNum].Value.ToString().ToLower().Contains(SearchTextBox.Text.ToLower())) row.Visible = false;
-            else displayedRowCount++;
+            if (!row.Cells[columnNum].Value.ToString().ToLower().Contains(SearchTextBox.Text.ToLower()))
+                row.Visible = false;
+            else _rowDisplayed++;
         }
-        DisplayedRowsLabel.Text = displayedRowCount.ToString();
+    }
+
+    private void AllCommentsForm_Load(object sender, EventArgs e)
+    {
+        SearchComboBox.SelectedIndex = 0;
     }
 }

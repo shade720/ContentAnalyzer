@@ -28,7 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
             this.UpperPanel = new System.Windows.Forms.Panel();
+            this.MinimizeWindowButton = new System.Windows.Forms.Button();
+            this.CloseButton = new System.Windows.Forms.Button();
             this.BottomPanel = new System.Windows.Forms.Panel();
             this.ErrorsCountLabel = new System.Windows.Forms.Label();
             this.AnalysisServiceStateLabel = new System.Windows.Forms.Label();
@@ -56,6 +59,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.CentralPanel = new System.Windows.Forms.Panel();
+            this.UpperPanel.SuspendLayout();
             this.BottomPanel.SuspendLayout();
             this.StatePanel.SuspendLayout();
             this.LeftPanel.SuspendLayout();
@@ -68,10 +72,42 @@
             this.UpperPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.UpperPanel.BackColor = System.Drawing.SystemColors.MenuHighlight;
+            this.UpperPanel.Controls.Add(this.MinimizeWindowButton);
+            this.UpperPanel.Controls.Add(this.CloseButton);
             this.UpperPanel.Location = new System.Drawing.Point(0, 0);
             this.UpperPanel.Name = "UpperPanel";
             this.UpperPanel.Size = new System.Drawing.Size(1382, 44);
             this.UpperPanel.TabIndex = 1;
+            this.UpperPanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.UpperPanel_MouseDown);
+            this.UpperPanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.UpperPanel_MouseMove);
+            // 
+            // MinimizeWindowButton
+            // 
+            this.MinimizeWindowButton.BackColor = System.Drawing.SystemColors.Window;
+            this.MinimizeWindowButton.FlatAppearance.BorderSize = 0;
+            this.MinimizeWindowButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.MinimizeWindowButton.Image = ((System.Drawing.Image)(resources.GetObject("MinimizeWindowButton.Image")));
+            this.MinimizeWindowButton.Location = new System.Drawing.Point(1294, 6);
+            this.MinimizeWindowButton.Name = "MinimizeWindowButton";
+            this.MinimizeWindowButton.Size = new System.Drawing.Size(33, 33);
+            this.MinimizeWindowButton.TabIndex = 1;
+            this.MinimizeWindowButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.MinimizeWindowButton.UseVisualStyleBackColor = false;
+            this.MinimizeWindowButton.Click += new System.EventHandler(this.MinimizeWindowButton_Click);
+            // 
+            // CloseButton
+            // 
+            this.CloseButton.BackColor = System.Drawing.SystemColors.Window;
+            this.CloseButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.CloseButton.FlatAppearance.BorderSize = 0;
+            this.CloseButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.CloseButton.Image = ((System.Drawing.Image)(resources.GetObject("CloseButton.Image")));
+            this.CloseButton.Location = new System.Drawing.Point(1335, 4);
+            this.CloseButton.Name = "CloseButton";
+            this.CloseButton.Size = new System.Drawing.Size(35, 35);
+            this.CloseButton.TabIndex = 0;
+            this.CloseButton.UseVisualStyleBackColor = false;
+            this.CloseButton.Click += new System.EventHandler(this.CloseButton_Click);
             // 
             // BottomPanel
             // 
@@ -87,7 +123,7 @@
             this.BottomPanel.Controls.Add(this.label5);
             this.BottomPanel.Controls.Add(this.label7);
             this.BottomPanel.Controls.Add(this.label3);
-            this.BottomPanel.Location = new System.Drawing.Point(1, 879);
+            this.BottomPanel.Location = new System.Drawing.Point(0, 908);
             this.BottomPanel.Margin = new System.Windows.Forms.Padding(3, 0, 3, 3);
             this.BottomPanel.Name = "BottomPanel";
             this.BottomPanel.Size = new System.Drawing.Size(1382, 74);
@@ -97,6 +133,7 @@
             // 
             this.ErrorsCountLabel.AutoSize = true;
             this.ErrorsCountLabel.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.ErrorsCountLabel.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
             this.ErrorsCountLabel.Location = new System.Drawing.Point(556, 43);
             this.ErrorsCountLabel.Name = "ErrorsCountLabel";
             this.ErrorsCountLabel.Size = new System.Drawing.Size(17, 20);
@@ -107,6 +144,7 @@
             // 
             this.AnalysisServiceStateLabel.AutoSize = true;
             this.AnalysisServiceStateLabel.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.AnalysisServiceStateLabel.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
             this.AnalysisServiceStateLabel.Location = new System.Drawing.Point(420, 43);
             this.AnalysisServiceStateLabel.Name = "AnalysisServiceStateLabel";
             this.AnalysisServiceStateLabel.Size = new System.Drawing.Size(30, 20);
@@ -117,6 +155,7 @@
             // 
             this.UptimeLabel.AutoSize = true;
             this.UptimeLabel.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.UptimeLabel.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
             this.UptimeLabel.Location = new System.Drawing.Point(556, 14);
             this.UptimeLabel.Name = "UptimeLabel";
             this.UptimeLabel.Size = new System.Drawing.Size(17, 20);
@@ -130,7 +169,7 @@
             this.StatePanel.Dock = System.Windows.Forms.DockStyle.Left;
             this.StatePanel.Location = new System.Drawing.Point(0, 0);
             this.StatePanel.Name = "StatePanel";
-            this.StatePanel.Size = new System.Drawing.Size(272, 74);
+            this.StatePanel.Size = new System.Drawing.Size(275, 74);
             this.StatePanel.TabIndex = 4;
             // 
             // StateLabel
@@ -148,6 +187,7 @@
             // 
             this.CollectorServiceStateLabel.AutoSize = true;
             this.CollectorServiceStateLabel.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.CollectorServiceStateLabel.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
             this.CollectorServiceStateLabel.Location = new System.Drawing.Point(420, 14);
             this.CollectorServiceStateLabel.Name = "CollectorServiceStateLabel";
             this.CollectorServiceStateLabel.Size = new System.Drawing.Size(30, 20);
@@ -158,6 +198,7 @@
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label6.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
             this.label6.Location = new System.Drawing.Point(278, 14);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(143, 20);
@@ -168,6 +209,7 @@
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label5.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
             this.label5.Location = new System.Drawing.Point(501, 43);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(56, 20);
@@ -178,6 +220,7 @@
             // 
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label7.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
             this.label7.Location = new System.Drawing.Point(290, 43);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(131, 20);
@@ -188,6 +231,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label3.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
             this.label3.Location = new System.Drawing.Point(488, 14);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(69, 20);
@@ -208,7 +252,7 @@
             this.LeftPanel.Controls.Add(this.ServiceInfoPanel);
             this.LeftPanel.Location = new System.Drawing.Point(0, 44);
             this.LeftPanel.Name = "LeftPanel";
-            this.LeftPanel.Size = new System.Drawing.Size(273, 909);
+            this.LeftPanel.Size = new System.Drawing.Size(275, 938);
             this.LeftPanel.TabIndex = 3;
             // 
             // TitleLabel
@@ -220,7 +264,7 @@
             this.TitleLabel.ForeColor = System.Drawing.SystemColors.MenuHighlight;
             this.TitleLabel.Location = new System.Drawing.Point(0, 1);
             this.TitleLabel.Name = "TitleLabel";
-            this.TitleLabel.Size = new System.Drawing.Size(273, 70);
+            this.TitleLabel.Size = new System.Drawing.Size(275, 70);
             this.TitleLabel.TabIndex = 1;
             this.TitleLabel.Text = "Content Analyzer";
             this.TitleLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -233,7 +277,7 @@
             this.StartStopButtonContainer.Location = new System.Drawing.Point(0, 71);
             this.StartStopButtonContainer.Margin = new System.Windows.Forms.Padding(0);
             this.StartStopButtonContainer.Name = "StartStopButtonContainer";
-            this.StartStopButtonContainer.Size = new System.Drawing.Size(273, 90);
+            this.StartStopButtonContainer.Size = new System.Drawing.Size(275, 90);
             this.StartStopButtonContainer.TabIndex = 0;
             // 
             // StartServiceButton
@@ -247,7 +291,7 @@
             this.StartServiceButton.Location = new System.Drawing.Point(0, 0);
             this.StartServiceButton.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
             this.StartServiceButton.Name = "StartServiceButton";
-            this.StartServiceButton.Size = new System.Drawing.Size(273, 90);
+            this.StartServiceButton.Size = new System.Drawing.Size(275, 90);
             this.StartServiceButton.TabIndex = 0;
             this.StartServiceButton.Text = "Start Service";
             this.StartServiceButton.UseVisualStyleBackColor = false;
@@ -263,7 +307,7 @@
             this.StopServiceButton.ForeColor = System.Drawing.SystemColors.Highlight;
             this.StopServiceButton.Location = new System.Drawing.Point(0, 0);
             this.StopServiceButton.Name = "StopServiceButton";
-            this.StopServiceButton.Size = new System.Drawing.Size(273, 90);
+            this.StopServiceButton.Size = new System.Drawing.Size(275, 90);
             this.StopServiceButton.TabIndex = 1;
             this.StopServiceButton.Text = "Stop Service";
             this.StopServiceButton.UseVisualStyleBackColor = false;
@@ -280,7 +324,7 @@
             this.ShowAllCommentsButton.Location = new System.Drawing.Point(0, 161);
             this.ShowAllCommentsButton.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
             this.ShowAllCommentsButton.Name = "ShowAllCommentsButton";
-            this.ShowAllCommentsButton.Size = new System.Drawing.Size(273, 90);
+            this.ShowAllCommentsButton.Size = new System.Drawing.Size(275, 90);
             this.ShowAllCommentsButton.TabIndex = 2;
             this.ShowAllCommentsButton.Text = "All comments";
             this.ShowAllCommentsButton.UseVisualStyleBackColor = false;
@@ -297,7 +341,7 @@
             this.ShowSelectedComments.Location = new System.Drawing.Point(0, 251);
             this.ShowSelectedComments.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
             this.ShowSelectedComments.Name = "ShowSelectedComments";
-            this.ShowSelectedComments.Size = new System.Drawing.Size(273, 90);
+            this.ShowSelectedComments.Size = new System.Drawing.Size(275, 90);
             this.ShowSelectedComments.TabIndex = 11;
             this.ShowSelectedComments.Text = "Selected comments";
             this.ShowSelectedComments.UseVisualStyleBackColor = false;
@@ -314,7 +358,7 @@
             this.ConfigureServiceButton.Location = new System.Drawing.Point(0, 341);
             this.ConfigureServiceButton.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
             this.ConfigureServiceButton.Name = "ConfigureServiceButton";
-            this.ConfigureServiceButton.Size = new System.Drawing.Size(273, 90);
+            this.ConfigureServiceButton.Size = new System.Drawing.Size(275, 90);
             this.ConfigureServiceButton.TabIndex = 0;
             this.ConfigureServiceButton.Text = "Configure";
             this.ConfigureServiceButton.UseVisualStyleBackColor = false;
@@ -331,7 +375,7 @@
             this.ViewLogsButton.Location = new System.Drawing.Point(0, 431);
             this.ViewLogsButton.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
             this.ViewLogsButton.Name = "ViewLogsButton";
-            this.ViewLogsButton.Size = new System.Drawing.Size(273, 90);
+            this.ViewLogsButton.Size = new System.Drawing.Size(275, 90);
             this.ViewLogsButton.TabIndex = 10;
             this.ViewLogsButton.Text = "Logs";
             this.ViewLogsButton.UseVisualStyleBackColor = false;
@@ -349,7 +393,7 @@
             this.ServiceInfoPanel.Location = new System.Drawing.Point(0, 521);
             this.ServiceInfoPanel.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
             this.ServiceInfoPanel.Name = "ServiceInfoPanel";
-            this.ServiceInfoPanel.Size = new System.Drawing.Size(273, 388);
+            this.ServiceInfoPanel.Size = new System.Drawing.Size(275, 417);
             this.ServiceInfoPanel.TabIndex = 9;
             // 
             // SelectedCommentsFoundLabel
@@ -408,23 +452,27 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.CentralPanel.BackColor = System.Drawing.SystemColors.InactiveCaption;
-            this.CentralPanel.Location = new System.Drawing.Point(273, 44);
+            this.CentralPanel.Location = new System.Drawing.Point(275, 44);
             this.CentralPanel.Margin = new System.Windows.Forms.Padding(0);
             this.CentralPanel.Name = "CentralPanel";
-            this.CentralPanel.Size = new System.Drawing.Size(1110, 835);
+            this.CentralPanel.Size = new System.Drawing.Size(1107, 864);
             this.CentralPanel.TabIndex = 6;
             // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1382, 953);
+            this.ClientSize = new System.Drawing.Size(1382, 982);
+            this.ControlBox = false;
             this.Controls.Add(this.CentralPanel);
             this.Controls.Add(this.BottomPanel);
             this.Controls.Add(this.LeftPanel);
             this.Controls.Add(this.UpperPanel);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "MainWindow";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Load += new System.EventHandler(this.MainWindow_Load);
+            this.UpperPanel.ResumeLayout(false);
             this.BottomPanel.ResumeLayout(false);
             this.BottomPanel.PerformLayout();
             this.StatePanel.ResumeLayout(false);
@@ -465,5 +513,7 @@
         public Label UptimeLabel;
         public Label SelectedCommentsFoundLabel;
         public Label CommentsFoundLabel;
+        private Button CloseButton;
+        private Button MinimizeWindowButton;
     }
 }

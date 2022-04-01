@@ -109,7 +109,7 @@
             dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.AllCommentsDataGridView.RowsDefaultCellStyle = dataGridViewCellStyle4;
             this.AllCommentsDataGridView.RowTemplate.Height = 29;
-            this.AllCommentsDataGridView.Size = new System.Drawing.Size(1040, 685);
+            this.AllCommentsDataGridView.Size = new System.Drawing.Size(1040, 709);
             this.AllCommentsDataGridView.TabIndex = 1;
             // 
             // Id
@@ -199,7 +199,7 @@
             "By text"});
             this.SearchComboBox.Location = new System.Drawing.Point(122, 33);
             this.SearchComboBox.Name = "SearchComboBox";
-            this.SearchComboBox.Size = new System.Drawing.Size(164, 31);
+            this.SearchComboBox.Size = new System.Drawing.Size(175, 31);
             this.SearchComboBox.TabIndex = 2;
             // 
             // groupBox1
@@ -215,7 +215,7 @@
             this.groupBox1.ForeColor = System.Drawing.SystemColors.MenuHighlight;
             this.groupBox1.Location = new System.Drawing.Point(28, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(1050, 810);
+            this.groupBox1.Size = new System.Drawing.Size(1050, 840);
             this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "All collected comments ";
@@ -269,10 +269,11 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.ClientSize = new System.Drawing.Size(1110, 835);
+            this.ClientSize = new System.Drawing.Size(1107, 864);
             this.Controls.Add(this.groupBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "AllCommentsForm";
+            this.Load += new System.EventHandler(this.AllCommentsForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.AllCommentsDataGridView)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();

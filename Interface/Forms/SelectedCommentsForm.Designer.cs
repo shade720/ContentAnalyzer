@@ -107,7 +107,7 @@
             dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.SelectedCommentsDataGridView.RowsDefaultCellStyle = dataGridViewCellStyle4;
             this.SelectedCommentsDataGridView.RowTemplate.Height = 29;
-            this.SelectedCommentsDataGridView.Size = new System.Drawing.Size(1040, 685);
+            this.SelectedCommentsDataGridView.Size = new System.Drawing.Size(1037, 708);
             this.SelectedCommentsDataGridView.TabIndex = 0;
             // 
             // Id
@@ -157,11 +157,11 @@
             this.SearchTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.SearchTextBox.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.SearchTextBox.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.SearchTextBox.Location = new System.Drawing.Point(122, 76);
+            this.SearchTextBox.Location = new System.Drawing.Point(122, 91);
             this.SearchTextBox.Multiline = true;
             this.SearchTextBox.Name = "SearchTextBox";
             this.SearchTextBox.PlaceholderText = "Search for...";
-            this.SearchTextBox.Size = new System.Drawing.Size(889, 30);
+            this.SearchTextBox.Size = new System.Drawing.Size(886, 30);
             this.SearchTextBox.TabIndex = 1;
             this.SearchTextBox.TextChanged += new System.EventHandler(this.SearchTextBox_TextChanged);
             // 
@@ -181,7 +181,7 @@
             this.groupBox1.ForeColor = System.Drawing.SystemColors.MenuHighlight;
             this.groupBox1.Location = new System.Drawing.Point(28, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(1050, 810);
+            this.groupBox1.Size = new System.Drawing.Size(1047, 839);
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Selected Comments";
@@ -214,7 +214,7 @@
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.label2.ForeColor = System.Drawing.SystemColors.MenuHighlight;
-            this.label2.Location = new System.Drawing.Point(7, 78);
+            this.label2.Location = new System.Drawing.Point(7, 93);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(78, 23);
             this.label2.TabIndex = 13;
@@ -226,7 +226,7 @@
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.label1.ForeColor = System.Drawing.SystemColors.MenuHighlight;
-            this.label1.Location = new System.Drawing.Point(7, 36);
+            this.label1.Location = new System.Drawing.Point(7, 51);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(109, 23);
             this.label1.TabIndex = 12;
@@ -247,9 +247,9 @@
             "By comment text",
             "By category",
             "By probability"});
-            this.SearchComboBox.Location = new System.Drawing.Point(122, 33);
+            this.SearchComboBox.Location = new System.Drawing.Point(122, 48);
             this.SearchComboBox.Name = "SearchComboBox";
-            this.SearchComboBox.Size = new System.Drawing.Size(164, 31);
+            this.SearchComboBox.Size = new System.Drawing.Size(172, 31);
             this.SearchComboBox.TabIndex = 11;
             // 
             // SelectedCommentsForm
@@ -257,11 +257,12 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.ClientSize = new System.Drawing.Size(1110, 835);
+            this.ClientSize = new System.Drawing.Size(1107, 864);
             this.Controls.Add(this.groupBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "SelectedCommentsForm";
             this.Text = "SuspiciousCommentsInDetails";
+            this.Load += new System.EventHandler(this.SelectedCommentsForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.SelectedCommentsDataGridView)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();

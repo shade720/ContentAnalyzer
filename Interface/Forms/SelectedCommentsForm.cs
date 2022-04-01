@@ -7,6 +7,7 @@ public partial class SelectedCommentsForm : Form
     private readonly MainWindow _parent;
     private int _lastIndex;
     private CancellationTokenSource _cancellationTokenSource;
+    private int _rowDisplayed;
 
     public SelectedCommentsForm(MainWindow parent)
     {
@@ -57,38 +58,38 @@ public partial class SelectedCommentsForm : Form
                 comment.EvaluateProbability
             );
         }
+        DisplayedRowsLabel.Text = _rowDisplayed == 0 ? SelectedCommentsDataGridView.Rows.Count.ToString() : _rowDisplayed.ToString();
         _parent.SelectedCommentsFoundLabel.Text = SelectedCommentsDataGridView.Rows.Count.ToString();
     }
 
     private void SearchTextBox_TextChanged(object sender, EventArgs e)
     {
-        if (SearchTextBox.Text == "") return;
-        if (SearchComboBox.SelectedIndex is -1)
-        {
-            MessageBox.Show("Select Select a search category");
-            return;
-        }
         ShowAll();
+        if (SearchTextBox.Text == "") return;
         HideByColumn(SearchComboBox.SelectedIndex);
+        DisplayedRowsLabel.Text = _rowDisplayed.ToString();
     }
 
     private void ShowAll()
     {
+        _rowDisplayed = 0;
         foreach (DataGridViewRow row in SelectedCommentsDataGridView.Rows)
         {
             row.Visible = true;
         }
-        DisplayedRowsLabel.Text = SelectedCommentsDataGridView.Rows.Count.ToString();
     }
 
     private void HideByColumn(int columnNum)
     {
-        var displayedRowCount = 0;
         foreach (DataGridViewRow row in SelectedCommentsDataGridView.Rows)
         {
             if (!row.Cells[columnNum].Value.ToString().ToLower().Contains(SearchTextBox.Text.ToLower())) row.Visible = false;
-            else displayedRowCount++;
+            else _rowDisplayed++;
         }
-        DisplayedRowsLabel.Text = displayedRowCount.ToString();
+    }
+
+    private void SelectedCommentsForm_Load(object sender, EventArgs e)
+    {
+        SearchComboBox.SelectedIndex = 0;
     }
 }

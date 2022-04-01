@@ -61,9 +61,7 @@ public partial class MainWindow : Form
     {
         _allCommentsForm.StopDisplayData();
         _selectedCommentsForm.StopDisplayData();
-        DataCollectionService.DataCollectionService.Stop();
-        DataAnalysisService.DataAnalysisService.StopAll();
-        DataAnalysisService.DataAnalysisService.StopService();
+        StopService();
 
         StartServiceButton.Show();
         StopServiceButton.Hide();
@@ -75,6 +73,13 @@ public partial class MainWindow : Form
         _timer.Stop();
         _stopwatch.Stop();
         _stopwatch.Reset();
+    }
+
+    private void StopService()
+    {
+        DataCollectionService.DataCollectionService.Stop();
+        DataAnalysisService.DataAnalysisService.StopAll();
+        DataAnalysisService.DataAnalysisService.StopService();
     }
 
     private void MainWindow_Load(object sender, EventArgs e)
@@ -108,5 +113,30 @@ public partial class MainWindow : Form
         _allCommentsForm.Hide();
         _selectedCommentsForm.Hide();
         _logsForm.Show();
+    }
+
+    private void CloseButton_Click(object sender, EventArgs e)
+    {
+        if (StateLabel.Text == "Working") StopService();
+        Application.Exit();
+    }
+
+    private void MinimizeWindowButton_Click(object sender, EventArgs e)
+    {
+        WindowState = FormWindowState.Minimized;
+    }
+
+    private Point _lastLocation;
+
+    private void UpperPanel_MouseMove(object sender, MouseEventArgs e)
+    {
+        if (e.Button != MouseButtons.Left) return;
+        Left += e.X - _lastLocation.X;
+        Top += e.Y - _lastLocation.Y;
+    }
+
+    private void UpperPanel_MouseDown(object sender, MouseEventArgs e)
+    {
+        _lastLocation = e.Location;
     }
 }
