@@ -18,6 +18,7 @@ public partial class SelectedCommentsForm : Form
     {
         _lastIndex = 0;
         _cancellationTokenSource = new CancellationTokenSource();
+        SelectedCommentsDataGridView.Rows.Clear();
         await Task.Run(() =>
         {
             while (!_cancellationTokenSource.Token.IsCancellationRequested)

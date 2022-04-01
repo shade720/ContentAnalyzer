@@ -37,10 +37,10 @@ public static class DataCollectionService
     public static void Stop()
     {
         if (_saveDatabase is null) throw new Exception("Save database are not registered");
-        _saveDatabase.Disconnect();
         foreach (var dataCollector in DataCollectors)
         {
             dataCollector.StopCollecting();
         }
+        _saveDatabase.Disconnect();
     }
 }

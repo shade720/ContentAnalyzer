@@ -12,11 +12,12 @@ internal class CommentScanner : Scanner
     private readonly Dictionary<long, long?> _receivedCommentIds = new();
 
     public CommentScanner(long communityId, long postId, VkApi vkApi, DataManager dataManager, Config configuration) : base(
-        communityId, vkApi, dataManager, new CancellationTokenSource(), configuration) =>
+        communityId, vkApi, dataManager, configuration) =>
         PostId = postId;
 
     public override void StartScan()
     {
+        StopScanToken = new CancellationTokenSource();
         DataManager.SendAllData(DataManager.ConvertAll(GetPresentComments()));
         var scanResult = ScanComments();
     }
@@ -42,11 +43,11 @@ internal class CommentScanner : Scanner
     private async Task ScanComments()
     {
         Logger.Write("Start scanning comments");
-        await Task.Run(() =>
+        await Task.Run(async () =>
         {
-            while (!StopScanToken.IsCancellationRequested)
+            while (!StopScanToken.Token.IsCancellationRequested)
             {
-                Thread.Sleep(Configuration.ScanCommentsDelay);
+                await Task.Delay(Configuration.ScanCommentsDelay, StopScanToken.Token);
                 if (StopScanToken.IsCancellationRequested || !AnyNewComments()) continue;
 
                 ScanBranch(out var mainBranch);

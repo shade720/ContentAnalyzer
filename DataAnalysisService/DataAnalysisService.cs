@@ -95,7 +95,8 @@ public static class DataAnalysisService
             Logger.Write($"Model {modelName} already stopped");
             return;
         }
-        if (IsLastRunningModel() && _sourceDatabase.IsLoadingStarted) _sourceDatabase.StopLoading();
+        if (IsLastRunningModel() && _sourceDatabase.IsLoadingStarted) 
+            _sourceDatabase.StopLoading();
         AnalyzeModels[modelName].StopModel();
         Logger.Write($"{modelName} executing stopped");
     }
