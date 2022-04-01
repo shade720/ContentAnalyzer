@@ -1,6 +1,7 @@
 ﻿using DataAnalysisService.AnalyzeModelController;
 using DataAnalysisService.Databases.SqlServer;
 using System.Configuration;
+using Common;
 
 namespace DataAnalysisService;
 
@@ -24,9 +25,9 @@ public static class Startup
                     new[] {"Normal", "Insult", "Threat", "Obscenity"}
                 );
                 insultThreatObscenityModel.Subscribe(
-                    predictResult => Console.WriteLine($"Predict {predictResult.CommentData.Text} ----> {predictResult}\n\n"),
-                    evaluateResultHandler => { },
-                    errorHandler => { });
+                    predictResult => Logger.Write($"Predict {predictResult.CommentData.Text} ----> {predictResult}\n\n"),
+                    evaluateResult => { },
+                    error => { });
                 return insultThreatObscenityModel;
             }
         
@@ -44,10 +45,9 @@ public static class Startup
                     new[] {"Normal", "Toxic"}
                 );
                 toxicModel.Subscribe(
-                    predictResult =>
-                        Console.WriteLine($"Predict {predictResult.CommentData.Text} ----> {predictResult}\n\n"),
-                    evaluateResultHandler => { },
-                    errorHandler => { });
+                    predictResult => Logger.Write($"Predict {predictResult.CommentData.Text} ----> {predictResult}\n\n"),
+                    evaluateResult => { },
+                    error => { });
                 return toxicModel;
             }
         );

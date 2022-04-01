@@ -1,4 +1,4 @@
-﻿using Interfaces;
+﻿using Common;
 
 namespace DataCollectionService;
 
@@ -6,6 +6,11 @@ public static class DataCollectionService
 {
     private static readonly List<IDataCollector> DataCollectors = new();
     private static IDatabaseClient? _saveDatabase;
+
+    public static List<ICommentData> GetAllComments(int startIndex)
+    {
+        return _saveDatabase?.GetRange<ICommentData>(startIndex);
+    }
 
     public static void RegisterSaveDatabase(IDatabaseClient? database)
     {
@@ -15,7 +20,7 @@ public static class DataCollectionService
     public static void AddDataCollector(Func<IDataCollector> dataCollectorConfiguration)
     {
         DataCollectors.Add(dataCollectorConfiguration.Invoke());
-        DataCollectors[^1].Subscribe(dataFrame => _saveDatabase.Add(dataFrame));
+        DataCollectors[^1].Subscribe(dataFrame => _saveDatabase?.Add(dataFrame));
     }
 
     public static void Start()

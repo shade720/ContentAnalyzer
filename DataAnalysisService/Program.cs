@@ -1,4 +1,6 @@
-﻿namespace DataAnalysisService;
+﻿using Common;
+
+namespace DataAnalysisService;
 
 public static class Program
 {
@@ -14,7 +16,7 @@ public static class Program
             Thread.Sleep(5000);
         }
 
-        Console.WriteLine("Service stops work...");
+        Logger.Write("Service stops work...");
 
         DataAnalysisService.StopAll();
         DataAnalysisService.StopService();

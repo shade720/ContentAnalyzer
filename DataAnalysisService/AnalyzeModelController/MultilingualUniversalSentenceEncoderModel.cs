@@ -1,4 +1,4 @@
-﻿using Interfaces;
+﻿using Common;
 
 namespace DataAnalysisService.AnalyzeModelController;
 
@@ -10,68 +10,94 @@ internal class MultilingualUniversalSentenceEncoderModel : AnalyzeModel
     #region PublicInterface
 
     public override bool IsRunning { get; protected set; }
+
     public MultilingualUniversalSentenceEncoderModel(
-        string interpreter, 
-        string predictScript, 
-        string trainScript, 
-        string dataSet, 
-        string model, 
+        string interpreter,
+        string predictScript,
+        string trainScript,
+        string dataSet,
+        string model,
         string[] categories,
-        int evaluateThresholdPercent = 70) : 
-        base(interpreter, predictScript, trainScript, dataSet, model, categories) 
-    { _evaluateThreshold = evaluateThresholdPercent; }
-
-    public override void StartPredictiveListenerScriptAsync()
+        int evaluateThresholdPercent = 70) :
+        base(interpreter, predictScript, trainScript, dataSet, model, categories)
     {
-        if (IsRunning) throw new Exception("Runner is already using script");
-        Runner = new PythonRunner(Interpreter);
-
-        Runner.OnErrorReceivedEvent += RunnerOnErrorReceivedEventHandler;
-        Runner.OnExitedEvent += RunnerOnExitEventHandler;
-        Runner.OnStartedEvent += RunnerOnStartedEventHandler;
-
-        var result = Runner.RunAsync(Path.GetFullPath(PredictScript), Path.GetFullPath(Model));
-
-        _scriptInitialize.WaitOne();
+        if (interpreter is null || predictScript is null || trainScript is null || dataSet is null || model is null) throw new ArgumentNullException();
+        if (!File.Exists(interpreter) || !File.Exists(predictScript) || !File.Exists(trainScript) || !File.Exists(dataSet) || !File.Exists(model)) throw new FileNotFoundException();
+        _evaluateThreshold = evaluateThresholdPercent;
     }
 
-    public override void StartTrainModelScriptAsync()
+    public override void StartPredictiveListener()
     {
         if (IsRunning) throw new Exception("Runner is already using script");
+        try
+        {
+            Runner = new PythonRunner(Interpreter);
 
-        Runner = new PythonRunner(Interpreter);
+            Runner.OnErrorReceivedEvent += RunnerOnErrorReceivedEventHandler;
+            Runner.OnExitedEvent += RunnerOnExitEventHandler;
+            Runner.OnStartedEvent += RunnerOnStartedEventHandler;
 
-        Runner.OnErrorReceivedEvent += RunnerOnErrorReceivedEventHandler;
-        Runner.OnExitedEvent += RunnerOnExitEventHandler;
-        Runner.OnStartedEvent += RunnerOnStartedEventHandler;
+            var result = Runner.RunAsync(Path.GetFullPath(PredictScript), Path.GetFullPath(Model));
 
-        var result = Runner.RunAsync(Path.GetFullPath(TrainScript), Path.GetFullPath(DataSet));
+            _scriptInitialize.WaitOne();
+        }
+        catch (Exception e)
+        {
+            throw new Exception($"{nameof(StartPredictiveListener)}", e);
+        }
+    }
 
-        _scriptInitialize.WaitOne();
+    public override void StartTrainModel()
+    {
+        if (IsRunning) throw new Exception("Runner is already using script");
+        try
+        {
+            Runner = new PythonRunner(Interpreter);
+
+            Runner.OnErrorReceivedEvent += RunnerOnErrorReceivedEventHandler;
+            Runner.OnExitedEvent += RunnerOnExitEventHandler;
+            Runner.OnStartedEvent += RunnerOnStartedEventHandler;
+
+            var result = Runner.RunAsync(Path.GetFullPath(TrainScript), Path.GetFullPath(DataSet));
+
+            _scriptInitialize.WaitOne();
+        }
+        catch (Exception e)
+        {
+            throw new Exception($"{nameof(StartTrainModel)}", e);
+        }
     }
 
     public override void Predict(ICommentData dataFrame)
     {
         if (!IsRunning) throw new Exception("Predict model not initialized");
         if (Runner is null) throw new Exception("Script not running");
+        try
+        {
+            Runner.WriteToScript(dataFrame.Text);
+            var predictFromScript = Runner.ReadFromScript();
+            var predictResult = new PredictResult(dataFrame, predictFromScript, Categories);
 
-        Runner.WriteToScript(dataFrame.Text);
-        var predictFromScript = Runner.ReadFromScript();
-        var predictResult = new PredictResult(dataFrame, predictFromScript, Categories);
-
-        OnPredictResultArrivedEvent.Invoke(predictResult);
-        if (Evaluate(predictResult)) OnEvaluateResultArrivedEvent.Invoke(predictResult);
+            OnPredictResultArrivedEvent.Invoke(predictResult);
+            if (Evaluate(predictResult)) OnEvaluateResultArrivedEvent.Invoke(predictResult);
+        }
+        catch (Exception e)
+        {
+            throw new Exception($"{nameof(Predict)}", e);
+        }
     }
 
-    public override void AbortScript()
+    public override void StopModel()
     {
         if (!IsRunning) throw new Exception("Script already aborted");
         if (Runner is null) throw new Exception("Script not running");
-        
+
+        IsRunning = false;
         Runner.OnErrorReceivedEvent -= RunnerOnErrorReceivedEventHandler;
         Runner.OnExitedEvent -= RunnerOnExitEventHandler;
         Runner.OnStartedEvent -= RunnerOnStartedEventHandler;
         Runner.Abort();
+        Logger.Write("Model stopped");
     }
 
     #endregion
@@ -90,23 +116,22 @@ internal class MultilingualUniversalSentenceEncoderModel : AnalyzeModel
     {
         _scriptInitialize.Reset();
         IsRunning = false;
-        Console.WriteLine("Script ended");
+        Runner.OnErrorReceivedEvent -= RunnerOnErrorReceivedEventHandler;
+        Runner.OnExitedEvent -= RunnerOnExitEventHandler;
+        Runner.OnStartedEvent -= RunnerOnStartedEventHandler;
+        Logger.Write("Script ended");
     }
 
     private void RunnerOnErrorReceivedEventHandler(string errorMessage)
     {
         OnErrorArrivedEvent.Invoke(errorMessage);
-        if (errorMessage.Contains("Trace"))
-        {
-            AbortScript();
-        }
     }
 
     private void RunnerOnStartedEventHandler()
     {
         _scriptInitialize.Set();
         IsRunning = true;
-        Console.WriteLine("Script started");
+        Logger.Write("Script started");
     }
 
     #endregion

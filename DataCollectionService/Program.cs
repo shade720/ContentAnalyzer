@@ -1,6 +1,8 @@
-﻿namespace DataCollectionService;
+﻿using Common;
 
-public class Program
+namespace DataCollectionService;
+
+public static class Program
 {
     public static void Main()
     {
@@ -12,7 +14,7 @@ public class Program
         {
             Thread.Sleep(5000);
         }
-        Console.WriteLine("Service stops work...");
+        Logger.Write("Service stops work...");
 
         DataCollectionService.Stop();
     }

@@ -1,4 +1,5 @@
 ﻿using VkDataCollector.Scanners;
+using Common;
 
 namespace VkDataCollector.ScannerManager;
 
@@ -19,14 +20,14 @@ internal class CommentScannersQueue
         if (_queue.Count == _queueSize) RemoveScanner(out _);
         scanner.StartScan();
         _queue.Enqueue(scanner);
-        Console.WriteLine("Comment scanner added to queue");
+        Logger.Write("Comment scanner added to queue");
     }
 
     private void RemoveScanner(out CommentScanner result)
     {
         result = _queue.Dequeue();
         result.StopScan();
-        Console.WriteLine($"Stop and delete comment scanner {result.PostId}");
+        Logger.Write($"Stop and delete comment scanner {result.PostId}");
     }
     public void Clear()
     {
@@ -34,6 +35,6 @@ internal class CommentScannersQueue
         {
             RemoveScanner(out _);
         }
-        Console.WriteLine("Queue cleared");
+        Logger.Write("Queue cleared");
     }
 }

@@ -1,6 +1,7 @@
 ﻿using VkDataCollector.Data;
 using VkNet.Enums;
 using VkNet.Model;
+using Common;
 
 namespace VkDataCollector.Scanners;
 
@@ -33,14 +34,14 @@ internal class CommentScanner : Scanner
         foreach (var comment in comments.Where(comment => comment.Thread.Count > 0))
             additionalComments.AddRange(GetBranch(comment.Id));
         comments.AddRange(additionalComments);
-        foreach (var comment in comments) Console.WriteLine($"Add {comment.Id} {comment.PostId} {comment.OwnerId} {comment.FromId} {comment.Text} {comment.Date}");
-        Console.WriteLine("Added presents comments");
+        foreach (var comment in comments) Logger.Write($"Add {comment.Id} {comment.PostId} {comment.OwnerId} {comment.FromId} {comment.Text} {comment.Date}");
+        Logger.Write("Added presents comments");
         return comments;
     }
 
     private async Task ScanComments()
     {
-        await Console.Out.WriteLineAsync("Start scanning comments");
+        Logger.Write("Start scanning comments");
         await Task.Run(() =>
         {
             while (!StopScanToken.IsCancellationRequested)
@@ -53,7 +54,7 @@ internal class CommentScanner : Scanner
                     ScanBranch(out _, comment.Id);
             }
         }, StopScanToken.Token);
-        await Console.Out.WriteLineAsync("Scan comments stopped");
+        Logger.Write("Scan comments stopped");
     }
 
     private bool AnyNewComments()

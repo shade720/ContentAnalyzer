@@ -1,11 +1,11 @@
-﻿using Interfaces;
+﻿using Common;
 
 namespace DataAnalysisService.AnalyzeModelController;
 
 public interface IAnalyzeModel
 {
-    public void StartPredictiveListenerScriptAsync();
-    public void StartTrainModelScriptAsync();
+    public void StartPredictiveListener();
+    public void StartTrainModel();
     public void Predict(ICommentData text);
-    public void AbortScript();
+    public void StopModel();
 }

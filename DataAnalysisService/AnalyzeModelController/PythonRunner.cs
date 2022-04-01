@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Text;
+using Common;
 
 namespace DataAnalysisService.AnalyzeModelController;
 
@@ -90,7 +91,7 @@ public class PythonRunner
             _pythonProcess.ErrorDataReceived -= OnErrorDataReceivedHandler;
             _pythonProcess.Kill();
             OnExitedEvent?.Invoke();
-            Console.WriteLine("Script stopped");
+            Logger.Write("Script stopped");
         }
     }
 
@@ -114,10 +115,13 @@ public class PythonRunner
         _writer.WriteLine(text);
     }
 
-    public void Abort() => _pythonProcess?.Kill();
+    public void Abort() => _pythonProcess.Kill();
 
 
     #endregion
 
-    private void OnErrorDataReceivedHandler(object sender, DataReceivedEventArgs e) => OnErrorReceivedEvent?.Invoke(e.Data ?? string.Empty);
+    private void OnErrorDataReceivedHandler(object sender, DataReceivedEventArgs e)
+    {
+        OnErrorReceivedEvent?.Invoke(e.Data ?? string.Empty);
+    }
 }

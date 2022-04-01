@@ -1,6 +1,6 @@
 ﻿using Common;
 
-namespace DataAnalysisService.Databases.SqlServer;
+namespace DataCollectionService.Databases.SqlServer;
 
 public class CommentData : ICommentData
 {

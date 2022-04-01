@@ -1,4 +1,4 @@
-﻿namespace Interfaces
+﻿namespace Common
 {
     public interface ICommentData
     {

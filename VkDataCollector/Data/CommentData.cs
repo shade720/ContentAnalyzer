@@ -1,4 +1,4 @@
-﻿using Interfaces;
+﻿using Common;
 
 namespace VkDataCollector.Data
 {

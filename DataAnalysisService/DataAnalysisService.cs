@@ -1,22 +1,27 @@
 ﻿using DataAnalysisService.AnalyzeModelController;
 using DataAnalysisService.Databases.SqlServer;
-using Interfaces;
+using Common;
 
 namespace DataAnalysisService;
 
 public static class DataAnalysisService
 {
     private static readonly Dictionary<string, AnalyzeModel> AnalyzeModels = new();
-    private static IDatabaseObserver _sourceDatabase;
-    private static IDatabaseClient _targetDatabase;
+    private static IDatabaseObserver? _sourceDatabase;
+    private static IDatabaseClient? _targetDatabase;
+
+    public static List<IEvaluateResult> GetAllComments(int startIndex)
+    {
+        return _targetDatabase?.GetRange<IEvaluateResult>(startIndex);
+    }
 
     public static void StartService()
     {
-        if (_sourceDatabase is null || _targetDatabase is null) throw new ArgumentException("Not all databases is registered");
-        if (AnalyzeModels.Count == 0) throw new ArgumentException("At least one analysis model must be added");
-        _sourceDatabase.OnDataArrived(AnalyzeByAny);
+        if (_targetDatabase is null) throw new ArgumentException($"Target database is not registered {nameof(StartService)}");
+        if (AnalyzeModels.Count == 0) throw new ArgumentException($"At least one analysis model must be added {nameof(StartService)}");
         _targetDatabase.Connect();
         _targetDatabase.Clear();
+        Logger.Write("Service started, target database is ready");
     }
 
     public static void StartAll()
@@ -35,58 +40,81 @@ public static class DataAnalysisService
     {
         if (!AnalyzeModels[modelName].IsRunning)
         {
-            Console.WriteLine("Model not running");
+            Logger.Write($"Model {modelName} not running");
             return;
         }
         AnalyzeModels[modelName].Predict(dataFrame);
     }
     public static void StartModel(string modelName)
     {
-        Console.WriteLine($"Starting model {modelName} listen predicts...");
+        if (_sourceDatabase is null || _targetDatabase is null) throw new ArgumentException($"Not all databases is registered {nameof(StartModel)}");
         if (AnalyzeModels[modelName].IsRunning)
         {
-            Console.WriteLine("Model already in work");
+            Logger.Write($"Model {modelName} already in work");
             return;
         }
-        AnalyzeModels[modelName].StartPredictiveListenerScriptAsync();
-        Console.WriteLine($"Model {modelName} started listen predicts");
+
+        Logger.Write($"Starting model {modelName} to listen predicts...");
+        AnalyzeModels[modelName].Subscribe(
+            predictionResult => { },
+            _targetDatabase.Add,
+            error =>
+            {
+                if (!error.Contains("NameError")) return;
+                Logger.Write($"Model {modelName} has stopped by script exception {error}");
+                AnalyzeModels[modelName].StopModel();
+            }
+        );
+        AnalyzeModels[modelName].StartPredictiveListener();
+        Logger.Write($"Model {modelName} started listen predicts");
+
         if (_sourceDatabase.IsLoadingStarted) return;
+        _sourceDatabase.OnDataArrived(AnalyzeByAny);
         _sourceDatabase.StartLoading();
+        Logger.Write("Source database started sending data");
     }
 
     public static void StopService()
     {
-        if (_sourceDatabase is null || _targetDatabase is null) throw new ArgumentException("Not all databases is registered");
-        _sourceDatabase.StopLoading();
+        if (_targetDatabase is null) throw new ArgumentException($"Target database is not registered {nameof(StopService)}");
         _targetDatabase.Disconnect();
-        Console.WriteLine("All models stopped");
+        Logger.Write("Service stopped");
     }
 
     public static void StopAll()
     {
-        foreach (var model in AnalyzeModels) Stop(model.Key);
+        foreach (var (modelName, _) in AnalyzeModels) Stop(modelName);
+        Logger.Write("All model are stopped");
     }
 
     public static void Stop(string modelName)
     {
+        if (_sourceDatabase is null) throw new ArgumentException($"Source database is not registered {nameof(Stop)}");
         if (!AnalyzeModels[modelName].IsRunning)
         {
-            Console.WriteLine("Model already stopped");
+            Logger.Write($"Model {modelName} already stopped");
             return;
         }
-        AnalyzeModels[modelName].AbortScript();
-        Console.WriteLine($"{modelName} executing stopped");
+        if (IsLastRunningModel() && _sourceDatabase.IsLoadingStarted) _sourceDatabase.StopLoading();
+        AnalyzeModels[modelName].StopModel();
+        Logger.Write($"{modelName} executing stopped");
+    }
+
+    private static bool IsLastRunningModel()
+    {
+        return AnalyzeModels.Count(model => model.Value.IsRunning) == 1;
     }
 
     public static void RegisterSourceDatabase(IDatabaseObserver database) => _sourceDatabase = database;
     public static void RegisterSaveDatabase(IDatabaseClient database) => _targetDatabase = database;
     public static void AddModel(string modelName, Func<AnalyzeModel> modelConfiguration)
     {
+        if (AnalyzeModels.ContainsKey(modelName))
+        {
+            Logger.Write($"Model {modelName} already added to service");
+            return;
+        }
         AnalyzeModels.Add(modelName, modelConfiguration.Invoke());
-        AnalyzeModels[modelName].Subscribe(
-            _ => { }, 
-            evaluateResult => _targetDatabase.Add(evaluateResult),
-            _ => { });
     } 
 
     public static void TrainAll()
@@ -101,10 +129,28 @@ public static class DataAnalysisService
     {
         if (AnalyzeModels[modelName].IsRunning)
         {
-            Console.WriteLine("Model already in work");
+            Logger.Write($"Model {modelName} already in work");
             return;
         }
-        AnalyzeModels[modelName].StartTrainModelScriptAsync();
-        Console.WriteLine($"Model {modelName} started training");
+        AnalyzeModels[modelName].StartTrainModel();
+        Logger.Write($"Model {modelName} started training");
     }
+
+    //public static void SafeExecute(Action action)
+    //{
+    //    while (true)
+    //    {
+    //        try
+    //        {
+    //            action.Invoke();
+    //            break;
+    //        }
+    //        catch (Exception e)
+    //        {
+    //            Console.WriteLine($"Message {e.Message} Inner {e.InnerException}");
+    //            Console.WriteLine("Service crashed. Restarting...");
+    //            Thread.Sleep(5000);
+    //        }
+    //    }
+    //}
 }

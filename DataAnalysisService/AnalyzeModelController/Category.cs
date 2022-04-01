@@ -1,6 +1,8 @@
-﻿namespace DataAnalysisService.AnalyzeModelController;
+﻿using Common;
 
-public class Category
+namespace DataAnalysisService.AnalyzeModelController;
+
+public class Category : ICategory
 {
     public string Title { get; init; }
     public double PredictValue { get; init; }

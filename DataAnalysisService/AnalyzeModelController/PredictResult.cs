@@ -1,12 +1,12 @@
 ﻿using System.Globalization;
-using Interfaces;
+using Common;
 
 namespace DataAnalysisService.AnalyzeModelController;
 
-public class PredictResult 
+public class PredictResult : IPredictionResult
 {
     public ICommentData CommentData { get; }
-    public Category[] Predicts { get; }
+    public ICategory[] Predicts { get; }
 
     public PredictResult(ICommentData commentData, string predictResult, IReadOnlyList<string> categories)
     {

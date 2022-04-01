@@ -1,6 +1,6 @@
 ﻿using VkDataCollector.Data;
 using VkDataCollector.Scanners;
-using Interfaces;
+using Common;
 
 namespace VkDataCollector;
 
@@ -32,13 +32,13 @@ public class VkDataCollector : IDataCollector
         if (_config is null) throw new ArgumentException("Configuration is missing");
         var a = _vkApi.Auth(_config.ApplicationId, _config.SecureKey, _config.ServiceAccessKey);
         foreach (var scanner in _postScanners) scanner.StartScan();
-        Console.WriteLine("Data collection has begun");
+        Logger.Write("Data collection has begun");
     }
 
     public void StopCollecting()
     {
         foreach (var scanner in _postScanners) scanner.StopScan();
         var a = _vkApi.LogOut();
-        Console.WriteLine("Data collection has stopped");
+        Logger.Write("Data collection has stopped");
     }
 }

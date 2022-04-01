@@ -1,7 +1,7 @@
 ﻿using System.Data;
 using System.Data.SqlClient;
 
-namespace Interfaces;
+namespace Common;
 
 public abstract class MsSqlServerClient : IDatabaseClient
 {
@@ -16,9 +16,12 @@ public abstract class MsSqlServerClient : IDatabaseClient
     {
         if (Connection.State == ConnectionState.Closed) return;
         Connection.Close();
-    } 
+    }
+
     public abstract void Add<T>(T result);
+    public abstract List<T> GetRange<T>(int startIndex);
     public abstract void Clear();
+
     protected void SafeAccess(Action accessAction)
     {
         int attempts;
@@ -33,7 +36,7 @@ public abstract class MsSqlServerClient : IDatabaseClient
             {
                 Connection.Close();
                 Connection.Open();
-                Console.WriteLine($"{e.Message} {e.StackTrace}");
+                Logger.Write($"{e.Message} {e.StackTrace}");
             }
         }
         if (attempts == 3) throw new Exception("Number of attempts to access to database was exceeded");

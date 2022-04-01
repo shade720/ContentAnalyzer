@@ -2,6 +2,7 @@
 using VkNet.Enums.Filters;
 using VkNet.Model;
 using VkNet.Model.RequestParams;
+using Common;
 
 namespace VkDataCollector;
 
@@ -13,7 +14,7 @@ internal class VkApi
     {
         if (_api.IsAuthorized)
         {
-            Console.WriteLine("User already logged in");
+            Logger.Write("User already logged in");
             return;
         }
         if (applicationId <= 0 || string.IsNullOrEmpty(secureKey) || string.IsNullOrEmpty(serviceAccessKey))
@@ -29,7 +30,7 @@ internal class VkApi
                 ApplicationId = applicationId,
                 Settings = Settings.All
             });
-            Console.WriteLine("Auth completed success");
+            Logger.Write("Auth completed success");
             return 0;
         }
         await Try(Func);
@@ -53,13 +54,13 @@ internal class VkApi
     {
         if (!_api.IsAuthorized)
         {
-            Console.WriteLine("User is already logged out!");
+            Logger.Write("User is already logged out!");
             return;
         }
         async Task<int> Func()
         {
             await _api.LogOutAsync();
-            Console.WriteLine("Log out completed success");
+            Logger.Write("Log out completed success");
             return 0;
         }
         await Try(Func);

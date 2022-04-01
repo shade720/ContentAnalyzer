@@ -1,4 +1,5 @@
 ﻿using VkDataCollector.ScannerManager;
+using Common;
 
 namespace VkDataCollector.Scanners;
 
@@ -23,7 +24,7 @@ internal class PostScanner : Scanner
             {
                 if (IsNewPost(out var postId))
                 { 
-                    Console.WriteLine($"New post released {postId} group {CommunityId}");
+                    Logger.Write($"New post released {postId} group {CommunityId}");
                     _commentScannersQueue.AddScanner(new CommentScanner(CommunityId, postId, ClientApi, DataManager, Configuration));
                 }
                 Thread.Sleep(Configuration.ScanPostDelay);
@@ -41,7 +42,7 @@ internal class PostScanner : Scanner
     public override void StopScan()
     {
         StopScanToken.Cancel();
-        Console.WriteLine("Stop post scanning");
+        Logger.Write("Stop post scanning");
         _commentScannersQueue.Clear();
     }
 }

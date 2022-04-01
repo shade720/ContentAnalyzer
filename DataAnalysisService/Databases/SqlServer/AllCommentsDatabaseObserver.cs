@@ -1,5 +1,5 @@
 ﻿using System.Data.SqlClient;
-using Interfaces;
+using Common;
 
 namespace DataAnalysisService.Databases.SqlServer;
 
@@ -28,7 +28,7 @@ public class AllCommentsDatabaseObserver : IDatabaseObserver
         _connection.Open();
         _cancellation = new CancellationTokenSource();
         var result = LoadingLoop(_cancellation.Token);
-        Console.WriteLine($"Loading started on {_connection.ConnectionString} with delay {_observeDelay}");
+        Logger.Write($"Loading started on {_connection.ConnectionString} with delay {_observeDelay}");
     }
 
     public void StopLoading()
@@ -39,7 +39,7 @@ public class AllCommentsDatabaseObserver : IDatabaseObserver
         OnDataReceivedEvent -= _newDataHandler.Invoke;
         _cancellation.Cancel();
         _connection.Close();
-        Console.WriteLine($"Loading stopped on {_connection.ConnectionString}");
+        Logger.Write($"Loading stopped on {_connection.ConnectionString}");
     }
 
     public void OnDataArrived(Action<ICommentData> handler) => _newDataHandler = handler;
@@ -94,7 +94,7 @@ public class AllCommentsDatabaseObserver : IDatabaseObserver
             {
                 _connection.Close();
                 _connection.Open();
-                Console.WriteLine($"{e.Message} {e.StackTrace}");
+                Logger.Write($"{e.Message} {e.StackTrace}");
             }
         }
         if (attempts == 3) throw new Exception("Number of attempts to access to database was exceeded");
