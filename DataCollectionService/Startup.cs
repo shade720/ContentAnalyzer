@@ -24,7 +24,7 @@ public static class Startup
                 QueueSize = Convert.ToInt32(ConfigurationManager.AppSettings["PostQueueSize"])
             });
             vkDataCollector.AddCommunity(Convert.ToInt64(ConfigurationManager.AppSettings["NRGroupId"]));
-            //vkDataCollector.AddCommunity(Convert.ToInt64(ConfigurationManager.AppSettings["LentachGroupId"]));
+            vkDataCollector.AddCommunity(Convert.ToInt64(ConfigurationManager.AppSettings["LentachGroupId"]));
             vkDataCollector.AddCommunity(Convert.ToInt64(ConfigurationManager.AppSettings["CSGOHS"]));
             vkDataCollector.Subscribe(dataFrame => Logger.Write($"Add {dataFrame.Id} {dataFrame.Id} {dataFrame.PostId} {dataFrame.GroupId} {dataFrame.AuthorId} {dataFrame.Text} {dataFrame.PostDate}"));
             return vkDataCollector;

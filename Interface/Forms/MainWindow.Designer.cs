@@ -400,7 +400,7 @@
             // 
             this.SelectedCommentsFoundLabel.AutoSize = true;
             this.SelectedCommentsFoundLabel.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.SelectedCommentsFoundLabel.Location = new System.Drawing.Point(184, 90);
+            this.SelectedCommentsFoundLabel.Location = new System.Drawing.Point(191, 90);
             this.SelectedCommentsFoundLabel.Name = "SelectedCommentsFoundLabel";
             this.SelectedCommentsFoundLabel.Size = new System.Drawing.Size(17, 20);
             this.SelectedCommentsFoundLabel.TabIndex = 8;
@@ -410,7 +410,7 @@
             // 
             this.CommentsFoundLabel.AutoSize = true;
             this.CommentsFoundLabel.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.CommentsFoundLabel.Location = new System.Drawing.Point(184, 59);
+            this.CommentsFoundLabel.Location = new System.Drawing.Point(191, 59);
             this.CommentsFoundLabel.Name = "CommentsFoundLabel";
             this.CommentsFoundLabel.Size = new System.Drawing.Size(17, 20);
             this.CommentsFoundLabel.TabIndex = 7;
@@ -430,7 +430,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label2.Location = new System.Drawing.Point(23, 90);
+            this.label2.Location = new System.Drawing.Point(30, 90);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(162, 20);
             this.label2.TabIndex = 1;
@@ -440,7 +440,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label1.Location = new System.Drawing.Point(43, 59);
+            this.label1.Location = new System.Drawing.Point(50, 59);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(142, 20);
             this.label1.TabIndex = 0;
