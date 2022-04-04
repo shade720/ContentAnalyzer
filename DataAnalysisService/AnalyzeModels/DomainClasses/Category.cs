@@ -1,6 +1,6 @@
 ﻿using Common;
 
-namespace DataAnalysisService.AnalyzeModelController;
+namespace DataAnalysisService.AnalyzeModels.DomainClasses;
 
 public class Category : ICategory
 {

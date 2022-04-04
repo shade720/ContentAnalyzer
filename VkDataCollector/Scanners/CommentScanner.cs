@@ -11,14 +11,14 @@ internal class CommentScanner : Scanner
     
     private readonly Dictionary<long, long?> _receivedCommentIds = new();
 
-    public CommentScanner(long communityId, long postId, VkApi vkApi, DataManager dataManager, Config configuration) : base(
-        communityId, vkApi, dataManager, configuration) =>
-        PostId = postId;
+    public CommentScanner(long communityId, long postId, VkApi vkApi, CommentDataManager dataManager, Config configuration) : base(
+        communityId, vkApi, dataManager, configuration) => PostId = postId;
 
     public override void StartScan()
     {
         StopScanToken = new CancellationTokenSource();
-        DataManager.SendAllData(DataManager.ConvertAll(GetPresentComments()));
+        var presentComments = GetPresentComments();
+        CommentManager.SendAllData(presentComments);
         var scanResult = ScanComments();
     }
 
@@ -60,19 +60,19 @@ internal class CommentScanner : Scanner
 
     private bool AnyNewComments()
     {
-        return _receivedCommentIds.Count < ClientApi.GetCommentsCount(CommunityId, PostId).Result;
+        return _receivedCommentIds.Count < ClientApi.GetCommentsCountAsync(CommunityId, PostId).Result;
     }
 
     private void ScanBranch(out WallGetCommentsResult branch, long? commentId = null)
     {
-        branch = ClientApi.GetComments(PostId, 100, CommunityId, 0, SortOrderBy.Asc, commentId).Result;
+        branch = ClientApi.GetCommentsAsync(PostId, 100, CommunityId, 0, SortOrderBy.Asc, commentId).Result;
         if (branch.Count == 0) return;
 
         var sortedBranch = branch.Items.Reverse().ToArray();
         for (var i = 0; i < sortedBranch.Length && !_receivedCommentIds.ContainsKey(sortedBranch[i].Id); i++)
         {
             var comment = sortedBranch[i];
-            DataManager.SendData(DataManager.Convert(comment));
+            CommentManager.SendData(comment);
             _receivedCommentIds.TryAdd(comment.Id, comment.Thread is null ? 0 : comment.Thread.Count);
         }
     }
@@ -80,13 +80,13 @@ internal class CommentScanner : Scanner
     private List<Comment> GetBranch(long? commentId = null)
     {
         var comments = new List<Comment>();
-        long count = 100;
-        for (var i = 0; i < count; i += 100)
+        long startCount = 100;
+        for (var offset = 0; offset < startCount; offset += 100)
         {
-            var reply = ClientApi.GetComments(PostId, 100, CommunityId, i, SortOrderBy.Asc, commentId).Result;
+            var reply = ClientApi.GetCommentsAsync(PostId, 100, CommunityId, offset, SortOrderBy.Asc, commentId).Result;
             comments.AddRange(reply.Items);
             foreach (var comment in reply.Items) _receivedCommentIds.TryAdd(comment.Id, comment.Thread?.Count ?? 0);
-            count = reply.Count;
+            startCount = reply.Count;
         }
         return comments;
     }

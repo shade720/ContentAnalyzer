@@ -2,7 +2,7 @@
 using System.Text;
 using Common;
 
-namespace DataAnalysisService.AnalyzeModelController;
+namespace DataAnalysisService.AnalyzeModels.DomainClasses;
 
 public class PythonRunner
 {

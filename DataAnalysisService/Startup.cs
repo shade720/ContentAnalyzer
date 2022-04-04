@@ -1,7 +1,7 @@
-﻿using DataAnalysisService.AnalyzeModelController;
-using DataAnalysisService.Databases.SqlServer;
+﻿using DataAnalysisService.Databases.SqlServer;
 using System.Configuration;
 using Common;
+using DataAnalysisService.AnalyzeModels.ModelImplementations;
 
 namespace DataAnalysisService;
 
@@ -10,7 +10,7 @@ public static class Startup
     public static void ConfigureService()
     {
         DataAnalysisService.RegisterSourceDatabase(new AllCommentsDatabaseObserver(ConfigurationManager.ConnectionStrings["AllCommentsDatabase"].ConnectionString, 60000));
-        DataAnalysisService.RegisterSaveDatabase(new DangerCommentsDatabaseServerClient(ConfigurationManager.ConnectionStrings["DangerCommentsDatabase"].ConnectionString));
+        DataAnalysisService.RegisterSaveDatabase(new SuspiciousCommentsDatabaseClient(ConfigurationManager.ConnectionStrings["DangerCommentsDatabase"].ConnectionString));
 
         DataAnalysisService.AddModel("InsultThreatObscenityCategories",
             () =>

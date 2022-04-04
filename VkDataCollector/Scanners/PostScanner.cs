@@ -7,9 +7,8 @@ internal class PostScanner : Scanner
 {
     private readonly CommentScannersQueue _commentScannersQueue;
 
-    public PostScanner(long communityId, VkApi vkApi, Data.DataManager dataManager, Config configuration) : base(communityId, vkApi,
-        dataManager, configuration) =>
-        _commentScannersQueue = new CommentScannersQueue(configuration.QueueSize);
+    public PostScanner(long communityId, VkApi vkApi, Data.CommentDataManager dataManager, Config configuration) : base(communityId, vkApi,
+        dataManager, configuration) => _commentScannersQueue = new CommentScannersQueue(configuration.QueueSize);
 
     public override void StartScan()
     {
@@ -23,10 +22,11 @@ internal class PostScanner : Scanner
         {
             while (!StopScanToken.Token.IsCancellationRequested)
             {
-                if (IsNewPost(out var postId))
+                if (IsThereNewPost(out var postId))
                 { 
                     Logger.Write($"New post released {postId} group {CommunityId}");
-                    _commentScannersQueue.AddScanner(new CommentScanner(CommunityId, postId, ClientApi, DataManager, Configuration));
+                    //Each post has a comment scanner, which is added to the queue which is added to the queue for convenient stopping and deleting 
+                    _commentScannersQueue.AddScanner(new CommentScanner(CommunityId, postId, ClientApi, CommentManager, Configuration));
                 }
                 await Task.Delay(Configuration.ScanPostDelay, StopScanToken.Token);
             }
@@ -34,9 +34,9 @@ internal class PostScanner : Scanner
         }, StopScanToken.Token);
     }
 
-    private bool IsNewPost(out long postId)
+    private bool IsThereNewPost(out long postId)
     {
-        postId = ClientApi.GetPostId(1, CommunityId).Result;
+        postId = ClientApi.GetPostIdAsync(CommunityId ,1 ).Result;
         return !_commentScannersQueue.Contains(postId) && postId != 0;
     }
 

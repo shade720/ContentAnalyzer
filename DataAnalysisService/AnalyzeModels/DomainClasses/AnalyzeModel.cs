@@ -1,8 +1,8 @@
 ﻿using Common;
 
-namespace DataAnalysisService.AnalyzeModelController;
+namespace DataAnalysisService.AnalyzeModels.DomainClasses;
 
-public abstract class AnalyzeModel : IAnalyzeModel
+public abstract class AnalyzeModel
 {
     protected PythonRunner Runner;
     protected readonly string Interpreter;
@@ -37,7 +37,7 @@ public abstract class AnalyzeModel : IAnalyzeModel
         OnEvaluateResultArrivedEvent += evaluateResultHandler.Invoke;
     }
 
-    public abstract void StartPredictiveListener();
+    public abstract void StartPredictiveModel();
 
     public abstract void StartTrainModel();
 

@@ -4,25 +4,25 @@ using VkNet.Model;
 
 namespace VkDataCollector.Data;
 
-internal class DataManager
+internal class CommentDataManager
 {
-    public delegate void NewData(CommentData entry);
-    public event NewData? OnNewDataArrivedEvent;
+    public delegate void NewCommentFound(CommentData entry);
+    public event NewCommentFound OnNewCommentFoundEvent;
 
-    public void SendData(CommentData entry)
+    public void SendData(Comment comment)
     {
-        OnNewDataArrivedEvent?.Invoke(entry);
+        OnNewCommentFoundEvent?.Invoke(Convert(comment));
     }
 
-    public void SendAllData(IEnumerable<CommentData> entries)
+    public void SendAllData(IEnumerable<Comment> comments)
     {
-        foreach (var entry in entries)
+        foreach (var comment in comments)
         {
-            OnNewDataArrivedEvent?.Invoke(entry);
+            OnNewCommentFoundEvent?.Invoke(Convert(comment));
         }
     }
 
-    public static CommentData Convert(Comment comment)
+    private static CommentData Convert(Comment comment)
     {
         return new CommentData(
             comment.Id,
@@ -32,16 +32,11 @@ internal class DataManager
             ClearText(comment.Text),
             comment.Date ?? new DateTime(0, 0, 0));
     }
-    public static IEnumerable<CommentData> ConvertAll(IEnumerable<Comment>  comments)
-    {
-        return comments.Select(Convert).ToList();
-    }
 
     private static string ClearText(string text)
     {
-        var result = UnicodeToUtf8(ProcessString(text));
+        var result = UnicodeToUtf8(ClearString(text));
         if (result.StartsWith('[')) result = result.Remove(result.IndexOf('['), result.IndexOf(']') - result.IndexOf('[') + 2).Trim();
-        //result = result.Replace("?", "");
         return result;
     }
 
@@ -52,7 +47,7 @@ internal class DataManager
         return Encoding.GetEncoding(1251).GetString(bytes);
     }
 
-    private static string ProcessString(string str)
+    private static string ClearString(string str)
     {
         var regex = new Regex(@"[\p{Cc}\p{Cf}\p{Mn}\p{Me}\p{Zl}\p{Zp}]");
         return regex.Replace(str, "");

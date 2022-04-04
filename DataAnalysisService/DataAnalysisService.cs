@@ -1,6 +1,6 @@
-﻿using DataAnalysisService.AnalyzeModelController;
-using DataAnalysisService.Databases.SqlServer;
+﻿using DataAnalysisService.Databases.SqlServer;
 using Common;
+using DataAnalysisService.AnalyzeModels.DomainClasses;
 
 namespace DataAnalysisService;
 
@@ -65,7 +65,7 @@ public static class DataAnalysisService
                 AnalyzeModels[modelName].StopModel();
             }
         );
-        AnalyzeModels[modelName].StartPredictiveListener();
+        AnalyzeModels[modelName].StartPredictiveModel();
         Logger.Write($"Model {modelName} started listen predicts");
 
         if (_sourceDatabase.IsLoadingStarted) return;

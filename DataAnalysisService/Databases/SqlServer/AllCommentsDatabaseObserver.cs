@@ -1,4 +1,5 @@
-﻿using System.Data.SqlClient;
+﻿using System.Data;
+using System.Data.SqlClient;
 using Common;
 
 namespace DataAnalysisService.Databases.SqlServer;
@@ -6,7 +7,7 @@ namespace DataAnalysisService.Databases.SqlServer;
 public class AllCommentsDatabaseObserver : IDatabaseObserver
 {
     private readonly SqlConnection _connection;
-    private readonly List<long> _receivedIDs = new();
+    private long _lastReceivedId;
     private readonly int _observeDelay;
     private CancellationTokenSource _cancellation;
     private Action<ICommentData> _newDataHandler;
@@ -22,10 +23,13 @@ public class AllCommentsDatabaseObserver : IDatabaseObserver
 
     public void StartLoading()
     {
-        if(IsLoadingStarted) throw new Exception("Loading already started");
+        if (IsLoadingStarted) throw new Exception("Loading already started");
+        if (_connection.State == ConnectionState.Open) throw new Exception("Loading not started but connection was open");
+        if (_newDataHandler is null) throw new Exception($"Handler not set {nameof(StopLoading)}");
+
         IsLoadingStarted = true;
-        OnDataReceivedEvent += _newDataHandler.Invoke;
         _connection.Open();
+        OnDataReceivedEvent += _newDataHandler.Invoke;
         _cancellation = new CancellationTokenSource();
         var result = LoadingLoop(_cancellation.Token);
         Logger.Write($"Loading started on {_connection.ConnectionString} with delay {_observeDelay}");
@@ -35,6 +39,8 @@ public class AllCommentsDatabaseObserver : IDatabaseObserver
     {
         if(!IsLoadingStarted) throw new Exception($"Loading already stopped {nameof(StopLoading)}");
         if (_newDataHandler is null) throw new Exception($"Handler not set {nameof(StopLoading)}");
+        if (_connection.State == ConnectionState.Closed) throw new Exception("Loading not stopped but connection was closed");
+
         IsLoadingStarted = false;
         OnDataReceivedEvent -= _newDataHandler.Invoke;
         _cancellation.Cancel();
@@ -48,12 +54,12 @@ public class AllCommentsDatabaseObserver : IDatabaseObserver
 
     private async Task LoadingLoop(CancellationToken cancellationToken)
     {
-        await Task.Run(() =>
+        await Task.Run(async () =>
         {
             while (!cancellationToken.IsCancellationRequested)
             {
                 LoadData();
-                Thread.Sleep(_observeDelay);
+                await Task.Delay(_observeDelay, cancellationToken);
             }
         }, cancellationToken);
     }
@@ -67,9 +73,10 @@ public class AllCommentsDatabaseObserver : IDatabaseObserver
             while (reader.Read())
             {
                 var receivedId = Convert.ToInt64(reader["Id"]);
-                if (_receivedIDs.Contains(receivedId)) break;
-                _receivedIDs.Add(receivedId);
-                OnDataReceivedEvent.Invoke(new CommentData(
+                if (_lastReceivedId == receivedId) break;
+                _lastReceivedId = receivedId;
+                OnDataReceivedEvent?.Invoke(new CommentData
+                (
                     Convert.ToInt64(reader["CommentId"]),
                     reader["Content"].ToString() ?? string.Empty,
                     Convert.ToInt64(reader["PostId"]),

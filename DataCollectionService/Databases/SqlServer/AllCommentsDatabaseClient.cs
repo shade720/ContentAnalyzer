@@ -44,7 +44,7 @@ public class AllCommentsDatabaseClient : MsSqlServerClient
                 ));
             }
         });
-        return result as List<T>;
+        return result as List<T> ?? new List<T>();
     }
 
     public override void Clear()

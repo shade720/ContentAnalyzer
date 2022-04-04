@@ -25,7 +25,8 @@ public abstract class MsSqlServerClient : IDatabaseClient
     protected void SafeAccess(Action accessAction)
     {
         int attempts;
-        for (attempts = 0; attempts < 3; attempts++)
+        const int retryDelayMs = 5000;
+        for (attempts = 0; attempts < 5; attempts++)
         {
             try
             {
@@ -37,6 +38,7 @@ public abstract class MsSqlServerClient : IDatabaseClient
                 Connection.Close();
                 Connection.Open();
                 Logger.Write($"{e.Message} {e.StackTrace}");
+                Thread.Sleep(retryDelayMs);
             }
         }
         if (attempts == 3) throw new Exception("Number of attempts to access to database was exceeded");

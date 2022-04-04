@@ -1,12 +1,12 @@
 ﻿using System.Data.SqlClient;
-using DataAnalysisService.AnalyzeModelController;
 using Common;
+using DataAnalysisService.AnalyzeModels.DomainClasses;
 
 namespace DataAnalysisService.Databases.SqlServer;
 
-public class DangerCommentsDatabaseServerClient : MsSqlServerClient
+public class SuspiciousCommentsDatabaseClient : MsSqlServerClient
 {
-    public DangerCommentsDatabaseServerClient(string connectionString) : base(connectionString) { }
+    public SuspiciousCommentsDatabaseClient(string connectionString) : base(connectionString) { }
     public override void Add<T>(T result)
     {
         SafeAccess(()=>

@@ -1,7 +1,7 @@
 ﻿using System.Globalization;
 using Common;
 
-namespace DataAnalysisService.AnalyzeModelController;
+namespace DataAnalysisService.AnalyzeModels.DomainClasses;
 
 public class PredictResult : IPredictionResult
 {

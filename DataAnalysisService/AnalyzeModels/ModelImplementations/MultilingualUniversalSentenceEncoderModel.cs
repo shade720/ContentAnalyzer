@@ -1,6 +1,7 @@
 ﻿using Common;
+using DataAnalysisService.AnalyzeModels.DomainClasses;
 
-namespace DataAnalysisService.AnalyzeModelController;
+namespace DataAnalysisService.AnalyzeModels.ModelImplementations;
 
 internal class MultilingualUniversalSentenceEncoderModel : AnalyzeModel
 {
@@ -26,7 +27,7 @@ internal class MultilingualUniversalSentenceEncoderModel : AnalyzeModel
         _evaluateThreshold = evaluateThresholdPercent;
     }
 
-    public override void StartPredictiveListener()
+    public override void StartPredictiveModel()
     {
         if (IsRunning) throw new Exception("Runner is already using script");
         try
@@ -43,7 +44,7 @@ internal class MultilingualUniversalSentenceEncoderModel : AnalyzeModel
         }
         catch (Exception e)
         {
-            throw new Exception($"{nameof(StartPredictiveListener)}", e);
+            throw new Exception($"{nameof(StartPredictiveModel)}", e);
         }
     }
 

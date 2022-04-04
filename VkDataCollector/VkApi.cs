@@ -10,16 +10,24 @@ internal class VkApi
 {
     private readonly VkNet.VkApi _api = new();
 
-    public async Task Auth(ulong applicationId, string secureKey, string serviceAccessKey)
+    /// <summary>
+    /// Performs asynchronous API authentication.
+    /// </summary>
+    /// <param name="applicationId">Identificator of vk application.</param>
+    /// <param name="secureKey">Secure key of vk application.</param>
+    /// <param name="serviceAccessKey">Service access key of vk application.</param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentException"></exception>
+    public async Task AuthAsync(ulong applicationId, string secureKey, string serviceAccessKey)
     {
         if (_api.IsAuthorized)
         {
-            Logger.Write("User already logged in");
+            Logger.Write("User already authorized");
             return;
         }
         if (applicationId <= 0 || string.IsNullOrEmpty(secureKey) || string.IsNullOrEmpty(serviceAccessKey))
         {
-            throw new ArgumentException($"Incorrect input data {nameof(Auth)}");
+            throw new ArgumentException($"Incorrect input data {nameof(AuthAsync)}");
         }
         async Task<int> Func()
         {
@@ -36,11 +44,18 @@ internal class VkApi
         await Try(Func);
     }
 
-    public async Task<int> GetCommentsCount(long groupId, long postId)
+    /// <summary>
+    /// Asynchronously receives the number of comments under the post.
+    /// </summary>
+    /// <param name="groupId">Group id (starts with "-").</param>
+    /// <param name="postId"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentException"></exception>
+    public async Task<int> GetCommentsCountAsync(long groupId, long postId)
     {
         if (groupId == 0 || postId <= 0)
         {
-            throw new ArgumentException($"Incorrect input data {nameof(GetCommentsCount)}");
+            throw new ArgumentException($"Incorrect input data {nameof(GetCommentsCountAsync)}");
         }
         async Task<int> Func()
         {
@@ -49,8 +64,11 @@ internal class VkApi
         }
         return await Try(Func);
     }
-
-    public async Task LogOut()
+    /// <summary>
+    /// Performs asynchronous API log out.
+    /// </summary>
+    /// <returns></returns>
+    public async Task LogOutAsync()
     {
         if (!_api.IsAuthorized)
         {
@@ -66,25 +84,44 @@ internal class VkApi
         await Try(Func);
     }
 
-    public async Task<long> GetPostId(ulong offset, long? ownerId)
+    /// <summary>
+    /// Asynchronously receives the identificator of post by groupId and offset.
+    /// </summary>
+    /// <param name="groupId">Group id (starts with "-").</param>
+    /// <param name="offset">Post number from the beginning.</param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentException"></exception>
+    public async Task<long> GetPostIdAsync(long groupId, ulong offset)
     {
-        if (ownerId is null)
+        if (groupId <= 0)
         {
-            throw new ArgumentException($"Incorrect input data {nameof(GetPostId)}");
+            throw new ArgumentException($"Incorrect input data {nameof(GetPostIdAsync)}");
         }
         async Task<long> Func()
         {
-            var id = await _api.Wall.GetAsync(new WallGetParams { OwnerId = ownerId, Count = 1, Extended = false, Offset = offset });
+            var id = await _api.Wall.GetAsync(new WallGetParams { OwnerId = groupId, Count = 1, Extended = false, Offset = offset });
             return id.WallPosts[0].Id.GetValueOrDefault(0);
         }
         return await Try(Func);
     }
 
-    public async Task<WallGetCommentsResult> GetComments(long postId, int count, long? ownerId, int offset, SortOrderBy sort, long? commentId = null)
+    /// <summary>
+    /// Asynchronously receives (count) comments from post by post id and group id with offset and special sort.
+    /// Also can get branch of comments from branch id.
+    /// /// </summary>
+    /// <param name="postId"></param>
+    /// <param name="count"></param>
+    /// <param name="groupId"></param>
+    /// <param name="offset"></param>
+    /// <param name="sort"></param>
+    /// <param name="branchId"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentException"></exception>
+    public async Task<WallGetCommentsResult> GetCommentsAsync(long postId, int count, long groupId, int offset, SortOrderBy sort, long? branchId = null)
     {
-        if (count <= 0 || offset < 0 || ownerId is null || postId <= 0)
+        if (count <= 0 || offset < 0 || groupId <= 0 || postId <= 0)
         {
-            throw new ArgumentException($"Incorrect input data {nameof(GetComments)}");
+            throw new ArgumentException($"Incorrect input data {nameof(GetCommentsAsync)}");
         }
 
         async Task<WallGetCommentsResult> Func()
@@ -93,20 +130,26 @@ internal class VkApi
             {
                 PostId = postId,
                 Count = count,
-                OwnerId = ownerId,
+                OwnerId = groupId,
                 Offset = offset,
-                CommentId = commentId,
+                CommentId = branchId,
                 Sort = sort
             });
         }
         return await Try(Func);
     }
 
+    /// <summary>
+    /// Performs safe access to vk API with few attempts of retry.
+    /// </summary>
+    /// <typeparam name="T">A function that should be performed with safe access.</typeparam>
+    /// <param name="apiFunc"></param>
+    /// <returns></returns>
+    /// <exception cref="Exception"></exception>
     private static async Task<T> Try<T>(Func<Task<T>> apiFunc)
     {
-        var attempts = 0;
         const int retryDelayMs = 5000;
-        while (true)
+        for (var attempts = 0; attempts < 10; attempts++)
         {
             try
             {
@@ -114,11 +157,10 @@ internal class VkApi
             }
             catch (Exception e)
             {
-                if (attempts > 10) throw;
                 Thread.Sleep(retryDelayMs);
                 await Console.Out.WriteLineAsync($"{e.Message} {e.StackTrace}");
-                attempts++;
             }
         }
+        throw new Exception("Number of attempts was exceeded");
     }
 }
