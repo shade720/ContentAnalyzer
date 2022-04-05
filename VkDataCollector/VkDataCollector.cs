@@ -39,13 +39,13 @@ public class VkDataCollector : IDataCollector
         var result = _vkApi.AuthAsync(_config.ApplicationId, _config.SecureKey, _config.ServiceAccessKey);
         foreach (var scanner in _postScanners) 
             scanner.StartScan();
-        Logger.Write("Data collection has begun");
+        Logger.Log("Data collection has begun", Logger.LogLevel.Information);
     }
 
     public void StopCollecting()
     {
         foreach (var scanner in _postScanners) scanner.StopScan();
         var result = _vkApi.LogOutAsync();
-        Logger.Write("Data collection has stopped");
+        Logger.Log("Data collection has stopped", Logger.LogLevel.Information);
     }
 }

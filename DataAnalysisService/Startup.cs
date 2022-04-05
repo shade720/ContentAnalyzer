@@ -25,7 +25,7 @@ public static class Startup
                     new[] {"Normal", "Insult", "Threat", "Obscenity"}
                 );
                 insultThreatObscenityModel.Subscribe(
-                    predictResult => Logger.Write($"Predict {predictResult.CommentData.Text} ----> {predictResult}\n\n"),
+                    predictResult => Logger.Log($"Predict {predictResult.CommentData.Text} ----> {predictResult}\n\n", Logger.LogLevel.Information),
                     evaluateResult => { },
                     error => { });
                 return insultThreatObscenityModel;
@@ -45,7 +45,7 @@ public static class Startup
                     new[] {"Normal", "Toxic"}
                 );
                 toxicModel.Subscribe(
-                    predictResult => Logger.Write($"Predict {predictResult.CommentData.Text} ----> {predictResult}\n\n"),
+                    predictResult => Logger.Log($"Predict {predictResult.CommentData.Text} ----> {predictResult}\n\n", Logger.LogLevel.Information),
                     evaluateResult => { },
                     error => { });
                 return toxicModel;

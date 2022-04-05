@@ -98,7 +98,7 @@ internal class MultilingualUniversalSentenceEncoderModel : AnalyzeModel
         Runner.OnExitedEvent -= RunnerOnExitEventHandler;
         Runner.OnStartedEvent -= RunnerOnStartedEventHandler;
         Runner.Abort();
-        Logger.Write("Model stopped");
+        Logger.Log("Model stopped", Logger.LogLevel.Information);
     }
 
     #endregion
@@ -120,7 +120,7 @@ internal class MultilingualUniversalSentenceEncoderModel : AnalyzeModel
         Runner.OnErrorReceivedEvent -= RunnerOnErrorReceivedEventHandler;
         Runner.OnExitedEvent -= RunnerOnExitEventHandler;
         Runner.OnStartedEvent -= RunnerOnStartedEventHandler;
-        Logger.Write("Script ended");
+        Logger.Log("Script ended", Logger.LogLevel.Information);
     }
 
     private void RunnerOnErrorReceivedEventHandler(string errorMessage)
@@ -132,7 +132,7 @@ internal class MultilingualUniversalSentenceEncoderModel : AnalyzeModel
     {
         _scriptInitialize.Set();
         IsRunning = true;
-        Logger.Write("Script started");
+        Logger.Log("Script started", Logger.LogLevel.Information);
     }
 
     #endregion

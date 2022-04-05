@@ -21,7 +21,7 @@ public static class DataAnalysisService
         if (AnalyzeModels.Count == 0) throw new ArgumentException($"At least one analysis model must be added {nameof(StartService)}");
         _targetDatabase.Connect();
         _targetDatabase.Clear();
-        Logger.Write("Service started, target database is ready");
+        Logger.Log("Service started, target database is ready", Logger.LogLevel.Information);
     }
 
     public static void StartAll()
@@ -40,7 +40,7 @@ public static class DataAnalysisService
     {
         if (!AnalyzeModels[modelName].IsRunning)
         {
-            Logger.Write($"Model {modelName} not running");
+            Logger.Log($"Model {modelName} not running", Logger.LogLevel.Error);
             return;
         }
         AnalyzeModels[modelName].Predict(dataFrame);
@@ -50,41 +50,41 @@ public static class DataAnalysisService
         if (_sourceDatabase is null || _targetDatabase is null) throw new ArgumentException($"Not all databases is registered {nameof(StartModel)}");
         if (AnalyzeModels[modelName].IsRunning)
         {
-            Logger.Write($"Model {modelName} already in work");
+            Logger.Log($"Model {modelName} already in work", Logger.LogLevel.Error);
             return;
         }
 
-        Logger.Write($"Starting model {modelName} to listen predicts...");
+        Logger.Log($"Starting model {modelName} to listen predicts...", Logger.LogLevel.Information);
         AnalyzeModels[modelName].Subscribe(
             predictionResult => { },
             _targetDatabase.Add,
             error =>
             {
                 if (!error.Contains("NameError")) return;
-                Logger.Write($"Model {modelName} has stopped by script exception {error}");
+                Logger.Log($"Model {modelName} has stopped by script exception {error}", Logger.LogLevel.Fatal);
                 AnalyzeModels[modelName].StopModel();
             }
         );
         AnalyzeModels[modelName].StartPredictiveModel();
-        Logger.Write($"Model {modelName} started listen predicts");
+        Logger.Log($"Model {modelName} started listen predicts", Logger.LogLevel.Information);
 
         if (_sourceDatabase.IsLoadingStarted) return;
         _sourceDatabase.OnDataArrived(AnalyzeByAny);
         _sourceDatabase.StartLoading();
-        Logger.Write("Source database started sending data");
+        Logger.Log("Source database started sending data", Logger.LogLevel.Information);
     }
 
     public static void StopService()
     {
         if (_targetDatabase is null) throw new ArgumentException($"Target database is not registered {nameof(StopService)}");
         _targetDatabase.Disconnect();
-        Logger.Write("Service stopped");
+        Logger.Log("Service stopped", Logger.LogLevel.Information);
     }
 
     public static void StopAll()
     {
         foreach (var (modelName, _) in AnalyzeModels) Stop(modelName);
-        Logger.Write("All model are stopped");
+        Logger.Log("All model are stopped", Logger.LogLevel.Information);
     }
 
     public static void Stop(string modelName)
@@ -92,13 +92,13 @@ public static class DataAnalysisService
         if (_sourceDatabase is null) throw new ArgumentException($"Source database is not registered {nameof(Stop)}");
         if (!AnalyzeModels[modelName].IsRunning)
         {
-            Logger.Write($"Model {modelName} already stopped");
+            Logger.Log($"Model {modelName} already stopped", Logger.LogLevel.Error);
             return;
         }
         if (IsLastRunningModel() && _sourceDatabase.IsLoadingStarted) 
             _sourceDatabase.StopLoading();
         AnalyzeModels[modelName].StopModel();
-        Logger.Write($"{modelName} executing stopped");
+        Logger.Log($"{modelName} executing stopped", Logger.LogLevel.Information);
     }
 
     private static bool IsLastRunningModel()
@@ -112,7 +112,7 @@ public static class DataAnalysisService
     {
         if (AnalyzeModels.ContainsKey(modelName))
         {
-            Logger.Write($"Model {modelName} already added to service");
+            Logger.Log($"Model {modelName} already added to service", Logger.LogLevel.Error);
             return;
         }
         AnalyzeModels.Add(modelName, modelConfiguration.Invoke());
@@ -130,28 +130,10 @@ public static class DataAnalysisService
     {
         if (AnalyzeModels[modelName].IsRunning)
         {
-            Logger.Write($"Model {modelName} already in work");
+            Logger.Log($"Model {modelName} already in work", Logger.LogLevel.Error);
             return;
         }
         AnalyzeModels[modelName].StartTrainModel();
-        Logger.Write($"Model {modelName} started training");
+        Logger.Log($"Model {modelName} started training", Logger.LogLevel.Information);
     }
-
-    //public static void SafeExecute(Action action)
-    //{
-    //    while (true)
-    //    {
-    //        try
-    //        {
-    //            action.Invoke();
-    //            break;
-    //        }
-    //        catch (Exception e)
-    //        {
-    //            Console.WriteLine($"Message {e.Message} Inner {e.InnerException}");
-    //            Console.WriteLine("Service crashed. Restarting...");
-    //            Thread.Sleep(5000);
-    //        }
-    //    }
-    //}
 }

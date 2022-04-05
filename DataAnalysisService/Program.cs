@@ -16,7 +16,7 @@ public static class Program
             Thread.Sleep(5000);
         }
 
-        Logger.Write("Service stops work...");
+        Logger.Log("Service stops work...", Logger.LogLevel.Information);
 
         DataAnalysisService.StopAll();
         DataAnalysisService.StopService();

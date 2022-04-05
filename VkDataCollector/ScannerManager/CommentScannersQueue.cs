@@ -20,14 +20,14 @@ internal class CommentScannersQueue
         if (_queue.Count == _queueSize) RemoveScanner(out _);
         scanner.StartScan();
         _queue.Enqueue(scanner);
-        Logger.Write("Comment scanner added to queue");
+        Logger.Log("Comment scanner added to queue", Logger.LogLevel.Information);
     }
 
     private void RemoveScanner(out CommentScanner result)
     {
         result = _queue.Dequeue();
         result.StopScan();
-        Logger.Write($"Stop and delete comment scanner {result.PostId}");
+        Logger.Log($"Stop and delete comment scanner {result.PostId}", Logger.LogLevel.Information);
     }
     public void Clear()
     {
@@ -35,6 +35,6 @@ internal class CommentScannersQueue
         {
             RemoveScanner(out _);
         }
-        Logger.Write("Queue cleared");
+        Logger.Log("Queue cleared", Logger.LogLevel.Information);
     }
 }

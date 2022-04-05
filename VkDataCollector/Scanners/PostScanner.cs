@@ -24,7 +24,7 @@ internal class PostScanner : Scanner
             {
                 if (IsThereNewPost(out var postId))
                 { 
-                    Logger.Write($"New post released {postId} group {CommunityId}");
+                    Logger.Log($"New post released {postId} group {CommunityId}", Logger.LogLevel.Information);
                     //Each post has a comment scanner, which is added to the queue which is added to the queue for convenient stopping and deleting 
                     _commentScannersQueue.AddScanner(new CommentScanner(CommunityId, postId, ClientApi, CommentManager, Configuration));
                 }
@@ -43,7 +43,7 @@ internal class PostScanner : Scanner
     public override void StopScan()
     {
         StopScanToken.Cancel();
-        Logger.Write("Stop post scanning");
+        Logger.Log("Stop post scanning", Logger.LogLevel.Information);
         _commentScannersQueue.Clear();
     }
 }

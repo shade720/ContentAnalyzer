@@ -91,7 +91,7 @@ public class PythonRunner
             _pythonProcess.ErrorDataReceived -= OnErrorDataReceivedHandler;
             _pythonProcess.Kill();
             OnExitedEvent?.Invoke();
-            Logger.Write("Script stopped");
+            Logger.Log("Script stopped", Logger.LogLevel.Information);
         }
     }
 

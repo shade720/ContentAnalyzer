@@ -22,11 +22,12 @@ internal class VkApi
     {
         if (_api.IsAuthorized)
         {
-            Logger.Write("User already authorized");
+            Logger.Log("User already authorized", Logger.LogLevel.Error);
             return;
         }
         if (applicationId <= 0 || string.IsNullOrEmpty(secureKey) || string.IsNullOrEmpty(serviceAccessKey))
         {
+            Logger.Log($"Incorrect input data {nameof(AuthAsync)}", Logger.LogLevel.Fatal);
             throw new ArgumentException($"Incorrect input data {nameof(AuthAsync)}");
         }
         async Task<int> Func()
@@ -38,7 +39,7 @@ internal class VkApi
                 ApplicationId = applicationId,
                 Settings = Settings.All
             });
-            Logger.Write("Auth completed success");
+            Logger.Log("Auth completed success", Logger.LogLevel.Information);
             return 0;
         }
         await Try(Func);
@@ -55,6 +56,7 @@ internal class VkApi
     {
         if (groupId == 0 || postId <= 0)
         {
+            Logger.Log($"Incorrect input data {nameof(GetCommentsCountAsync)}", Logger.LogLevel.Fatal);
             throw new ArgumentException($"Incorrect input data {nameof(GetCommentsCountAsync)}");
         }
         async Task<int> Func()
@@ -72,13 +74,13 @@ internal class VkApi
     {
         if (!_api.IsAuthorized)
         {
-            Logger.Write("User is already logged out!");
+            Logger.Log("User is already logged out!", Logger.LogLevel.Error);
             return;
         }
         async Task<int> Func()
         {
             await _api.LogOutAsync();
-            Logger.Write("Log out completed success");
+            Logger.Log("Log out completed success", Logger.LogLevel.Information);
             return 0;
         }
         await Try(Func);
@@ -95,6 +97,7 @@ internal class VkApi
     {
         if (groupId >= 0)
         {
+            Logger.Log($"Incorrect input data {nameof(GetPostIdAsync)}", Logger.LogLevel.Fatal);
             throw new ArgumentException($"Incorrect input data {nameof(GetPostIdAsync)}");
         }
         async Task<long> Func()
@@ -121,6 +124,7 @@ internal class VkApi
     {
         if (count <= 0 || offset < 0 || groupId >= 0 || postId <= 0)
         {
+            Logger.Log($"Incorrect input data {nameof(GetCommentsAsync)}", Logger.LogLevel.Fatal);
             throw new ArgumentException($"Incorrect input data {nameof(GetCommentsAsync)}");
         }
 
@@ -149,7 +153,8 @@ internal class VkApi
     private static async Task<T> Try<T>(Func<Task<T>> apiFunc)
     {
         const int retryDelayMs = 5000;
-        for (var attempts = 0; attempts < 10; attempts++)
+        int attempts;
+        for (attempts = 0; attempts < 10; attempts++)
         {
             try
             {
@@ -158,9 +163,10 @@ internal class VkApi
             catch (Exception e)
             {
                 Thread.Sleep(retryDelayMs);
-                await Console.Out.WriteLineAsync($"{e.Message} {e.StackTrace}");
+                Logger.Log($"{e.Message} {e.StackTrace}", Logger.LogLevel.Error);
             }
         }
+        Logger.Log("Number of attempts was exceeded", Logger.LogLevel.Fatal);
         throw new Exception("Number of attempts was exceeded");
     }
 }

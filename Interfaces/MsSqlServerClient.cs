@@ -22,7 +22,7 @@ public abstract class MsSqlServerClient : IDatabaseClient
     public abstract List<T> GetRange<T>(int startIndex);
     public abstract void Clear();
 
-    protected void SafeAccess(Action accessAction)
+    protected static void SafeAccess(Action accessAction)
     {
         int attempts;
         const int retryDelayMs = 5000;
@@ -35,12 +35,10 @@ public abstract class MsSqlServerClient : IDatabaseClient
             }
             catch (Exception e)
             {
-                Connection.Close();
-                Connection.Open();
-                Logger.Write($"{e.Message} {e.StackTrace}");
+                Logger.Log($"{e.Message} {e.StackTrace}", Logger.LogLevel.Error);
                 Thread.Sleep(retryDelayMs);
             }
         }
-        if (attempts == 3) throw new Exception("Number of attempts to access to database was exceeded");
+        if (attempts == 5) throw new Exception("Number of attempts to access to database was exceeded");
     }
 }

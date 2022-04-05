@@ -28,7 +28,7 @@ public class AllCommentsDatabaseObserver : IDatabaseObserver
         _connection.Open();
         _cancellation = new CancellationTokenSource();
         var result = LoadingLoop(_cancellation.Token);
-        Logger.Write($"Loading started on {_connection.ConnectionString} with delay {_observeDelay}");
+        Logger.Log($"Loading started on {_connection.ConnectionString} with delay {_observeDelay}", Logger.LogLevel.Information);
     }
 
     public void StopLoading()
@@ -40,7 +40,7 @@ public class AllCommentsDatabaseObserver : IDatabaseObserver
         IsLoadingStarted = false;
         _cancellation.Cancel();
         _connection.Close();
-        Logger.Write($"Loading stopped on {_connection.ConnectionString}");
+        Logger.Log($"Loading stopped on {_connection.ConnectionString}", Logger.LogLevel.Information);
     }
 
     public void OnDataArrived(Action<ICommentData> handler) => _dataProcessor = handler;
@@ -81,9 +81,10 @@ public class AllCommentsDatabaseObserver : IDatabaseObserver
             }
         });
     }
-    private void SafeAccess(Action accessAction)
+    private static void SafeAccess(Action accessAction)
     {
         int attempts;
+        const int retryDelayMs = 5000;
         for (attempts = 0; attempts < 3; attempts++)
         {
             try
@@ -93,9 +94,8 @@ public class AllCommentsDatabaseObserver : IDatabaseObserver
             }
             catch (Exception e)
             {
-                _connection.Close();
-                _connection.Open();
-                Logger.Write($"{e.Message} {e.StackTrace}");
+                Logger.Log($"{e.Message} {e.StackTrace}", Logger.LogLevel.Fatal);
+                Thread.Sleep(retryDelayMs);
             }
         }
         if (attempts == 3) throw new Exception("Number of attempts to access to database was exceeded");
