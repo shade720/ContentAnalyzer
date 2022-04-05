@@ -1,6 +1,6 @@
 ﻿using Common;
 
-namespace DataAnalysisService.Databases.SqlServer;
+namespace DataAnalysisService.DatabaseClients.SqlServer;
 
 public interface IDatabaseObserver
 {

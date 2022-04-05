@@ -1,7 +1,7 @@
 ﻿using System.Data.SqlClient;
 using Common;
 
-namespace DataCollectionService.Databases.SqlServer;
+namespace DataCollectionService.DatabaseClients.SqlServer;
 
 public class AllCommentsDatabaseClient : MsSqlServerClient
 {

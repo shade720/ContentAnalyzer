@@ -176,7 +176,7 @@
             // 
             this.StateLabel.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.StateLabel.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.StateLabel.Location = new System.Drawing.Point(71, 27);
+            this.StateLabel.Location = new System.Drawing.Point(72, 27);
             this.StateLabel.Name = "StateLabel";
             this.StateLabel.Size = new System.Drawing.Size(127, 23);
             this.StateLabel.TabIndex = 0;

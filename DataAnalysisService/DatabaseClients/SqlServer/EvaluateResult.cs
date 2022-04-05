@@ -1,6 +1,6 @@
 ﻿using Common;
 
-namespace DataAnalysisService.Databases.SqlServer;
+namespace DataAnalysisService.DatabaseClients.SqlServer;
 
 internal class EvaluateResult : IEvaluateResult
 {

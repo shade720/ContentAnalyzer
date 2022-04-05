@@ -1,6 +1,6 @@
-﻿using DataAnalysisService.Databases.SqlServer;
-using Common;
+﻿using Common;
 using DataAnalysisService.AnalyzeModels.DomainClasses;
+using DataAnalysisService.DatabaseClients.SqlServer;
 
 namespace DataAnalysisService;
 

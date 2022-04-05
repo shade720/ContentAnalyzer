@@ -2,7 +2,7 @@
 using System.Data.SqlClient;
 using Common;
 
-namespace DataAnalysisService.Databases.SqlServer;
+namespace DataAnalysisService.DatabaseClients.SqlServer;
 
 public class AllCommentsDatabaseObserver : IDatabaseObserver
 {
