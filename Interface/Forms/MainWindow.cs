@@ -87,6 +87,7 @@ public partial class MainWindow : Form
         _allCommentsForm.Hide();
         _selectedCommentsForm.Hide();
         _logsForm.Show();
+        _configureServiceForm.Hide();
     }
 
     private void ShowAllCommentsButton_Click(object sender, EventArgs e)
@@ -94,6 +95,7 @@ public partial class MainWindow : Form
         _allCommentsForm.Show();
         _selectedCommentsForm.Hide();
         _logsForm.Hide();
+        _configureServiceForm.Hide();
     }
 
     private void ShowSelectedComments_Click(object sender, EventArgs e)
@@ -101,11 +103,15 @@ public partial class MainWindow : Form
         _allCommentsForm.Hide();
         _selectedCommentsForm.Show();
         _logsForm.Hide();
+        _configureServiceForm.Hide();
     }
 
     private void ConfigureServiceButton_Click(object sender, EventArgs e)
     {
-
+        _allCommentsForm.Hide();
+        _selectedCommentsForm.Hide();
+        _logsForm.Hide();
+        _configureServiceForm.Show();
     }
 
     private void ViewLogsButton_Click(object sender, EventArgs e)
@@ -113,6 +119,7 @@ public partial class MainWindow : Form
         _allCommentsForm.Hide();
         _selectedCommentsForm.Hide();
         _logsForm.Show();
+        _configureServiceForm.Hide();
     }
 
     private void CloseButton_Click(object sender, EventArgs e)

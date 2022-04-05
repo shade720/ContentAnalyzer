@@ -29,7 +29,7 @@ public class AllCommentsDatabaseClient : MsSqlServerClient
         var result = new List<ICommentData>();
         SafeAccess(() =>
         {
-            using var command = new SqlCommand("SELECT Id, CommentId, PostId, GroupId, AuthorId, Content, Date FROM [dbo].[AllComments] WHERE Id > @StartIndex ORDER BY Id DESC", Connection);
+            using var command = new SqlCommand("SELECT Id, CommentId, PostId, GroupId, AuthorId, Content, Date FROM [dbo].[AllComments] WHERE Id > @StartIndex", Connection);
             command.Parameters.AddWithValue("@StartIndex", startIndex);
             using var reader = command.ExecuteReader();
             while (reader.Read())
@@ -59,7 +59,6 @@ public class AllCommentsDatabaseClient : MsSqlServerClient
 
     private static bool IsDataFrameInvalid(ICommentData dataFrame)
     {
-        var result = string.IsNullOrEmpty(dataFrame.Text) || string.IsNullOrWhiteSpace(dataFrame.Text) || dataFrame.Text.Length < 5;
-        return result;
+        return string.IsNullOrEmpty(dataFrame.Text) || string.IsNullOrWhiteSpace(dataFrame.Text) || dataFrame.Text.Length < 5;
     }
 }

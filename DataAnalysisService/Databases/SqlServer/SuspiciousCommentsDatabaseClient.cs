@@ -1,5 +1,5 @@
-﻿using System.Data.SqlClient;
-using Common;
+﻿using Common;
+using System.Data.SqlClient;
 using DataAnalysisService.AnalyzeModels.DomainClasses;
 
 namespace DataAnalysisService.Databases.SqlServer;
@@ -11,7 +11,7 @@ public class SuspiciousCommentsDatabaseClient : MsSqlServerClient
     {
         SafeAccess(()=>
         {
-            var commentData = result as PredictResult;
+            if (result is not PredictResult commentData) return;
             var maxValue = commentData.Predicts.MaxBy(x => x.PredictValue);
             var command = Connection.CreateCommand();
             command.CommandText = @"INSERT INTO [dbo].[DangerCommentsContent] (CommentId, PostId, GroupId, AuthorId, Content, Date, Category, Probability) VALUES (@CommentId, @PostId, @GroupId, @AuthorId, @Content, @Date, @Category, @Probability)";
@@ -32,7 +32,7 @@ public class SuspiciousCommentsDatabaseClient : MsSqlServerClient
         var result = new List<IEvaluateResult>();
         SafeAccess(() =>
         {
-            using var command = new SqlCommand("SELECT Id, CommentId, PostId, GroupId, AuthorId, Content, Date, Category, Probability FROM [dbo].[DangerCommentsContent] WHERE Id > @StartIndex ORDER BY Id DESC", Connection);
+            using var command = new SqlCommand("SELECT Id, CommentId, PostId, GroupId, AuthorId, Content, Date, Category, Probability FROM [dbo].[DangerCommentsContent] WHERE Id > @StartIndex", Connection);
             command.Parameters.AddWithValue("@StartIndex", startIndex);
             using var reader = command.ExecuteReader();
             while (reader.Read())
@@ -51,7 +51,7 @@ public class SuspiciousCommentsDatabaseClient : MsSqlServerClient
                 ));
             }
         });
-        return result as List<T>;
+        return result as List<T> ?? new List<T>();
     }
 
     public override void Clear()

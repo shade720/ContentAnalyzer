@@ -93,7 +93,7 @@ internal class VkApi
     /// <exception cref="ArgumentException"></exception>
     public async Task<long> GetPostIdAsync(long groupId, ulong offset)
     {
-        if (groupId <= 0)
+        if (groupId >= 0)
         {
             throw new ArgumentException($"Incorrect input data {nameof(GetPostIdAsync)}");
         }
@@ -119,7 +119,7 @@ internal class VkApi
     /// <exception cref="ArgumentException"></exception>
     public async Task<WallGetCommentsResult> GetCommentsAsync(long postId, int count, long groupId, int offset, SortOrderBy sort, long? branchId = null)
     {
-        if (count <= 0 || offset < 0 || groupId <= 0 || postId <= 0)
+        if (count <= 0 || offset < 0 || groupId >= 0 || postId <= 0)
         {
             throw new ArgumentException($"Incorrect input data {nameof(GetCommentsAsync)}");
         }

@@ -30,13 +30,13 @@
         {
             this.SuspendLayout();
             // 
-            // ConfigureAnalysisService
+            // ConfigureServiceForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(814, 531);
+            this.ClientSize = new System.Drawing.Size(1107, 864);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Name = "ConfigureAnalysisService";
+            this.Name = "ConfigureServiceForm";
             this.Load += new System.EventHandler(this.ConfigureAnalysisService_Load);
             this.ResumeLayout(false);
 

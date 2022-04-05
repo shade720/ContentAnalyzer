@@ -42,7 +42,7 @@
             this.LogWindowTextbox.Location = new System.Drawing.Point(6, 52);
             this.LogWindowTextbox.Name = "LogWindowTextbox";
             this.LogWindowTextbox.ReadOnly = true;
-            this.LogWindowTextbox.Size = new System.Drawing.Size(1074, 753);
+            this.LogWindowTextbox.Size = new System.Drawing.Size(1074, 782);
             this.LogWindowTextbox.TabIndex = 0;
             this.LogWindowTextbox.Text = "";
             this.LogWindowTextbox.TextChanged += new System.EventHandler(this.LogWindowTextbox_TextChanged);
@@ -54,7 +54,7 @@
             this.groupBox1.ForeColor = System.Drawing.SystemColors.MenuHighlight;
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(1086, 811);
+            this.groupBox1.Size = new System.Drawing.Size(1086, 840);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Service Logs";
@@ -64,7 +64,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.ClientSize = new System.Drawing.Size(1110, 835);
+            this.ClientSize = new System.Drawing.Size(1107, 864);
             this.Controls.Add(this.groupBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "LogsForm";
