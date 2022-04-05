@@ -11,26 +11,24 @@ public partial class LogsForm : Form
     {
         _parent = parent;
         InitializeComponent();
-        Logger.OnLoggingEvent += LoggerOnLoggingEvent;
+        Logger.OnLoggingEvent += log=> AppendTextBox($"[{DateTime.Now.ToString(CultureInfo.InvariantCulture)}] {log}\r\n");
     }
 
     private void AppendTextBox(string value)
     {
         if (InvokeRequired)
         {
-            Invoke(new Action<string>(AppendTextBox), value);
+            BeginInvoke(new Action<string>(AppendTextBox), value);
             return;
         }
-        LogWindowTextbox.Text += value;
-    }
-    private void LoggerOnLoggingEvent(string log)
-    {
-        AppendTextBox($"[{DateTime.Now.ToString(CultureInfo.InvariantCulture)}] {log}\n");
-    }
-
-    private void LogWindowTextbox_TextChanged(object sender, EventArgs e)
-    {
+        Trim();
+        LogWindowTextbox.AppendText(value);
         LogWindowTextbox.SelectionStart = LogWindowTextbox.Text.Length;
         LogWindowTextbox.ScrollToCaret();
+    }
+
+    private void Trim()
+    {
+        if (LogWindowTextbox.Lines.Length > 500) LogWindowTextbox.Text = "";
     }
 }

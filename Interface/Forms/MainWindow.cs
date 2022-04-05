@@ -38,12 +38,14 @@ public partial class MainWindow : Form
         UptimeLabel.Text = _stopwatch.Elapsed.ToString(@"dd\.hh\:mm\:ss");
     }
 
-    private void StartDataCollectionServiceButton_Click(object sender, EventArgs e)
+    private async void StartDataCollectionServiceButton_Click(object sender, EventArgs e)
     {
-        DataCollectionService.DataCollectionService.Start();
-        DataAnalysisService.DataAnalysisService.StartService();
-        DataAnalysisService.DataAnalysisService.StartAll();
-
+        await Task.Run(()=>
+        {
+            DataCollectionService.DataCollectionService.Start();
+            DataAnalysisService.DataAnalysisService.StartService();
+            DataAnalysisService.DataAnalysisService.StartAll();
+        });
         StartServiceButton.Hide();
         StopServiceButton.Show();
         StatePanel.BackColor = Color.Chartreuse;
@@ -57,12 +59,11 @@ public partial class MainWindow : Form
         _selectedCommentsForm.DisplayActualData();
     }
 
-    private void StopDataCollectionServiceButton_Click(object sender, EventArgs e)
+    private async void StopDataCollectionServiceButton_Click(object sender, EventArgs e)
     {
         _allCommentsForm.StopDisplayData();
         _selectedCommentsForm.StopDisplayData();
-        StopService();
-
+        await Task.Run(StopService);
         StartServiceButton.Show();
         StopServiceButton.Hide();
         StatePanel.BackColor = Color.Red;

@@ -20,12 +20,12 @@ public partial class AllCommentsForm : Form
         _cancellationTokenSource = new CancellationTokenSource();
         _lastIndex = 0;
         AllCommentsDataGridView.Rows.Clear();
-        await Task.Run(() =>
+        await Task.Run(async () =>
         {
             while (!_cancellationTokenSource.Token.IsCancellationRequested)
             {
                 RefreshTable();
-                Thread.Sleep(5000);
+                await Task.Delay(5000, _cancellationTokenSource.Token);
             }
         }, _cancellationTokenSource.Token);
     }

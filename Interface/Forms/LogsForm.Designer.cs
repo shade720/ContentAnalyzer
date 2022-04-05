@@ -45,7 +45,6 @@
             this.LogWindowTextbox.Size = new System.Drawing.Size(1074, 782);
             this.LogWindowTextbox.TabIndex = 0;
             this.LogWindowTextbox.Text = "";
-            this.LogWindowTextbox.TextChanged += new System.EventHandler(this.LogWindowTextbox_TextChanged);
             // 
             // groupBox1
             // 
