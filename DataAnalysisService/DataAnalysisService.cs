@@ -7,12 +7,12 @@ namespace DataAnalysisService;
 public static class DataAnalysisService
 {
     private static readonly Dictionary<string, AnalyzeModel> AnalyzeModels = new();
-    private static IDatabaseObserver? _sourceDatabase;
-    private static IDatabaseClient? _targetDatabase;
+    private static IDatabaseObserver _sourceDatabase;
+    private static IDatabaseClient _targetDatabase;
 
     public static List<IEvaluateResult> GetAllComments(int startIndex)
     {
-        return _targetDatabase?.GetRange<IEvaluateResult>(startIndex);
+        return _targetDatabase.GetRange<IEvaluateResult>(startIndex);
     }
 
     public static void StartService()

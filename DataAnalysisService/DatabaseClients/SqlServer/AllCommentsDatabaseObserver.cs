@@ -6,13 +6,18 @@ namespace DataAnalysisService.DatabaseClients.SqlServer;
 
 public class AllCommentsDatabaseObserver : IDatabaseObserver
 {
-    private readonly SqlConnection _connection;
+    
     private long _lastReceivedId;
-    private readonly int _observeDelay;
     private CancellationTokenSource _cancellation;
     private Action<ICommentData> _dataProcessor;
 
-    public AllCommentsDatabaseObserver(string connectionString, int observeDelayMs) => (_connection, _observeDelay) = (new SqlConnection(connectionString), observeDelayMs);
+    private readonly int _observeDelay;
+    private readonly SqlConnection _connection;
+    private readonly string[] _categories;
+
+    public AllCommentsDatabaseObserver(string connectionString, int observeDelayMs)
+        => (_connection, _observeDelay) = (new SqlConnection(connectionString), observeDelayMs);
+    
 
     #region PublicInterface
 
@@ -44,6 +49,11 @@ public class AllCommentsDatabaseObserver : IDatabaseObserver
     }
 
     public void OnDataArrived(Action<ICommentData> handler) => _dataProcessor = handler;
+
+    private void Lol()
+    {
+
+    }
 
     #endregion
 

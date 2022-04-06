@@ -28,7 +28,7 @@ public static class DataCollectionService
     {
         if (_saveDatabase is null) throw new Exception("Save database are not registered");
         _saveDatabase.Connect();
-        _saveDatabase.Clear();
+        //_saveDatabase.Clear();
         foreach (var dataCollector in DataCollectors)
         {
             dataCollector.StartCollecting();
