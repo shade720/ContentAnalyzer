@@ -38,49 +38,24 @@ public class PythonRunner
 
     public void Run(string script, string resourcePath)
     {
-        Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-        if (script is null)
-        {
-            throw new ArgumentNullException(nameof(script));
-        }
-        if (!File.Exists(script))
-        {
-            throw new FileNotFoundException(script);
-        }
-        var startInfo = new ProcessStartInfo(_interpreter)
-        {
-            UseShellExecute = false,
-            CreateNoWindow = true,
-            RedirectStandardOutput = true,
-            RedirectStandardError = true,
-            RedirectStandardInput = true,
-            StandardInputEncoding = Encoding.GetEncoding(1251),
-            Arguments = $"\"{script}\""
-        };
-
-        _pythonProcess = new Process
-        {
-            StartInfo = startInfo,
-            EnableRaisingEvents = true
-        };
+        if (resourcePath is null) throw new ArgumentNullException(nameof(resourcePath));
+        if (!File.Exists(resourcePath)) throw new FileNotFoundException(resourcePath);
         try
         {
+            _pythonProcess = CreatePythonProcess(script);
             _pythonProcess.ErrorDataReceived += OnErrorDataReceivedHandler;
             _pythonProcess.Start();
-
             _reader = _pythonProcess.StandardOutput;
             _writer = _pythonProcess.StandardInput;
             _writer.AutoFlush = true;
             _pythonProcess.BeginErrorReadLine();
-
-            OnStartedEvent?.Invoke();
-
             _writer.WriteLine(resourcePath);
-
+            OnStartedEvent?.Invoke();
             _pythonProcess.WaitForExit(-1);
         }
         catch (Exception exception)
         {
+            Logger.Log($"An error occured during script execution. See inner exception for details. {exception.Message} {exception.StackTrace}", Logger.LogLevel.Fatal);
             throw new Exception($"An error occured during script execution. See inner exception for details. {exception.Message} {exception.StackTrace}");
         }
         finally
@@ -97,7 +72,15 @@ public class PythonRunner
 
     public async Task RunAsync(string script, string resourcePath)
     {
-        await Task.Run(() => Run(script, resourcePath));
+        try
+        {
+            await Task.Run(() => Run(script, resourcePath));
+        }
+        catch (Exception exception)
+        {
+            Logger.Log($"An error occured during script execution. See inner exception for details. {exception.Message} {exception.StackTrace}", Logger.LogLevel.Fatal);
+            throw new Exception($"An error occured during script execution. See inner exception for details. {exception.Message} {exception.StackTrace}");
+        }
     }
 
     public string ReadFromScript()
@@ -119,6 +102,28 @@ public class PythonRunner
 
 
     #endregion
+
+    private Process CreatePythonProcess(string script)
+    {
+        if (script is null) throw new ArgumentNullException(nameof(script));
+        if (!File.Exists(script)) throw new FileNotFoundException(script);
+        Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+        var startInfo = new ProcessStartInfo(_interpreter)
+        {
+            UseShellExecute = false,
+            CreateNoWindow = true,
+            RedirectStandardOutput = true,
+            RedirectStandardError = true,
+            RedirectStandardInput = true,
+            StandardInputEncoding = Encoding.GetEncoding(1251),
+            Arguments = $"\"{script}\""
+        };
+        return new Process
+        {
+            StartInfo = startInfo,
+            EnableRaisingEvents = true,
+        };
+    }
 
     private void OnErrorDataReceivedHandler(object sender, DataReceivedEventArgs e)
     {
