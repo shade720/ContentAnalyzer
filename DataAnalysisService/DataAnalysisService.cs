@@ -1,14 +1,13 @@
 ﻿using Common;
 using DataAnalysisService.AnalyzeModels.DomainClasses;
-using DataAnalysisService.DatabaseClients.SqlServer;
 
 namespace DataAnalysisService;
 
 public static class DataAnalysisService
 {
     private static readonly Dictionary<string, AnalyzeModel> AnalyzeModels = new();
-    private static IDatabaseObserver _sourceDatabase;
-    private static IDatabaseClient _targetDatabase;
+    private static MsSqlServerObserver _sourceDatabase;
+    private static MsSqlServerClient _targetDatabase;
 
     public static List<IEvaluateResult> GetAllComments(int startIndex)
     {
@@ -105,8 +104,8 @@ public static class DataAnalysisService
         return AnalyzeModels.Count(model => model.Value.IsRunning) == 1;
     }
 
-    public static void RegisterSourceDatabase(IDatabaseObserver database) => _sourceDatabase = database;
-    public static void RegisterSaveDatabase(IDatabaseClient database) => _targetDatabase = database;
+    public static void RegisterSourceDatabase(MsSqlServerObserver database) => _sourceDatabase = database;
+    public static void RegisterSaveDatabase(MsSqlServerClient database) => _targetDatabase = database;
     public static void AddModel(string modelName, Func<AnalyzeModel> modelConfiguration)
     {
         if (AnalyzeModels.ContainsKey(modelName))
