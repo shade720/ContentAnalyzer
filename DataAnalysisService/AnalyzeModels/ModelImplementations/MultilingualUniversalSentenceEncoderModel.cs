@@ -22,8 +22,6 @@ internal class MultilingualUniversalSentenceEncoderModel : AnalyzeModel
         int evaluateThresholdPercent = 70) :
         base(interpreter, predictScript, trainScript, dataSet, model, categories)
     {
-        if (interpreter is null || predictScript is null || trainScript is null || dataSet is null || model is null) throw new ArgumentNullException();
-        if (!File.Exists(interpreter) || !File.Exists(predictScript) || !File.Exists(trainScript) || !File.Exists(dataSet) || !File.Exists(model)) throw new FileNotFoundException();
         _evaluateThreshold = evaluateThresholdPercent;
     }
 
