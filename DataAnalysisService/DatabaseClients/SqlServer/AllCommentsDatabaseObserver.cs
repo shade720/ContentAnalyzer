@@ -50,11 +50,6 @@ public class AllCommentsDatabaseObserver : IDatabaseObserver
 
     public void OnDataArrived(Action<ICommentData> handler) => _dataProcessor = handler;
 
-    private void Lol()
-    {
-
-    }
-
     #endregion
 
     private async Task LoadingLoop(CancellationToken cancellationToken)

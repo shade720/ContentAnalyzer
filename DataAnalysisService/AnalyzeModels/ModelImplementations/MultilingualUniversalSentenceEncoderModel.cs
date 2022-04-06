@@ -27,7 +27,10 @@ internal class MultilingualUniversalSentenceEncoderModel : AnalyzeModel
         _evaluateThreshold = evaluateThresholdPercent;
     }
 
-    public override void StartPredictiveModel()
+    public override void StartPredictiveModel() => StartModel(PredictScript, Model);
+    public override void StartTrainModel() => StartModel(TrainScript, DataSet);
+
+    private void StartModel(string scriptModel, string resourcePath)
     {
         if (IsRunning) throw new Exception("Runner is already using script");
         try
@@ -38,28 +41,7 @@ internal class MultilingualUniversalSentenceEncoderModel : AnalyzeModel
             Runner.OnExitedEvent += RunnerOnExitEventHandler;
             Runner.OnStartedEvent += RunnerOnStartedEventHandler;
 
-            var result = Runner.RunAsync(Path.GetFullPath(PredictScript), Path.GetFullPath(Model));
-
-            _scriptInitialize.WaitOne();
-        }
-        catch (Exception e)
-        {
-            throw new Exception($"{nameof(StartPredictiveModel)}", e);
-        }
-    }
-
-    public override void StartTrainModel()
-    {
-        if (IsRunning) throw new Exception("Runner is already using script");
-        try
-        {
-            Runner = new PythonRunner(Interpreter);
-
-            Runner.OnErrorReceivedEvent += RunnerOnErrorReceivedEventHandler;
-            Runner.OnExitedEvent += RunnerOnExitEventHandler;
-            Runner.OnStartedEvent += RunnerOnStartedEventHandler;
-
-            var result = Runner.RunAsync(Path.GetFullPath(TrainScript), Path.GetFullPath(DataSet));
+            var result = Runner.RunAsync(Path.GetFullPath(scriptModel), Path.GetFullPath(resourcePath));
 
             _scriptInitialize.WaitOne();
         }

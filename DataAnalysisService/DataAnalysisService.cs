@@ -53,7 +53,6 @@ public static class DataAnalysisService
             Logger.Log($"Model {modelName} already in work", Logger.LogLevel.Error);
             return;
         }
-
         Logger.Log($"Starting model {modelName} to listen predicts...", Logger.LogLevel.Information);
         AnalyzeModels[modelName].Subscribe(
             predictionResult => { },
