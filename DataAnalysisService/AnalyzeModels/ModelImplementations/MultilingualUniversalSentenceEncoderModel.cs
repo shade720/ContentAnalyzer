@@ -49,7 +49,7 @@ internal class MultilingualUniversalSentenceEncoderModel : AnalyzeModel
         }
     }
 
-    public override void Predict(ICommentData dataFrame)
+    public override void Predict(CommentData dataFrame)
     {
         if (!IsRunning) throw new Exception("Predict model not initialized");
         if (Runner is null) throw new Exception("Script not running");
@@ -59,8 +59,13 @@ internal class MultilingualUniversalSentenceEncoderModel : AnalyzeModel
             var predictFromScript = Runner.ReadFromScript();
             var predictResult = new PredictResult(dataFrame, predictFromScript, Categories);
 
-            OnPredictResultArrivedEvent.Invoke(predictResult);
-            if (Evaluate(predictResult)) OnEvaluateResultArrivedEvent.Invoke(predictResult);
+            OnPredictResultArrivedEvent?.Invoke(predictResult);
+            if (ExceedsThreshold(predictResult))
+            {
+                var maxValue = predictResult.Predicts.MaxBy(x => x.PredictValue);
+                var evaluateResult = new EvaluateResult { CommentData = predictResult.CommentData, EvaluateCategory = maxValue.Title, EvaluateProbability = maxValue.PredictValue};
+                OnEvaluateResultArrivedEvent?.Invoke(evaluateResult);
+            }
         }
         catch (Exception e)
         {
@@ -85,7 +90,7 @@ internal class MultilingualUniversalSentenceEncoderModel : AnalyzeModel
 
     #region Private
 
-    private static bool Evaluate(PredictResult predictResult)
+    private static bool ExceedsThreshold(PredictResult predictResult)
     {
         for (var i = 1; i < predictResult.Predicts.Length; i++)
             if (predictResult.Predicts[i].PredictValue > _evaluateThreshold / (double)100)

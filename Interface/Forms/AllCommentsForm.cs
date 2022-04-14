@@ -42,11 +42,11 @@ public partial class AllCommentsForm : Form
         _lastIndex = AllCommentsDataGridView.Rows.Count;
     }
 
-    private void UpdateControls(List<ICommentData> list)
+    private void UpdateControls(List<CommentData> list)
     {
         if (InvokeRequired)
         {
-            Invoke(new Action<List<ICommentData>>(UpdateControls), list);
+            Invoke(new Action<List<CommentData>>(UpdateControls), list);
             return;
         }
         foreach (var comment in list)

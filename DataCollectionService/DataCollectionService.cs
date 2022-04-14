@@ -5,14 +5,14 @@ namespace DataCollectionService;
 public static class DataCollectionService
 {
     private static readonly List<IDataCollector> DataCollectors = new();
-    private static MsSqlServerClient _saveDatabase;
+    private static DatabaseClient _saveDatabase;
 
-    public static List<ICommentData> GetAllComments(int startIndex)
+    public static List<CommentData> GetAllComments(int startIndex)
     {
-        return _saveDatabase.GetRange<ICommentData>(startIndex);
+        return _saveDatabase.GetRange<CommentData>(startIndex);
     }
 
-    public static void RegisterSaveDatabase(MsSqlServerClient database)
+    public static void RegisterSaveDatabase(DatabaseClient database)
     {
         _saveDatabase = database ?? throw new Exception("Save database cannot be null");
     }

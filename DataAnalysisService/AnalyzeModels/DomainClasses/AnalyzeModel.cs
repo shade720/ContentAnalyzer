@@ -11,12 +11,13 @@ public abstract class AnalyzeModel
     protected readonly string DataSet;
     protected readonly string Model;
 
-    protected delegate void OnErrorArrived(string errorText);
-    protected delegate void OnPredictArrived(PredictResult warningText);
+    protected delegate void OnErrorArrived(string error);
+    protected delegate void OnPredictComputed(PredictResult warning);
+    protected delegate void OnEvaluateComputed(EvaluateResult warning);
 
     protected OnErrorArrived OnErrorArrivedEvent;
-    protected OnPredictArrived OnPredictResultArrivedEvent;
-    protected OnPredictArrived OnEvaluateResultArrivedEvent;
+    protected OnPredictComputed OnPredictResultArrivedEvent;
+    protected OnEvaluateComputed OnEvaluateResultArrivedEvent;
 
     protected string[] Categories { get; }
     public abstract bool IsRunning { get; protected set; }
@@ -30,7 +31,7 @@ public abstract class AnalyzeModel
         Model = Path.GetFullPath(model);
         Categories = categories;
     }
-    public void Subscribe(Action<PredictResult> predictionResultHandler, Action<PredictResult> evaluateResultHandler, Action<string> scriptMessagesHandler)
+    public void Subscribe(Action<PredictResult> predictionResultHandler, Action<EvaluateResult> evaluateResultHandler, Action<string> scriptMessagesHandler)
     {
         OnErrorArrivedEvent += scriptMessagesHandler.Invoke;
         OnPredictResultArrivedEvent += predictionResultHandler.Invoke;
@@ -41,7 +42,7 @@ public abstract class AnalyzeModel
 
     public abstract void StartTrainModel();
 
-    public abstract void Predict(ICommentData text);
+    public abstract void Predict(CommentData text);
 
     public abstract void StopModel();
 }

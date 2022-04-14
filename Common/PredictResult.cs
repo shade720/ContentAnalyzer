@@ -1,14 +1,12 @@
 ﻿using System.Globalization;
-using Common;
+namespace Common;
 
-namespace DataAnalysisService.AnalyzeModels.DomainClasses;
-
-public class PredictResult : IPredictionResult
+public class PredictResult
 {
-    public ICommentData CommentData { get; }
-    public ICategory[] Predicts { get; }
+    public CommentData CommentData { get; }
+    public Category[] Predicts { get; }
 
-    public PredictResult(ICommentData commentData, string predictResult, IReadOnlyList<string> categories)
+    public PredictResult(CommentData commentData, string predictResult, IReadOnlyList<string> categories)
     {
         CommentData = commentData;
         var predictValues = ParsePredict(predictResult);

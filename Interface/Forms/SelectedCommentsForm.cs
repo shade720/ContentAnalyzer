@@ -41,11 +41,11 @@ public partial class SelectedCommentsForm : Form
         _lastIndex = SelectedCommentsDataGridView.Rows.Count;
     }
 
-    private void UpdateControls(List<IEvaluateResult> list)
+    private void UpdateControls(List<EvaluateResult> list)
     {
         if (InvokeRequired)
         {
-            Invoke(new Action<List<IEvaluateResult>>(UpdateControls), list);
+            Invoke(new Action<List<EvaluateResult>>(UpdateControls), list);
             return;
         }
         foreach (var comment in list)

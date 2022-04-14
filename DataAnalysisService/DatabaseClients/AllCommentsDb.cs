@@ -1,16 +1,15 @@
-﻿using System.Data.SqlClient;
-using Common;
+﻿using Common;
 
-namespace DataAnalysisService.DatabaseClients.SqlServer;
+namespace DataAnalysisService.DatabaseClients;
 
-public class AllCommentsDatabaseObserver : MsSqlServerObserver
+public class AllCommentsDb : DatabaseObserver
 {
     private long _lastReceivedId;
     private CancellationTokenSource _cancellation;
-    private Action<ICommentData> _dataProcessor;
+    private Action<CommentData> _dataProcessor;
     private readonly int _observeDelay;
 
-    public AllCommentsDatabaseObserver(string connectionString, int observeDelayMs) : base(connectionString) => 
+    public AllCommentsDb(string connectionString, int observeDelayMs) : base(connectionString) => 
         _observeDelay = observeDelayMs;
     
 
@@ -39,7 +38,7 @@ public class AllCommentsDatabaseObserver : MsSqlServerObserver
         Logger.Log("Loading stopped", Logger.LogLevel.Information);
     }
 
-    public override void OnDataArrived(Action<ICommentData> handler) => _dataProcessor = handler;
+    public override void OnDataArrived(Action<CommentData> handler) => _dataProcessor = handler;
 
     #endregion
 
@@ -57,21 +56,11 @@ public class AllCommentsDatabaseObserver : MsSqlServerObserver
 
     private void LoadData()
     {
-        using var command = new SqlCommand("SELECT Id, CommentId, PostId, GroupId, AuthorId, Content, Date FROM [dbo].[AllComments] WHERE Id > @StartIndex", Connection);
-        command.Parameters.AddWithValue("@StartIndex", _lastReceivedId);
-        using var reader = command.ExecuteReader();
-        while (reader.Read())
+        var newComments = from c in Context.Comments where c.Id > _lastReceivedId select c;
+        foreach (var comment in newComments)
         {
-            _lastReceivedId = Convert.ToInt64(reader["Id"]);
-            _dataProcessor?.Invoke(new CommentData
-            (
-                Convert.ToInt64(reader["CommentId"]),
-                reader["Content"].ToString() ?? string.Empty,
-                Convert.ToInt64(reader["PostId"]),
-                Convert.ToInt64(reader["GroupId"]),
-                Convert.ToInt64(reader["AuthorId"]),
-                Convert.ToDateTime(reader["Date"])
-            ));
+            _lastReceivedId = comment.Id;
+            _dataProcessor?.Invoke(comment);
         }
     }
 }

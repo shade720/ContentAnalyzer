@@ -1,7 +1,7 @@
 ﻿using VkDataCollector;
 using System.Configuration;
 using Common;
-using DataCollectionService.DatabaseClients.SqlServer;
+using DataCollectionService.DatabaseClients;
 
 namespace DataCollectionService;
 
@@ -9,7 +9,7 @@ public static class Startup
 {
     public static void ConfigureService()
     {
-        DataCollectionService.RegisterSaveDatabase(new AllCommentsDatabaseClient(ConfigurationManager.ConnectionStrings["Database"].ConnectionString));
+        DataCollectionService.RegisterSaveDatabase(new AllCommentsDb(ConfigurationManager.ConnectionStrings["Database"].ConnectionString));
 
         DataCollectionService.AddDataCollector(() =>
         {

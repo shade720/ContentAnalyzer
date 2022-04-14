@@ -6,12 +6,12 @@ namespace DataAnalysisService;
 public static class DataAnalysisService
 {
     private static readonly Dictionary<string, AnalyzeModel> AnalyzeModels = new();
-    private static MsSqlServerObserver _sourceDatabase;
-    private static MsSqlServerClient _targetDatabase;
+    private static DatabaseObserver _sourceDatabase;
+    private static DatabaseClient _targetDatabase;
 
-    public static List<IEvaluateResult> GetAllComments(int startIndex)
+    public static List<EvaluateResult> GetAllComments(int startIndex)
     {
-        return _targetDatabase.GetRange<IEvaluateResult>(startIndex);
+        return _targetDatabase.GetRange<EvaluateResult>(startIndex);
     }
 
     public static void StartService()
@@ -19,7 +19,7 @@ public static class DataAnalysisService
         if (_targetDatabase is null) throw new ArgumentException($"Target database is not registered {nameof(StartService)}");
         if (AnalyzeModels.Count == 0) throw new ArgumentException($"At least one analysis model must be added {nameof(StartService)}");
         _targetDatabase.Connect();
-        _targetDatabase.Clear();
+        //_targetDatabase.Clear();
         Logger.Log("Service started, target database is ready", Logger.LogLevel.Information);
     }
 
@@ -28,14 +28,14 @@ public static class DataAnalysisService
         foreach (var model in AnalyzeModels) StartModel(model.Key);
     }
 
-    public static void AnalyzeByAny(ICommentData dataFrame)
+    public static void AnalyzeByAny(CommentData dataFrame)
     {
         foreach (var model in AnalyzeModels)
         {
             AnalyzeBy(model.Key, dataFrame);
         }
     }
-    public static void AnalyzeBy(string modelName, ICommentData dataFrame)
+    public static void AnalyzeBy(string modelName, CommentData dataFrame)
     {
         if (!AnalyzeModels[modelName].IsRunning)
         {
@@ -104,8 +104,8 @@ public static class DataAnalysisService
         return AnalyzeModels.Count(model => model.Value.IsRunning) == 1;
     }
 
-    public static void RegisterSourceDatabase(MsSqlServerObserver database) => _sourceDatabase = database;
-    public static void RegisterSaveDatabase(MsSqlServerClient database) => _targetDatabase = database;
+    public static void RegisterSourceDatabase(DatabaseObserver database) => _sourceDatabase = database;
+    public static void RegisterSaveDatabase(DatabaseClient database) => _targetDatabase = database;
     public static void AddModel(string modelName, Func<AnalyzeModel> modelConfiguration)
     {
         if (AnalyzeModels.ContainsKey(modelName))

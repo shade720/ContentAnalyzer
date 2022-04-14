@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using System.Text.RegularExpressions;
+using Common;
 using VkNet.Model;
 
 namespace VkDataCollector.Data;
@@ -24,13 +25,15 @@ internal class CommentDataManager
 
     private static CommentData Convert(Comment comment)
     {
-        return new CommentData(
-            comment.Id,
-            comment.PostId ?? 0,
-            comment.OwnerId ?? 0,
-            comment.FromId ?? 0,
-            ClearText(comment.Text),
-            comment.Date ?? new DateTime(0, 0, 0));
+        return new CommentData
+        {
+            Id = comment.Id,
+            PostId = comment.PostId ?? 0,
+            GroupId = comment.OwnerId ?? 0,
+            AuthorId = comment.FromId ?? 0,
+            Text = ClearText(comment.Text),
+            PostDate = comment.Date ?? new DateTime(0, 0, 0)
+        };
     }
 
     private static string ClearText(string text)
