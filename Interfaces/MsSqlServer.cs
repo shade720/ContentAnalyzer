@@ -25,23 +25,23 @@ public abstract class MsSqlServer
         }
         Connection.Close();
     }
-    protected static void SafeAccess(Action accessAction)
-    {
-        int attempts;
-        const int retryDelayMs = 5000;
-        for (attempts = 0; attempts < 5; attempts++)
-        {
-            try
-            {
-                accessAction.Invoke();
-                break;
-            }
-            catch (Exception e)
-            {
-                Logger.Log($"{e.Message} {e.StackTrace}", Logger.LogLevel.Error);
-                Thread.Sleep(retryDelayMs);
-            }
-        }
-        if (attempts == 5) throw new Exception("Number of attempts to access to database was exceeded");
-    }
+    //protected static void SafeAccess(Action accessAction)
+    //{
+    //    int attempts;
+    //    const int retryDelayMs = 5000;
+    //    for (attempts = 0; attempts < 5; attempts++)
+    //    {
+    //        try
+    //        {
+    //            accessAction.Invoke();
+    //            break;
+    //        }
+    //        catch (Exception e)
+    //        {
+    //            Logger.Log($"{e.Message} {e.StackTrace}", Logger.LogLevel.Error);
+    //            Thread.Sleep(retryDelayMs);
+    //        }
+    //    }
+    //    if (attempts == 5) throw new Exception("Number of attempts to access to database was exceeded");
+    //}
 }

@@ -57,24 +57,21 @@ public class AllCommentsDatabaseObserver : MsSqlServerObserver
 
     private void LoadData()
     {
-        SafeAccess(() =>
+        using var command = new SqlCommand("SELECT Id, CommentId, PostId, GroupId, AuthorId, Content, Date FROM [dbo].[AllComments] WHERE Id > @StartIndex", Connection);
+        command.Parameters.AddWithValue("@StartIndex", _lastReceivedId);
+        using var reader = command.ExecuteReader();
+        while (reader.Read())
         {
-            using var command = new SqlCommand("SELECT Id, CommentId, PostId, GroupId, AuthorId, Content, Date FROM [dbo].[AllComments] WHERE Id > @StartIndex", Connection);
-            command.Parameters.AddWithValue("@StartIndex", _lastReceivedId);
-            using var reader = command.ExecuteReader();
-            while (reader.Read())
-            {
-                _lastReceivedId = Convert.ToInt64(reader["Id"]);
-                _dataProcessor?.Invoke(new CommentData
-                (
-                    Convert.ToInt64(reader["CommentId"]),
-                    reader["Content"].ToString() ?? string.Empty,
-                    Convert.ToInt64(reader["PostId"]),
-                    Convert.ToInt64(reader["GroupId"]),
-                    Convert.ToInt64(reader["AuthorId"]),
-                    Convert.ToDateTime(reader["Date"])
-                ));
-            }
-        });
+            _lastReceivedId = Convert.ToInt64(reader["Id"]);
+            _dataProcessor?.Invoke(new CommentData
+            (
+                Convert.ToInt64(reader["CommentId"]),
+                reader["Content"].ToString() ?? string.Empty,
+                Convert.ToInt64(reader["PostId"]),
+                Convert.ToInt64(reader["GroupId"]),
+                Convert.ToInt64(reader["AuthorId"]),
+                Convert.ToDateTime(reader["Date"])
+            ));
+        }
     }
 }
