@@ -4,7 +4,7 @@ using DataAnalysisService.AnalyzeModels.DomainClasses;
 
 namespace DataAnalysisService.AnalyzeModels.ModelImplementations;
 
-internal class MultilingualUniversalSentenceEncoderModel : AnalyzeModel
+internal class UniversalSentenceEncoderModel : AnalyzeModel
 {
     private static int _evaluateThreshold;
     private readonly AutoResetEvent _scriptInitialize = new(false);
@@ -13,7 +13,7 @@ internal class MultilingualUniversalSentenceEncoderModel : AnalyzeModel
 
     public override bool IsRunning { get; protected set; }
 
-    public MultilingualUniversalSentenceEncoderModel(
+    public UniversalSentenceEncoderModel(
         string interpreter,
         string predictScript,
         string trainScript,
