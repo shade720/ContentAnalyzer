@@ -52,7 +52,7 @@ public partial class AllCommentsForm : Form
         foreach (var comment in list)
         {
             AllCommentsDataGridView.Rows.Add(
-                comment.Id,
+                comment.CommentId,
                 comment.PostId,
                 comment.GroupId,
                 comment.AuthorId,

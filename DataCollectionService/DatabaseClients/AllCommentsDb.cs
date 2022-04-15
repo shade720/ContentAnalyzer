@@ -22,6 +22,7 @@ public class AllCommentsDb : DatabaseClient
     public override void Clear()
     {
         Context.Comments.RemoveRange(Context.Comments.ToList());
+        Context.SaveChanges();
     }
 
     private static bool IsDataFrameInvalid(CommentData dataFrame)

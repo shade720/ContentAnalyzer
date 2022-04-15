@@ -4,19 +4,22 @@ namespace Common;
 
 public abstract class Database
 {
-    protected readonly AppContext Context;
+    private readonly DbContextOptions<ApplicationContext> _options;
+    protected ApplicationContext Context;
+
     protected Database(string connectionString)
     {
-        var options = new DbContextOptionsBuilder<AppContext>().UseSqlServer(connectionString).Options;
-        Context = new AppContext(options);
-        Context.Database.EnsureCreated();
+        _options = new DbContextOptionsBuilder<ApplicationContext>()
+            .UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=ContentAnalyzerDatabase;Integrated Security=True;MultipleActiveResultSets=True;")
+            .Options;
     } 
     public void Connect()
     {
-        Context.Database.OpenConnection();
+        Context = new ApplicationContext(_options);
+        Context.Database.EnsureCreated();
     }
     public void Disconnect()
     {
-        Context.Database.CloseConnection();
+        Context.Dispose();
     }
 }

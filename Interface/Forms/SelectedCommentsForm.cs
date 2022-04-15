@@ -50,13 +50,13 @@ public partial class SelectedCommentsForm : Form
         }
         foreach (var comment in list)
         {
-            SelectedCommentsDataGridView.Rows.Add(
-                comment.CommentData.Id,
-                comment.CommentData.PostDate,
-                comment.CommentData.Text,
-                comment.EvaluateCategory,
-                comment.EvaluateProbability
-            );
+            //SelectedCommentsDataGridView.Rows.Add(
+            //    comment.CommentData.CommentId,
+            //    comment.CommentData.PostDate,
+            //    comment.CommentData.Text,
+            //    comment.EvaluateCategory,
+            //    comment.EvaluateProbability
+            //);
         }
         DisplayedRowsLabel.Text = _rowDisplayed == 0 ? SelectedCommentsDataGridView.Rows.Count.ToString() : _rowDisplayed.ToString();
         _parent.SelectedCommentsFoundLabel.Text = SelectedCommentsDataGridView.Rows.Count.ToString();

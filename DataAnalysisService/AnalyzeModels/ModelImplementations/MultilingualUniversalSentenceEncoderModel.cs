@@ -45,6 +45,7 @@ internal class MultilingualUniversalSentenceEncoderModel : AnalyzeModel
         }
         catch (Exception e)
         {
+            Logger.Log(e.Message + " "+ e.StackTrace, Logger.LogLevel.Fatal);
             throw new Exception($"{nameof(StartTrainModel)}", e);
         }
     }
@@ -63,12 +64,13 @@ internal class MultilingualUniversalSentenceEncoderModel : AnalyzeModel
             if (ExceedsThreshold(predictResult))
             {
                 var maxValue = predictResult.Predicts.MaxBy(x => x.PredictValue);
-                var evaluateResult = new EvaluateResult { CommentData = predictResult.CommentData, EvaluateCategory = maxValue.Title, EvaluateProbability = maxValue.PredictValue};
+                var evaluateResult = new EvaluateResult {CommentDataId = predictResult.CommentData.Id, CommentData = predictResult.CommentData, EvaluateCategory = maxValue.Title, EvaluateProbability = maxValue.PredictValue};
                 OnEvaluateResultArrivedEvent?.Invoke(evaluateResult);
             }
         }
         catch (Exception e)
         {
+            Logger.Log(e.Message + " " + e.StackTrace, Logger.LogLevel.Fatal);
             throw new Exception($"{nameof(Predict)}", e);
         }
     }

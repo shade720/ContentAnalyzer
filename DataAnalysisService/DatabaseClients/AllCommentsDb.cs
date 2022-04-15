@@ -9,9 +9,9 @@ public class AllCommentsDb : DatabaseObserver
     private Action<CommentData> _dataProcessor;
     private readonly int _observeDelay;
 
-    public AllCommentsDb(string connectionString, int observeDelayMs) : base(connectionString) => 
+    public AllCommentsDb(string connectionString, int observeDelayMs) : base(connectionString) =>
         _observeDelay = observeDelayMs;
-    
+
 
     #region PublicInterface
 
@@ -29,7 +29,7 @@ public class AllCommentsDb : DatabaseObserver
 
     public override void StopLoading()
     {
-        if(!IsLoadingStarted) throw new Exception($"Loading already stopped {nameof(StopLoading)}");
+        if (!IsLoadingStarted) throw new Exception($"Loading already stopped {nameof(StopLoading)}");
         if (_dataProcessor is null) throw new Exception($"Data processor not set {nameof(StopLoading)}");
 
         _cancellation.Cancel();
@@ -50,8 +50,10 @@ public class AllCommentsDb : DatabaseObserver
             {
                 LoadData();
                 await Task.Delay(_observeDelay, cancellationToken);
+                Logger.Log("Loading loop working", Logger.LogLevel.Information);
             }
         }, cancellationToken);
+        Logger.Log("Loading loop break", Logger.LogLevel.Information);
     }
 
     private void LoadData()

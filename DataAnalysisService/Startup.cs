@@ -27,13 +27,13 @@ public static class Startup
             new[] {"Normal", "Toxic"}));
     }
 
-    private static MultilingualUniversalSentenceEncoderModel CreateModel(string interpreter, string predict, string train, string dataset, string model, string [] categories)
+    private static MultilingualUniversalSentenceEncoderModel CreateModel(string interpreter, string predict, string train, string dataSet, string model, string [] categories)
     {
-        var neuralModel = new MultilingualUniversalSentenceEncoderModel(interpreter, predict, train, dataset, model, categories);
+        var neuralModel = new MultilingualUniversalSentenceEncoderModel(interpreter, predict, train, dataSet, model, categories);
         neuralModel.Subscribe(
             predictResult => Logger.Log($"Predict {predictResult.CommentData.Text} ----> {predictResult}\n\n", Logger.LogLevel.Information),
             evaluateResult => { },
-            error => { });
+            error => Logger.Log(error));
         return neuralModel;
     }
 }

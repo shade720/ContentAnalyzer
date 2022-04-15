@@ -27,7 +27,7 @@ internal class CommentDataManager
     {
         return new CommentData
         {
-            Id = comment.Id,
+            CommentId = comment.Id,
             PostId = comment.PostId ?? 0,
             GroupId = comment.OwnerId ?? 0,
             AuthorId = comment.FromId ?? 0,

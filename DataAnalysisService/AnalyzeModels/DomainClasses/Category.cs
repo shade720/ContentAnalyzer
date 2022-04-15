@@ -1,4 +1,4 @@
-﻿namespace Common;
+﻿namespace DataAnalysisService.AnalyzeModels.DomainClasses;
 
 public class Category
 {
