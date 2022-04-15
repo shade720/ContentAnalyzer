@@ -1,6 +1,7 @@
 ﻿using System.Text;
 using System.Text.RegularExpressions;
 using Common;
+using Common.EntityFramework;
 using VkNet.Model;
 
 namespace VkDataCollector.Data;

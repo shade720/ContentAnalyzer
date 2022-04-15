@@ -1,4 +1,5 @@
 ﻿using Common;
+using Common.EntityFramework;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAnalysisService.DatabaseClients;
@@ -6,20 +7,17 @@ namespace DataAnalysisService.DatabaseClients;
 public class SuspiciousCommentsDb : DatabaseClient
 {
     public SuspiciousCommentsDb(string connectionString) : base(connectionString) { }
+
     public override void Add<T>(T result)
     {
         if (result is not EvaluateResult evaluateResult) return;
-        var parent = from comment in Context.Comments where comment.Id == evaluateResult.CommentDataId select comment;
-        parent.First().EvaluateResults.Add(evaluateResult);
+        Context.Comments.Single(comment => comment.Id == evaluateResult.CommentDataId).EvaluateResults.Add(evaluateResult);
         Context.SaveChanges();
     }
 
     public override List<T> GetRange<T>(int startIndex)
     {
-        var result = 
-            from c in Context.EvaluateResults
-                .Include(evaluateResult => from commentData in Context.Comments where evaluateResult.CommentDataId == commentData.Id select commentData) 
-            where c.CommentDataId > startIndex select c;
+        var result = from evaluateResult in Context.EvaluateResults.Include(comment => comment.CommentData) where evaluateResult.Id > startIndex select evaluateResult;
         return result as List<T> ?? new List<T>();
     }
 

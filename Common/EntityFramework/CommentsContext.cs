@@ -1,15 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace Common;
+namespace Common.EntityFramework;
 
-public class ApplicationContext : DbContext
+public class CommentsContext : DbContext
 {
     public DbSet<CommentData> Comments { get; set; }
     public DbSet<EvaluateResult> EvaluateResults { get; set; }
 
-    public ApplicationContext() { }
+    public CommentsContext() { }
 
-    public ApplicationContext(DbContextOptions<ApplicationContext> options): base(options) { }
+    public CommentsContext(DbContextOptions<CommentsContext> options): base(options) { }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

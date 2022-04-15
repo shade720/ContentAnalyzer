@@ -1,4 +1,4 @@
-﻿namespace Common;
+﻿namespace Common.EntityFramework;
 
 public class EvaluateResult
 {

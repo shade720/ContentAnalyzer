@@ -1,6 +1,7 @@
 ﻿using VkDataCollector.Data;
 using VkDataCollector.Scanners;
 using Common;
+using Common.EntityFramework;
 
 namespace VkDataCollector;
 

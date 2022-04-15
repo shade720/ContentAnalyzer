@@ -1,4 +1,4 @@
-﻿using Common;
+﻿using Common.EntityFramework;
 
 namespace DataAnalysisService.AnalyzeModels.DomainClasses;
 
@@ -11,13 +11,13 @@ public abstract class AnalyzeModel
     protected readonly string DataSet;
     protected readonly string Model;
 
-    protected delegate void OnErrorArrived(string error);
-    protected delegate void OnPredictComputed(PredictResult warning);
-    protected delegate void OnEvaluateComputed(EvaluateResult warning);
+    protected delegate void OnError(string error);
+    protected delegate void OnPrediction(PredictResult warning);
+    protected delegate void OnEvaluation(EvaluateResult warning);
 
-    protected OnErrorArrived OnErrorArrivedEvent;
-    protected OnPredictComputed OnPredictResultArrivedEvent;
-    protected OnEvaluateComputed OnEvaluateResultArrivedEvent;
+    protected OnError OnErrorEvent;
+    protected OnPrediction OnPredictionEvent;
+    protected OnEvaluation OnEvaluationEvent;
 
     protected string[] Categories { get; }
     public abstract bool IsRunning { get; protected set; }
@@ -33,16 +33,16 @@ public abstract class AnalyzeModel
     }
     public void Subscribe(Action<PredictResult> predictionResultHandler, Action<EvaluateResult> evaluateResultHandler, Action<string> scriptMessagesHandler)
     {
-        OnErrorArrivedEvent += scriptMessagesHandler.Invoke;
-        OnPredictResultArrivedEvent += predictionResultHandler.Invoke;
-        OnEvaluateResultArrivedEvent += evaluateResultHandler.Invoke;
+        OnErrorEvent += scriptMessagesHandler.Invoke;
+        OnPredictionEvent += predictionResultHandler.Invoke;
+        OnEvaluationEvent += evaluateResultHandler.Invoke;
     }
 
     public abstract void StartPredictiveModel();
 
     public abstract void StartTrainModel();
 
-    public abstract void Predict(CommentData text);
+    public abstract void Predict(CommentData comment);
 
     public abstract void StopModel();
 }

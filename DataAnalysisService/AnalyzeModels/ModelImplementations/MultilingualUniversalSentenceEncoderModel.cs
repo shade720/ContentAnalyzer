@@ -1,4 +1,5 @@
 ﻿using Common;
+using Common.EntityFramework;
 using DataAnalysisService.AnalyzeModels.DomainClasses;
 
 namespace DataAnalysisService.AnalyzeModels.ModelImplementations;
@@ -25,8 +26,29 @@ internal class MultilingualUniversalSentenceEncoderModel : AnalyzeModel
         _evaluateThreshold = evaluateThresholdPercent;
     }
 
-    public override void StartPredictiveModel() => StartModel(PredictScript, Model);
-    public override void StartTrainModel() => StartModel(TrainScript, DataSet);
+    public override void StartPredictiveModel()
+    {
+        try
+        {
+            StartModel(PredictScript, Model);
+        }
+        catch (Exception e)
+        {
+            throw new Exception($"{nameof(StartPredictiveModel)}" + e.Message + "\r\n" + e.StackTrace, e.InnerException);
+        }
+    }
+
+    public override void StartTrainModel()
+    {
+        try
+        {
+            StartModel(TrainScript, DataSet);
+        }
+        catch (Exception e)
+        {
+            throw new Exception($"{nameof(StartTrainModel)}" + e.Message + "\r\n" + e.StackTrace, e.InnerException);
+        }
+    }
 
     private void StartModel(string scriptModel, string resourcePath)
     {
@@ -45,8 +67,8 @@ internal class MultilingualUniversalSentenceEncoderModel : AnalyzeModel
         }
         catch (Exception e)
         {
-            Logger.Log(e.Message + " "+ e.StackTrace, Logger.LogLevel.Fatal);
-            throw new Exception($"{nameof(StartTrainModel)}", e);
+            Logger.Log($"{nameof(StartModel)}" + e.Message + "\r\n"+ e.StackTrace, Logger.LogLevel.Fatal);
+            throw new Exception($"{nameof(StartModel)}" + e.Message + "\r\n" + e.StackTrace, e.InnerException);
         }
     }
 
@@ -60,26 +82,25 @@ internal class MultilingualUniversalSentenceEncoderModel : AnalyzeModel
             var predictFromScript = Runner.ReadFromScript();
             var predictResult = new PredictResult(dataFrame, predictFromScript, Categories);
 
-            OnPredictResultArrivedEvent?.Invoke(predictResult);
+            OnPredictionEvent?.Invoke(predictResult);
             if (ExceedsThreshold(predictResult))
             {
                 var maxValue = predictResult.Predicts.MaxBy(x => x.PredictValue);
                 var evaluateResult = new EvaluateResult {CommentDataId = predictResult.CommentData.Id, CommentData = predictResult.CommentData, EvaluateCategory = maxValue.Title, EvaluateProbability = maxValue.PredictValue};
-                OnEvaluateResultArrivedEvent?.Invoke(evaluateResult);
+                OnEvaluationEvent?.Invoke(evaluateResult);
             }
         }
         catch (Exception e)
         {
-            Logger.Log(e.Message + " " + e.StackTrace, Logger.LogLevel.Fatal);
-            throw new Exception($"{nameof(Predict)}", e);
+            Logger.Log($"{nameof(Predict)}" + e.Message + "\r\n" + e.StackTrace, Logger.LogLevel.Fatal);
+            throw new Exception($"{nameof(Predict)}" + e.Message + "\r\n" + e.StackTrace, e.InnerException);
         }
     }
 
     public override void StopModel()
     {
-        if (!IsRunning) throw new Exception("Script already aborted");
+        if (!IsRunning) throw new Exception("Predict model not initialized");
         if (Runner is null) throw new Exception("Script not running");
-
         IsRunning = false;
         Runner.OnErrorReceivedEvent -= RunnerOnErrorReceivedEventHandler;
         Runner.OnExitedEvent -= RunnerOnExitEventHandler;
@@ -112,7 +133,7 @@ internal class MultilingualUniversalSentenceEncoderModel : AnalyzeModel
 
     private void RunnerOnErrorReceivedEventHandler(string errorMessage)
     {
-        OnErrorArrivedEvent.Invoke(errorMessage);
+        OnErrorEvent.Invoke(errorMessage);
     }
 
     private void RunnerOnStartedEventHandler()

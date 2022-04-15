@@ -1,4 +1,5 @@
 ﻿using Common;
+using Common.EntityFramework;
 using DataAnalysisService.AnalyzeModels.DomainClasses;
 
 namespace DataAnalysisService;
@@ -42,7 +43,18 @@ public static class DataAnalysisService
             Logger.Log($"Model {modelName} not running", Logger.LogLevel.Error);
             return;
         }
-        AnalyzeModels[modelName].Predict(dataFrame);
+        try
+        {
+            AnalyzeModels[modelName].Predict(dataFrame);
+        }
+        catch (Exception e)
+        {
+            Logger.Log(e.Message + "\r\n" + e.StackTrace);
+        }
+        finally
+        {
+            AnalyzeModels[modelName].StopModel();
+        }
     }
     public static void StartModel(string modelName)
     {
@@ -63,13 +75,23 @@ public static class DataAnalysisService
                 AnalyzeModels[modelName].StopModel();
             }
         );
-        AnalyzeModels[modelName].StartPredictiveModel();
-        Logger.Log($"Model {modelName} started listen predicts", Logger.LogLevel.Information);
-
-        if (_sourceDatabase.IsLoadingStarted) return;
-        _sourceDatabase.OnDataArrived(AnalyzeByAny);
-        _sourceDatabase.StartLoading();
-        Logger.Log("Source database started sending data", Logger.LogLevel.Information);
+        try
+        {
+            AnalyzeModels[modelName].StartPredictiveModel();
+            Logger.Log($"Model {modelName} started listen predicts", Logger.LogLevel.Information);
+            if (_sourceDatabase.IsLoadingStarted) return;
+            _sourceDatabase.OnDataArrived(AnalyzeByAny);
+            _sourceDatabase.StartLoading();
+            Logger.Log("Source database started sending data", Logger.LogLevel.Information);
+        }
+        catch (Exception e)
+        {
+            Logger.Log(e.Message + "\r\n" + e.StackTrace);
+        }
+        finally
+        {
+            AnalyzeModels[modelName].StopModel();
+        }
     }
 
     public static void StopService()
@@ -93,10 +115,16 @@ public static class DataAnalysisService
             Logger.Log($"Model {modelName} already stopped", Logger.LogLevel.Error);
             return;
         }
-        if (IsLastRunningModel() && _sourceDatabase.IsLoadingStarted) 
-            _sourceDatabase.StopLoading();
-        AnalyzeModels[modelName].StopModel();
-        Logger.Log($"{modelName} executing stopped", Logger.LogLevel.Information);
+        try
+        {
+            if (IsLastRunningModel() && _sourceDatabase.IsLoadingStarted) _sourceDatabase.StopLoading();
+            AnalyzeModels[modelName].StopModel();
+            Logger.Log($"{modelName} executing stopped", Logger.LogLevel.Information);
+        }
+        catch (Exception e)
+        {
+            Logger.Log(e.Message + "\r\n" + e.StackTrace);
+        }
     }
 
     private static bool IsLastRunningModel()
@@ -131,7 +159,18 @@ public static class DataAnalysisService
             Logger.Log($"Model {modelName} already in work", Logger.LogLevel.Error);
             return;
         }
-        AnalyzeModels[modelName].StartTrainModel();
-        Logger.Log($"Model {modelName} started training", Logger.LogLevel.Information);
+        try
+        {
+            AnalyzeModels[modelName].StartTrainModel();
+            Logger.Log($"Model {modelName} started training", Logger.LogLevel.Information);
+        }
+        catch (Exception e)
+        {
+            Logger.Log(e.Message + "\r\n" + e.StackTrace);
+        }
+        finally
+        {
+            AnalyzeModels[modelName].StopModel();
+        }
     }
 }

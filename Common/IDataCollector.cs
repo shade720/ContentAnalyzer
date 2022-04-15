@@ -1,4 +1,6 @@
-﻿namespace Common;
+﻿using Common.EntityFramework;
+
+namespace Common;
 
 public interface IDataCollector
 {

@@ -1,4 +1,4 @@
-﻿using Common;
+﻿using Common.EntityFramework;
 
 namespace Interface.Forms;
 
