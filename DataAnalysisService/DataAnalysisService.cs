@@ -58,9 +58,6 @@ public static class DataAnalysisService
         catch (Exception e)
         {
             Logger.Log(e.Message + "\r\n" + e.StackTrace);
-        }
-        finally
-        {
             AnalyzeModels[modelName].StopModel();
         }
     }
@@ -95,9 +92,6 @@ public static class DataAnalysisService
         catch (Exception e)
         {
             Logger.Log(e.Message + "\r\n" + e.StackTrace);
-        }
-        finally
-        {
             AnalyzeModels[modelName].StopModel();
         }
     }
@@ -173,9 +167,6 @@ public static class DataAnalysisService
         catch (Exception e)
         {
             Logger.Log(e.Message + "\r\n" + e.StackTrace);
-        }
-        finally
-        {
             AnalyzeModels[modelName].StopModel();
         }
     }
