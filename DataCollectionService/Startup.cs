@@ -1,7 +1,8 @@
 ﻿using VkDataCollector;
 using System.Configuration;
 using Common;
-using DataCollectionService.DatabaseClients;
+using Common.EntityFramework;
+using Microsoft.EntityFrameworkCore;
 
 namespace DataCollectionService;
 
@@ -9,7 +10,9 @@ public static class Startup
 {
     public static void ConfigureService()
     {
-        DataCollectionService.RegisterSaveDatabase(new AllCommentsDb(ConfigurationManager.ConnectionStrings["Database"].ConnectionString));
+        DataCollectionService.SetDatabaseContextOption(new DbContextOptionsBuilder<CommentsContext>()
+            .UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=ContentAnalyzerDatabase;Integrated Security=True;MultipleActiveResultSets=True;")
+            .Options);
 
         DataCollectionService.AddDataCollector(() =>
         {

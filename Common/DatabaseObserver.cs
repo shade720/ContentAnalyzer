@@ -1,10 +1,11 @@
 ﻿using Common.EntityFramework;
+using Microsoft.EntityFrameworkCore;
 
 namespace Common;
 
 public abstract class DatabaseObserver : Database
 {
-    protected  DatabaseObserver(string connectionString) : base(connectionString)
+    protected  DatabaseObserver(DbContextOptions<CommentsContext> options) : base(options)
     {
     }
     public bool IsLoadingStarted { get; protected set; }

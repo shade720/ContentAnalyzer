@@ -1,5 +1,6 @@
 ﻿using Common;
 using Common.EntityFramework;
+using Microsoft.EntityFrameworkCore;
 
 namespace DataAnalysisService.DatabaseClients;
 
@@ -10,9 +11,7 @@ public class AllCommentsDb : DatabaseObserver
     private Action<CommentData> _dataProcessor;
     private readonly int _observeDelay;
 
-    public AllCommentsDb(string connectionString, int observeDelayMs) : base(connectionString) =>
-        _observeDelay = observeDelayMs;
-
+    public AllCommentsDb(DbContextOptions<CommentsContext> options, int observeDelayMs) : base(options) => _observeDelay = observeDelayMs;
 
     #region PublicInterface
 

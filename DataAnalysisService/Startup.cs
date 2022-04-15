@@ -1,7 +1,9 @@
 ﻿using System.Configuration;
 using Common;
+using Common.EntityFramework;
 using DataAnalysisService.AnalyzeModels.ModelImplementations;
 using DataAnalysisService.DatabaseClients;
+using Microsoft.EntityFrameworkCore;
 
 namespace DataAnalysisService;
 
@@ -9,8 +11,10 @@ public static class Startup
 {
     public static void ConfigureService()
     {
-        DataAnalysisService.RegisterSourceDatabase(new AllCommentsDb(ConfigurationManager.ConnectionStrings["Database"].ConnectionString, 60000));
-        DataAnalysisService.RegisterSaveDatabase(new SuspiciousCommentsDb(ConfigurationManager.ConnectionStrings["Database"].ConnectionString));
+        DataAnalysisService.SetDatabaseContextOption(new DbContextOptionsBuilder<CommentsContext>()
+            .UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=ContentAnalyzerDatabase;Integrated Security=True;MultipleActiveResultSets=True;")
+            .Options);
+        
         DataAnalysisService.AddModel("InsultThreatObscenityCategories", () => CreateModel(
             ConfigurationManager.AppSettings["Interpreter"],
             ConfigurationManager.AppSettings["Predict1"],

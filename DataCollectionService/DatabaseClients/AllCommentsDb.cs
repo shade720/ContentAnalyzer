@@ -1,11 +1,12 @@
 ﻿using Common;
 using Common.EntityFramework;
+using Microsoft.EntityFrameworkCore;
 
 namespace DataCollectionService.DatabaseClients;
 
 public class AllCommentsDb : DatabaseClient
 {
-    public AllCommentsDb(string connectionString) : base(connectionString) { }
+    public AllCommentsDb(DbContextOptions<CommentsContext> options) : base(options) { }
     public override void Add<T>(T commentData)
     {
         var dataFrame = commentData as CommentData;

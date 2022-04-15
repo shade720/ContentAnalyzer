@@ -1,6 +1,8 @@
 ﻿using Common;
 using Common.EntityFramework;
 using DataAnalysisService.AnalyzeModels.DomainClasses;
+using DataAnalysisService.DatabaseClients;
+using Microsoft.EntityFrameworkCore;
 
 namespace DataAnalysisService;
 
@@ -10,7 +12,13 @@ public static class DataAnalysisService
     private static DatabaseObserver _sourceDatabase;
     private static DatabaseClient _targetDatabase;
 
-    public static List<EvaluateResult> GetAllComments(int startIndex)
+    public static void SetDatabaseContextOption(DbContextOptions<CommentsContext> options)
+    {
+        _sourceDatabase = new AllCommentsDb(options,60000);
+        _targetDatabase = new SuspiciousCommentsDb(options);
+    }
+
+    public static List<EvaluateResult> GetEvaluateResultsFrom(int startIndex)
     {
         return _targetDatabase.GetRange<EvaluateResult>(startIndex);
     }
@@ -132,8 +140,6 @@ public static class DataAnalysisService
         return AnalyzeModels.Count(model => model.Value.IsRunning) == 1;
     }
 
-    public static void RegisterSourceDatabase(DatabaseObserver database) => _sourceDatabase = database;
-    public static void RegisterSaveDatabase(DatabaseClient database) => _targetDatabase = database;
     public static void AddModel(string modelName, Func<AnalyzeModel> modelConfiguration)
     {
         if (AnalyzeModels.ContainsKey(modelName))

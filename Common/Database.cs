@@ -8,11 +8,9 @@ public abstract class Database
     private readonly DbContextOptions<CommentsContext> _options;
     protected CommentsContext Context;
 
-    protected Database(string connectionString)
+    protected Database(DbContextOptions<CommentsContext> options)
     {
-        _options = new DbContextOptionsBuilder<CommentsContext>()
-            .UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=ContentAnalyzerDatabase;Integrated Security=True;MultipleActiveResultSets=True;")
-            .Options;
+        _options = options;
     } 
     public void Connect()
     {

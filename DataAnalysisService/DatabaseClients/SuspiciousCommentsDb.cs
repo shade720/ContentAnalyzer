@@ -6,7 +6,7 @@ namespace DataAnalysisService.DatabaseClients;
 
 public class SuspiciousCommentsDb : DatabaseClient
 {
-    public SuspiciousCommentsDb(string connectionString) : base(connectionString) { }
+    public SuspiciousCommentsDb(DbContextOptions<CommentsContext> options) : base(options) { }
 
     public override void Add<T>(T result)
     {

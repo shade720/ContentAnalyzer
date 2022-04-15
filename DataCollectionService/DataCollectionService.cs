@@ -1,5 +1,7 @@
 ﻿using Common;
 using Common.EntityFramework;
+using DataCollectionService.DatabaseClients;
+using Microsoft.EntityFrameworkCore;
 
 namespace DataCollectionService;
 
@@ -8,14 +10,14 @@ public static class DataCollectionService
     private static readonly List<IDataCollector> DataCollectors = new();
     private static DatabaseClient _saveDatabase;
 
-    public static List<CommentData> GetAllComments(int startIndex)
+    public static List<CommentData> GetCommentsFrom(int startIndex)
     {
         return _saveDatabase.GetRange<CommentData>(startIndex);
     }
 
-    public static void RegisterSaveDatabase(DatabaseClient database)
+    public static void SetDatabaseContextOption(DbContextOptions<CommentsContext> options)
     {
-        _saveDatabase = database ?? throw new Exception("Save database cannot be null");
+        _saveDatabase = new AllCommentsDb(options);
     }
 
     public static void AddDataCollector(Func<IDataCollector> dataCollectorConfiguration)

@@ -38,7 +38,7 @@ public partial class AllCommentsForm : Form
 
     private void RefreshTable()
     {
-        var list = DataCollectionService.DataCollectionService.GetAllComments(_lastIndex);
+        var list = DataCollectionService.DataCollectionService.GetCommentsFrom(_lastIndex);
         UpdateControls(list);
         _lastIndex = AllCommentsDataGridView.Rows.Count;
     }
