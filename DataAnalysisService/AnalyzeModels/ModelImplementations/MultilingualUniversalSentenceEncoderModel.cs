@@ -33,47 +33,31 @@ internal class MultilingualUniversalSentenceEncoderModel : AnalyzeModel
     private void StartModel(string scriptModel, string resourcePath)
     {
         if (IsRunning) throw new Exception("Runner is already using script");
-        try
-        {
-            Runner = new PythonRunner(Interpreter);
+        Runner = new PythonRunner(Interpreter);
 
-            Runner.OnErrorReceivedEvent += RunnerOnErrorReceivedEventHandler;
-            Runner.OnExitedEvent += RunnerOnExitEventHandler;
-            Runner.OnStartedEvent += RunnerOnStartedEventHandler;
+        Runner.OnErrorReceivedEvent += RunnerOnErrorReceivedEventHandler;
+        Runner.OnExitedEvent += RunnerOnExitEventHandler;
+        Runner.OnStartedEvent += RunnerOnStartedEventHandler;
 
-            var result = Runner.RunAsync(Path.GetFullPath(scriptModel), Path.GetFullPath(resourcePath));
+        var result = Runner.RunAsync(Path.GetFullPath(scriptModel), Path.GetFullPath(resourcePath));
 
-            _scriptInitialize.WaitOne();
-        }
-        catch (Exception e)
-        {
-            Logger.Log($"{nameof(StartModel)}" + e.Message + "\r\n" + e.StackTrace, Logger.LogLevel.Fatal);
-            throw new Exception($"{nameof(StartModel)}" + e.Message + "\r\n" + e.StackTrace, e.InnerException);
-        }
+        _scriptInitialize.WaitOne();
     }
 
     public override void Predict(CommentData dataFrame)
     {
         if (!IsRunning) throw new Exception("Predict model not initialized");
         if (Runner is null) throw new Exception("Script not running");
-        try
-        {
-            Runner.WriteToScript(dataFrame.Text);
-            var predictFromScript = Runner.ReadFromScript();
-            var predictResult = new PredictResult(dataFrame, predictFromScript, Categories);
 
-            OnPredictionEvent?.Invoke(predictResult);
-            if (ExceedsThreshold(predictResult))
-            {
-                var maxValue = predictResult.Predicts.MaxBy(x => x.PredictValue);
-                var evaluateResult = new EvaluateResult { CommentDataId = predictResult.CommentData.Id, CommentData = predictResult.CommentData, EvaluateCategory = maxValue.Title, EvaluateProbability = maxValue.PredictValue };
-                OnEvaluationEvent?.Invoke(evaluateResult);
-            }
-        }
-        catch (Exception e)
+        Runner.WriteToScript(dataFrame.Text);
+        var predictFromScript = Runner.ReadFromScript();
+        var predictResult = new PredictResult(dataFrame, predictFromScript, Categories);
+        OnPredictionEvent?.Invoke(predictResult);
+        if (ExceedsThreshold(predictResult))
         {
-            Logger.Log($"{nameof(Predict)}" + e.Message + "\r\n" + e.StackTrace, Logger.LogLevel.Fatal);
-            throw new Exception($"{nameof(Predict)}" + e.Message + "\r\n" + e.StackTrace, e.InnerException);
+            var maxValue = predictResult.Predicts.MaxBy(x => x.PredictValue);
+            var evaluateResult = new EvaluateResult { CommentDataId = predictResult.CommentData.Id, CommentData = predictResult.CommentData, EvaluateCategory = maxValue.Title, EvaluateProbability = maxValue.PredictValue };
+            OnEvaluationEvent?.Invoke(evaluateResult);
         }
     }
 
