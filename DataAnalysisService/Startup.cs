@@ -33,7 +33,7 @@ public static class Startup
 
     private static MultilingualUniversalSentenceEncoderModel CreateModel(string interpreter, string predict, string train, string dataSet, string model, string [] categories)
     {
-        var neuralModel = new MultilingualUniversalSentenceEncoderModel(interpreter, predict, train, dataSet, model, categories);
+        var neuralModel = new MultilingualUniversalSentenceEncoderModel(interpreter, predict, train, dataSet, model, categories, int.Parse(ConfigurationManager.AppSettings["EvaluateThreshold"]));
         neuralModel.Subscribe(
             predictResult => Logger.Log($"Predict {predictResult.CommentData.Text} ----> {predictResult}\n\n", Logger.LogLevel.Information),
             evaluateResult => { },

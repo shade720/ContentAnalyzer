@@ -20,35 +20,15 @@ internal class MultilingualUniversalSentenceEncoderModel : AnalyzeModel
         string dataSet,
         string model,
         string[] categories,
-        int evaluateThresholdPercent = 70) :
+        int evaluateThresholdPercent) :
         base(interpreter, predictScript, trainScript, dataSet, model, categories)
     {
         _evaluateThreshold = evaluateThresholdPercent;
     }
 
-    public override void StartPredictiveModel()
-    {
-        try
-        {
-            StartModel(PredictScript, Model);
-        }
-        catch (Exception e)
-        {
-            throw new Exception($"{nameof(StartPredictiveModel)}" + e.Message + "\r\n" + e.StackTrace, e.InnerException);
-        }
-    }
+    public override void StartPredictiveModel() => StartModel(PredictScript, Model);
 
-    public override void StartTrainModel()
-    {
-        try
-        {
-            StartModel(TrainScript, DataSet);
-        }
-        catch (Exception e)
-        {
-            throw new Exception($"{nameof(StartTrainModel)}" + e.Message + "\r\n" + e.StackTrace, e.InnerException);
-        }
-    }
+    public override void StartTrainModel() => StartModel(TrainScript, DataSet);
 
     private void StartModel(string scriptModel, string resourcePath)
     {
@@ -67,7 +47,7 @@ internal class MultilingualUniversalSentenceEncoderModel : AnalyzeModel
         }
         catch (Exception e)
         {
-            Logger.Log($"{nameof(StartModel)}" + e.Message + "\r\n"+ e.StackTrace, Logger.LogLevel.Fatal);
+            Logger.Log($"{nameof(StartModel)}" + e.Message + "\r\n" + e.StackTrace, Logger.LogLevel.Fatal);
             throw new Exception($"{nameof(StartModel)}" + e.Message + "\r\n" + e.StackTrace, e.InnerException);
         }
     }
@@ -86,7 +66,7 @@ internal class MultilingualUniversalSentenceEncoderModel : AnalyzeModel
             if (ExceedsThreshold(predictResult))
             {
                 var maxValue = predictResult.Predicts.MaxBy(x => x.PredictValue);
-                var evaluateResult = new EvaluateResult {CommentDataId = predictResult.CommentData.Id, CommentData = predictResult.CommentData, EvaluateCategory = maxValue.Title, EvaluateProbability = maxValue.PredictValue};
+                var evaluateResult = new EvaluateResult { CommentDataId = predictResult.CommentData.Id, CommentData = predictResult.CommentData, EvaluateCategory = maxValue.Title, EvaluateProbability = maxValue.PredictValue };
                 OnEvaluationEvent?.Invoke(evaluateResult);
             }
         }
