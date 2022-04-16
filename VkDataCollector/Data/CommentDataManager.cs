@@ -20,6 +20,7 @@ internal class CommentDataManager
     {
         foreach (var comment in comments)
         {
+            if (IsCommentInvalid(comment)) continue;
             OnNewCommentFoundEvent?.Invoke(Convert(comment));
         }
     }
@@ -29,26 +30,24 @@ internal class CommentDataManager
         return new CommentData
         {
             CommentId = comment.Id,
-            PostId = comment.PostId ?? 0,
-            GroupId = comment.OwnerId ?? 0,
-            AuthorId = comment.FromId ?? 0,
+            PostId = comment.PostId.Value,
+            GroupId = comment.OwnerId.Value,
+            AuthorId = comment.FromId.Value,
             Text = ClearText(comment.Text),
-            PostDate = comment.Date ?? new DateTime(0, 0, 0)
+            PostDate = comment.Date.Value
         };
     }
 
     private static string ClearText(string text)
     {
-        var result = UnicodeToUtf8(ClearString(text));
+        var result = ClearString(text);
         if (result.StartsWith('[')) result = result.Remove(result.IndexOf('['), result.IndexOf(']') - result.IndexOf('[') + 2).Trim();
         return result;
     }
 
-    private static string UnicodeToUtf8(string text)
+    private static bool IsCommentInvalid(Comment comment)
     {
-        Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-        var bytes = Encoding.GetEncoding(1251).GetBytes(text);
-        return Encoding.GetEncoding(1251).GetString(bytes);
+        return comment.Id <= 0 || comment.PostId <= 0 || comment.OwnerId > 0 || string.IsNullOrEmpty(comment.Text) || comment.Text.Length <= 5;
     }
 
     private static string ClearString(string str)

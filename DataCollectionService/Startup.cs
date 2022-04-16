@@ -28,8 +28,8 @@ public static class Startup
             });
             vkDataCollector.AddCommunity(Convert.ToInt64(ConfigurationManager.AppSettings["NRGroupId"]));
             vkDataCollector.AddCommunity(Convert.ToInt64(ConfigurationManager.AppSettings["LentachGroupId"]));
-            vkDataCollector.AddCommunity(Convert.ToInt64(ConfigurationManager.AppSettings["CSGOHS"]));
-            vkDataCollector.Subscribe(commentData => Logger.Log($"Add {commentData.Id} {commentData.CommentId} {commentData.PostId} {commentData.GroupId} {commentData.AuthorId} {commentData.Text} {commentData.PostDate}", Logger.LogLevel.Information));
+            vkDataCollector.AddCommunity(Convert.ToInt64(ConfigurationManager.AppSettings["CSGOHSGroupId"]));
+            vkDataCollector.Subscribe(commentData => Logger.Log($"Add {commentData.CommentId} {commentData.PostId} {commentData.GroupId} {commentData.AuthorId} {commentData.Text} {commentData.PostDate}", Logger.LogLevel.Information));
             return vkDataCollector;
         });
     }
