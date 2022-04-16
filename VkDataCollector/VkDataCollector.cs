@@ -1,7 +1,7 @@
-﻿using VkDataCollector.Data;
-using VkDataCollector.Scanners;
-using Common;
+﻿using Common;
 using Common.EntityFramework;
+using VkDataCollector.Data;
+using VkDataCollector.Scanners;
 
 namespace VkDataCollector;
 
@@ -17,8 +17,8 @@ public class VkDataCollector : IDataCollector
         _vkApi = new VkApi();
         _postScanners = new List<Scanner>();
         _commentManager = new CommentDataManager();
-    } 
-    
+    }
+
     public void Subscribe(Action<CommentData> handler)
     {
         _commentManager.OnNewCommentFoundEvent += handler.Invoke;
@@ -38,8 +38,10 @@ public class VkDataCollector : IDataCollector
     {
         if (_config is null) throw new ArgumentException("Configuration is missing");
         var result = _vkApi.AuthAsync(_config.ApplicationId, _config.SecureKey, _config.ServiceAccessKey);
-        foreach (var scanner in _postScanners) 
+        foreach (var scanner in _postScanners)
+        {
             scanner.StartScan();
+        }
         Logger.Log("Data collection has begun", Logger.LogLevel.Information);
     }
 

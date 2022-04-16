@@ -1,14 +1,15 @@
-﻿using VkDataCollector.Data;
+﻿using System.Runtime.ExceptionServices;
+using Common;
+using VkDataCollector.Data;
 using VkNet.Enums;
 using VkNet.Model;
-using Common;
 
 namespace VkDataCollector.Scanners;
 
 internal class CommentScanner : Scanner
 {
     public long PostId { get; }
-    
+
     private readonly Dictionary<long, long?> _receivedCommentIds = new();
 
     public CommentScanner(long communityId, long postId, VkApi vkApi, CommentDataManager dataManager, Config configuration) : base(
@@ -16,10 +17,18 @@ internal class CommentScanner : Scanner
 
     public override void StartScan()
     {
-        StopScanToken = new CancellationTokenSource();
-        var presentComments = GetPresentComments();
-        CommentManager.SendAllData(presentComments);
-        var scanResult = ScanComments();
+        try
+        {
+            StopScanToken = new CancellationTokenSource();
+            var presentComments = GetPresentComments();
+            CommentManager.SendAllData(presentComments);
+            var scanResult = ScanComments();
+        }
+        catch (Exception e)
+        {
+            Logger.Log("Comment scanner stopped with error " + e.Message + "\r\n" + e.InnerException, Logger.LogLevel.Error);
+            StopScan();
+        }
     }
 
     public override void StopScan()
@@ -29,33 +38,49 @@ internal class CommentScanner : Scanner
 
     private IEnumerable<Comment> GetPresentComments()
     {
-        var comments = GetBranch();
+        try
+        {
+            var comments = GetBranch();
 
-        var additionalComments = new List<Comment>();
-        foreach (var comment in comments.Where(comment => comment.Thread.Count > 0))
-            additionalComments.AddRange(GetBranch(comment.Id));
-        comments.AddRange(additionalComments);
-        foreach (var comment in comments) Logger.Log($"Add {comment.Id} {comment.PostId} {comment.OwnerId} {comment.FromId} {comment.Text} {comment.Date}", Logger.LogLevel.Information);
-        Logger.Log("Added presents comments", Logger.LogLevel.Information);
-        return comments;
+            var additionalComments = new List<Comment>();
+            foreach (var comment in comments.Where(comment => comment.Thread.Count > 0))
+                additionalComments.AddRange(GetBranch(comment.Id));
+            comments.AddRange(additionalComments);
+            foreach (var comment in comments) Logger.Log($"Add {comment.Id} {comment.PostId} {comment.OwnerId} {comment.FromId} {comment.Text} {comment.Date}", Logger.LogLevel.Information);
+            Logger.Log("Added presents comments", Logger.LogLevel.Information);
+            return comments;
+        }
+        catch (Exception e)
+        {
+            ExceptionDispatchInfo.Capture(e.InnerException).Throw();
+            throw;
+        }
     }
 
     private async Task ScanComments()
     {
-        Logger.Log("Start scanning comments", Logger.LogLevel.Information);
-        await Task.Run(async () =>
+        try
         {
-            while (!StopScanToken.Token.IsCancellationRequested)
+            Logger.Log("Start scanning comments", Logger.LogLevel.Information);
+            await Task.Run(async () =>
             {
-                await Task.Delay(Configuration.ScanCommentsDelay, StopScanToken.Token);
-                if (StopScanToken.IsCancellationRequested || !AnyNewComments()) continue;
+                while (!StopScanToken.Token.IsCancellationRequested)
+                {
+                    await Task.Delay(Configuration.ScanCommentsDelay, StopScanToken.Token);
+                    if (StopScanToken.IsCancellationRequested || !AnyNewComments()) continue;
 
-                ScanBranch(out var mainBranch);
-                foreach (var comment in mainBranch.Items.Where(x => x.Thread.Count > _receivedCommentIds[x.Id]))
-                    ScanBranch(out _, comment.Id);
-            }
-        }, StopScanToken.Token);
-        Logger.Log("Scan comments stopped", Logger.LogLevel.Information);
+                    ScanBranch(out var mainBranch);
+                    foreach (var comment in mainBranch.Items.Where(x => x.Thread.Count > _receivedCommentIds[x.Id]))
+                        ScanBranch(out _, comment.Id);
+                }
+            }, StopScanToken.Token);
+            Logger.Log("Scan comments stopped", Logger.LogLevel.Information);
+        }
+        catch (Exception e)
+        {
+            ExceptionDispatchInfo.Capture(e.InnerException).Throw();
+            throw;
+        }
     }
 
     private bool AnyNewComments()
