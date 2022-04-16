@@ -4,10 +4,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DataCollectionService.DatabaseClients;
 
-public class AllCommentsDb : DatabaseClient
+public class AllCommentsDb : DatabaseClient<CommentData>
 {
     public AllCommentsDb(DbContextOptions<CommentsContext> options) : base(options) { }
-    public override void Add<T>(T commentData)
+    public override void Add(CommentData commentData)
     {
         var dataFrame = commentData as CommentData;
         if (IsDataFrameInvalid(dataFrame)) return;
@@ -15,10 +15,10 @@ public class AllCommentsDb : DatabaseClient
         Context.SaveChanges();
     }
 
-    public override List<T> GetRange<T>(int startIndex)
+    public override GetRangeResult GetRange(int startIndex)
     {
-        var result = from c in Context.Comments where c.Id > startIndex select c;
-        return result as List<T> ?? new List<T>();
+        var queryResult = Context.Comments.Where(c => c.Id > startIndex);
+        return new GetRangeResult {Result = queryResult.ToList()};
     }
 
     public override void Clear()

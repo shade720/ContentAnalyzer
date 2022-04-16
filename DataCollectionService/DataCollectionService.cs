@@ -8,11 +8,11 @@ namespace DataCollectionService;
 public static class DataCollectionService
 {
     private static readonly List<IDataCollector> DataCollectors = new();
-    private static DatabaseClient _saveDatabase;
+    private static DatabaseClient<CommentData> _saveDatabase;
 
     public static List<CommentData> GetCommentsFrom(int startIndex)
     {
-        return _saveDatabase.GetRange<CommentData>(startIndex);
+        return _saveDatabase.GetRange(startIndex).Result;
     }
 
     public static void SetDatabaseContextOption(DbContextOptions<CommentsContext> options)

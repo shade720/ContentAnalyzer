@@ -5,9 +5,8 @@ namespace Common;
 
 public abstract class DatabaseObserver : Database
 {
-    protected  DatabaseObserver(DbContextOptions<CommentsContext> options) : base(options)
-    {
-    }
+    protected  DatabaseObserver(DbContextOptions<CommentsContext> options) : base(options) { }
+
     public bool IsLoadingStarted { get; protected set; }
 
     public abstract void StartLoading();

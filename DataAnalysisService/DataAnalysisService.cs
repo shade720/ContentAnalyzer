@@ -10,7 +10,7 @@ public static class DataAnalysisService
 {
     private static readonly Dictionary<string, AnalyzeModel> AnalyzeModels = new();
     private static DatabaseObserver _sourceDatabase;
-    private static DatabaseClient _targetDatabase;
+    private static DatabaseClient<EvaluateResult> _targetDatabase;
 
     public static void SetDatabaseContextOption(DbContextOptions<CommentsContext> options)
     {
@@ -20,7 +20,7 @@ public static class DataAnalysisService
 
     public static List<EvaluateResult> GetEvaluateResultsFrom(int startIndex)
     {
-        return _targetDatabase.GetRange<EvaluateResult>(startIndex);
+        return _targetDatabase.GetRange(startIndex).Result;
     }
 
     public static void StartService()
