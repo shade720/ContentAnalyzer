@@ -1,22 +1,28 @@
-﻿using Common;
+using Common;
+using DataCollectionService;
 using Serilog;
 
-namespace DataCollectionService;
+var eventSink = new EventSink();
+eventSink.OnLoggingEvent += Logger.Log;
 
-public static class Program
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.Console()
+    .WriteTo.Sink(eventSink)
+    .CreateLogger();
+
+var builder = WebApplication.CreateBuilder(args);
+builder.WebHost.ConfigureLogging(logging =>
 {
-    public static void Main()
-    {
-        Startup.ConfigureService();
+    logging.ClearProviders();
+    logging.AddSerilog(Log.Logger);
+});
+builder.Services.AddGrpc();
 
-        DataCollectionService.Start();
+Startup.ConfigureService(builder.Configuration);
 
-        while (Console.ReadLine() != "+")
-        {
-            Thread.Sleep(5000);
-        }
-        Log.Logger.Information("Service stops work...");
+var app = builder.Build();
 
-        DataCollectionService.Stop();
-    }
-}
+app.MapGrpcService<DataCollectionService.Services.DataCollectionService>();
+app.MapGet("/", () => "Communication with gRPC endpoints must be made through a gRPC client. To learn how to create a client, visit: https://go.microsoft.com/fwlink/?linkid=2086909");
+
+app.Run();
