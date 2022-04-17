@@ -9,7 +9,7 @@ public static class Logger
     public delegate void OnLogging(string log);
     public static event OnLogging OnLoggingEvent;
 
-    public static void Log(string log, LogLevel? logLevel = null)
+    public static void Log(string log)
     {
         OnLoggingEvent?.Invoke(log);
     }

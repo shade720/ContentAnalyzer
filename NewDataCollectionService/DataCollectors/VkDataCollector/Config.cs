@@ -1,4 +1,4 @@
-﻿namespace VkDataCollector;
+﻿namespace DataCollectionService.DataCollectors.VkDataCollector;
 
 public class Config
 {

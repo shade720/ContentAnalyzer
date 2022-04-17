@@ -12,8 +12,12 @@ namespace DataAnalysisService.Services;
 
 public class DataAnalysisService : DataAnalysis.DataAnalysisBase
 {
+    private static readonly Dictionary<string, AnalyzeModel> AnalyzeModels = new();
+    private static DatabaseObserver _sourceDatabase;
+    private static DatabaseClient<EvaluateResult> _targetDatabase;
+
     #region PublicInterface
-    
+
     public override Task<StartServiceReply> StartService(StartServiceRequest request, ServerCallContext context)
     {
         if (_targetDatabase is null) throw new ArgumentException($"Target database is not registered {nameof(StartService)}");
@@ -100,6 +104,16 @@ public class DataAnalysisService : DataAnalysis.DataAnalysisBase
         return Task.FromResult(new EvaluateResultsReply { Result  = { convertedRange }});
     }
 
+    #endregion
+
+    #region Startup
+
+    public static void SetDatabaseContextOption(DbContextOptions<CommentsContext> options)
+    {
+        _sourceDatabase = new AllCommentsDb(options, 60000);
+        _targetDatabase = new SuspiciousCommentsDb(options);
+    }
+
     public static void AddModel(string modelName, Func<AnalyzeModel> modelConfiguration)
     {
         if (AnalyzeModels.ContainsKey(modelName))
@@ -112,17 +126,7 @@ public class DataAnalysisService : DataAnalysis.DataAnalysisBase
 
     #endregion
 
-    #region PrivatePart
-
-    private static readonly Dictionary<string, AnalyzeModel> AnalyzeModels = new();
-    private static DatabaseObserver _sourceDatabase;
-    private static DatabaseClient<EvaluateResult> _targetDatabase;
-
-    public static void SetDatabaseContextOption(DbContextOptions<CommentsContext> options)
-    {
-        _sourceDatabase = new AllCommentsDb(options, 60000);
-        _targetDatabase = new SuspiciousCommentsDb(options);
-    }
+    #region Private
 
     private static void AnalyzeByAny(CommentData dataFrame)
     {

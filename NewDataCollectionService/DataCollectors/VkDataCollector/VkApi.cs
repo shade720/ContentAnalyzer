@@ -1,11 +1,10 @@
-﻿using VkNet.Enums;
+﻿using Serilog;
+using VkNet.Enums;
 using VkNet.Enums.Filters;
 using VkNet.Model;
 using VkNet.Model.RequestParams;
-using Common;
-using Serilog;
 
-namespace VkDataCollector;
+namespace DataCollectionService.DataCollectors.VkDataCollector;
 
 internal class VkApi
 {

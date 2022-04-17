@@ -1,10 +1,10 @@
 ﻿using Common;
 using Common.EntityFramework;
+using DataCollectionService.DataCollectors.VkDataCollector.Data;
+using DataCollectionService.DataCollectors.VkDataCollector.Scanners;
 using Serilog;
-using VkDataCollector.Data;
-using VkDataCollector.Scanners;
 
-namespace VkDataCollector;
+namespace DataCollectionService.DataCollectors.VkDataCollector;
 
 public class VkDataCollector : IDataCollector
 {

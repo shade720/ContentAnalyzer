@@ -1,11 +1,10 @@
 ﻿using System.Runtime.ExceptionServices;
-using Common;
+using DataCollectionService.DataCollectors.VkDataCollector.Data;
 using Serilog;
-using VkDataCollector.Data;
 using VkNet.Enums;
 using VkNet.Model;
 
-namespace VkDataCollector.Scanners;
+namespace DataCollectionService.DataCollectors.VkDataCollector.Scanners;
 
 internal class CommentScanner : Scanner
 {

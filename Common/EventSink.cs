@@ -1,7 +1,7 @@
 ﻿using Serilog.Core;
 using Serilog.Events;
 
-namespace DataAnalysisService;
+namespace Common;
 
 public class EventSink : ILogEventSink
 {

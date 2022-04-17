@@ -1,6 +1,6 @@
-﻿using VkDataCollector.Data;
+﻿using DataCollectionService.DataCollectors.VkDataCollector.Data;
 
-namespace VkDataCollector.Scanners;
+namespace DataCollectionService.DataCollectors.VkDataCollector.Scanners;
 
 internal abstract class Scanner
 {

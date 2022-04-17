@@ -1,10 +1,8 @@
-﻿using System.Text;
-using System.Text.RegularExpressions;
-using Common;
+﻿using System.Text.RegularExpressions;
 using Common.EntityFramework;
 using VkNet.Model;
 
-namespace VkDataCollector.Data;
+namespace DataCollectionService.DataCollectors.VkDataCollector.Data;
 
 internal class CommentDataManager
 {

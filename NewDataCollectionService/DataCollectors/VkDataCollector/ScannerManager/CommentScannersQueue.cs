@@ -1,9 +1,8 @@
-﻿using Common;
-using System.Runtime.ExceptionServices;
+﻿using System.Runtime.ExceptionServices;
+using DataCollectionService.DataCollectors.VkDataCollector.Scanners;
 using Serilog;
-using VkDataCollector.Scanners;
 
-namespace VkDataCollector.ScannerManager;
+namespace DataCollectionService.DataCollectors.VkDataCollector.ScannerManager;
 
 internal class CommentScannersQueue
 {

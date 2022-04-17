@@ -1,14 +1,14 @@
-﻿using Common;
+﻿using DataCollectionService.DataCollectors.VkDataCollector.Data;
+using DataCollectionService.DataCollectors.VkDataCollector.ScannerManager;
 using Serilog;
-using VkDataCollector.ScannerManager;
 
-namespace VkDataCollector.Scanners;
+namespace DataCollectionService.DataCollectors.VkDataCollector.Scanners;
 
 internal class PostScanner : Scanner
 {
     private readonly CommentScannersQueue _commentScannersQueue;
 
-    public PostScanner(long communityId, VkApi vkApi, Data.CommentDataManager dataManager, Config configuration) : base(communityId, vkApi,
+    public PostScanner(long communityId, VkApi vkApi, CommentDataManager dataManager, Config configuration) : base(communityId, vkApi,
         dataManager, configuration) => _commentScannersQueue = new CommentScannersQueue(configuration.QueueSize);
 
     public override void StartScan()
