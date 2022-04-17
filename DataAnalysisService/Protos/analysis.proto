@@ -1,0 +1,75 @@
+syntax = "proto3";
+
+option csharp_namespace = "DataAnalysisService";
+import "google/protobuf/timestamp.proto";
+
+package analysis;
+
+
+service DataAnalysis {
+  rpc GetEvaluateResultsFrom (EvaluateResultsRequest) returns (EvaluateResultsReply);
+  rpc StartService (StartServiceRequest) returns (StartServiceReply);
+  rpc StopService (StopServiceRequest) returns (StopServiceReply);
+  rpc StartAll (StartAllRequest) returns (StartAllReply);
+  rpc TrainAll (TrainAllRequest) returns (TrainAllReply);
+  rpc StopAll (StopAllRequest) returns (StopAllReply);
+  rpc StartModel (StartModelRequest) returns (StartModelReply);
+  rpc TrainModel (TrainModelRequest) returns (TrainModelReply);
+  rpc StopModel (StopModelRequest) returns (StopModelReply);
+}
+
+message EvaluateResultsRequest{
+ int32 StartIndex = 1;
+}
+message EvaluateResultsReply{
+ repeated EvaluateResultProto result = 1;
+}
+
+message StartServiceRequest{}
+message StartServiceReply{}
+
+message StopServiceRequest{}
+message StopServiceReply{}
+
+message StartAllRequest{}
+message StartAllReply{}
+
+message TrainAllRequest{}
+message TrainAllReply{}
+
+message StopAllRequest{}
+message StopAllReply{}
+
+message StartModelRequest{
+ string ModelName = 1;
+}
+message StartModelReply{}
+
+message TrainModelRequest{
+ string ModelName = 1;
+}
+message TrainModelReply{}
+
+message StopModelRequest{
+ string ModelName = 1;
+}
+message StopModelReply{}
+
+
+message EvaluateResultProto{
+	int32 Id = 1;
+	int64 CommentId = 2;
+	CommentDataProto CommentData = 3;
+	string EvaluateCategory = 4;
+	double EvaluateProbability = 5;
+}
+
+message CommentDataProto{
+	int64 Id = 1;
+	int64 CommentId = 2;
+	int64 PostId = 3;
+	int64 GroupId = 4;
+	int64 AuthorId = 5;
+	string Text = 6;
+	google.protobuf.Timestamp PostDate = 7;
+}

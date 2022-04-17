@@ -1,5 +1,6 @@
 ﻿using Common;
 using System.Runtime.ExceptionServices;
+using Serilog;
 using VkDataCollector.Scanners;
 
 namespace VkDataCollector.ScannerManager;
@@ -23,7 +24,7 @@ internal class CommentScannersQueue
             if (_queue.Count == _queueSize) RemoveScanner(out _);
             scanner.StartScan();
             _queue.Enqueue(scanner);
-            Logger.Log("Comment scanner added to queue", Logger.LogLevel.Information);
+            Log.Logger.Information("Comment scanner added to queue");
         }
         catch (Exception e)
         {
@@ -36,13 +37,13 @@ internal class CommentScannersQueue
     {
         if (_queue.Count == 0)
         {
-            Logger.Log("Comments scanners queue already cleared", Logger.LogLevel.Error);
+            Log.Logger.Error("Comments scanners queue already cleared");
             result = null;
             return;
         }
         result = _queue.Dequeue();
         result.StopScan();
-        Logger.Log($"Stop and delete comment scanner {result.PostId}", Logger.LogLevel.Information);
+        Log.Logger.Information("Stop and delete comment scanner {result.PostId}", result.PostId);
     }
     public void Clear()
     {
@@ -50,6 +51,6 @@ internal class CommentScannersQueue
         {
             RemoveScanner(out _);
         }
-        Logger.Log("Queue cleared", Logger.LogLevel.Information);
+        Log.Logger.Information("Queue cleared");
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Common;
 using Common.EntityFramework;
+using Serilog;
 using VkDataCollector.Data;
 using VkDataCollector.Scanners;
 
@@ -42,13 +43,13 @@ public class VkDataCollector : IDataCollector
         {
             scanner.StartScan();
         }
-        Logger.Log("Data collection has begun", Logger.LogLevel.Information);
+        Log.Logger.Information("Data collection has begun");
     }
 
     public void StopCollecting()
     {
         foreach (var scanner in _postScanners) scanner.StopScan();
         var result = _vkApi.LogOutAsync();
-        Logger.Log("Data collection has stopped", Logger.LogLevel.Information);
+        Log.Logger.Information("Data collection has stopped");
     }
 }

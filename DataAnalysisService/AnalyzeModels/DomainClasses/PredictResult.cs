@@ -1,5 +1,4 @@
 ﻿using System.Globalization;
-using Common;
 using Common.EntityFramework;
 
 namespace DataAnalysisService.AnalyzeModels.DomainClasses;

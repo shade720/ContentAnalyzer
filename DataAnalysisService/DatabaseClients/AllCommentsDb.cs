@@ -1,6 +1,7 @@
 ﻿using Common;
 using Common.EntityFramework;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 
 namespace DataAnalysisService.DatabaseClients;
 
@@ -24,7 +25,7 @@ public class AllCommentsDb : DatabaseObserver
         _cancellation = new CancellationTokenSource();
         IsLoadingStarted = true;
         var result = LoadingLoop(_cancellation.Token);
-        Logger.Log($"Loading started on with delay {_observeDelay}", Logger.LogLevel.Information);
+        Log.Logger.Information("Loading started on with delay {_observeDelay}", _observeDelay);
     }
 
     public override void StopLoading()
@@ -35,7 +36,7 @@ public class AllCommentsDb : DatabaseObserver
         _cancellation.Cancel();
         IsLoadingStarted = false;
         Disconnect();
-        Logger.Log("Loading stopped", Logger.LogLevel.Information);
+        Log.Logger.Information("Loading stopped");
     }
 
     public override void OnDataArrived(Action<CommentData> handler) => _dataProcessor = handler;
@@ -50,10 +51,10 @@ public class AllCommentsDb : DatabaseObserver
             {
                 LoadData();
                 await Task.Delay(_observeDelay, cancellationToken);
-                Logger.Log("Loading loop working", Logger.LogLevel.Information);
+                Log.Logger.Information("Loading loop working");
             }
         }, cancellationToken);
-        Logger.Log("Loading loop break", Logger.LogLevel.Information);
+        Log.Logger.Information("Loading loop break");
     }
 
     private void LoadData()

@@ -1,4 +1,5 @@
 ﻿using Common;
+using Serilog;
 
 namespace DataCollectionService;
 
@@ -14,7 +15,7 @@ public static class Program
         {
             Thread.Sleep(5000);
         }
-        Logger.Log("Service stops work...", Logger.LogLevel.Information);
+        Log.Logger.Information("Service stops work...");
 
         DataCollectionService.Stop();
     }

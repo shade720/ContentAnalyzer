@@ -1,5 +1,6 @@
 ﻿using System.Runtime.ExceptionServices;
 using Common;
+using Serilog;
 using VkDataCollector.Data;
 using VkNet.Enums;
 using VkNet.Model;
@@ -26,7 +27,7 @@ internal class CommentScanner : Scanner
         }
         catch (Exception e)
         {
-            Logger.Log("Comment scanner stopped with error " + e.Message + "\r\n" + e.InnerException, Logger.LogLevel.Error);
+            Log.Logger.Error("Comment scanner stopped with error {0}", e.Message + "\r\n" + e.InnerException);
             StopScan();
         }
     }
@@ -46,7 +47,7 @@ internal class CommentScanner : Scanner
             foreach (var comment in comments.Where(comment => comment.Thread.Count > 0))
                 additionalComments.AddRange(GetBranch(comment.Id));
             comments.AddRange(additionalComments);
-            Logger.Log($"Added presents comments on post {PostId}", Logger.LogLevel.Information);
+            Log.Logger.Information("Added presents comments on post {PostId}", PostId);
             return comments;
         }
         catch (Exception e)
@@ -60,7 +61,7 @@ internal class CommentScanner : Scanner
     {
         try
         {
-            Logger.Log($"Start scanning comments on post {PostId}", Logger.LogLevel.Information);
+            Log.Logger.Information("Start scanning comments on post {PostId}", PostId);
             await Task.Run(async () =>
             {
                 while (!StopScanToken.Token.IsCancellationRequested)
@@ -73,7 +74,7 @@ internal class CommentScanner : Scanner
                         ScanBranch(out _, comment.Id);
                 }
             }, StopScanToken.Token);
-            Logger.Log($"Scan comments stopped on post {PostId}", Logger.LogLevel.Information);
+            Log.Logger.Information("Scan comments stopped on post {PostId}", PostId);
         }
         catch (Exception e)
         {

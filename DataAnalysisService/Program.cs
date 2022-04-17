@@ -1,24 +1,29 @@
-﻿using Common;
+using Common;
+using DataAnalysisService;
+using Serilog;
 
-namespace DataAnalysisService;
+var eventSink = new EventSink();
+eventSink.OnLoggingEvent += log => Logger.Log(log);
 
-public static class Program
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.Console()
+    .WriteTo.Sink(eventSink)
+    .CreateLogger();
+
+var builder = WebApplication.CreateBuilder(args);
+builder.WebHost.ConfigureLogging(logging =>
 {
-    public static void Main()
-    {
-        Startup.ConfigureService();
+    logging.ClearProviders();
+    logging.AddSerilog(Log.Logger);
+});
+builder.Services.AddGrpc();
 
-        DataAnalysisService.StartService();
-        DataAnalysisService.StartAll();
+Startup.ConfigureService(builder.Configuration);
 
-        while (Console.ReadLine() != "+")
-        {
-            Thread.Sleep(5000);
-        }
+var app = builder.Build();
 
-        Logger.Log("Service stops work...", Logger.LogLevel.Information);
+// Configure the HTTP request pipeline.
+app.MapGrpcService<DataAnalysisService.Services.DataAnalysisService>();
+app.MapGet("/", () => "Communication with gRPC endpoints must be made through a gRPC client. To learn how to create a client, visit: https://go.microsoft.com/fwlink/?linkid=2086909");
 
-        DataAnalysisService.StopAll();
-        DataAnalysisService.StopService();
-    }
-}
+app.Run();

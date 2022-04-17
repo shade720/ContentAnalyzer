@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Text;
 using Common;
+using Serilog;
 
 namespace DataAnalysisService.AnalyzeModels.DomainClasses;
 
@@ -55,7 +56,7 @@ public class PythonRunner
         }
         catch (Exception exception)
         {
-            Logger.Log($"An error occured during script execution. See inner exception for details. {exception.Message} {exception.StackTrace}", Logger.LogLevel.Fatal);
+            Log.Logger.Fatal("An error occured during script execution. See inner exception for details. {exception.Message} {exception.StackTrace}", exception.Message, exception.StackTrace);
             throw new Exception($"An error occured during script execution. See inner exception for details. {exception.Message} {exception.StackTrace}");
         }
         finally
@@ -66,7 +67,7 @@ public class PythonRunner
             _pythonProcess.ErrorDataReceived -= OnErrorDataReceivedHandler;
             _pythonProcess.Kill();
             OnExitedEvent?.Invoke();
-            Logger.Log("Script stopped", Logger.LogLevel.Information);
+            Log.Logger.Information("Script stopped");
         }
     }
 
@@ -78,7 +79,7 @@ public class PythonRunner
         }
         catch (Exception exception)
         {
-            Logger.Log($"An error occured during script execution. See inner exception for details. {exception.Message} {exception.StackTrace}", Logger.LogLevel.Fatal);
+            Log.Logger.Fatal("An error occured during script execution. See inner exception for details. {exception.Message} {exception.StackTrace}", exception.Message, exception.StackTrace);
             throw new Exception($"An error occured during script execution. See inner exception for details. {exception.Message} {exception.StackTrace}");
         }
     }

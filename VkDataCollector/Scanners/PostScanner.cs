@@ -1,4 +1,5 @@
 ﻿using Common;
+using Serilog;
 using VkDataCollector.ScannerManager;
 
 namespace VkDataCollector.Scanners;
@@ -26,7 +27,7 @@ internal class PostScanner : Scanner
                 {
                     if (IsThereNewPost(out var postId))
                     {
-                        Logger.Log($"New post released {postId} community {CommunityId}", Logger.LogLevel.Information);
+                        Log.Logger.Information("New post released {postId} community {CommunityId}", postId, CommunityId);
                         //Each post has a comment scanner, which is added to the queue which is added to the queue for convenient stopping and deleting 
                         _commentScannersQueue.AddScanner(new CommentScanner(CommunityId, postId, ClientApi, CommentManager, Configuration));
                     }
@@ -37,7 +38,7 @@ internal class PostScanner : Scanner
         }
         catch (Exception e)
         {
-            Logger.Log($"Error in post scanner {CommunityId}" + e.Message + "\r\n" + e.InnerException, Logger.LogLevel.Error);
+            Log.Logger.Error("Error in post scanner {CommunityId} {0}", CommunityId, e.Message + "\r\n" + e.InnerException);
             StopScan();
         }
     }
@@ -52,6 +53,6 @@ internal class PostScanner : Scanner
     {
         StopScanToken.Cancel();
         _commentScannersQueue.Clear();
-        Logger.Log($"Post scanning {CommunityId} stopped", Logger.LogLevel.Information);
+        Log.Logger.Information("Post scanning {CommunityId} stopped", CommunityId);
     }
 }

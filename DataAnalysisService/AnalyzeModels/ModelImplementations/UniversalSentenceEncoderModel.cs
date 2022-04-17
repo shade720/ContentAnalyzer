@@ -1,6 +1,7 @@
 ﻿using Common;
 using Common.EntityFramework;
 using DataAnalysisService.AnalyzeModels.DomainClasses;
+using Serilog;
 
 namespace DataAnalysisService.AnalyzeModels.ModelImplementations;
 
@@ -70,7 +71,7 @@ internal class UniversalSentenceEncoderModel : AnalyzeModel
         Runner.OnExitedEvent -= RunnerOnExitEventHandler;
         Runner.OnStartedEvent -= RunnerOnStartedEventHandler;
         Runner.Abort();
-        Logger.Log("Model stopped", Logger.LogLevel.Information);
+        Log.Logger.Information("Model stopped");
     }
 
     #endregion
@@ -92,7 +93,7 @@ internal class UniversalSentenceEncoderModel : AnalyzeModel
         Runner.OnErrorReceivedEvent -= RunnerOnErrorReceivedEventHandler;
         Runner.OnExitedEvent -= RunnerOnExitEventHandler;
         Runner.OnStartedEvent -= RunnerOnStartedEventHandler;
-        Logger.Log("Script ended", Logger.LogLevel.Information);
+        Log.Logger.Information("Script ended");
     }
 
     private void RunnerOnErrorReceivedEventHandler(string errorMessage)
@@ -104,7 +105,7 @@ internal class UniversalSentenceEncoderModel : AnalyzeModel
     {
         _scriptInitialize.Set();
         IsRunning = true;
-        Logger.Log("Script started", Logger.LogLevel.Information);
+        Log.Logger.Information("Script started");
     }
 
     #endregion

@@ -1,24 +1,25 @@
-﻿using System.Globalization;
+﻿using Serilog;
+using Serilog.Core;
+using Serilog.Events;
 
 namespace Common;
 
 public static class Logger
 {
-    public delegate void OnLogging(string log, LogLevel logLevel);
+    public delegate void OnLogging(string log);
     public static event OnLogging OnLoggingEvent;
 
     public static void Log(string log, LogLevel? logLevel = null)
     {
-        var formattedLog = $"[{logLevel}] [{DateTime.Now.ToString(CultureInfo.InvariantCulture)}] {log}\r\n";
-        OnLoggingEvent?.Invoke(formattedLog, logLevel ?? LogLevel.Information);
-        Console.WriteLine(formattedLog);
+        OnLoggingEvent?.Invoke(log);
     }
-
     public enum LogLevel
     {
         Fatal,
         Error,
         Warning,
-        Information
+        Information,
+        Debug,
+        Verbose
     }
 }
