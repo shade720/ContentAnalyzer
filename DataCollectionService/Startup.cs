@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Configuration;
-using Common;
-using Common.EntityFramework;
+﻿using Common.EntityFramework;
 using DataCollectionService.DataCollectors.VkDataCollector;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
@@ -10,7 +7,6 @@ namespace DataCollectionService;
 
 public static class Startup
 {
-
     public static void ConfigureService(IConfiguration configuration)
     {
         Services.DataCollectionService.SetDatabaseContextOption(new DbContextOptionsBuilder<CommentsContext>()
@@ -32,7 +28,8 @@ public static class Startup
             vkDataCollector.AddCommunity(Convert.ToInt64(configuration["NRGroupId"]));
             vkDataCollector.AddCommunity(Convert.ToInt64(configuration["LentachGroupId"]));
             vkDataCollector.AddCommunity(Convert.ToInt64(configuration["CSGOHSGroupId"]));
-            vkDataCollector.Subscribe(commentData => Log.Logger.Information("Add {commentData.CommentId} {commentData.PostId} {commentData.GroupId} {commentData.AuthorId} {commentData.Text} {commentData.PostDate}", commentData.CommentId, commentData.PostId, commentData.GroupId, commentData.AuthorId, commentData.Text, commentData.PostDate));
+            vkDataCollector.Subscribe(commentData => 
+                Log.Logger.Information("Add {0} {1} {2} {3} {4} {5}",commentData.CommentId, commentData.PostId, commentData.GroupId, commentData.AuthorId, commentData.Text, commentData.PostDate));
             return vkDataCollector;
         });
     }

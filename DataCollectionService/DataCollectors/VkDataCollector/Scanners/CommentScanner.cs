@@ -46,7 +46,7 @@ internal class CommentScanner : Scanner
             foreach (var comment in comments.Where(comment => comment.Thread.Count > 0))
                 additionalComments.AddRange(GetBranch(comment.Id));
             comments.AddRange(additionalComments);
-            Log.Logger.Information("Added presents comments on post {PostId}", PostId);
+            Log.Logger.Information("Added presents comments on post {0}", PostId);
             return comments;
         }
         catch (Exception e)
@@ -60,7 +60,7 @@ internal class CommentScanner : Scanner
     {
         try
         {
-            Log.Logger.Information("Start scanning comments on post {PostId}", PostId);
+            Log.Logger.Information("Start scanning comments on post {0}", PostId);
             await Task.Run(async () =>
             {
                 while (!StopScanToken.Token.IsCancellationRequested)
@@ -73,7 +73,7 @@ internal class CommentScanner : Scanner
                         ScanBranch(out _, comment.Id);
                 }
             }, StopScanToken.Token);
-            Log.Logger.Information("Scan comments stopped on post {PostId}", PostId);
+            Log.Logger.Information("Scan comments stopped on post {0}", PostId);
         }
         catch (Exception e)
         {
