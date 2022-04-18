@@ -9,9 +9,8 @@ public class AllCommentsDb : DatabaseClient<CommentData>
     public AllCommentsDb(DbContextOptions<CommentsContext> options) : base(options) { }
     public override void Add(CommentData commentData)
     {
-        var dataFrame = commentData as CommentData;
-        if (IsDataFrameInvalid(dataFrame)) return;
-        Context.Comments.Add(dataFrame);
+        if (IsDataFrameInvalid(commentData)) return;
+        Context.Comments.Add(commentData);
         Context.SaveChanges();
     }
 

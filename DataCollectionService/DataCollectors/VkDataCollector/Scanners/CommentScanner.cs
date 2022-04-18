@@ -41,7 +41,6 @@ internal class CommentScanner : Scanner
         try
         {
             var comments = GetBranch();
-
             var additionalComments = new List<Comment>();
             foreach (var comment in comments.Where(comment => comment.Thread.Count > 0))
                 additionalComments.AddRange(GetBranch(comment.Id));

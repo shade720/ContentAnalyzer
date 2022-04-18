@@ -36,7 +36,7 @@ public static class Startup
     {
         var neuralModel = new UniversalSentenceEncoderModel(interpreter, predict, train, dataSet, model, categories, threshold);
         neuralModel.Subscribe(
-            predictResult => Log.Logger.Information("Predict {predictResult.CommentData.Text} ----> {predictResult}\n\n", predictResult.CommentData.Text, predictResult),
+            predictResult => Log.Logger.Information("Predict {0} ----> {1}\n\n", predictResult.CommentData.Text, predictResult.ToString()),
             evaluateResult => { },
             error => { });
         return neuralModel;
