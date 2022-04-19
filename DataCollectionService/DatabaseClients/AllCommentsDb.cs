@@ -6,24 +6,31 @@ namespace DataCollectionService.DatabaseClients;
 
 public class AllCommentsDb : DatabaseClient<CommentData>
 {
-    public AllCommentsDb(DbContextOptions<CommentsContext> options) : base(options) { }
+    private readonly IDbContextFactory<CommentsContext> _contextFactory;
+    public AllCommentsDb(IDbContextFactory<CommentsContext> contextFactory)
+    {
+        _contextFactory = contextFactory;
+    }
     public override void Add(CommentData commentData)
     {
         if (IsDataFrameInvalid(commentData)) return;
-        Context.Comments.Add(commentData);
-        Context.SaveChanges();
+        using var context = _contextFactory.CreateDbContext();
+        context.Comments.Add(commentData);
+        context.SaveChanges();
     }
 
     public override GetRangeResult GetRange(int startIndex)
     {
-        var queryResult = Context.Comments.Where(c => c.Id > startIndex);
+        using var context = _contextFactory.CreateDbContext();
+        var queryResult = context.Comments.Where(c => c.Id > startIndex);
         return new GetRangeResult {Result = queryResult.ToList()};
     }
 
     public override void Clear()
     {
-        Context.Comments.RemoveRange(Context.Comments.ToList());
-        Context.SaveChanges();
+        using var context = _contextFactory.CreateDbContext();
+        context.Comments.RemoveRange(context.Comments.ToList());
+        context.SaveChanges();
     }
 
     private static bool IsDataFrameInvalid(CommentData dataFrame)

@@ -13,16 +13,22 @@ namespace DataAnalysisService.Services;
 public class DataAnalysisService : DataAnalysis.DataAnalysisBase
 {
     private static readonly Dictionary<string, AnalyzeModel> AnalyzeModels = new();
-    private static DatabaseObserver _sourceDatabase;
-    private static DatabaseClient<EvaluateResult> _targetDatabase;
+    private readonly DatabaseObserver _sourceDatabase;
+    private readonly DatabaseClient<EvaluateResult> _targetDatabase;
 
     #region PublicInterface
+
+    public DataAnalysisService(IDbContextFactory<CommentsContext> contextFactory)
+    {
+        _sourceDatabase = new AllCommentsDb(contextFactory, 60000);
+        _targetDatabase = new SuspiciousCommentsDb(contextFactory);
+    }
 
     public override Task<StartAnalysisServiceReply> StartAnalysisService(StartAnalysisServiceRequest request, ServerCallContext context)
     {
         if (_targetDatabase is null) throw new ArgumentException($"Target database is not registered {nameof(StartAnalysisService)}");
         if (AnalyzeModels.Count == 0) throw new ArgumentException($"At least one analysis model must be added {nameof(StartAnalysisService)}");
-        _targetDatabase.Connect();
+        //_targetDatabase.Connect();
         //_targetDatabase.Clear();
         Log.Logger.Information("Service started, target database is ready");
         return Task.FromResult(new StartAnalysisServiceReply());
@@ -31,7 +37,7 @@ public class DataAnalysisService : DataAnalysis.DataAnalysisBase
     public override Task<StopAnalysisServiceReply> StopAnalysisService(StopAnalysisServiceRequest request, ServerCallContext context)
     {
         if (_targetDatabase is null) throw new ArgumentException($"Target database is not registered {nameof(StopAnalysisService)}");
-        _targetDatabase.Disconnect();
+        //_targetDatabase.Disconnect();
         Log.Logger.Information("Service stopped");
         return Task.FromResult(new StopAnalysisServiceReply());
     }
@@ -93,7 +99,7 @@ public class DataAnalysisService : DataAnalysis.DataAnalysisBase
                     AuthorId = evaluateResult.CommentData.AuthorId,
                     CommentId = evaluateResult.CommentData.CommentId,
                     GroupId = evaluateResult.CommentData.GroupId,
-                    PostDate = Timestamp.FromDateTime(evaluateResult.CommentData.PostDate),
+                    PostDate = Timestamp.FromDateTime(evaluateResult.CommentData.PostDate.ToUniversalTime()),
                     PostId = evaluateResult.CommentData.PostId,
                     Text = evaluateResult.CommentData.Text
                 },
@@ -107,12 +113,6 @@ public class DataAnalysisService : DataAnalysis.DataAnalysisBase
     #endregion
 
     #region Startup
-
-    public static void SetDatabaseContextOption(DbContextOptions<CommentsContext> options)
-    {
-        _sourceDatabase = new AllCommentsDb(options, 60000);
-        _targetDatabase = new SuspiciousCommentsDb(options);
-    }
 
     public static void AddModel(string modelName, Func<AnalyzeModel> modelConfiguration)
     {
@@ -128,14 +128,14 @@ public class DataAnalysisService : DataAnalysis.DataAnalysisBase
 
     #region Private
 
-    private static void AnalyzeByAny(CommentData dataFrame)
+    private void AnalyzeByAny(CommentData dataFrame)
     {
         foreach (var model in AnalyzeModels)
         {
             AnalyzeBy(model.Key, dataFrame);
         }
     }
-    private static void AnalyzeBy(string modelName, CommentData dataFrame)
+    private void AnalyzeBy(string modelName, CommentData dataFrame)
     {
         if (!AnalyzeModels[modelName].IsRunning)
         {
@@ -152,7 +152,7 @@ public class DataAnalysisService : DataAnalysis.DataAnalysisBase
             AnalyzeModels[modelName].StopModel();
         }
     }
-    private static void StartModel(string modelName)
+    private void StartModel(string modelName)
     {
         if (_sourceDatabase is null || _targetDatabase is null) throw new ArgumentException($"Not all databases is registered {nameof(StartModel)}");
         if (AnalyzeModels[modelName].IsRunning)
@@ -187,7 +187,7 @@ public class DataAnalysisService : DataAnalysis.DataAnalysisBase
         }
     }
 
-    private static void TrainModel(string modelName)
+    private void TrainModel(string modelName)
     {
         if (AnalyzeModels[modelName].IsRunning)
         {
@@ -206,7 +206,7 @@ public class DataAnalysisService : DataAnalysis.DataAnalysisBase
         }
     }
 
-    private static void Stop(string modelName)
+    private void Stop(string modelName)
     {
         if (_sourceDatabase is null) throw new ArgumentException($"Source database is not registered {nameof(Stop)}");
         if (!AnalyzeModels[modelName].IsRunning)
@@ -226,7 +226,7 @@ public class DataAnalysisService : DataAnalysis.DataAnalysisBase
         }
     }
 
-    private static bool IsLastRunningModel()
+    private bool IsLastRunningModel()
     {
         return AnalyzeModels.Count(model => model.Value.IsRunning) == 1;
     }

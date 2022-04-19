@@ -6,19 +6,24 @@ namespace DataAnalysisService.DatabaseClients;
 
 public class SuspiciousCommentsDb : DatabaseClient<EvaluateResult>
 {
-    public SuspiciousCommentsDb(DbContextOptions<CommentsContext> options) : base(options) { }
+    private readonly IDbContextFactory<CommentsContext> _contextFactory;
+    public SuspiciousCommentsDb(IDbContextFactory<CommentsContext> contextFactory)
+    {
+        _contextFactory = contextFactory;
+    }
 
     public override void Add(EvaluateResult result)
     {
-        if (result is not EvaluateResult evaluateResult) return;
-        Context.Comments.Single(comment => comment.Id == evaluateResult.CommentDataId).EvaluateResults.Add(evaluateResult);
-        Context.SaveChanges();
+        using var context = _contextFactory.CreateDbContext();
+        context.Comments.Single(comment => comment.Id == result.CommentDataId).EvaluateResults.Add(result);
+        context.SaveChanges();
     }
 
     public override GetRangeResult GetRange(int startIndex)
     {
-        var queryResult = 
-            Context.EvaluateResults
+        using var context = _contextFactory.CreateDbContext();
+        var queryResult =
+            context.EvaluateResults
             .Include(comment => comment.CommentData)
             .Where(evaluateResult => evaluateResult.Id > startIndex);
         return new GetRangeResult { Result = queryResult.ToList() };
@@ -26,7 +31,8 @@ public class SuspiciousCommentsDb : DatabaseClient<EvaluateResult>
 
     public override void Clear()
     {
-        Context.EvaluateResults.RemoveRange(Context.EvaluateResults.ToList());
-        Context.SaveChanges();
+        using var context = _contextFactory.CreateDbContext();
+        context.EvaluateResults.RemoveRange(context.EvaluateResults.ToList());
+        context.SaveChanges();
     }
 }

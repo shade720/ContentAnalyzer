@@ -1,6 +1,4 @@
-﻿using Common.EntityFramework;
-using DataCollectionService.DataCollectors.VkDataCollector;
-using Microsoft.EntityFrameworkCore;
+﻿using DataCollectionService.DataCollectors.VkDataCollector;
 using Serilog;
 
 namespace DataCollectionService;
@@ -9,10 +7,6 @@ public static class Startup
 {
     public static void ConfigureService(IConfiguration configuration)
     {
-        Services.DataCollectionService.SetDatabaseContextOption(new DbContextOptionsBuilder<CommentsContext>()
-            .UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=ContentAnalyzerDatabase;Integrated Security=True;MultipleActiveResultSets=True;")
-            .Options);
-
         Services.DataCollectionService.AddDataCollector(() =>
         {
             var vkDataCollector = new VkDataCollector();

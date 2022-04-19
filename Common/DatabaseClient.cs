@@ -5,7 +5,7 @@ namespace Common;
 
 public abstract class DatabaseClient<T> : Database
 {
-    protected DatabaseClient(DbContextOptions<CommentsContext> options) : base(options) { }
+    //protected DatabaseClient() { }
     public abstract void Add(T result);
     public abstract GetRangeResult GetRange(int startIndex);
     public abstract void Clear();

@@ -1,11 +1,15 @@
 using Common;
+using Common.EntityFramework;
 using DataCollectionService;
+using Microsoft.EntityFrameworkCore;
 using Serilog;
+using Serilog.Events;
 
 var eventSink = new EventSink();
 eventSink.OnLoggingEvent += Logger.Log;
 
 Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
     .WriteTo.Console()
     .WriteTo.Sink(eventSink)
     .CreateLogger();
@@ -17,7 +21,8 @@ builder.WebHost.ConfigureLogging(logging =>
     logging.AddSerilog(Log.Logger);
 });
 builder.Services.AddGrpc();
-
+builder.Services.AddDbContextFactory<CommentsContext>(options => 
+    options.UseSqlServer(builder.Configuration.GetConnectionString("Database")));
 Startup.ConfigureService(builder.Configuration);
 
 var app = builder.Build();

@@ -15,10 +15,15 @@ public class DataCollectionService : DataCollection.DataCollectionBase
 
     #region PublicInterface
 
+    public DataCollectionService(IDbContextFactory<CommentsContext> contextFactory)
+    {
+        _saveDatabase = new AllCommentsDb(contextFactory);
+    }
+
     public override Task<StartCollectionServiceReply> StartCollectionService(StartCollectionServiceRequest request, ServerCallContext context)
     {
         if (_saveDatabase is null) throw new Exception("Save database are not registered");
-        _saveDatabase.Connect();
+        //_saveDatabase.Connect();
         _saveDatabase.Clear();
         foreach (var dataCollector in DataCollectors)
         {
@@ -34,7 +39,7 @@ public class DataCollectionService : DataCollection.DataCollectionBase
         {
             dataCollector.StopCollecting();
         }
-        _saveDatabase.Disconnect();
+        //_saveDatabase.Disconnect();
         return Task.FromResult(new StopCollectionServiceReply());
     }
 
@@ -50,7 +55,7 @@ public class DataCollectionService : DataCollection.DataCollectionBase
                 AuthorId = comment.AuthorId,
                 CommentId = comment.CommentId,
                 GroupId = comment.GroupId,
-                PostDate = Timestamp.FromDateTime(comment.PostDate),
+                PostDate = Timestamp.FromDateTime(comment.PostDate.ToUniversalTime()),
                 PostId = comment.PostId,
                 Text = comment.Text
             });
@@ -63,14 +68,9 @@ public class DataCollectionService : DataCollection.DataCollectionBase
 
     #region Startup
 
-    public static void SetDatabaseContextOption(DbContextOptions<CommentsContext> options)
-    {
-        _saveDatabase = new AllCommentsDb(options);
-    }
-
     public static void AddDataCollector(Func<IDataCollector> dataCollectorConfiguration)
     {
-        if (_saveDatabase is null) throw new NullReferenceException("Save database are not registered");
+        //if (_saveDatabase is null) throw new NullReferenceException("Save database are not registered");
         DataCollectors.Add(dataCollectorConfiguration.Invoke());
         DataCollectors[^1].Subscribe(dataFrame => _saveDatabase.Add(dataFrame));
     }

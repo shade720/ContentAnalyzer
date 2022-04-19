@@ -1,7 +1,4 @@
-﻿using Common;
-using Common.EntityFramework;
-using DataAnalysisService.AnalyzeModels.ModelImplementations;
-using Microsoft.EntityFrameworkCore;
+﻿using DataAnalysisService.AnalyzeModels.ModelImplementations;
 using Serilog;
 
 namespace DataAnalysisService;
@@ -10,10 +7,6 @@ public static class Startup
 {
     public static void ConfigureService(IConfiguration configuration)
     {
-        Services.DataAnalysisService.SetDatabaseContextOption(new DbContextOptionsBuilder<CommentsContext>()
-            .UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=ContentAnalyzerDatabase;Integrated Security=True;MultipleActiveResultSets=True;")
-            .Options);
-
         Services.DataAnalysisService.AddModel("InsultThreatObscenityCategories", () => CreateUniversalSentenceEncoderModel(
             int.Parse(configuration["EvaluateThreshold"]),
             configuration["Interpreter"],
