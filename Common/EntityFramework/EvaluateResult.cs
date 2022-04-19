@@ -2,9 +2,9 @@
 
 public class EvaluateResult
 {
-    public int Id { get; set; }
-    public long CommentDataId { get; set; }
-    public CommentData CommentData { get; set; }
-    public string EvaluateCategory { get; set; }
-    public double EvaluateProbability { get; set; }
+    public int Id { get; init; }
+    public long CommentDataId { get; init; }
+    public CommentData CommentData { get; init; }
+    public string EvaluateCategory { get; init; }
+    public double EvaluateProbability { get; init; }
 }

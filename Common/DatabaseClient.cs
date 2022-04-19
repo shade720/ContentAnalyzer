@@ -1,17 +1,18 @@
-﻿using Common.EntityFramework;
-using Microsoft.EntityFrameworkCore;
+﻿namespace Common;
 
-namespace Common;
-
-public abstract class DatabaseClient<T> : Database
+public abstract class DatabaseClient<T>
 {
-    //protected DatabaseClient() { }
     public abstract void Add(T result);
     public abstract GetRangeResult GetRange(int startIndex);
     public abstract void Clear();
 
     public class GetRangeResult
     {
-        public List<T> Result { get; set; }
+        public GetRangeResult(List<T> result)
+        {
+            Result = result;
+        }
+
+        public List<T> Result { get; init; }
     }
 }

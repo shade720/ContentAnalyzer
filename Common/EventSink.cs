@@ -6,7 +6,7 @@ namespace Common;
 public class EventSink : ILogEventSink
 {
     public delegate void OnLogging(string log);
-    public event OnLogging OnLoggingEvent;
+    public event OnLogging? OnLoggingEvent;
     public void Emit(LogEvent logEvent)
     {
         var message = logEvent.RenderMessage();

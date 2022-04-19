@@ -4,7 +4,7 @@ namespace DataAnalysisService.AnalyzeModels.DomainClasses;
 
 public abstract class AnalyzeModel
 {
-    protected PythonRunner Runner;
+    protected PythonRunner? Runner;
     protected readonly string Interpreter;
     protected readonly string PredictScript;
     protected readonly string TrainScript;
@@ -15,9 +15,9 @@ public abstract class AnalyzeModel
     protected delegate void OnPrediction(PredictResult warning);
     protected delegate void OnEvaluation(EvaluateResult warning);
 
-    protected OnError OnErrorEvent;
-    protected OnPrediction OnPredictionEvent;
-    protected OnEvaluation OnEvaluationEvent;
+    protected OnError? OnErrorEvent;
+    protected OnPrediction? OnPredictionEvent;
+    protected OnEvaluation? OnEvaluationEvent;
 
     protected string[] Categories { get; }
     public abstract bool IsRunning { get; protected set; }

@@ -8,8 +8,8 @@ namespace DataAnalysisService.DatabaseClients;
 public class AllCommentsDb : DatabaseObserver
 {
     private long _lastReceivedId;
-    private CancellationTokenSource _cancellation;
-    private Action<CommentData> _dataProcessor;
+    private CancellationTokenSource? _cancellation;
+    private Action<CommentData>? _dataProcessor;
     private readonly IDbContextFactory<CommentsContext> _contextFactory;
     private readonly int _observeDelay;
 
@@ -25,10 +25,9 @@ public class AllCommentsDb : DatabaseObserver
     {
         if (IsLoadingStarted) throw new Exception("Loading already started");
         if (_dataProcessor is null) throw new Exception($"Data processor not set {nameof(StopLoading)}");
-        //Connect();
         _cancellation = new CancellationTokenSource();
         IsLoadingStarted = true;
-        var result = LoadingLoop(_cancellation.Token);
+        var _ = LoadingLoop(_cancellation.Token);
         Log.Logger.Information("Loading started on with delay {_observeDelay}", _observeDelay);
     }
 
@@ -37,9 +36,8 @@ public class AllCommentsDb : DatabaseObserver
         if (!IsLoadingStarted) throw new Exception($"Loading already stopped {nameof(StopLoading)}");
         if (_dataProcessor is null) throw new Exception($"Data processor not set {nameof(StopLoading)}");
 
-        _cancellation.Cancel();
+        _cancellation!.Cancel();
         IsLoadingStarted = false;
-        //Disconnect();
         Log.Logger.Information("Loading stopped");
     }
 

@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics;
 using System.Text;
-using Common;
 using Serilog;
 
 namespace DataAnalysisService.AnalyzeModels.DomainClasses;
@@ -64,7 +63,7 @@ public class PythonRunner
             _pythonProcess?.CancelErrorRead();
             _reader?.Close();
             _writer?.Close();
-            _pythonProcess.ErrorDataReceived -= OnErrorDataReceivedHandler;
+            _pythonProcess!.ErrorDataReceived -= OnErrorDataReceivedHandler;
             _pythonProcess.Kill();
             OnExitedEvent?.Invoke();
             Log.Logger.Information("Script stopped");
@@ -99,7 +98,7 @@ public class PythonRunner
         _writer.WriteLine(text);
     }
 
-    public void Abort() => _pythonProcess.Kill();
+    public void Abort() => _pythonProcess?.Kill();
 
 
     #endregion

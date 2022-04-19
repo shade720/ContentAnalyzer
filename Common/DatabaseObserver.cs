@@ -1,12 +1,10 @@
-﻿using Common.EntityFramework;
-using Microsoft.EntityFrameworkCore;
+﻿
+using Common.EntityFramework;
 
 namespace Common;
 
-public abstract class DatabaseObserver : Database
+public abstract class DatabaseObserver
 {
-    //protected  DatabaseObserver(CommentsContext context) { }
-
     public bool IsLoadingStarted { get; protected set; }
 
     public abstract void StartLoading();

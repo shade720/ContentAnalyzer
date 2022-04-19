@@ -26,7 +26,7 @@ public class SuspiciousCommentsDb : DatabaseClient<EvaluateResult>
             context.EvaluateResults
             .Include(comment => comment.CommentData)
             .Where(evaluateResult => evaluateResult.Id > startIndex);
-        return new GetRangeResult { Result = queryResult.ToList() };
+        return new GetRangeResult(queryResult.ToList());
     }
 
     public override void Clear()

@@ -11,7 +11,7 @@ namespace DataCollectionService.Services;
 public class DataCollectionService : DataCollection.DataCollectionBase
 {
     private static readonly List<IDataCollector> DataCollectors = new();
-    private static DatabaseClient<CommentData> _saveDatabase;
+    private static DatabaseClient<CommentData>? _saveDatabase;
 
     #region PublicInterface
 
@@ -23,7 +23,6 @@ public class DataCollectionService : DataCollection.DataCollectionBase
     public override Task<StartCollectionServiceReply> StartCollectionService(StartCollectionServiceRequest request, ServerCallContext context)
     {
         if (_saveDatabase is null) throw new Exception("Save database are not registered");
-        //_saveDatabase.Connect();
         _saveDatabase.Clear();
         foreach (var dataCollector in DataCollectors)
         {
@@ -45,6 +44,7 @@ public class DataCollectionService : DataCollection.DataCollectionBase
 
     public override Task<GetCommentsReply> GetCommentsFrom(GetCommentsRequest request, ServerCallContext context)
     {
+        if (_saveDatabase is null) throw new Exception("Save database are not registered");
         var range = _saveDatabase.GetRange(request.StartIndex).Result;
         var convertedRange = new RepeatedField<CommentDataProto>();
         foreach (var comment in range)
@@ -70,7 +70,7 @@ public class DataCollectionService : DataCollection.DataCollectionBase
 
     public static void AddDataCollector(Func<IDataCollector> dataCollectorConfiguration)
     {
-        //if (_saveDatabase is null) throw new NullReferenceException("Save database are not registered");
+        if (_saveDatabase is null) throw new NullReferenceException("Save database are not registered");
         DataCollectors.Add(dataCollectorConfiguration.Invoke());
         DataCollectors[^1].Subscribe(dataFrame => _saveDatabase.Add(dataFrame));
     }

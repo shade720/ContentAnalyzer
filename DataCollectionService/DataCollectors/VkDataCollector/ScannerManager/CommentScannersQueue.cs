@@ -20,36 +20,33 @@ internal class CommentScannersQueue
     {
         try
         {
-            if (_queue.Count == _queueSize) RemoveScanner(out _);
+            if (_queue.Count == _queueSize) RemoveScanner();
             scanner.StartScan();
             _queue.Enqueue(scanner);
             Log.Logger.Information("Comment scanner added to queue");
         }
         catch (Exception e)
         {
-            ExceptionDispatchInfo.Capture(e.InnerException).Throw();
+            ExceptionDispatchInfo.Capture(e.InnerException ?? e).Throw();
             throw;
         }
     }
 
-    private void RemoveScanner(out CommentScanner result)
+    private void RemoveScanner()
     {
         if (_queue.Count == 0)
         {
             Log.Logger.Error("Comments scanners queue already cleared");
-            result = null;
+            
             return;
         }
-        result = _queue.Dequeue();
+        var result = _queue.Dequeue();
         result.StopScan();
-        Log.Logger.Information("Stop and delete comment scanner {result.PostId}", result.PostId);
+        Log.Logger.Information("Stop and delete comment scanner {0}", result.PostId);
     }
     public void Clear()
     {
-        for (var i = 0; i < _queue.Count; i++)
-        {
-            RemoveScanner(out _);
-        }
+        for (var i = 0; i < _queue.Count; i++) RemoveScanner();
         Log.Logger.Information("Queue cleared");
     }
 }

@@ -23,7 +23,7 @@ public class AllCommentsDb : DatabaseClient<CommentData>
     {
         using var context = _contextFactory.CreateDbContext();
         var queryResult = context.Comments.Where(c => c.Id > startIndex);
-        return new GetRangeResult {Result = queryResult.ToList()};
+        return new GetRangeResult(queryResult.ToList());
     }
 
     public override void Clear()

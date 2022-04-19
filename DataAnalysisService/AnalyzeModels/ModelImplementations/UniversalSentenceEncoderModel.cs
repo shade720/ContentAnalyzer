@@ -1,5 +1,4 @@
-﻿using Common;
-using Common.EntityFramework;
+﻿using Common.EntityFramework;
 using DataAnalysisService.AnalyzeModels.DomainClasses;
 using Serilog;
 
@@ -40,7 +39,7 @@ internal class UniversalSentenceEncoderModel : AnalyzeModel
         Runner.OnExitedEvent += RunnerOnExitEventHandler;
         Runner.OnStartedEvent += RunnerOnStartedEventHandler;
 
-        var result = Runner.RunAsync(Path.GetFullPath(scriptModel), Path.GetFullPath(resourcePath));
+        var _ = Runner.RunAsync(Path.GetFullPath(scriptModel), Path.GetFullPath(resourcePath));
 
         _scriptInitialize.WaitOne();
     }
@@ -57,7 +56,8 @@ internal class UniversalSentenceEncoderModel : AnalyzeModel
         if (ExceedsThreshold(predictResult))
         {
             var maxValue = predictResult.Predicts.MaxBy(x => x.PredictValue);
-            var evaluateResult = new EvaluateResult { CommentDataId = predictResult.CommentData.Id, CommentData = predictResult.CommentData, EvaluateCategory = maxValue.Title, EvaluateProbability = maxValue.PredictValue };
+            if (maxValue is null) throw new Exception("Exception due evaluating");
+            var evaluateResult = new EvaluateResult { CommentDataId = predictResult.CommentData.Id, CommentData = predictResult.CommentData, EvaluateCategory = maxValue.Title, EvaluateProbability = maxValue.PredictValue};
             OnEvaluationEvent?.Invoke(evaluateResult);
         }
     }
@@ -90,7 +90,7 @@ internal class UniversalSentenceEncoderModel : AnalyzeModel
     {
         _scriptInitialize.Reset();
         IsRunning = false;
-        Runner.OnErrorReceivedEvent -= RunnerOnErrorReceivedEventHandler;
+        Runner!.OnErrorReceivedEvent -= RunnerOnErrorReceivedEventHandler;
         Runner.OnExitedEvent -= RunnerOnExitEventHandler;
         Runner.OnStartedEvent -= RunnerOnStartedEventHandler;
         Log.Logger.Information("Script ended");
@@ -98,7 +98,7 @@ internal class UniversalSentenceEncoderModel : AnalyzeModel
 
     private void RunnerOnErrorReceivedEventHandler(string errorMessage)
     {
-        OnErrorEvent.Invoke(errorMessage);
+        OnErrorEvent?.Invoke(errorMessage);
     }
 
     private void RunnerOnStartedEventHandler()

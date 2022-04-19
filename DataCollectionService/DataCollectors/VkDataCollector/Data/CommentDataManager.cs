@@ -7,7 +7,7 @@ namespace DataCollectionService.DataCollectors.VkDataCollector.Data;
 internal class CommentDataManager
 {
     public delegate void NewCommentFound(CommentData entry);
-    public event NewCommentFound OnNewCommentFoundEvent;
+    public event NewCommentFound? OnNewCommentFoundEvent;
 
     public void SendData(Comment comment)
     {
@@ -28,11 +28,11 @@ internal class CommentDataManager
         return new CommentData
         {
             CommentId = comment.Id,
-            PostId = comment.PostId.Value,
-            GroupId = comment.OwnerId.Value,
-            AuthorId = comment.FromId.Value,
+            PostId = comment.PostId!.Value,
+            GroupId = comment.OwnerId!.Value,
+            AuthorId = comment.FromId!.Value,
             Text = ClearText(comment.Text),
-            PostDate = comment.Date.Value
+            PostDate = comment.Date!.Value
         };
     }
 
@@ -45,7 +45,15 @@ internal class CommentDataManager
 
     private static bool IsCommentInvalid(Comment comment)
     {
-        return comment.Id <= 0 || comment.PostId <= 0 || comment.OwnerId > 0 || string.IsNullOrEmpty(comment.Text) || comment.Text.Length <= 5;
+        return comment.PostId is null ||
+               comment.OwnerId is null ||
+               comment.FromId is null ||
+               comment.Date is null||
+               comment.Id <= 0 || 
+               comment.PostId <= 0 || 
+               comment.OwnerId > 0 || 
+               string.IsNullOrEmpty(comment.Text) || 
+               comment.Text.Length <= 5;
     }
 
     private static string ClearString(string str)
