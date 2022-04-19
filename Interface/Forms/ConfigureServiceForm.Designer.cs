@@ -46,7 +46,7 @@
             this.DataCollectionServiceHost.Name = "DataCollectionServiceHost";
             this.DataCollectionServiceHost.Size = new System.Drawing.Size(240, 27);
             this.DataCollectionServiceHost.TabIndex = 1;
-            this.DataCollectionServiceHost.Text = "http://localhost:5001";
+            this.DataCollectionServiceHost.Text = "http://localhost:5000";
             // 
             // ConfigureServiceForm
             // 

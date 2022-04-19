@@ -6,7 +6,7 @@ public partial class AllCommentsForm : Form
 {
     private readonly MainWindow _parent;
     private readonly Client _client;
-    private int _lastIndex;
+    private long _lastIndex;
     private CancellationTokenSource _cancellationTokenSource;
     private int _rowDisplayed;
 
@@ -39,9 +39,10 @@ public partial class AllCommentsForm : Form
 
     private void RefreshTable()
     {
-        var list = _client.GetComments(_lastIndex);
+        var list = _client.GetComments((int)_lastIndex);
+        if (list.Count == 0) return;
         UpdateControls(list);
-        _lastIndex = AllCommentsDataGridView.Rows.Count;
+        _lastIndex = list[^1].Id;
     }
 
     private void UpdateControls(List<CommentData> list)

@@ -11,7 +11,10 @@
     },
     "DataCollectionService": {
       "commandName": "Project",
-      "workingDirectory": "E:\\Projects\\Prototype\\ContentAnalyzer\\DataCollectionService\\bin\\Debug\\net6.0"
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "http://localhost:5000;https://localhost:5001"
     }
   }
 }

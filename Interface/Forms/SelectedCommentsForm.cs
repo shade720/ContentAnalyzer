@@ -5,13 +5,15 @@ namespace Interface.Forms;
 public partial class SelectedCommentsForm : Form
 {
     private readonly MainWindow _parent;
+    private readonly Client _client;
     private int _lastIndex;
     private CancellationTokenSource _cancellationTokenSource;
     private int _rowDisplayed;
 
-    public SelectedCommentsForm(MainWindow parent)
+    public SelectedCommentsForm(MainWindow parent, Client client)
     {
         _parent = parent;
+        _client = client;
         InitializeComponent();
     }
 
@@ -36,9 +38,10 @@ public partial class SelectedCommentsForm : Form
 
     private void RefreshTable()
     {
-        //var list = DataAnalysisService.DataAnalysisService.GetEvaluateResultsFrom(_lastIndex);
-        //UpdateControls(list);
-        _lastIndex = SelectedCommentsDataGridView.Rows.Count;
+        var list = _client.GetEvaluateResults(_lastIndex);
+        if(list.Count == 0) return;
+        UpdateControls(list);
+        _lastIndex = list[^1].Id;
     }
 
     private void UpdateControls(List<EvaluateResult> list)
@@ -50,13 +53,13 @@ public partial class SelectedCommentsForm : Form
         }
         foreach (var comment in list)
         {
-            //SelectedCommentsDataGridView.Rows.Add(
-            //    comment.CommentData.CommentId,
-            //    comment.CommentData.PostDate,
-            //    comment.CommentData.Text,
-            //    comment.EvaluateCategory,
-            //    comment.EvaluateProbability
-            //);
+            SelectedCommentsDataGridView.Rows.Add(
+                comment.CommentData.CommentId,
+                comment.CommentData.PostDate,
+                comment.CommentData.Text,
+                comment.EvaluateCategory,
+                comment.EvaluateProbability
+            );
         }
         DisplayedRowsLabel.Text = _rowDisplayed == 0 ? SelectedCommentsDataGridView.Rows.Count.ToString() : _rowDisplayed.ToString();
         _parent.SelectedCommentsFoundLabel.Text = SelectedCommentsDataGridView.Rows.Count.ToString();

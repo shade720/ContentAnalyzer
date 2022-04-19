@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.Diagnostics;
 using Timer = System.Windows.Forms.Timer;
 
@@ -11,13 +12,14 @@ public partial class MainWindow : Form
     private readonly LogsForm _logsForm;
     private readonly Timer _timer = new();
     private readonly Stopwatch _stopwatch = new();
-    private Client _services;
+    private readonly Client _services;
 
     public MainWindow()
     {
+        _services = new Client(_configureServiceForm.DataAnalysisServiceHost.Text, _configureServiceForm.DataCollectionServiceHost.Text);
         _logsForm = new LogsForm(this);
         _allCommentsForm = new AllCommentsForm(this, _services);
-        _selectedCommentsForm = new SelectedCommentsForm(this);
+        _selectedCommentsForm = new SelectedCommentsForm(this, _services);
         InitializeComponent();
         _allCommentsForm.TopLevel = false;
         _selectedCommentsForm.TopLevel = false;
@@ -39,7 +41,6 @@ public partial class MainWindow : Form
 
     private async void StartDataCollectionServiceButton_Click(object sender, EventArgs e)
     {
-        _services = new Client(_configureServiceForm.DataAnalysisServiceHost.Text, _configureServiceForm.DataCollectionServiceHost.Text);
         await Task.Run(()=>
         {
             _services.StartDataCollectionService();
@@ -79,9 +80,9 @@ public partial class MainWindow : Form
 
     private void StopService()
     {
-        //DataCollectionService.DataCollectionService.Stop();
-        //DataAnalysisService.DataAnalysisService.StopAll();
-        //DataAnalysisService.DataAnalysisService.StopService();
+        _services.StopDataCollectionService();
+        _services.StopAllModels();
+        _services.StopDataAnalysisService();
     }
 
     private void MainWindow_Load(object sender, EventArgs e)
@@ -127,7 +128,15 @@ public partial class MainWindow : Form
     private void CloseButton_Click(object sender, EventArgs e)
     {
         if (StateLabel.Text == "Working") StopService();
+        
         Application.Exit();
+    }
+
+    protected override void OnClosing(CancelEventArgs e)
+    {
+        _services.StopDataCollectionService();
+        _services.StopAllModels();
+        _services.StopDataAnalysisService();
     }
 
     private void MinimizeWindowButton_Click(object sender, EventArgs e)
