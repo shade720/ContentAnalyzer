@@ -11,7 +11,7 @@ public partial class LogsForm : Form
     {
         _parent = parent;
         InitializeComponent();
-        Logger.OnLoggingEvent += AppendTextBox;
+        //Logger.OnLoggingEvent += AppendTextBox;
     }
 
     private void AppendTextBox(string value, Logger.LogLevel logLevel)

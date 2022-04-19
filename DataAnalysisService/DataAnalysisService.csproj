@@ -5,10 +5,13 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
-	<ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Grpc.AspNetCore" Version="2.44.0" />
+  </ItemGroup>
+	<ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj" />
-    <Protobuf Include="Protos\analysis.proto" GrpcServices="Server" />
+	<Protobuf Include="Protos\analysis.proto" GrpcServices="Both" />
   </ItemGroup>
 	<ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
 </Project>

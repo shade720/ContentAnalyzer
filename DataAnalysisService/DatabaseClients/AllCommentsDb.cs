@@ -20,7 +20,6 @@ public class AllCommentsDb : DatabaseObserver
     {
         if (IsLoadingStarted) throw new Exception("Loading already started");
         if (_dataProcessor is null) throw new Exception($"Data processor not set {nameof(StopLoading)}");
-
         Connect();
         _cancellation = new CancellationTokenSource();
         IsLoadingStarted = true;
@@ -59,7 +58,7 @@ public class AllCommentsDb : DatabaseObserver
 
     private void LoadData()
     {
-        var newComments = from c in Context.Comments where c.Id > _lastReceivedId select c;
+        var newComments = Context.Comments.Where(c => c.Id > _lastReceivedId && c.EvaluateResults.Count == 0);
         foreach (var comment in newComments)
         {
             _lastReceivedId = comment.Id;

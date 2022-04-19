@@ -5,13 +5,15 @@ namespace Interface.Forms;
 public partial class AllCommentsForm : Form
 {
     private readonly MainWindow _parent;
+    private readonly Client _client;
     private int _lastIndex;
     private CancellationTokenSource _cancellationTokenSource;
     private int _rowDisplayed;
 
-    public AllCommentsForm(MainWindow parent)
+    public AllCommentsForm(MainWindow parent, Client client)
     {
         _parent = parent;
+        _client = client;
         InitializeComponent();
     }
 
@@ -37,7 +39,7 @@ public partial class AllCommentsForm : Form
 
     private void RefreshTable()
     {
-        var list = DataCollectionService.DataCollectionService.GetCommentsFrom(_lastIndex);
+        var list = _client.GetComments(_lastIndex);
         UpdateControls(list);
         _lastIndex = AllCommentsDataGridView.Rows.Count;
     }

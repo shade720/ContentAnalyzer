@@ -15,7 +15,7 @@ public class DataCollectionService : DataCollection.DataCollectionBase
 
     #region PublicInterface
 
-    public override Task<StartServiceReply> StartService(StartServiceRequest request, ServerCallContext context)
+    public override Task<StartCollectionServiceReply> StartCollectionService(StartCollectionServiceRequest request, ServerCallContext context)
     {
         if (_saveDatabase is null) throw new Exception("Save database are not registered");
         _saveDatabase.Connect();
@@ -24,10 +24,10 @@ public class DataCollectionService : DataCollection.DataCollectionBase
         {
             dataCollector.StartCollecting();
         }
-        return Task.FromResult(new StartServiceReply());
+        return Task.FromResult(new StartCollectionServiceReply());
     }
 
-    public override Task<StopServiceReply> StopService(StopServiceRequest request, ServerCallContext context)
+    public override Task<StopCollectionServiceReply> StopCollectionService(StopCollectionServiceRequest request, ServerCallContext context)
     {
         if (_saveDatabase is null) throw new Exception("Save database are not registered");
         foreach (var dataCollector in DataCollectors)
@@ -35,7 +35,7 @@ public class DataCollectionService : DataCollection.DataCollectionBase
             dataCollector.StopCollecting();
         }
         _saveDatabase.Disconnect();
-        return Task.FromResult(new StopServiceReply());
+        return Task.FromResult(new StopCollectionServiceReply());
     }
 
     public override Task<GetCommentsReply> GetCommentsFrom(GetCommentsRequest request, ServerCallContext context)
@@ -55,7 +55,8 @@ public class DataCollectionService : DataCollection.DataCollectionBase
                 Text = comment.Text
             });
         }
-        return Task.FromResult(new GetCommentsReply {Result = {convertedRange}});
+
+        return Task.FromResult(new GetCommentsReply {CommentData = { convertedRange } });
     }
 
     #endregion

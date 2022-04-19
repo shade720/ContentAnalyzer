@@ -18,22 +18,22 @@ public class DataAnalysisService : DataAnalysis.DataAnalysisBase
 
     #region PublicInterface
 
-    public override Task<StartServiceReply> StartService(StartServiceRequest request, ServerCallContext context)
+    public override Task<StartAnalysisServiceReply> StartAnalysisService(StartAnalysisServiceRequest request, ServerCallContext context)
     {
-        if (_targetDatabase is null) throw new ArgumentException($"Target database is not registered {nameof(StartService)}");
-        if (AnalyzeModels.Count == 0) throw new ArgumentException($"At least one analysis model must be added {nameof(StartService)}");
+        if (_targetDatabase is null) throw new ArgumentException($"Target database is not registered {nameof(StartAnalysisService)}");
+        if (AnalyzeModels.Count == 0) throw new ArgumentException($"At least one analysis model must be added {nameof(StartAnalysisService)}");
         _targetDatabase.Connect();
         //_targetDatabase.Clear();
         Log.Logger.Information("Service started, target database is ready");
-        return Task.FromResult(new StartServiceReply());
+        return Task.FromResult(new StartAnalysisServiceReply());
     }
 
-    public override Task<StopServiceReply> StopService(StopServiceRequest request, ServerCallContext context)
+    public override Task<StopAnalysisServiceReply> StopAnalysisService(StopAnalysisServiceRequest request, ServerCallContext context)
     {
-        if (_targetDatabase is null) throw new ArgumentException($"Target database is not registered {nameof(StopService)}");
+        if (_targetDatabase is null) throw new ArgumentException($"Target database is not registered {nameof(StopAnalysisService)}");
         _targetDatabase.Disconnect();
         Log.Logger.Information("Service stopped");
-        return Task.FromResult(new StopServiceReply());
+        return Task.FromResult(new StopAnalysisServiceReply());
     }
 
     public override Task<StartAllReply> StartAll(StartAllRequest request, ServerCallContext context)
@@ -101,7 +101,7 @@ public class DataAnalysisService : DataAnalysis.DataAnalysisBase
                 EvaluateProbability = evaluateResult.EvaluateProbability
             });
         }
-        return Task.FromResult(new EvaluateResultsReply { Result  = { convertedRange }});
+        return Task.FromResult(new EvaluateResultsReply { Result = { convertedRange } });
     }
 
     #endregion

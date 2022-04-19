@@ -36,8 +36,8 @@ public partial class SelectedCommentsForm : Form
 
     private void RefreshTable()
     {
-        var list = DataAnalysisService.DataAnalysisService.GetEvaluateResultsFrom(_lastIndex);
-        UpdateControls(list);
+        //var list = DataAnalysisService.DataAnalysisService.GetEvaluateResultsFrom(_lastIndex);
+        //UpdateControls(list);
         _lastIndex = SelectedCommentsDataGridView.Rows.Count;
     }
 

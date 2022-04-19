@@ -1,8 +1,7 @@
 syntax = "proto3";
 
-option csharp_namespace = "DataAnalysisService";
+option csharp_namespace = "DataAnalysisServiceClient";
 import "google/protobuf/timestamp.proto";
-
 package analysis;
 
 service DataAnalysis {
@@ -53,6 +52,7 @@ message StopModelRequest{
  string ModelName = 1;
 }
 message StopModelReply{}
+
 
 message EvaluateResultProto{
 	int32 Id = 1;

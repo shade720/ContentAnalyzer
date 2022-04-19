@@ -11,11 +11,12 @@ public partial class MainWindow : Form
     private readonly LogsForm _logsForm;
     private readonly Timer _timer = new();
     private readonly Stopwatch _stopwatch = new();
+    private Client _services;
 
     public MainWindow()
     {
         _logsForm = new LogsForm(this);
-        _allCommentsForm = new AllCommentsForm(this);
+        _allCommentsForm = new AllCommentsForm(this, _services);
         _selectedCommentsForm = new SelectedCommentsForm(this);
         InitializeComponent();
         _allCommentsForm.TopLevel = false;
@@ -29,8 +30,6 @@ public partial class MainWindow : Form
         _timer.Interval = 1000;
         _timer.Tick += TimerOnTick;
 
-        DataCollectionService.Startup.ConfigureService();
-        DataAnalysisService.Startup.ConfigureService();
     }
 
     private void TimerOnTick(object? sender, EventArgs e)
@@ -40,11 +39,12 @@ public partial class MainWindow : Form
 
     private async void StartDataCollectionServiceButton_Click(object sender, EventArgs e)
     {
+        _services = new Client(_configureServiceForm.DataAnalysisServiceHost.Text, _configureServiceForm.DataCollectionServiceHost.Text);
         await Task.Run(()=>
         {
-            DataCollectionService.DataCollectionService.Start();
-            DataAnalysisService.DataAnalysisService.StartService();
-            DataAnalysisService.DataAnalysisService.StartAll();
+            _services.StartDataCollectionService();
+            _services.StartDataAnalysisService();
+            _services.StartAllAnalyzeModels();
         });
         StartServiceButton.Hide();
         StopServiceButton.Show();
@@ -74,13 +74,14 @@ public partial class MainWindow : Form
         _timer.Stop();
         _stopwatch.Stop();
         _stopwatch.Reset();
+        _services.Dispose();
     }
 
     private void StopService()
     {
-        DataCollectionService.DataCollectionService.Stop();
-        DataAnalysisService.DataAnalysisService.StopAll();
-        DataAnalysisService.DataAnalysisService.StopService();
+        //DataCollectionService.DataCollectionService.Stop();
+        //DataAnalysisService.DataAnalysisService.StopAll();
+        //DataAnalysisService.DataAnalysisService.StopService();
     }
 
     private void MainWindow_Load(object sender, EventArgs e)
@@ -135,6 +136,7 @@ public partial class MainWindow : Form
     }
 
     private Point _lastLocation;
+    
 
     private void UpperPanel_MouseMove(object sender, MouseEventArgs e)
     {

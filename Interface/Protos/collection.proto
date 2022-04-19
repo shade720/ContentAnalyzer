@@ -1,8 +1,7 @@
 syntax = "proto3";
 
-option csharp_namespace = "DataCollectionService";
+option csharp_namespace = "DataCollectionServiceClient";
 import "google/protobuf/timestamp.proto";
-
 package collection;
 
 service DataCollection {
@@ -20,7 +19,7 @@ message GetCommentsRequest{
 	int32 StartIndex = 1;
 }
 message GetCommentsReply{
-	repeated CommentDataProto CommentData = 1;
+	repeated CommentDataProto result = 1;
 }
 message CommentDataProto{
 	int64 Id = 1;

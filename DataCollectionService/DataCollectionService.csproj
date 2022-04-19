@@ -7,10 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Grpc.AspNetCore" Version="2.44.0" />
+    <PackageReference Include="Grpc.AspNetCore" Version="2.45.0" />
+    <PackageReference Include="Grpc.Tools" Version="2.45.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="VkNet" Version="1.68.0" />
-    <Protobuf Include="Protos\collection.proto" GrpcServices="Server" />
     <ProjectReference Include="..\Common\Common.csproj" />
+    <Protobuf Include="Protos\collection.proto" GrpcServices="Server" />
   </ItemGroup>
 
 </Project>
