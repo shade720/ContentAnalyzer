@@ -1,17 +1,16 @@
-using Common;
 using Common.EntityFramework;
 using DataCollectionService;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Serilog.Events;
 
-var eventSink = new EventSink();
-eventSink.OnLoggingEvent += Logger.Log;
-
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
     .WriteTo.Console()
-    .WriteTo.Sink(eventSink)
+    .WriteTo.RollingFile(
+        @".\Logs\log{Date}.txt",
+        LogEventLevel.Information,
+        retainedFileCountLimit: 3)
     .CreateLogger();
 
 var builder = WebApplication.CreateBuilder(args);

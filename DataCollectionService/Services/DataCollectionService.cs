@@ -1,6 +1,7 @@
 using Common;
 using Common.EntityFramework;
 using DataCollectionService.DatabaseClients;
+using Google.Protobuf;
 using Google.Protobuf.Collections;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
@@ -11,7 +12,7 @@ namespace DataCollectionService.Services;
 public class DataCollectionService : DataCollection.DataCollectionBase
 {
     private static readonly List<IDataCollector> DataCollectors = new();
-    private static DatabaseClient<CommentData>? _saveDatabase;
+    private readonly DatabaseClient<CommentData> _saveDatabase;
 
     #region PublicInterface
 
@@ -22,29 +23,26 @@ public class DataCollectionService : DataCollection.DataCollectionBase
 
     public override Task<StartCollectionServiceReply> StartCollectionService(StartCollectionServiceRequest request, ServerCallContext context)
     {
-        if (_saveDatabase is null) throw new Exception("Save database are not registered");
-        _saveDatabase.Clear();
         foreach (var dataCollector in DataCollectors)
         {
             dataCollector.StartCollecting();
+            dataCollector.Subscribe(InsertToDatabase);
         }
         return Task.FromResult(new StartCollectionServiceReply());
     }
 
     public override Task<StopCollectionServiceReply> StopCollectionService(StopCollectionServiceRequest request, ServerCallContext context)
     {
-        if (_saveDatabase is null) throw new Exception("Save database are not registered");
         foreach (var dataCollector in DataCollectors)
         {
             dataCollector.StopCollecting();
+            dataCollector.Unsubscribe(InsertToDatabase);
         }
-        //_saveDatabase.Disconnect();
         return Task.FromResult(new StopCollectionServiceReply());
     }
 
     public override Task<GetCommentsReply> GetCommentsFrom(GetCommentsRequest request, ServerCallContext context)
     {
-        if (_saveDatabase is null) throw new Exception("Save database are not registered");
         var range = _saveDatabase.GetRange(request.StartIndex).Result;
         var convertedRange = new RepeatedField<CommentDataProto>();
         foreach (var comment in range)
@@ -64,15 +62,27 @@ public class DataCollectionService : DataCollection.DataCollectionBase
         return Task.FromResult(new GetCommentsReply {CommentData = { convertedRange } });
     }
 
+    public override Task<LogReply> GetLogs(LogRequest request, ServerCallContext context)
+    {
+        var logDate = request.LogDate.ToDateTime().ToLocalTime();
+        var requiredFilePath = Directory.GetFiles(@"./Logs/", $"log{logDate:yyyyMMdd}*.txt").Single();
+        if (!File.Exists(requiredFilePath)) return Task.FromResult(new LogReply());
+        using var fileStream = new FileStream(requiredFilePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+        return Task.FromResult(new LogReply { LogFile = ByteString.FromStream(fileStream) });
+    }
+
     #endregion
+
+    private void InsertToDatabase(CommentData dataFrame)
+    {
+        _saveDatabase.Add(dataFrame);
+    }
 
     #region Startup
 
     public static void AddDataCollector(Func<IDataCollector> dataCollectorConfiguration)
     {
-        if (_saveDatabase is null) throw new NullReferenceException("Save database are not registered");
         DataCollectors.Add(dataCollectorConfiguration.Invoke());
-        DataCollectors[^1].Subscribe(dataFrame => _saveDatabase.Add(dataFrame));
     }
     #endregion
 }

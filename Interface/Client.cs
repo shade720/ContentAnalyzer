@@ -1,6 +1,7 @@
 ﻿using Common.EntityFramework;
 using DataAnalysisServiceClient;
 using DataCollectionServiceClient;
+using Google.Protobuf.WellKnownTypes;
 using Grpc.Net.Client;
 namespace Interface;
 
@@ -85,6 +86,18 @@ public class Client
             EvaluateCategory = evaluateResultProto.EvaluateCategory,
             EvaluateProbability = evaluateResultProto.EvaluateProbability
         }).ToList();
+    }
+
+    public string GetDataCollectionServiceLogs(DateTime date)
+    {
+        var result = _dataCollectionClient.GetLogs(new DataCollectionServiceClient.LogRequest { LogDate = Timestamp.FromDateTime(date.ToUniversalTime())});
+        return result.LogFile.ToStringUtf8();
+    }
+
+    public string GetDataAnalysisServiceLogs(DateTime date)
+    {
+        var result = _dataAnalysisClient.GetLogs(new DataAnalysisServiceClient.LogRequest { LogDate = Timestamp.FromDateTime(date.ToUniversalTime())});
+        return result.LogFile.ToStringUtf8();
     }
 
     public void Dispose()

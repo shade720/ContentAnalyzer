@@ -8,12 +8,20 @@ service DataCollection {
 	rpc StartCollectionService (StartCollectionServiceRequest) returns (StartCollectionServiceReply);
 	rpc StopCollectionService (StopCollectionServiceRequest) returns (StopCollectionServiceReply);
 	rpc GetCommentsFrom (GetCommentsRequest) returns (GetCommentsReply);
+	rpc GetLogs (LogRequest) returns (LogReply);
 }
 message StartCollectionServiceRequest{}
 message StartCollectionServiceReply{}
 
 message StopCollectionServiceRequest{}
 message StopCollectionServiceReply{}
+
+message LogRequest{
+	google.protobuf.Timestamp LogDate = 1;
+}
+message LogReply{
+	bytes LogFile = 1;
+}
 
 message GetCommentsRequest{
 	int32 StartIndex = 1;

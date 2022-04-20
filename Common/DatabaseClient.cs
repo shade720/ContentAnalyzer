@@ -13,6 +13,6 @@ public abstract class DatabaseClient<T>
             Result = result;
         }
 
-        public List<T> Result { get; init; }
+        public List<T> Result { get; }
     }
 }

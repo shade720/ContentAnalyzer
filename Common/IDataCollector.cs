@@ -8,4 +8,5 @@ public interface IDataCollector
     public void StartCollecting();
     public void StopCollecting();
     public void Subscribe(Action<CommentData> handler);
+    public void Unsubscribe(Action<CommentData> handler);
 }

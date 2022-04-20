@@ -17,7 +17,7 @@ public partial class MainWindow : Form
     public MainWindow()
     {
         _services = new Client(_configureServiceForm.DataAnalysisServiceHost.Text, _configureServiceForm.DataCollectionServiceHost.Text);
-        _logsForm = new LogsForm(this);
+        _logsForm = new LogsForm(this, _services);
         _allCommentsForm = new AllCommentsForm(this, _services);
         _selectedCommentsForm = new SelectedCommentsForm(this, _services);
         InitializeComponent();

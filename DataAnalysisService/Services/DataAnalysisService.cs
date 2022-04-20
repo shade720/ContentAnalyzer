@@ -2,6 +2,7 @@ using Common;
 using Common.EntityFramework;
 using DataAnalysisService.AnalyzeModels.DomainClasses;
 using DataAnalysisService.DatabaseClients;
+using Google.Protobuf;
 using Google.Protobuf.Collections;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
@@ -26,7 +27,6 @@ public class DataAnalysisService : DataAnalysis.DataAnalysisBase
 
     public override Task<StartAnalysisServiceReply> StartAnalysisService(StartAnalysisServiceRequest request, ServerCallContext context)
     {
-        if (_targetDatabase is null) throw new ArgumentException($"Target database is not registered {nameof(StartAnalysisService)}");
         if (AnalyzeModels.Count == 0) throw new ArgumentException($"At least one analysis model must be added {nameof(StartAnalysisService)}");
         Log.Logger.Information("Service started, target database is ready");
         return Task.FromResult(new StartAnalysisServiceReply());
@@ -34,14 +34,16 @@ public class DataAnalysisService : DataAnalysis.DataAnalysisBase
 
     public override Task<StopAnalysisServiceReply> StopAnalysisService(StopAnalysisServiceRequest request, ServerCallContext context)
     {
-        if (_targetDatabase is null) throw new ArgumentException($"Target database is not registered {nameof(StopAnalysisService)}");
         Log.Logger.Information("Service stopped");
         return Task.FromResult(new StopAnalysisServiceReply());
     }
 
     public override Task<StartAllReply> StartAll(StartAllRequest request, ServerCallContext context)
     {
-        foreach (var model in AnalyzeModels) StartModel(model.Key);
+        foreach (var model in AnalyzeModels)
+        {
+            StartModel(model.Key);
+        }
         return Task.FromResult(new StartAllReply());
     }
 
@@ -56,7 +58,10 @@ public class DataAnalysisService : DataAnalysis.DataAnalysisBase
 
     public override Task<StopAllReply> StopAll(StopAllRequest request, ServerCallContext context)
     {
-        foreach (var (modelName, _) in AnalyzeModels) Stop(modelName);
+        foreach (var model in AnalyzeModels)
+        {
+            Stop(model.Key);
+        }
         Log.Logger.Information("All model are stopped");
         return Task.FromResult(new StopAllReply());
     }
@@ -105,6 +110,14 @@ public class DataAnalysisService : DataAnalysis.DataAnalysisBase
             });
         }
         return Task.FromResult(new EvaluateResultsReply { Result = { convertedRange } });
+    }
+
+    public override Task<LogReply> GetLogs(LogRequest request, ServerCallContext context)
+    {
+        var logDate = request.LogDate.ToDateTime().ToLocalTime();
+        if (!File.Exists($@"./Logs/log{logDate:yyyyMMdd}.txt")) return Task.FromResult(new LogReply());
+        using var fileStream = new FileStream($@"./Logs/log{logDate:yyyyMMdd}.txt", FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+        return Task.FromResult(new LogReply { LogFile = ByteString.FromStream(fileStream) });
     }
 
     #endregion
@@ -164,12 +177,7 @@ public class DataAnalysisService : DataAnalysis.DataAnalysisBase
             Log.Logger.Error("Model {@modelName} already in work", modelName);
             return;
         }
-        AnalyzeModels[modelName].Subscribe(_ => { }, _targetDatabase.Add, error => { 
-                if (!error.Contains("NameError")) return;
-                Log.Logger.Fatal("Model {@modelName} has stopped by script exception {error}", modelName, error);
-                AnalyzeModels[modelName].StopModel();
-            }
-        );
+        AnalyzeModels[modelName].Subscribe(null, InsertToTargetDb, error => ModelErrorHandler(error, modelName));
         try
         {
             AnalyzeModels[modelName].StartPredictiveModel();
@@ -181,6 +189,18 @@ public class DataAnalysisService : DataAnalysis.DataAnalysisBase
             Log.Logger.Fatal("{@message} {@stackTrace}", e.Message, e.StackTrace);
             AnalyzeModels[modelName].StopModel();
         }
+    }
+
+    private void ModelErrorHandler(string errorMessage, string modelName)
+    {
+        if (!errorMessage.Contains("NameError")) return;
+        Log.Logger.Fatal("Model {@modelName} has stopped by script exception {error}", modelName, errorMessage);
+        AnalyzeModels[modelName].StopModel();
+    }
+
+    private void InsertToTargetDb(EvaluateResult evaluateResult)
+    {
+         _targetDatabase.Add(evaluateResult);
     }
 
     private void EnsureLoading()
@@ -222,6 +242,7 @@ public class DataAnalysisService : DataAnalysis.DataAnalysisBase
         {
             var isLastRunningModel = AnalyzeModels.Count(model => model.Value.IsRunning) == 1;
             if (_sourceDatabase.IsLoadingStarted && isLastRunningModel) _sourceDatabase.StopLoading();
+            AnalyzeModels[modelName].Unsubscribe(null, InsertToTargetDb, null);
             AnalyzeModels[modelName].StopModel();
             Log.Logger.Information("{modelName} executing stopped", modelName);
         }

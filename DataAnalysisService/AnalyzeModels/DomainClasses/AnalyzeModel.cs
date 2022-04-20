@@ -31,11 +31,18 @@ public abstract class AnalyzeModel
         Model = Path.GetFullPath(model);
         Categories = categories;
     }
-    public void Subscribe(Action<PredictResult> predictionResultHandler, Action<EvaluateResult> evaluateResultHandler, Action<string> scriptMessagesHandler)
+    public void Subscribe(Action<PredictResult>? predictionResultsHandler, Action<EvaluateResult>? evaluateResultsHandler, Action<string>? scriptMessagesHandler)
     {
-        OnErrorEvent += scriptMessagesHandler.Invoke;
-        OnPredictionEvent += predictionResultHandler.Invoke;
-        OnEvaluationEvent += evaluateResultHandler.Invoke;
+        if (scriptMessagesHandler is not null) OnErrorEvent += scriptMessagesHandler.Invoke;
+        if (predictionResultsHandler is not null) OnPredictionEvent += predictionResultsHandler.Invoke;
+        if (evaluateResultsHandler is not null) OnEvaluationEvent += evaluateResultsHandler.Invoke;
+    }
+
+    public void Unsubscribe(Action<PredictResult>? predictionResultsHandler, Action<EvaluateResult>? evaluateResultsHandler, Action<string>? scriptMessagesHandler)
+    {
+        if (scriptMessagesHandler is not null) OnErrorEvent -= scriptMessagesHandler.Invoke;
+        if (predictionResultsHandler is not null) OnPredictionEvent -= predictionResultsHandler.Invoke;
+        if (evaluateResultsHandler is not null) OnEvaluationEvent -= evaluateResultsHandler.Invoke;
     }
 
     public abstract void StartPredictiveModel();

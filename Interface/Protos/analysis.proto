@@ -14,6 +14,14 @@ service DataAnalysis {
   rpc StartModel (StartModelRequest) returns (StartModelReply);
   rpc TrainModel (TrainModelRequest) returns (TrainModelReply);
   rpc StopModel (StopModelRequest) returns (StopModelReply);
+  rpc GetLogs (LogRequest) returns (LogReply);
+}
+
+message LogRequest{
+	google.protobuf.Timestamp LogDate = 1;
+}
+message LogReply{
+	bytes LogFile = 1;
 }
 
 message EvaluateResultsRequest{

@@ -15,6 +15,7 @@ public class AllCommentsDb : DatabaseClient<CommentData>
     {
         if (IsDataFrameInvalid(commentData)) return;
         using var context = _contextFactory.CreateDbContext();
+        if (context.Comments.Contains(commentData)) return;
         context.Comments.Add(commentData);
         context.SaveChanges();
     }
