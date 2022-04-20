@@ -13,9 +13,9 @@ namespace DataAnalysisService.Services;
 public class DataAnalysisService : DataAnalysis.DataAnalysisBase
 {
     private static readonly Dictionary<string, AnalyzeModel> AnalyzeModels = new();
-    private readonly DatabaseObserver _sourceDatabase;
     private readonly DatabaseClient<EvaluateResult> _targetDatabase;
-
+    private readonly DatabaseObserver _sourceDatabase;
+    
     #region PublicInterface
 
     public DataAnalysisService(IDbContextFactory<CommentsContext> contextFactory)
@@ -28,8 +28,6 @@ public class DataAnalysisService : DataAnalysis.DataAnalysisBase
     {
         if (_targetDatabase is null) throw new ArgumentException($"Target database is not registered {nameof(StartAnalysisService)}");
         if (AnalyzeModels.Count == 0) throw new ArgumentException($"At least one analysis model must be added {nameof(StartAnalysisService)}");
-        //_targetDatabase.Connect();
-        //_targetDatabase.Clear();
         Log.Logger.Information("Service started, target database is ready");
         return Task.FromResult(new StartAnalysisServiceReply());
     }
@@ -37,7 +35,6 @@ public class DataAnalysisService : DataAnalysis.DataAnalysisBase
     public override Task<StopAnalysisServiceReply> StopAnalysisService(StopAnalysisServiceRequest request, ServerCallContext context)
     {
         if (_targetDatabase is null) throw new ArgumentException($"Target database is not registered {nameof(StopAnalysisService)}");
-        //_targetDatabase.Disconnect();
         Log.Logger.Information("Service stopped");
         return Task.FromResult(new StopAnalysisServiceReply());
     }
@@ -139,6 +136,12 @@ public class DataAnalysisService : DataAnalysis.DataAnalysisBase
     {
         if (!AnalyzeModels[modelName].IsRunning)
         {
+            if (AnalyzeModels.All(model => !model.Value.IsRunning))
+            {
+                Log.Logger.Error("There are no running models. Stopping the work...");
+                _sourceDatabase.StopLoading();
+                return;
+            }
             Log.Logger.Error("Model {modelName} not running", modelName);
             return;
         }
@@ -152,39 +155,40 @@ public class DataAnalysisService : DataAnalysis.DataAnalysisBase
             AnalyzeModels[modelName].StopModel();
         }
     }
+
     private void StartModel(string modelName)
     {
         if (_sourceDatabase is null || _targetDatabase is null) throw new ArgumentException($"Not all databases is registered {nameof(StartModel)}");
         if (AnalyzeModels[modelName].IsRunning)
         {
-            Log.Logger.Error("Model {modelName} already in work", modelName);
+            Log.Logger.Error("Model {@modelName} already in work", modelName);
             return;
         }
-        Log.Logger.Information("Starting model {modelName} to listen predicts...", modelName);
-        AnalyzeModels[modelName].Subscribe(
-            predictionResult => { },
-            _targetDatabase.Add,
-            error =>
-            {
+        AnalyzeModels[modelName].Subscribe(_ => { }, _targetDatabase.Add, error => { 
                 if (!error.Contains("NameError")) return;
-                Log.Logger.Fatal("Model {modelName} has stopped by script exception {error}", error);
+                Log.Logger.Fatal("Model {@modelName} has stopped by script exception {error}", modelName, error);
                 AnalyzeModels[modelName].StopModel();
             }
         );
         try
         {
             AnalyzeModels[modelName].StartPredictiveModel();
-            Log.Logger.Information("Model {modelName} started listen predicts", modelName);
-            if (_sourceDatabase.IsLoadingStarted) return;
-            _sourceDatabase.OnDataArrived(AnalyzeByAny);
-            _sourceDatabase.StartLoading();
-            Log.Logger.Information("Source database started sending data");
+            Log.Logger.Information("Model {@modelName} started listen predicts", modelName);
+            EnsureLoading();
         }
         catch (Exception e)
         {
-            Log.Logger.Fatal("{message} {stackTrace}", e.Message, e.StackTrace);
+            Log.Logger.Fatal("{@message} {@stackTrace}", e.Message, e.StackTrace);
             AnalyzeModels[modelName].StopModel();
         }
+    }
+
+    private void EnsureLoading()
+    {
+        if (_sourceDatabase.IsLoadingStarted) return;
+        _sourceDatabase.OnDataArrived(AnalyzeByAny);
+        _sourceDatabase.StartLoading();
+        Log.Logger.Information("Source database started sending data");
     }
 
     private void TrainModel(string modelName)
@@ -216,7 +220,8 @@ public class DataAnalysisService : DataAnalysis.DataAnalysisBase
         }
         try
         {
-            if (IsLastRunningModel() && _sourceDatabase.IsLoadingStarted) _sourceDatabase.StopLoading();
+            var isLastRunningModel = AnalyzeModels.Count(model => model.Value.IsRunning) == 1;
+            if (_sourceDatabase.IsLoadingStarted && isLastRunningModel) _sourceDatabase.StopLoading();
             AnalyzeModels[modelName].StopModel();
             Log.Logger.Information("{modelName} executing stopped", modelName);
         }
@@ -224,11 +229,6 @@ public class DataAnalysisService : DataAnalysis.DataAnalysisBase
         {
             Log.Logger.Fatal("{0} {1}", e.Message, e.StackTrace);
         }
-    }
-
-    private bool IsLastRunningModel()
-    {
-        return AnalyzeModels.Count(model => model.Value.IsRunning) == 1;
     }
 
     #endregion

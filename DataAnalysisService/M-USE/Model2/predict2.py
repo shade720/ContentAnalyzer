@@ -23,10 +23,10 @@ with tf.Session() as session:
     K.set_session(session)
     session.run(tf.global_variables_initializer())
     session.run(tf.tables_initializer())
-    model.load_weights(input())
+    model_path = input()
+    model.load_weights(model_path)
 
-    expression = " "
-    while expression != "":
+    while True:
         try:
             expression = input()
             predict = model.predict(np.asarray([expression]))

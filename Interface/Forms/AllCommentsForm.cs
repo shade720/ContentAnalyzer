@@ -7,7 +7,7 @@ public partial class AllCommentsForm : Form
     private readonly MainWindow _parent;
     private readonly Client _client;
     private long _lastIndex;
-    private CancellationTokenSource? _cancellationTokenSource;
+    private CancellationTokenSource _cancellationTokenSource;
     private int _rowDisplayed;
 
     public AllCommentsForm(MainWindow parent, Client client)

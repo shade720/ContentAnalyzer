@@ -52,12 +52,12 @@ public partial class MainWindow : Form
         StatePanel.BackColor = Color.Chartreuse;
         StateLabel.Text = @"Working";
         StateLabel.BackColor = Color.Chartreuse;
-        CollectorServiceStateLabel.Text = "Up";
-        AnalysisServiceStateLabel.Text = "Up";
+        CollectorServiceStateLabel.Text = @"Up";
+        AnalysisServiceStateLabel.Text = @"Up";
         _timer.Start();
         _stopwatch.Start();
-        _allCommentsForm.DisplayActualData();
-        _selectedCommentsForm.DisplayActualData();
+        var _ = _allCommentsForm.DisplayActualData();
+        var __ = _selectedCommentsForm.DisplayActualData();
     }
 
     private async void StopDataCollectionServiceButton_Click(object sender, EventArgs e)
@@ -70,8 +70,8 @@ public partial class MainWindow : Form
         StatePanel.BackColor = Color.Red;
         StateLabel.Text = @"Not working";
         StateLabel.BackColor = Color.Red;
-        CollectorServiceStateLabel.Text = "Down";
-        AnalysisServiceStateLabel.Text = "Down";
+        CollectorServiceStateLabel.Text = @"Down";
+        AnalysisServiceStateLabel.Text = @"Down";
         _timer.Stop();
         _stopwatch.Stop();
         _stopwatch.Reset();
@@ -127,7 +127,7 @@ public partial class MainWindow : Form
 
     private void CloseButton_Click(object sender, EventArgs e)
     {
-        if (StateLabel.Text == "Working") StopService();
+        if (StateLabel.Text == @"Working") StopService();
         
         Application.Exit();
     }

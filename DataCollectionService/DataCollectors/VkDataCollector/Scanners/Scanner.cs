@@ -9,7 +9,7 @@ internal abstract class Scanner
     protected readonly Config Configuration;
     protected readonly VkApi ClientApi;
     protected readonly CommentDataManager CommentManager;
-    protected CancellationTokenSource? StopScanToken;
+    protected CancellationTokenSource StopScanToken;
     
     protected Scanner(long communityId, VkApi clientApi, CommentDataManager dataManager, Config configuration)
     {

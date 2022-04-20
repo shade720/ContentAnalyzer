@@ -56,7 +56,6 @@ public class PythonRunner
         catch (Exception exception)
         {
             Log.Logger.Fatal("An error occured during script execution. See inner exception for details. {exception.Message} {exception.StackTrace}", exception.Message, exception.StackTrace);
-            throw new Exception($"An error occured during script execution. See inner exception for details. {exception.Message} {exception.StackTrace}");
         }
         finally
         {
@@ -68,6 +67,28 @@ public class PythonRunner
             OnExitedEvent?.Invoke();
             Log.Logger.Information("Script stopped");
         }
+    }
+
+    private Process CreatePythonProcess(string script)
+    {
+        if (script is null) throw new ArgumentNullException(nameof(script));
+        if (!File.Exists(script)) throw new FileNotFoundException(script);
+        Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+        var startInfo = new ProcessStartInfo(_interpreter)
+        {
+            UseShellExecute = false,
+            CreateNoWindow = true,
+            RedirectStandardOutput = true,
+            RedirectStandardError = true,
+            RedirectStandardInput = true,
+            StandardInputEncoding = Encoding.GetEncoding(1251),
+            Arguments = $"\"{script}\""
+        };
+        return new Process
+        {
+            StartInfo = startInfo,
+            EnableRaisingEvents = true,
+        };
     }
 
     public async Task RunAsync(string script, string resourcePath)
@@ -102,28 +123,6 @@ public class PythonRunner
 
 
     #endregion
-
-    private Process CreatePythonProcess(string script)
-    {
-        if (script is null) throw new ArgumentNullException(nameof(script));
-        if (!File.Exists(script)) throw new FileNotFoundException(script);
-        Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-        var startInfo = new ProcessStartInfo(_interpreter)
-        {
-            UseShellExecute = false,
-            CreateNoWindow = true,
-            RedirectStandardOutput = true,
-            RedirectStandardError = true,
-            RedirectStandardInput = true,
-            StandardInputEncoding = Encoding.GetEncoding(1251),
-            Arguments = $"\"{script}\""
-        };
-        return new Process
-        {
-            StartInfo = startInfo,
-            EnableRaisingEvents = true,
-        };
-    }
 
     private void OnErrorDataReceivedHandler(object sender, DataReceivedEventArgs e)
     {
