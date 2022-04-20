@@ -9,14 +9,14 @@ namespace DataCollectionService.DataCollectors.VkDataCollector.Scanners;
 internal class CommentScanner : Scanner
 {
     public long PostId { get; }
-    private readonly Queue<CommentInfo> _receivedCommentsInfos;
+    private readonly FixedQueue<CommentInfo> _receivedCommentsInfos;
 
     public CommentScanner(long communityId, long postId, VkApi vkApi, CommentDataManager dataManager,
         Config configuration) : base(
         communityId, vkApi, dataManager, configuration)
     {
         PostId = postId;
-        _receivedCommentsInfos = new Queue<CommentInfo>(configuration.StoredCommentInfosCount);
+        _receivedCommentsInfos = new FixedQueue<CommentInfo>(configuration.StoredCommentInfosCount);
     } 
 
     public override void StartScan()
@@ -73,8 +73,10 @@ internal class CommentScanner : Scanner
                     if (StopScanToken.IsCancellationRequested || !AnyNewComments()) continue;
 
                     ScanBranch(out var mainBranch);
-                    foreach (var comment in mainBranch.Items.Where(comment => comment.Thread.Count > _receivedCommentsInfos.Single(info => info.CommentId == comment.Id).CommentsInThreadCount))
+                    foreach (var comment in mainBranch.Items.Where(CommentsCountOfThreadIncreased))
+                    {
                         ScanBranch(out _, comment.Id);
+                    }
                 }
             }, StopScanToken.Token);
             _receivedCommentsInfos.Clear();
@@ -87,10 +89,19 @@ internal class CommentScanner : Scanner
         }
     }
 
+    private bool CommentsCountOfThreadIncreased(Comment comment)
+    {
+        return comment.Thread.Count > _receivedCommentsInfos.Single(info => info.CommentId == comment.Id).CommentsInThreadCount;
+    }
+
     private bool AnyNewComments()
     {
         var receivedCommentsCount = _receivedCommentsInfos.Count + _receivedCommentsInfos.Count(info => info.CommentsInThreadCount > 0);
         return receivedCommentsCount < ClientApi.GetCommentsCountAsync(CommunityId, PostId).Result;
+    }
+    private bool IsNewComment(long commentId)
+    {
+        return _receivedCommentsInfos.Any(info => commentId != info.CommentId);
     }
 
     private void ScanBranch(out WallGetCommentsResult branch, long? commentId = null)
@@ -107,11 +118,6 @@ internal class CommentScanner : Scanner
         }
     }
 
-    private bool IsNewComment(long commentId)
-    {
-        return _receivedCommentsInfos.Any(info => commentId != info.CommentId);
-    }
-
     private List<Comment> GetBranch(long? commentId = null)
     {
         var comments = new List<Comment>();
@@ -120,8 +126,10 @@ internal class CommentScanner : Scanner
         {
             var reply = ClientApi.GetCommentsAsync(PostId, 100, CommunityId, offset, SortOrderBy.Asc, commentId).Result;
             comments.AddRange(reply.Items);
-            foreach (var comment in reply.Items) 
+            foreach (var comment in reply.Items)
+            {
                 _receivedCommentsInfos.Enqueue(new CommentInfo { CommentId = comment.Id, CommentsInThreadCount = comment.Thread?.Count ?? 0 });
+            }
             startCount = reply.Count;
         }
         return comments;

@@ -6,10 +6,12 @@ namespace DataCollectionService.DataCollectors.VkDataCollector.ScannerManager;
 
 internal class CommentScannersQueue
 {
-    private readonly Queue<CommentScanner> _queue;
-    private readonly int _queueSize;
+    private readonly FixedQueue<CommentScanner> _queue;
 
-    public CommentScannersQueue(int queueSize) => (_queueSize, _queue) = (queueSize, new Queue<CommentScanner>(queueSize));
+    public CommentScannersQueue(int queueSize)
+    {
+        _queue = new FixedQueue<CommentScanner>(queueSize);
+    } 
 
     public bool Contains(long postId)
     {
@@ -20,7 +22,6 @@ internal class CommentScannersQueue
     {
         try
         {
-            if (_queue.Count == _queueSize) RemoveScanner();
             scanner.StartScan();
             _queue.Enqueue(scanner);
             Log.Logger.Information("Comment scanner added to queue");
@@ -34,19 +35,15 @@ internal class CommentScannersQueue
 
     private void RemoveScanner()
     {
-        if (_queue.Count == 0)
-        {
-            Log.Logger.Error("Comments scanners queue already cleared");
-            
-            return;
-        }
         var result = _queue.Dequeue();
         result.StopScan();
         Log.Logger.Information("Stop and delete comment scanner {0}", result.PostId);
     }
+
     public void Clear()
     {
-        for (var i = 0; i < _queue.Count; i++) RemoveScanner();
+        for (var i = 0; i < _queue.Count; i++) 
+            RemoveScanner();
         Log.Logger.Information("Queue cleared");
     }
 }
