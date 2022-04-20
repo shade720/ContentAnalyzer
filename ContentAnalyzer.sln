@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31919.166
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DataAnalysisServiceFolder", "DataAnalysisServiceFolder", "{063712E5-0654-40EB-BC62-70547BD2AC5A}"
-EndProject
 Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "Environment", "Environment\Environment.pyproj", "{24B8A00F-6AFF-4238-BA3C-5F54E192F0D2}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Interface", "Interface\Interface.csproj", "{BC8CA66A-33D5-4B27-B017-1CABD3CE6AD4}"
@@ -42,9 +40,6 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{24B8A00F-6AFF-4238-BA3C-5F54E192F0D2} = {063712E5-0654-40EB-BC62-70547BD2AC5A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4EE07DFF-0494-494B-9662-4080114B39F0}

@@ -17,7 +17,8 @@ public static class Startup
                 ServiceAccessKey = configuration["VkServiceAccessKey"],
                 ScanCommentsDelay = Convert.ToInt32(configuration["ScanCommentsDelay"]),
                 ScanPostDelay = Convert.ToInt32(configuration["ScanPostDelay"]),
-                QueueSize = Convert.ToInt32(configuration["PostQueueSize"])
+                ObservedPostQueueSize = Convert.ToInt32(configuration["PostQueueSize"]),
+                StoredCommentInfosCount = Convert.ToInt32(configuration["StoredCommentInfosCount"]),
             });
             vkDataCollector.AddCommunity(Convert.ToInt64(configuration["NRGroupId"]));
             vkDataCollector.AddCommunity(Convert.ToInt64(configuration["LentachGroupId"]));

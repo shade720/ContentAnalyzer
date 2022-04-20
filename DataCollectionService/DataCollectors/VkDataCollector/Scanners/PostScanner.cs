@@ -9,7 +9,7 @@ internal class PostScanner : Scanner
     private readonly CommentScannersQueue _commentScannersQueue;
 
     public PostScanner(long communityId, VkApi vkApi, CommentDataManager dataManager, Config configuration) : base(communityId, vkApi,
-        dataManager, configuration) => _commentScannersQueue = new CommentScannersQueue(configuration.QueueSize);
+        dataManager, configuration) => _commentScannersQueue = new CommentScannersQueue(configuration.ObservedPostQueueSize);
 
     public override void StartScan()
     {
@@ -27,19 +27,20 @@ internal class PostScanner : Scanner
                 {
                     if (IsThereNewPost(out var postId))
                     {
-                        Log.Logger.Information("New post released {postId} community {CommunityId}", postId, CommunityId);
+                        Log.Logger.Information("New post released {@PostId} community {@CommunityId}", postId, CommunityId);
                         //Each post has a comment scanner, which is added to the queue which is added to the queue for convenient stopping and deleting 
                         _commentScannersQueue.AddScanner(new CommentScanner(CommunityId, postId, ClientApi, CommentManager, Configuration));
                     }
-                    await Task.Delay(Configuration.ScanPostDelay, StopScanToken.Token);
+                    await Task.Delay(Configuration.ScanPostDelay, StopScanToken.Token).ContinueWith(_ => { }); //to avoid exception
                 }
-                StopScan();
+                Log.Logger.Information("Post scanning {@CommunityId} stopped", CommunityId);
+                _commentScannersQueue.Clear();
             }, StopScanToken.Token);
         }
         catch (Exception e)
         {
-            Log.Logger.Error("Error in post scanner {CommunityId} {0}", CommunityId, e.Message + "\r\n" + e.InnerException);
-            StopScan();
+            Log.Logger.Error("Error in post scanner {@message} {@InnerException}", CommunityId, e.Message + "\r\n" + e.InnerException);
+            _commentScannersQueue.Clear();
         }
     }
 
@@ -53,6 +54,5 @@ internal class PostScanner : Scanner
     {
         StopScanToken.Cancel();
         _commentScannersQueue.Clear();
-        Log.Logger.Information("Post scanning {CommunityId} stopped", CommunityId);
     }
 }

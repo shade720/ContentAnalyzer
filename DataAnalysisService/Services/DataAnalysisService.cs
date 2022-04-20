@@ -194,7 +194,7 @@ public class DataAnalysisService : DataAnalysis.DataAnalysisBase
     private void ModelErrorHandler(string errorMessage, string modelName)
     {
         if (!errorMessage.Contains("NameError")) return;
-        Log.Logger.Fatal("Model {@modelName} has stopped by script exception {error}", modelName, errorMessage);
+        Log.Logger.Fatal("Model {@modelName} has stopped by script exception {@error}", modelName, errorMessage);
         AnalyzeModels[modelName].StopModel();
     }
 

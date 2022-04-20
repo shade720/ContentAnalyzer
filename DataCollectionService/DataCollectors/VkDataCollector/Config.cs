@@ -7,5 +7,6 @@ public class Config
     public string ServiceAccessKey { get; init; }
     public int ScanPostDelay { get; init; }
     public int ScanCommentsDelay { get; init; }
-    public int QueueSize { get; init; }
+    public int ObservedPostQueueSize { get; init; }
+    public int StoredCommentInfosCount { get; init; }
 }

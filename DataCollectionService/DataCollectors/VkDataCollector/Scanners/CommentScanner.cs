@@ -9,19 +9,25 @@ namespace DataCollectionService.DataCollectors.VkDataCollector.Scanners;
 internal class CommentScanner : Scanner
 {
     public long PostId { get; }
-    private readonly List<CommentInfo> _receivedCommentsInfos = new();
+    private readonly Queue<CommentInfo> _receivedCommentsInfos;
 
-    public CommentScanner(long communityId, long postId, VkApi vkApi, CommentDataManager dataManager, Config configuration) : base(
-        communityId, vkApi, dataManager, configuration) => PostId = postId;
+    public CommentScanner(long communityId, long postId, VkApi vkApi, CommentDataManager dataManager,
+        Config configuration) : base(
+        communityId, vkApi, dataManager, configuration)
+    {
+        PostId = postId;
+        _receivedCommentsInfos = new Queue<CommentInfo>(configuration.StoredCommentInfosCount);
+    } 
 
     public override void StartScan()
     {
+        
         try
         {
             StopScanToken = new CancellationTokenSource();
             var presentComments = GetPresentComments();
             CommentManager.SendAllData(presentComments);
-            var scanResult = ScanComments();
+            var _ = ScanComments();
         }
         catch (Exception e)
         {
@@ -63,7 +69,7 @@ internal class CommentScanner : Scanner
             {
                 while (!StopScanToken.Token.IsCancellationRequested)
                 {
-                    await Task.Delay(Configuration.ScanCommentsDelay, StopScanToken.Token);
+                    await Task.Delay(Configuration.ScanCommentsDelay, StopScanToken.Token).ContinueWith(_ => { }); //to avoid exception
                     if (StopScanToken.IsCancellationRequested || !AnyNewComments()) continue;
 
                     ScanBranch(out var mainBranch);
@@ -71,6 +77,7 @@ internal class CommentScanner : Scanner
                         ScanBranch(out _, comment.Id);
                 }
             }, StopScanToken.Token);
+            _receivedCommentsInfos.Clear();
             Log.Logger.Information("Scan comments stopped on post {0}", PostId);
         }
         catch (Exception e)
@@ -96,13 +103,13 @@ internal class CommentScanner : Scanner
         {
             var comment = sortedBranch[i];
             CommentManager.SendData(comment);
-            _receivedCommentsInfos.Add(new CommentInfo{ CommentId = comment.Id, CommentsInThreadCount = comment.Thread?.Count ?? 0 });
+            _receivedCommentsInfos.Enqueue(new CommentInfo{ CommentId = comment.Id, CommentsInThreadCount = comment.Thread?.Count ?? 0 });
         }
     }
 
     private bool IsNewComment(long commentId)
     {
-        return !_receivedCommentsInfos.Exists(info => commentId != info.CommentId);
+        return _receivedCommentsInfos.Any(info => commentId != info.CommentId);
     }
 
     private List<Comment> GetBranch(long? commentId = null)
@@ -114,15 +121,15 @@ internal class CommentScanner : Scanner
             var reply = ClientApi.GetCommentsAsync(PostId, 100, CommunityId, offset, SortOrderBy.Asc, commentId).Result;
             comments.AddRange(reply.Items);
             foreach (var comment in reply.Items) 
-                _receivedCommentsInfos.Add(new CommentInfo { CommentId = comment.Id, CommentsInThreadCount = comment.Thread?.Count ?? 0 });
+                _receivedCommentsInfos.Enqueue(new CommentInfo { CommentId = comment.Id, CommentsInThreadCount = comment.Thread?.Count ?? 0 });
             startCount = reply.Count;
         }
         return comments;
     }
+    private class CommentInfo
+    {
+        public long CommentId { get; init; }
+        public long CommentsInThreadCount { get; init; }
+    }
 }
 
-internal class CommentInfo
-{
-    public long CommentId { get; init; }
-    public long CommentsInThreadCount { get; init; }
-}
