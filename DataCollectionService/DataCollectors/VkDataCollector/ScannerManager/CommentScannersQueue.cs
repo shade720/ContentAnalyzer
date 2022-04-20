@@ -42,8 +42,7 @@ internal class CommentScannersQueue
 
     public void Clear()
     {
-        for (var i = 0; i < _queue.Count; i++) 
-            RemoveScanner();
+        for (var i = 0; i < _queue.Count; i++) RemoveScanner();
         Log.Logger.Information("Queue cleared");
     }
 }

@@ -53,6 +53,5 @@ internal class PostScanner : Scanner
     public override void StopScan()
     {
         StopScanToken.Cancel();
-        _commentScannersQueue.Clear();
     }
 }

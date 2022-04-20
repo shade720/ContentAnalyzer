@@ -71,7 +71,6 @@ internal class CommentScanner : Scanner
                 {
                     await Task.Delay(Configuration.ScanCommentsDelay, StopScanToken.Token).ContinueWith(_ => { }); //to avoid exception
                     if (StopScanToken.IsCancellationRequested || !AnyNewComments()) continue;
-
                     ScanBranch(out var mainBranch);
                     foreach (var comment in mainBranch.Items.Where(CommentsCountOfThreadIncreased))
                     {
