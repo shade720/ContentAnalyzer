@@ -18,7 +18,6 @@ public static class Startup
                 ScanCommentsDelay = Convert.ToInt32(configuration["ScanCommentsDelay"]),
                 ScanPostDelay = Convert.ToInt32(configuration["ScanPostDelay"]),
                 ObservedPostQueueSize = Convert.ToInt32(configuration["PostQueueSize"]),
-                StoredCommentInfosCount = Convert.ToInt32(configuration["StoredCommentInfosCount"]),
             });
             vkDataCollector.AddCommunity(Convert.ToInt64(configuration["NRGroupId"]));
             vkDataCollector.AddCommunity(Convert.ToInt64(configuration["LentachGroupId"]));

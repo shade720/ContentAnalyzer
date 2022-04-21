@@ -39,7 +39,7 @@ internal class PostScanner : Scanner
         }
         catch (Exception e)
         {
-            Log.Logger.Error("Error in post scanner {@message} {@InnerException}", CommunityId, e.Message + "\r\n" + e.InnerException);
+            Log.Logger.Error("Error in post scanner {@CommunityId} {@Exception}", CommunityId, e.Message + "\r\n" + e.InnerException);
             _commentScannersQueue.Clear();
         }
     }

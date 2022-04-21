@@ -6,34 +6,22 @@ namespace DataAnalysisService.AnalyzeModels.ModelImplementations;
 
 internal class UniversalSentenceEncoderModel : AnalyzeModel
 {
-    private static int _evaluateThreshold;
     private readonly AutoResetEvent _scriptInitialize = new(false);
 
     #region PublicInterface
 
     public override bool IsRunning { get; protected set; }
 
-    public UniversalSentenceEncoderModel(
-        string interpreter,
-        string predictScript,
-        string trainScript,
-        string dataSet,
-        string model,
-        string[] categories,
-        int evaluateThresholdPercent) :
-        base(interpreter, predictScript, trainScript, dataSet, model, categories)
-    {
-        _evaluateThreshold = evaluateThresholdPercent;
-    }
+    public UniversalSentenceEncoderModel(AnalyzeModelInfo modelInfo) : base(modelInfo) { }
 
-    public override void StartPredictiveModel() => StartModel(PredictScript, Model);
+    public override void StartPredictiveModel() => StartModel(AnalyzeModelInfo.PredictScript, AnalyzeModelInfo.Model);
 
-    public override void StartTrainModel() => StartModel(TrainScript, DataSet);
+    public override void StartTrainModel() => StartModel(AnalyzeModelInfo.TrainScript, AnalyzeModelInfo.DataSet);
 
     private void StartModel(string scriptModel, string resourcePath)
     {
         if (IsRunning) throw new Exception("Runner is already using script");
-        Runner = new PythonRunner(Interpreter);
+        Runner = new PythonRunner(AnalyzeModelInfo.Interpreter);
 
         Runner.OnErrorReceivedEvent += RunnerOnErrorReceivedEventHandler;
         Runner.OnExitedEvent += RunnerOnExitEventHandler;
@@ -44,14 +32,14 @@ internal class UniversalSentenceEncoderModel : AnalyzeModel
         _scriptInitialize.WaitOne();
     }
 
-    public override void Predict(CommentData dataFrame)
+    public override void Predict(CommentData commentData)
     {
         if (!IsRunning) throw new Exception("Predict model not initialized");
         if (Runner is null) throw new Exception("Script not running");
 
-        Runner.WriteToScript(dataFrame.Text);
+        Runner.WriteToScript(commentData.Text);
         var predictFromScript = Runner.ReadFromScript();
-        var predictResult = new PredictResult(dataFrame, predictFromScript, Categories);
+        var predictResult = new PredictResult(commentData, predictFromScript, AnalyzeModelInfo.Categories);
         OnPredictionEvent?.Invoke(predictResult);
         if (ExceedsThreshold(predictResult))
         {
@@ -78,10 +66,10 @@ internal class UniversalSentenceEncoderModel : AnalyzeModel
 
     #region Private
 
-    private static bool ExceedsThreshold(PredictResult predictResult)
+    private bool ExceedsThreshold(PredictResult predictResult)
     {
         for (var i = 1; i < predictResult.Predicts.Length; i++)
-            if (predictResult.Predicts[i].PredictValue > _evaluateThreshold / (double)100)
+            if (predictResult.Predicts[i].PredictValue > AnalyzeModelInfo.EvaluateThresholdPercent / (double)100)
                 return true;
         return false;
     }

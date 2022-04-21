@@ -5,12 +5,8 @@ namespace DataAnalysisService.AnalyzeModels.DomainClasses;
 public abstract class AnalyzeModel
 {
     protected PythonRunner? Runner;
-    protected readonly string Interpreter;
-    protected readonly string PredictScript;
-    protected readonly string TrainScript;
-    protected readonly string DataSet;
-    protected readonly string Model;
-
+    protected readonly AnalyzeModelInfo AnalyzeModelInfo;
+    
     protected delegate void OnError(string error);
     protected delegate void OnPrediction(PredictResult warning);
     protected delegate void OnEvaluation(EvaluateResult warning);
@@ -19,18 +15,13 @@ public abstract class AnalyzeModel
     protected OnPrediction? OnPredictionEvent;
     protected OnEvaluation? OnEvaluationEvent;
 
-    protected string[] Categories { get; }
     public abstract bool IsRunning { get; protected set; }
 
-    protected AnalyzeModel(string interpreter, string predictScript, string trainScript, string dataSet, string model, string[] categories)
+    protected AnalyzeModel(AnalyzeModelInfo modelInfo)
     {
-        Interpreter = Path.GetFullPath(interpreter);
-        PredictScript = Path.GetFullPath(predictScript);
-        TrainScript = Path.GetFullPath(trainScript);
-        DataSet = Path.GetFullPath(dataSet);
-        Model = Path.GetFullPath(model);
-        Categories = categories;
+        AnalyzeModelInfo = modelInfo;
     }
+
     public void Subscribe(Action<PredictResult>? predictionResultsHandler, Action<EvaluateResult>? evaluateResultsHandler, Action<string>? scriptMessagesHandler)
     {
         if (scriptMessagesHandler is not null) OnErrorEvent += scriptMessagesHandler.Invoke;

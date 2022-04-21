@@ -9,14 +9,14 @@ namespace DataCollectionService.DataCollectors.VkDataCollector.Scanners;
 internal class CommentScanner : Scanner
 {
     public long PostId { get; }
-    private readonly FixedQueue<CommentInfo> _receivedCommentsInfos;
+    private readonly List<CommentInfo> _receivedCommentsInfos;
 
     public CommentScanner(long communityId, long postId, VkApi vkApi, CommentDataManager dataManager,
         Config configuration) : base(
         communityId, vkApi, dataManager, configuration)
     {
         PostId = postId;
-        _receivedCommentsInfos = new FixedQueue<CommentInfo>(configuration.StoredCommentInfosCount);
+        _receivedCommentsInfos = new List<CommentInfo>();
     } 
 
     public override void StartScan()
@@ -100,7 +100,7 @@ internal class CommentScanner : Scanner
     }
     private bool IsNewComment(long commentId)
     {
-        return _receivedCommentsInfos.Any(info => commentId != info.CommentId);
+        return _receivedCommentsInfos.Exists(info => info.CommentId == commentId);
     }
 
     private void ScanBranch(out WallGetCommentsResult branch, long? commentId = null)
@@ -113,7 +113,7 @@ internal class CommentScanner : Scanner
         {
             var comment = sortedBranch[i];
             CommentManager.SendData(comment);
-            _receivedCommentsInfos.Enqueue(new CommentInfo{ CommentId = comment.Id, CommentsInThreadCount = comment.Thread?.Count ?? 0 });
+            _receivedCommentsInfos.Add(new CommentInfo{ CommentId = comment.Id, CommentsInThreadCount = comment.Thread?.Count ?? 0 });
         }
     }
 
@@ -127,7 +127,7 @@ internal class CommentScanner : Scanner
             comments.AddRange(reply.Items);
             foreach (var comment in reply.Items)
             {
-                _receivedCommentsInfos.Enqueue(new CommentInfo { CommentId = comment.Id, CommentsInThreadCount = comment.Thread?.Count ?? 0 });
+                _receivedCommentsInfos.Add(new CommentInfo { CommentId = comment.Id, CommentsInThreadCount = comment.Thread?.Count ?? 0 });
             }
             startCount = reply.Count;
         }

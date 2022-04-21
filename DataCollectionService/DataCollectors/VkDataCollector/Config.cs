@@ -8,5 +8,4 @@ public class Config
     public int ScanPostDelay { get; init; }
     public int ScanCommentsDelay { get; init; }
     public int ObservedPostQueueSize { get; init; }
-    public int StoredCommentInfosCount { get; init; }
 }
