@@ -23,6 +23,7 @@ public class DataCollectionService : DataCollection.DataCollectionBase
 
     public override Task<StartCollectionServiceReply> StartCollectionService(StartCollectionServiceRequest request, ServerCallContext context)
     {
+        _saveDatabase.Clear();
         foreach (var dataCollector in DataCollectors)
         {
             dataCollector.StartCollecting();

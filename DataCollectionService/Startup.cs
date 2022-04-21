@@ -22,8 +22,7 @@ public static class Startup
             vkDataCollector.AddCommunity(Convert.ToInt64(configuration["NRGroupId"]));
             vkDataCollector.AddCommunity(Convert.ToInt64(configuration["LentachGroupId"]));
             vkDataCollector.AddCommunity(Convert.ToInt64(configuration["CSGOHSGroupId"]));
-            vkDataCollector.Subscribe(commentData => 
-                Log.Logger.Information("Add {0} {1} {2} {3} {4} {5}",commentData.CommentId, commentData.PostId, commentData.GroupId, commentData.AuthorId, commentData.Text, commentData.PostDate));
+            vkDataCollector.Subscribe(commentData => Log.Logger.Information("Add {0} {1} {2} {3} {4} {5}",commentData.CommentId, commentData.PostId, commentData.GroupId, commentData.AuthorId, commentData.Text, commentData.PostDate));
             return vkDataCollector;
         });
     }
