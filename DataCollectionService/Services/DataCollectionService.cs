@@ -66,7 +66,8 @@ public class DataCollectionService : DataCollection.DataCollectionBase
     public override Task<LogReply> GetLogs(LogRequest request, ServerCallContext context)
     {
         var logDate = request.LogDate.ToDateTime().ToLocalTime();
-        var requiredFilePath = Directory.GetFiles(@"./Logs/", $"log{logDate:yyyyMMdd}*.txt").Single();
+        var requiredFilePath = Directory.GetFiles(@"./Logs/", $"log{logDate:yyyyMMdd}*.txt").SingleOrDefault();
+        if (string.IsNullOrEmpty(requiredFilePath)) return Task.FromResult(new LogReply());
         if (!File.Exists(requiredFilePath)) return Task.FromResult(new LogReply());
         using var fileStream = new FileStream(requiredFilePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
         return Task.FromResult(new LogReply { LogFile = ByteString.FromStream(fileStream) });
