@@ -28,7 +28,6 @@ public class VkDataCollector : IDataCollector
     public void AddCommunity(long communityId)
     {
         if (_config is null) throw new ArgumentException("Configuration is missing");
-
         //Each community has a post scanner.
         _postScanners.Add(new PostScanner(communityId, _vkApi, _commentManager, _config));
     }
@@ -36,7 +35,7 @@ public class VkDataCollector : IDataCollector
     public void StartCollecting()
     {
         if (_config is null) throw new ArgumentException("Configuration is missing");
-        var result = _vkApi.AuthAsync(_config.ApplicationId, _config.SecureKey, _config.ServiceAccessKey);
+        Task.Run(() => _vkApi.AuthAsync(_config.ApplicationId, _config.SecureKey, _config.ServiceAccessKey));
         foreach (var scanner in _postScanners)
         {
             scanner.StartScan();
@@ -47,7 +46,7 @@ public class VkDataCollector : IDataCollector
     public void StopCollecting()
     {
         foreach (var scanner in _postScanners) scanner.StopScan();
-        var result = _vkApi.LogOutAsync();
+        Task.Run(() => _vkApi.LogOutAsync());
         Log.Logger.Information("Data collection has stopped");
     }
 }

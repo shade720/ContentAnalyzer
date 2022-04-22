@@ -11,16 +11,13 @@ internal class CommentDataManager
 
     public void SendData(Comment comment)
     {
+        if (IsCommentInvalid(comment)) return;
         OnNewCommentFoundEvent?.Invoke(Convert(comment));
     }
 
     public void SendAllData(IEnumerable<Comment> comments)
     {
-        foreach (var comment in comments)
-        {
-            if (IsCommentInvalid(comment)) continue;
-            OnNewCommentFoundEvent?.Invoke(Convert(comment));
-        }
+        foreach (var comment in comments) SendData(comment);
     }
 
     private static CommentData Convert(Comment comment)

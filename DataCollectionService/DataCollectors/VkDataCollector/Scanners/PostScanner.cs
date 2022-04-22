@@ -13,7 +13,7 @@ internal class PostScanner : Scanner
 
     public override void StartScan()
     {
-        var result = StartScanAsync();
+        Task.Run(StartScanAsync);
     }
 
     private async Task StartScanAsync()
@@ -21,21 +21,20 @@ internal class PostScanner : Scanner
         try
         {
             StopScanToken = new CancellationTokenSource();
-            await Task.Run(async () =>
+            while (!StopScanToken.Token.IsCancellationRequested)
             {
-                while (!StopScanToken.Token.IsCancellationRequested)
+                var newPostId = await IsThereNewPost();
+                if (newPostId is not null)
                 {
-                    if (IsThereNewPost(out var postId))
-                    {
-                        Log.Logger.Information("New post released {@PostId} community {@CommunityId}", postId, CommunityId);
-                        //Each post has a comment scanner, which is added to the queue which is added to the queue for convenient stopping and deleting 
-                        _commentScannersQueue.AddScanner(new CommentScanner(CommunityId, postId, ClientApi, CommentManager, Configuration));
-                    }
-                    await Task.Delay(Configuration.ScanPostDelay, StopScanToken.Token).ContinueWith(_ => { }); //to avoid exception
+                    Log.Logger.Information("New post released {@PostId} community {@CommunityId}", newPostId, CommunityId);
+                    //Each post has a comment scanner, which is added to the queue which is added to the queue for convenient stopping and deleting 
+                    _commentScannersQueue.AddScanner(new CommentScanner(CommunityId, newPostId.Value, ClientApi, CommentManager, Configuration));
                 }
-                Log.Logger.Information("Post scanning {@CommunityId} stopped", CommunityId);
-                _commentScannersQueue.Clear();
-            }, StopScanToken.Token);
+                await Task.Delay(Configuration.ScanPostDelay, StopScanToken.Token).ContinueWith(_ => { }); //to avoid exception
+                Log.Logger.Information("Post scanner {@CommunityId} started new iteration", CommunityId);
+            }
+            Log.Logger.Information("Post scanning {@CommunityId} stopped", CommunityId);
+            _commentScannersQueue.Clear();
         }
         catch (Exception e)
         {
@@ -44,10 +43,10 @@ internal class PostScanner : Scanner
         }
     }
 
-    private bool IsThereNewPost(out long postId)
+    private async Task<long?> IsThereNewPost()
     {
-        postId = ClientApi.GetPostIdAsync(CommunityId, 1).Result;
-        return !_commentScannersQueue.Contains(postId) && postId != 0;
+        var postId = await ClientApi.GetPostIdAsync(CommunityId, 1);
+        return !_commentScannersQueue.Contains(postId) ? postId : null;
     }
 
     public override void StopScan()
