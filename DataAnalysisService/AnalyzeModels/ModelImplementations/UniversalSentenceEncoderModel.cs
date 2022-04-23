@@ -27,7 +27,7 @@ internal class UniversalSentenceEncoderModel : AnalyzeModel
         Runner.OnExitedEvent += RunnerOnExitEventHandler;
         Runner.OnStartedEvent += RunnerOnStartedEventHandler;
 
-        var _ = Runner.RunAsync(Path.GetFullPath(scriptModel), Path.GetFullPath(resourcePath));
+        Task.Run(() => Runner.RunAsync(Path.GetFullPath(scriptModel), Path.GetFullPath(resourcePath)));
 
         _scriptInitialize.WaitOne();
     }
@@ -43,9 +43,9 @@ internal class UniversalSentenceEncoderModel : AnalyzeModel
         OnPredictionEvent?.Invoke(predictResult);
         if (ExceedsThreshold(predictResult))
         {
-            var maxValue = predictResult.Predicts.MaxBy(x => x.PredictValue);
-            if (maxValue is null) throw new Exception("Exception due evaluating");
-            var evaluateResult = new EvaluateResult { CommentDataId = predictResult.CommentData.Id, CommentData = predictResult.CommentData, EvaluateCategory = maxValue.Title, EvaluateProbability = maxValue.PredictValue};
+            var maxPredict = predictResult.Predicts.MaxBy(x => x.PredictValue);
+            if (maxPredict is null) throw new Exception("Exception due evaluating");
+            var evaluateResult = new EvaluateResult { CommentDataId = predictResult.CommentData.Id, CommentData = predictResult.CommentData, EvaluateCategory = maxPredict.Title, EvaluateProbability = maxPredict.PredictValue};
             OnEvaluationEvent?.Invoke(evaluateResult);
         }
     }

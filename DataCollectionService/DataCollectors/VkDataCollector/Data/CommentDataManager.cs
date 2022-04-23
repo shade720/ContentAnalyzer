@@ -29,7 +29,7 @@ internal class CommentDataManager
             GroupId = comment.OwnerId!.Value,
             AuthorId = comment.FromId!.Value,
             Text = ClearText(comment.Text),
-            PostDate = comment.Date!.Value
+            PostDate = comment.Date!.Value.ToLocalTime()
         };
     }
 

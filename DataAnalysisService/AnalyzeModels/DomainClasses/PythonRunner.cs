@@ -55,7 +55,7 @@ public class PythonRunner
         }
         catch (Exception exception)
         {
-            Log.Logger.Fatal("An error occured during script execution. See inner exception for details. {exception.Message} {exception.StackTrace}", exception.Message, exception.StackTrace);
+            Log.Logger.Fatal("An error occured during script execution. See inner exception for details. {@Message} {@StackTrace}", exception.Message, exception.StackTrace);
         }
         finally
         {
