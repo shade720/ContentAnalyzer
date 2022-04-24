@@ -22,35 +22,28 @@ public partial class SelectedCommentsForm : Form
         _lastIndex = 0;
         _cancellationTokenSource = new CancellationTokenSource();
         SelectedCommentsDataGridView.Rows.Clear();
-        await Task.Run(() =>
-        {
-            while (!_cancellationTokenSource.Token.IsCancellationRequested)
-            {
-                RefreshTable();
-                Thread.Sleep(5000);
-            }
-        }, _cancellationTokenSource.Token);
+        var progress = new Progress<List<EvaluateResult>>(UpdateControls);
+        await Task.Run(async () => await GettingResultsLoop(progress), _cancellationTokenSource.Token);
     }
     public void StopDisplayData()
     {
         _cancellationTokenSource.Cancel();
     }
 
-    private void RefreshTable()
+    private async Task GettingResultsLoop(IProgress<List<EvaluateResult>> progress)
     {
-        var list = _client.GetEvaluateResults(_lastIndex);
-        if(list.Count == 0) return;
-        UpdateControls(list);
-        _lastIndex = list[^1].Id;
+        while (!_cancellationTokenSource.Token.IsCancellationRequested)
+        {
+            await Task.Delay(5000, _cancellationTokenSource.Token);
+            var list = _client.GetEvaluateResults(_lastIndex);
+            if (list.Count == 0) continue;
+            progress.Report(list);
+            _lastIndex = list[^1].Id;
+        }
     }
 
     private void UpdateControls(List<EvaluateResult> list)
     {
-        if (InvokeRequired)
-        {
-            Invoke(new Action<List<EvaluateResult>>(UpdateControls), list);
-            return;
-        }
         foreach (var comment in list)
         {
             SelectedCommentsDataGridView.Rows.Add(

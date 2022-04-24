@@ -22,14 +22,8 @@ public partial class AllCommentsForm : Form
         _cancellationTokenSource = new CancellationTokenSource();
         _lastIndex = 0;
         AllCommentsDataGridView.Rows.Clear();
-        await Task.Run(async () =>
-        {
-            while (!_cancellationTokenSource.Token.IsCancellationRequested)
-            {
-                RefreshTable();
-                await Task.Delay(5000, _cancellationTokenSource.Token);
-            }
-        }, _cancellationTokenSource.Token);
+        var progress = new Progress<List<CommentData>>(UpdateControls);
+        await Task.Run(async () => await GettingResultsLoop(progress), _cancellationTokenSource.Token);
     }
 
     public void StopDisplayData()
@@ -37,21 +31,20 @@ public partial class AllCommentsForm : Form
         _cancellationTokenSource.Cancel();
     }
 
-    private void RefreshTable()
+    private async Task GettingResultsLoop(IProgress<List<CommentData>> progress)
     {
-        var list = _client.GetComments((int)_lastIndex);
-        if (list.Count == 0) return;
-        UpdateControls(list);
-        _lastIndex = list[^1].Id;
+        while (!_cancellationTokenSource.Token.IsCancellationRequested)
+        {
+            await Task.Delay(5000, _cancellationTokenSource.Token);
+            var list = _client.GetComments((int)_lastIndex);
+            if (list.Count == 0) continue;
+            progress.Report(list);
+            _lastIndex = list[^1].Id;
+        }
     }
 
     private void UpdateControls(List<CommentData> list)
     {
-        if (InvokeRequired)
-        {
-            Invoke(new Action<List<CommentData>>(UpdateControls), list);
-            return;
-        }
         foreach (var comment in list)
         {
             AllCommentsDataGridView.Rows.Add(
