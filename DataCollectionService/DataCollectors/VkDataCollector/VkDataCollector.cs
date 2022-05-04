@@ -45,7 +45,7 @@ public class VkDataCollector : IDataCollector
 
     public void StopCollecting()
     {
-        foreach (var scanner in _postScanners) scanner.StopScan();
+        foreach (var scanner in _postScanners) scanner.StopCommentScanning();
         Task.Run(() => _vkApi.LogOutAsync());
         Log.Logger.Information("Data collection has stopped");
     }

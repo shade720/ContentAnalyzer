@@ -29,16 +29,16 @@ internal class CommentScanner : Scanner
             StopScanToken = new CancellationTokenSource();
             var presentComments = await GetPresentComments();
             CommentManager.SendAllData(presentComments);
-            await ScanComments();
+            await StartCommentScanning();
         }
         catch (Exception e)
         {
             Log.Logger.Error("Comment scanner stopped with error {0}", e.Message + "\r\n" + e.InnerException);
-            StopScan();
+            StopCommentScanning();
         }
     }
 
-    public override void StopScan()
+    public override void StopCommentScanning()
     {
         StopScanToken.Cancel();
     }
@@ -70,7 +70,7 @@ internal class CommentScanner : Scanner
         return comment.Thread.Count > 0;
     }
 
-    private async Task ScanComments()
+    private async Task StartCommentScanning()
     {
         try
         {
@@ -101,7 +101,9 @@ internal class CommentScanner : Scanner
 
     private bool CommentsCountOfThreadIncreased(Comment comment)
     {
-        return comment.Thread.Count > _receivedCommentsInfos.Single(info => info.CommentId == comment.Id).CommentsInThreadCount;
+        var info = _receivedCommentsInfos.SingleOrDefault(info => info.CommentId == comment.Id);
+        if (info == default(CommentInfo)) return false;
+        return comment.Thread.Count > info.CommentsInThreadCount;
     }
 
     private async Task<bool> AnyNewComments()
@@ -112,7 +114,7 @@ internal class CommentScanner : Scanner
     }
     private bool IsNewComment(long commentId)
     {
-        return _receivedCommentsInfos.Exists(info => info.CommentId == commentId);
+        return !_receivedCommentsInfos.Exists(info => info.CommentId == commentId);
     }
 
     private async Task<Comment[]> ScanBranchAsync(long? commentId = null)
@@ -120,12 +122,14 @@ internal class CommentScanner : Scanner
         var  branch = await ClientApi.GetCommentsAsync(PostId, 100, CommunityId, 0, SortOrderBy.Asc, commentId);
         if (branch.Count == 0) return Array.Empty<Comment>();
         var sortedBranch = branch.Items.Reverse().ToArray();
-        for (var i = 0; i < sortedBranch.Length && IsNewComment(sortedBranch[i].Id); i++)
+        var resultBranch = new List<Comment>();
+        foreach (var comment in sortedBranch)
         {
-            var comment = sortedBranch[i];
-            _receivedCommentsInfos.Add(new CommentInfo{ CommentId = comment.Id, CommentsInThreadCount = comment.Thread?.Count ?? 0 });
+            if(!IsNewComment(comment.Id)) break;
+            _receivedCommentsInfos.Add(new CommentInfo { CommentId = comment.Id, CommentsInThreadCount = comment.Thread?.Count ?? 0 });
+            resultBranch.Add(comment);
         }
-        return sortedBranch;
+        return resultBranch.ToArray();
     }
 
     private async Task<List<Comment>> GetBranch(long? commentId = null)

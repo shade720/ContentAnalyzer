@@ -49,7 +49,7 @@ internal class PostScanner : Scanner
         return !_commentScannersQueue.Contains(postId) ? postId : null;
     }
 
-    public override void StopScan()
+    public override void StopCommentScanning()
     {
         StopScanToken.Cancel();
     }

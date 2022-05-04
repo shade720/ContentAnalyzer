@@ -71,7 +71,7 @@
             // 
             this.UpperPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.UpperPanel.BackColor = System.Drawing.SystemColors.MenuHighlight;
+            this.UpperPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(153)))), ((int)(((byte)(255)))));
             this.UpperPanel.Controls.Add(this.MinimizeWindowButton);
             this.UpperPanel.Controls.Add(this.CloseButton);
             this.UpperPanel.Location = new System.Drawing.Point(0, 0);
@@ -113,7 +113,7 @@
             // 
             this.BottomPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.BottomPanel.BackColor = System.Drawing.SystemColors.MenuHighlight;
+            this.BottomPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(153)))), ((int)(((byte)(255)))));
             this.BottomPanel.Controls.Add(this.ErrorsCountLabel);
             this.BottomPanel.Controls.Add(this.AnalysisServiceStateLabel);
             this.BottomPanel.Controls.Add(this.UptimeLabel);
@@ -261,7 +261,7 @@
             this.TitleLabel.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.TitleLabel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.TitleLabel.Font = new System.Drawing.Font("Century Gothic", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.TitleLabel.ForeColor = System.Drawing.SystemColors.MenuHighlight;
+            this.TitleLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(153)))), ((int)(((byte)(255)))));
             this.TitleLabel.Location = new System.Drawing.Point(0, 1);
             this.TitleLabel.Name = "TitleLabel";
             this.TitleLabel.Size = new System.Drawing.Size(275, 70);
@@ -287,7 +287,7 @@
             this.StartServiceButton.FlatAppearance.BorderSize = 0;
             this.StartServiceButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.StartServiceButton.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.StartServiceButton.ForeColor = System.Drawing.SystemColors.Highlight;
+            this.StartServiceButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(153)))), ((int)(((byte)(255)))));
             this.StartServiceButton.Location = new System.Drawing.Point(0, 0);
             this.StartServiceButton.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
             this.StartServiceButton.Name = "StartServiceButton";
@@ -320,7 +320,7 @@
             this.ShowAllCommentsButton.FlatAppearance.BorderSize = 0;
             this.ShowAllCommentsButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ShowAllCommentsButton.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.ShowAllCommentsButton.ForeColor = System.Drawing.SystemColors.Highlight;
+            this.ShowAllCommentsButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(153)))), ((int)(((byte)(255)))));
             this.ShowAllCommentsButton.Location = new System.Drawing.Point(0, 161);
             this.ShowAllCommentsButton.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
             this.ShowAllCommentsButton.Name = "ShowAllCommentsButton";
@@ -337,7 +337,7 @@
             this.ShowSelectedComments.FlatAppearance.BorderSize = 0;
             this.ShowSelectedComments.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ShowSelectedComments.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.ShowSelectedComments.ForeColor = System.Drawing.SystemColors.Highlight;
+            this.ShowSelectedComments.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(153)))), ((int)(((byte)(255)))));
             this.ShowSelectedComments.Location = new System.Drawing.Point(0, 251);
             this.ShowSelectedComments.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
             this.ShowSelectedComments.Name = "ShowSelectedComments";
@@ -354,7 +354,7 @@
             this.ConfigureServiceButton.FlatAppearance.BorderSize = 0;
             this.ConfigureServiceButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ConfigureServiceButton.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.ConfigureServiceButton.ForeColor = System.Drawing.SystemColors.Highlight;
+            this.ConfigureServiceButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(153)))), ((int)(((byte)(255)))));
             this.ConfigureServiceButton.Location = new System.Drawing.Point(0, 341);
             this.ConfigureServiceButton.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
             this.ConfigureServiceButton.Name = "ConfigureServiceButton";
@@ -371,7 +371,7 @@
             this.ViewLogsButton.FlatAppearance.BorderSize = 0;
             this.ViewLogsButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ViewLogsButton.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.ViewLogsButton.ForeColor = System.Drawing.SystemColors.Highlight;
+            this.ViewLogsButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(153)))), ((int)(((byte)(255)))));
             this.ViewLogsButton.Location = new System.Drawing.Point(0, 431);
             this.ViewLogsButton.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
             this.ViewLogsButton.Name = "ViewLogsButton";

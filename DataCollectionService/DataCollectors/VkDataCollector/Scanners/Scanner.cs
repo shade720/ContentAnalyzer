@@ -20,5 +20,5 @@ internal abstract class Scanner
     }
 
     public abstract void StartScan();
-    public abstract void StopScan();
+    public abstract void StopCommentScanning();
 }

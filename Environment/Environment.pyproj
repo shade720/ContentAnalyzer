@@ -4,8 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>24b8a00f-6aff-4238-ba3c-5f54e192f0d2</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>
-    </StartupFile>
+    <StartupFile>train1.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -25,6 +24,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Environment.py" />
+    <Compile Include="train1.py" />
   </ItemGroup>
   <ItemGroup>
     <Interpreter Include="env\">

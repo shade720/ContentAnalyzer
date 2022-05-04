@@ -36,7 +36,7 @@ internal class CommentScannersQueue
     private void RemoveScanner()
     {
         var result = _queue.Dequeue();
-        result.StopScan();
+        result.StopCommentScanning();
         Log.Logger.Information("Stop and delete comment scanner {0}", result.PostId);
     }
 

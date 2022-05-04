@@ -4,7 +4,6 @@ public partial class LogsForm : Form
 {
     private readonly Client _client;
     private LastUploading _lastUploading;
-    private int _rowDisplayed;
 
     public LogsForm(Client client)
     {
@@ -16,6 +15,7 @@ public partial class LogsForm : Form
     private void InitializeLogDateComboBox()
     {
         for (var i = 0; i < 7; i++) LogDateComboBox.Items.Add(DateTime.Now.AddDays(-i).Date);
+        LogDateComboBox.SelectedIndex = 0;
     }
 
     private void GetAnalysisLogs_Click(object sender, EventArgs e)
@@ -45,7 +45,7 @@ public partial class LogsForm : Form
     private void LogFileParser(string logFile)
     {
         LogGrid.Rows.Clear();
-        var logRecords = logFile.Split("\r\n");
+        var logRecords = logFile.Split("~");
         foreach (var log in logRecords)
         {
             if (string.IsNullOrEmpty(log)) continue;
@@ -65,7 +65,6 @@ public partial class LogsForm : Form
 
     private void ShowAll()
     {
-        _rowDisplayed = 0;
         foreach (DataGridViewRow row in LogGrid.Rows)
         {
             row.Visible = true;
@@ -78,7 +77,6 @@ public partial class LogsForm : Form
         {
             if (!row.Cells[columnNum].Value.ToString().ToLower().Contains(SearchTextBox.Text.ToLower()))
                 row.Visible = false;
-            else _rowDisplayed++;
         }
     }
 }
