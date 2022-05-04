@@ -28,7 +28,7 @@ internal class CommentScanner : Scanner
         {
             StopScanToken = new CancellationTokenSource();
             var presentComments = await GetPresentComments();
-            CommentManager.SendAllData(presentComments);
+            CommentManager.SendAllCommentData(presentComments);
             await StartCommentScanning();
         }
         catch (Exception e)
@@ -82,11 +82,11 @@ internal class CommentScanner : Scanner
                 var anyNewComments = await AnyNewComments();
                 if (StopScanToken.IsCancellationRequested || !anyNewComments) continue;
                 var mainBranch = await ScanBranchAsync();
-                CommentManager.SendAllData(mainBranch);
+                CommentManager.SendAllCommentData(mainBranch);
                 foreach (var comment in mainBranch.Where(CommentsCountOfThreadIncreased))
                 {
                     var threadComments = await ScanBranchAsync(comment.Id);
-                    CommentManager.SendAllData(threadComments);
+                    CommentManager.SendAllCommentData(threadComments);
                 }
             }
             _receivedCommentsInfos.Clear();

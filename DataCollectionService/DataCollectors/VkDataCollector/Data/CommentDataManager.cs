@@ -9,15 +9,17 @@ internal class CommentDataManager
     public delegate void NewCommentFound(CommentData entry);
     public event NewCommentFound? OnNewCommentFoundEvent;
 
-    public void SendData(Comment comment)
+    public void SendCommentData(Comment comment)
     {
         if (IsCommentInvalid(comment)) return;
-        OnNewCommentFoundEvent?.Invoke(Convert(comment));
+        var convertedComment = Convert(comment);
+        if (string.IsNullOrEmpty(convertedComment.Text) || convertedComment.Text.Length <= 5) return;
+        OnNewCommentFoundEvent?.Invoke(convertedComment);
     }
 
-    public void SendAllData(IEnumerable<Comment> comments)
+    public void SendAllCommentData(IEnumerable<Comment> comments)
     {
-        foreach (var comment in comments) SendData(comment);
+        foreach (var comment in comments) SendCommentData(comment);
     }
 
     private static CommentData Convert(Comment comment)
@@ -35,7 +37,8 @@ internal class CommentDataManager
 
     private static string ClearText(string text)
     {
-        var result = ClearString(text);
+        var regex = new Regex(@"[\p{Cc}\p{Cf}\p{Mn}\p{Me}\p{Zl}\p{Zp}]");
+        var result = regex.Replace(text, "");
         if (result.StartsWith('[')) result = result.Remove(result.IndexOf('['), result.IndexOf(']') - result.IndexOf('[') + 2).Trim();
         return result;
     }
@@ -51,12 +54,6 @@ internal class CommentDataManager
                comment.OwnerId > 0 || 
                string.IsNullOrEmpty(comment.Text) || 
                comment.Text.Length <= 5;
-    }
-
-    private static string ClearString(string str)
-    {
-        var regex = new Regex(@"[\p{Cc}\p{Cf}\p{Mn}\p{Me}\p{Zl}\p{Zp}]");
-        return regex.Replace(str, "");
     }
 }
 
