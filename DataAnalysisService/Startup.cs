@@ -36,8 +36,14 @@ public static class Startup
     private static UniversalSentenceEncoderModel CreateUniversalSentenceEncoderModel(AnalyzeModelInfo modelInfo)
     {
         var neuralModel = new UniversalSentenceEncoderModel(modelInfo);
-        neuralModel.Subscribe(predictResult => 
-            Log.Logger.Information("Predict {0} ----> {1}\n\n", predictResult.CommentData.Text, predictResult.ToString())
+
+        void Process(PredictResult predictResult)
+        {
+            Log.Logger.Information("Predict {0} ----> {1}\n\n", predictResult.CommentData.Text,
+                predictResult.ToString());
+        }
+
+        neuralModel.Subscribe(Process
             , null, 
             null);
         return neuralModel;

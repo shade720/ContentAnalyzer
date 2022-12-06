@@ -45,7 +45,7 @@ public partial class LogsForm : Form
     private void LogFileParser(string logFile)
     {
         LogGrid.Rows.Clear();
-        var logRecords = logFile.Split("~");
+        var logRecords = logFile.Split("`~");
         foreach (var log in logRecords)
         {
             if (string.IsNullOrEmpty(log)) continue;

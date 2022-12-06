@@ -10,7 +10,7 @@ Log.Logger = new LoggerConfiguration()
     .WriteTo.RollingFile(
         @".\Logs\log{Date}.txt",
         LogEventLevel.Information,
-        outputTemplate: "~{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level}] {Message:lj}{NewLine}{Exception}",
+        outputTemplate: "`~{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level}] {Message:lj}{NewLine}{Exception}",
         retainedFileCountLimit: 3)
     .CreateLogger();
 

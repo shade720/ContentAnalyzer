@@ -27,7 +27,7 @@ internal class UniversalSentenceEncoderModel : AnalyzeModel
         Runner.OnExitedEvent += RunnerOnExitEventHandler;
         Runner.OnStartedEvent += RunnerOnStartedEventHandler;
 
-        Task.Run(() => Runner.RunAsync(Path.GetFullPath(scriptModel), Path.GetFullPath(resourcePath)));
+        var result = Runner.RunAsync(Path.GetFullPath(scriptModel), Path.GetFullPath(resourcePath));
 
         _scriptInitialize.WaitOne();
     }

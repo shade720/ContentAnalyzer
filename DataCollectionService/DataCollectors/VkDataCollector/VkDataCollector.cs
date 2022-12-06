@@ -9,14 +9,14 @@ namespace DataCollectionService.DataCollectors.VkDataCollector;
 public class VkDataCollector : IDataCollector
 {
     private readonly VkApi _vkApi;
-    private readonly List<Scanner> _postScanners;
+    private readonly List<PostScanner> _postScanners;
     private readonly CommentDataManager _commentManager;
     private Config? _config;
 
     public VkDataCollector()
     {
         _vkApi = new VkApi();
-        _postScanners = new List<Scanner>();
+        _postScanners = new List<PostScanner>();
         _commentManager = new CommentDataManager();
     }
 
@@ -45,7 +45,7 @@ public class VkDataCollector : IDataCollector
 
     public void StopCollecting()
     {
-        foreach (var scanner in _postScanners) scanner.StopCommentScanning();
+        foreach (var scanner in _postScanners) scanner.StopScan();
         Task.Run(() => _vkApi.LogOutAsync());
         Log.Logger.Information("Data collection has stopped");
     }

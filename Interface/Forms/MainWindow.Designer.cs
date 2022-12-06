@@ -147,9 +147,9 @@
             this.AnalysisServiceStateLabel.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
             this.AnalysisServiceStateLabel.Location = new System.Drawing.Point(420, 43);
             this.AnalysisServiceStateLabel.Name = "AnalysisServiceStateLabel";
-            this.AnalysisServiceStateLabel.Size = new System.Drawing.Size(30, 20);
+            this.AnalysisServiceStateLabel.Size = new System.Drawing.Size(53, 20);
             this.AnalysisServiceStateLabel.TabIndex = 12;
-            this.AnalysisServiceStateLabel.Text = "Up";
+            this.AnalysisServiceStateLabel.Text = "Down";
             // 
             // UptimeLabel
             // 
@@ -190,9 +190,9 @@
             this.CollectorServiceStateLabel.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
             this.CollectorServiceStateLabel.Location = new System.Drawing.Point(420, 14);
             this.CollectorServiceStateLabel.Name = "CollectorServiceStateLabel";
-            this.CollectorServiceStateLabel.Size = new System.Drawing.Size(30, 20);
+            this.CollectorServiceStateLabel.Size = new System.Drawing.Size(53, 20);
             this.CollectorServiceStateLabel.TabIndex = 11;
-            this.CollectorServiceStateLabel.Text = "Up";
+            this.CollectorServiceStateLabel.Text = "Down";
             // 
             // label6
             // 
