@@ -44,24 +44,16 @@ internal class CommentScanner : Scanner
 
     private async Task<IEnumerable<Comment>> GetPresentComments()
     {
-        try
+        var comments = await GetBranch();
+        var additionalComments = new List<Comment>();
+        foreach (var comment in comments.Where(CommentHasThreadComments))
         {
-            var comments = await GetBranch();
-            var additionalComments = new List<Comment>();
-            foreach (var comment in comments.Where(CommentHasThreadComments))
-            {
-                var threadComments = await GetBranch(comment.Id);
-                additionalComments.AddRange(threadComments);
-            }
-            comments.AddRange(additionalComments);
-            Log.Logger.Information("Added presents comments on post {0}", PostId);
-            return comments;
+            var threadComments = await GetBranch(comment.Id);
+            additionalComments.AddRange(threadComments);
         }
-        catch (Exception e)
-        {
-            ExceptionDispatchInfo.Capture(e.InnerException ?? e).Throw();
-            throw;
-        }
+        comments.AddRange(additionalComments);
+        Log.Logger.Information("Added presents comments on post {0}", PostId);
+        return comments;
     }
 
     private static bool CommentHasThreadComments(Comment comment) => comment.Thread.Count > 0;

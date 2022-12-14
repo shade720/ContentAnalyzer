@@ -1,7 +1,6 @@
 ﻿using Common.EntityFramework;
 using DataAnalysisService.AnalyzeModels.DomainClasses;
 using Serilog;
-using System.Linq;
 
 namespace DataAnalysisService.AnalyzeModels.ModelImplementations;
 
@@ -33,20 +32,6 @@ internal class UniversalSentenceEncoderModel : AnalyzeModel
         _scriptInitialize.WaitOne();
     }
 
-    private bool Filter(PredictResult predictResult)
-    {
-        var allowedCategories = new List<string> { 
-            "Offline crime", "Online crime", "Drugs", 
-            "Pornography", "Terrorism", "Politics", 
-            "Racism", "Religion", "Sexual minorities", "Social injustice",
-            "Insult", "Threat", "Obscenity"
-        };
-        for (var i = 1; i < predictResult.Predicts.Length; i++)
-            if (predictResult.Predicts[i].PredictValue > AnalyzeModelInfo.EvaluateThresholdPercent / (double)100 && allowedCategories.Contains(predictResult.Predicts[i].Title))
-                return true;
-        return false;
-    }
-
     public override void Predict(CommentData commentData)
     {
         if (!IsRunning) throw new Exception("Predict model not initialized");
@@ -56,19 +41,17 @@ internal class UniversalSentenceEncoderModel : AnalyzeModel
         var predictFromScript = Runner.ReadFromScript();
         var predictResult = new PredictResult(commentData, predictFromScript, AnalyzeModelInfo.Categories);
         OnPredictionEvent?.Invoke(predictResult);
-        if (Filter(predictResult))
+        if (!Filter(predictResult)) return;
+        var maxPredict = predictResult.Predicts.MaxBy(x => x.PredictValue);
+        if (maxPredict is null) throw new Exception("Exception due evaluating");
+        var evaluateResult = new EvaluateResult
         {
-            var maxPredict = predictResult.Predicts.MaxBy(x => x.PredictValue);
-            if (maxPredict is null) throw new Exception("Exception due evaluating");
-            var evaluateResult = new EvaluateResult
-            {
-                CommentDataId = predictResult.CommentData.Id, 
-                CommentData = predictResult.CommentData, 
-                EvaluateCategory = maxPredict.Title, 
-                EvaluateProbability = maxPredict.PredictValue
-            };
-            OnEvaluationEvent?.Invoke(evaluateResult);
-        }
+            CommentDataId = predictResult.CommentData.Id, 
+            CommentData = predictResult.CommentData, 
+            EvaluateCategory = maxPredict.Title, 
+            EvaluateProbability = maxPredict.PredictValue
+        };
+        OnEvaluationEvent?.Invoke(evaluateResult);
     }
 
     public override void StopModel()
@@ -91,6 +74,20 @@ internal class UniversalSentenceEncoderModel : AnalyzeModel
     {
         for (var i = 1; i < predictResult.Predicts.Length; i++)
             if (predictResult.Predicts[i].PredictValue > AnalyzeModelInfo.EvaluateThresholdPercent / (double)100)
+                return true;
+        return false;
+    }
+
+    private bool Filter(PredictResult predictResult)
+    {
+        var allowedCategories = new List<string> {
+            "Offline crime", "Online crime", "Drugs",
+            "Pornography", "Terrorism", "Politics",
+            "Racism", "Religion", "Sexual minorities", "Social injustice",
+            "Insult", "Threat", "Obscenity"
+        };
+        for (var i = 1; i < predictResult.Predicts.Length; i++)
+            if (predictResult.Predicts[i].PredictValue > AnalyzeModelInfo.EvaluateThresholdPercent / (double)100 && allowedCategories.Contains(predictResult.Predicts[i].Title))
                 return true;
         return false;
     }

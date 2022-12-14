@@ -1,5 +1,5 @@
-﻿using System.Globalization;
-using Common.EntityFramework;
+﻿using Common.EntityFramework;
+using System.Globalization;
 
 namespace DataAnalysisService.AnalyzeModels.DomainClasses;
 
@@ -18,8 +18,14 @@ public class PredictResult
             Initialize(categories);
             return;
         }
-        for (var i = 0; i < categories.Count; i++) 
-            Predicts[i] = new Category {Title = categories[i], PredictValue = predictValues[i]};
+        for (var i = 0; i < categories.Count; i++)
+        {
+            Predicts[i] = new Category
+            {
+                Title = categories[i],
+                PredictValue = predictValues[i]
+            };
+        }
     }
 
     private static double[] ParsePredict(string predict)
@@ -31,7 +37,14 @@ public class PredictResult
 
     private void Initialize(IReadOnlyList<string> categories)
     {
-        for (var i = 0; i < categories.Count; i++) Predicts[i] = new Category { Title = categories[i], PredictValue = 0 };
+        for (var i = 0; i < categories.Count; i++)
+        {
+            Predicts[i] = new Category
+            {
+                Title = categories[i],
+                PredictValue = 0
+            };
+        }
     }
 
     public override string ToString()
