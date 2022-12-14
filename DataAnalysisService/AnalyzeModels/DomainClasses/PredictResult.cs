@@ -18,7 +18,8 @@ public class PredictResult
             Initialize(categories);
             return;
         }
-        for (var i = 0; i < categories.Count; i++) Predicts[i] = new Category {Title = categories[i], PredictValue = predictValues[i]};
+        for (var i = 0; i < categories.Count; i++) 
+            Predicts[i] = new Category {Title = categories[i], PredictValue = predictValues[i]};
     }
 
     private static double[] ParsePredict(string predict)

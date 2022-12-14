@@ -1,6 +1,7 @@
 ﻿using DataAnalysisService.AnalyzeModels.DomainClasses;
 using DataAnalysisService.AnalyzeModels.ModelImplementations;
 using Serilog;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace DataAnalysisService;
 
@@ -28,9 +29,23 @@ public static class Startup
             Model = configuration["Model2"],
             Categories = new[] { "Normal", "Toxic" }
         };
+        var modelInfo3 = new AnalyzeModelInfo
+        {
+            EvaluateThresholdPercent = int.Parse(configuration["EvaluateThreshold"]),
+            Interpreter = configuration["Interpreter"],
+            PredictScript = configuration["Predict3"],
+            TrainScript = configuration["Train3"],
+            DataSet = configuration["Dataset3"],
+            Model = configuration["Model3"],
+            Categories = new[] { "Offline crime", "Online crime", 
+                "Drugs", "Gambling", "Pornography", "Prostitution", "Slavery", "Suicide", "Terrorism", 
+                "Weapons", "Body shaming", "Health shaming", "Politics", "Racism", "Religion", "Sexual minorities", 
+                "Sexism", "Social injustice" }
+        };
 
         Services.DataAnalysisService.AddModel("InsultThreatObscenityCategories", () => CreateUniversalSentenceEncoderModel(modelInfo1));
-        Services.DataAnalysisService.AddModel("ToxicCategory", () => CreateUniversalSentenceEncoderModel(modelInfo2));
+        //Services.DataAnalysisService.AddModel("ToxicCategory", () => CreateUniversalSentenceEncoderModel(modelInfo2));
+        Services.DataAnalysisService.AddModel("WorkingSet", () => CreateUniversalSentenceEncoderModel(modelInfo3));
     }
 
     private static UniversalSentenceEncoderModel CreateUniversalSentenceEncoderModel(AnalyzeModelInfo modelInfo)
@@ -44,7 +59,7 @@ public static class Startup
         }
 
         neuralModel.Subscribe(Process
-            , null, 
+            ,null,
             null);
         return neuralModel;
     }

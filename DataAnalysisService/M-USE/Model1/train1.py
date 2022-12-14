@@ -13,7 +13,7 @@ tf.disable_v2_behavior()
 embed = hub.load("https://tfhub.dev/google/universal-sentence-encoder-multilingual-large/3")
 
 data_list = []
-with codecs.open(input(), "r", "utf_8_sig" ) as file:
+with codecs.open('dataset.txt', "r", "utf_8_sig" ) as file:
     for line in file:
         labels = line.split()[0]
         text = line[len(labels)+1:].strip()

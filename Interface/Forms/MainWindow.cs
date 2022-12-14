@@ -75,7 +75,6 @@ public partial class MainWindow : Form
         _timer.Stop();
         _stopwatch.Stop();
         _stopwatch.Reset();
-        _services.Dispose();
     }
 
     private void StopService()

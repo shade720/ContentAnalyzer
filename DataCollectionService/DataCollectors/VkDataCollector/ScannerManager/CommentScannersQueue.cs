@@ -1,5 +1,4 @@
-﻿using System.Runtime.ExceptionServices;
-using DataCollectionService.DataCollectors.VkDataCollector.Scanners;
+﻿using DataCollectionService.DataCollectors.VkDataCollector.Scanners;
 using Serilog;
 
 namespace DataCollectionService.DataCollectors.VkDataCollector.ScannerManager;
@@ -11,7 +10,7 @@ internal class CommentScannersQueue
     public CommentScannersQueue(int queueSize)
     {
         _queue = new FixedQueue<CommentScanner>(queueSize);
-    } 
+    }
 
     public bool Contains(long postId)
     {
@@ -20,17 +19,9 @@ internal class CommentScannersQueue
 
     public void AddScanner(CommentScanner scanner)
     {
-        try
-        {
-            scanner.StartScan();
-            _queue.Enqueue(scanner);
-            Log.Logger.Information("Comment scanner added to queue");
-        }
-        catch (Exception e)
-        {
-            ExceptionDispatchInfo.Capture(e.InnerException ?? e).Throw();
-            throw;
-        }
+        scanner.StartScan();
+        _queue.Enqueue(scanner);
+        Log.Logger.Information("Comment scanner added to queue");
     }
 
     private void RemoveScanner()

@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>24b8a00f-6aff-4238-ba3c-5f54e192f0d2</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>predict1.py</StartupFile>
+    <StartupFile>predict3.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -25,6 +25,9 @@
   <ItemGroup>
     <Compile Include="Environment.py" />
     <Compile Include="predict1.py" />
+    <Compile Include="predict3.py" />
+    <Compile Include="train1.py" />
+    <Compile Include="train3.py" />
   </ItemGroup>
   <ItemGroup>
     <Interpreter Include="env\">

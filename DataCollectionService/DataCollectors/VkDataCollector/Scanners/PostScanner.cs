@@ -7,6 +7,7 @@ namespace DataCollectionService.DataCollectors.VkDataCollector.Scanners;
 internal class PostScanner : Scanner
 {
     private readonly CommentScannersQueue _commentScannersQueue;
+    public bool IsScanning { get; private set; }
 
     public PostScanner(long communityId, VkApi vkApi, CommentDataManager dataManager, Config configuration) : base(communityId, vkApi,
         dataManager, configuration) => _commentScannersQueue = new CommentScannersQueue(configuration.ObservedPostQueueSize);
@@ -21,6 +22,7 @@ internal class PostScanner : Scanner
         try
         {
             StopScanToken = new CancellationTokenSource();
+            IsScanning = true;
             while (!StopScanToken.Token.IsCancellationRequested)
             {
                 var newPostId = await IsThereNewPost();
@@ -35,6 +37,7 @@ internal class PostScanner : Scanner
             }
             Log.Logger.Information("Post scanning {@CommunityId} stopped", CommunityId);
             _commentScannersQueue.Clear();
+            IsScanning = false;
         }
         catch (Exception e)
         {
