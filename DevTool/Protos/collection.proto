@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+option csharp_namespace = "DataCollectionServiceClient";
+import "google/protobuf/timestamp.proto";
+package collection;
+
+service DataCollection {
+	rpc StartCollectionService (StartCollectionServiceRequest) returns (StartCollectionServiceReply);
+	rpc StopCollectionService (StopCollectionServiceRequest) returns (StopCollectionServiceReply);
+	rpc GetCommentsFrom (GetCommentsRequest) returns (GetCommentsReply);
+	rpc GetLogs (LogRequest) returns (LogReply);
+}
+message StartCollectionServiceRequest{}
+message StartCollectionServiceReply{}
+
+message StopCollectionServiceRequest{}
+message StopCollectionServiceReply{}
+
+message LogRequest{
+	google.protobuf.Timestamp LogDate = 1;
+}
+message LogReply{
+	bytes LogFile = 1;
+}
+
+message GetCommentsRequest{
+	int32 StartIndex = 1;
+}
+message GetCommentsReply{
+	repeated CommentDataProto result = 1;
+}
+message CommentDataProto{
+	int64 Id = 1;
+	int64 CommentId = 2;
+	int64 PostId = 3;
+	int64 GroupId = 4;
+	int64 AuthorId = 5;
+	string Text = 6;
+	google.protobuf.Timestamp PostDate = 7;
+}
