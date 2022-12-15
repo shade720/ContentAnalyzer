@@ -1,10 +1,10 @@
 ﻿namespace DevTool.Models;
 
-internal class LogInfo
+public class LogInfo
 {
-    public DateTime Date { get; set; }
-    public LogLevel Level { get; set; }
-    public string Message { get; set; }
+    public DateTime Date { get; init; }
+    public LogLevel Level { get; init; }
+    public string Message { get; init; }
 }
 
 public enum LogLevel

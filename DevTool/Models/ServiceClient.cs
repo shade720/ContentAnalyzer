@@ -4,7 +4,7 @@ namespace DevTool.Models;
 
 internal abstract class ServiceClient : IDisposable
 {
-    protected GrpcChannel Channel;
+    protected readonly GrpcChannel Channel;
     protected ServiceClient(string host)
     {
         Channel = GrpcChannel.ForAddress(host);

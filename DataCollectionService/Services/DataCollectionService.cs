@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Common;
 using Common.EntityFramework;
 using DataCollectionService.DatabaseClients;
@@ -6,6 +7,7 @@ using Google.Protobuf.Collections;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 
 namespace DataCollectionService.Services;
 
@@ -13,6 +15,7 @@ public class DataCollectionService : DataCollection.DataCollectionBase
 {
     private static readonly List<IDataCollector> DataCollectors = new();
     private readonly DatabaseClient<CommentData> _saveDatabase;
+    private static readonly Stopwatch _stopwatch = new();
 
     #region PublicInterface
 
@@ -29,6 +32,7 @@ public class DataCollectionService : DataCollection.DataCollectionBase
             dataCollector.StartCollecting();
             dataCollector.Subscribe(InsertToDatabase);
         }
+        _stopwatch.Start();
         return Task.FromResult(new StartCollectionServiceReply());
     }
 
@@ -39,6 +43,8 @@ public class DataCollectionService : DataCollection.DataCollectionBase
             dataCollector.StopCollecting();
             dataCollector.Unsubscribe(InsertToDatabase);
         }
+        _stopwatch.Stop();
+        _stopwatch.Reset();
         return Task.FromResult(new StopCollectionServiceReply());
     }
 
@@ -65,6 +71,7 @@ public class DataCollectionService : DataCollection.DataCollectionBase
 
     public override Task<LogReply> GetLogs(LogRequest request, ServerCallContext context)
     {
+        Log.Logger.Information("Uptime: {0}", _stopwatch.Elapsed.ToString(@"hh\:mm\:ss"));
         var logDate = request.LogDate.ToDateTime().ToLocalTime();
         var requiredFilePath = Directory.GetFiles(@"./Logs/", $"log{logDate:yyyyMMdd}*.txt").SingleOrDefault();
         if (string.IsNullOrEmpty(requiredFilePath)) return Task.FromResult(new LogReply());

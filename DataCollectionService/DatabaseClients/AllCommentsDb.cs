@@ -1,6 +1,7 @@
 ﻿using Common;
 using Common.EntityFramework;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 
 namespace DataCollectionService.DatabaseClients;
 
@@ -18,6 +19,7 @@ public class AllCommentsDb : DatabaseClient<CommentData>
         if (context.Comments.Contains(commentData)) return;
         context.Comments.Add(commentData);
         context.SaveChanges();
+        Log.Logger.Information("{0} comments collected", context.Comments.Count());
     }
 
     public override GetRangeResult GetRange(int startIndex)

@@ -5,20 +5,34 @@ public class ServiceManager
     private CollectionServiceClient _collectionServiceClient;
     private AnalysisServiceClient _analysisServiceClient;
 
-    private readonly ServiceInfo _collectionServiceInfo = new();
-    private readonly ServiceInfo _analysisServiceInfo = new();
+    private readonly ServiceInfo _collectionServiceInfo = new() { State = State.Down};
+    private readonly ServiceInfo _analysisServiceInfo = new() { State = State.Down};
 
-    private DateTime _lastPollingTime = DateTime.Now;
+    private DateTime _lastPollingTime = DateTime.Today;
+
+    private CancellationTokenSource _cancellationCollectionService;
+    private CancellationTokenSource _cancellationAnalysisService;
+
+    private IProgress<ServiceInfo> OnCollectionServicInfoArrived;
+    private IProgress<ServiceInfo> OnAnalysisServicInfoArrived;
 
     #region Public
 
+    public void Subscribe(Action<ServiceInfo> collectionInfoProcessor, Action<ServiceInfo> analysisInfoProcessor)
+    {
+        OnCollectionServicInfoArrived = new Progress<ServiceInfo>(collectionInfoProcessor);
+        OnAnalysisServicInfoArrived = new Progress<ServiceInfo>(analysisInfoProcessor);
+    }
+
     public void SetCollectionServiceHost(string host)
     {
+        _cancellationCollectionService?.Cancel();
         _collectionServiceClient?.Dispose();
         _collectionServiceClient = new CollectionServiceClient(host);
     }
     public void SetAnalysisServiceHost(string host)
     {
+        _cancellationAnalysisService?.Cancel();
         _analysisServiceClient?.Dispose();
         _analysisServiceClient = new AnalysisServiceClient(host);
     }
@@ -26,29 +40,68 @@ public class ServiceManager
     public void StartDataCollectionService()
     {
         _collectionServiceClient.StartService();
+        _cancellationCollectionService = new CancellationTokenSource();
+        Task.Run(() => PollingCollectionService(_cancellationCollectionService.Token), _cancellationCollectionService.Token);
     }
 
     public void StopDataCollectionService()
     {
+        _cancellationCollectionService.Cancel();
         _collectionServiceClient.StopService();
     }
 
     public void StartDataAnalysisService()
     {
         _analysisServiceClient.StartService();
+        _cancellationAnalysisService = new CancellationTokenSource();
+        Task.Run(() => PollingAnalysisService(_cancellationAnalysisService.Token), _cancellationAnalysisService.Token);
     }
 
     public void StopDataAnalysisService()
     {
+        _cancellationAnalysisService.Cancel();
         _analysisServiceClient.StopService();
     }
 
     public ServiceInfo PollCollectionService() => Poll(_collectionServiceClient, _collectionServiceInfo);
     public ServiceInfo PollAnalysisService() => Poll(_analysisServiceClient, _analysisServiceInfo);
 
+    public IEnumerable<LogInfo> ViewCollectionLog(DateTime date) => LogFileParser(_collectionServiceClient.GetLogFile(date));
+    public IEnumerable<LogInfo> ViewAnalysisLog(DateTime date) => LogFileParser(_analysisServiceClient.GetLogFile(date));
+
     #endregion
 
     #region Private
+
+    private void PollingCollectionService(CancellationToken token)
+    {
+        while (!token.IsCancellationRequested)
+        {
+            var serviceInfo = PollCollectionService();
+            if (serviceInfo.ConnectionState == ConnectionState.Disconnected)
+            {
+                _cancellationCollectionService.Cancel();
+                break;
+            }
+            OnCollectionServicInfoArrived.Report(serviceInfo);
+            Thread.Sleep(10000);
+        }
+    }
+
+    private void PollingAnalysisService(CancellationToken token)
+    {
+        while (!token.IsCancellationRequested)
+        {
+            var serviceInfo = PollAnalysisService();
+            if (serviceInfo.ConnectionState == ConnectionState.Disconnected)
+            {
+                _cancellationCollectionService.Cancel();
+                break;
+            }
+            OnAnalysisServicInfoArrived.Report(serviceInfo);
+            Thread.Sleep(10000);
+        }
+    }
 
     private ServiceInfo Poll(ServiceClient serviceClient, ServiceInfo serviceInfo)
     {
@@ -61,37 +114,28 @@ public class ServiceManager
         catch
         {
             serviceInfo.ConnectionState = ConnectionState.Disconnected;
+            serviceInfo.State = State.Down;
             return serviceInfo;
         }
-        var logs = LogFileParser(logFile);
-        _lastPollingTime = logs.Last().Date;
-        var newServiceInfo = GenerateServiceInfo(logs);
-        UpdateServiceInfo(serviceInfo, newServiceInfo);
+        var logs = LogFileParser(logFile).Where(l => l.Date > _lastPollingTime).ToList();
+        if (logs.Any())
+            _lastPollingTime = logs[^1].Date;
+        UpdateServiceInfo(serviceInfo, logs);
         return serviceInfo;
     }
 
-    private static void UpdateServiceInfo(ServiceInfo updatedServiceInfo, ServiceInfo newServiceInfo)
+    private static void UpdateServiceInfo(ServiceInfo updatedServiceInfo, IEnumerable<LogInfo> logInfos)
     {
-        updatedServiceInfo.State = newServiceInfo.State;
-        updatedServiceInfo.Uptime = newServiceInfo.Uptime;
-        updatedServiceInfo.ErrorsCount += newServiceInfo.ErrorsCount;
-        updatedServiceInfo.WarningsCount += newServiceInfo.WarningsCount;
-        updatedServiceInfo.CollectedCommentsCount += newServiceInfo.CollectedCommentsCount;
-        updatedServiceInfo.EvaluatedCommentsCount += newServiceInfo.EvaluatedCommentsCount;
-    }
-
-    private static ServiceInfo GenerateServiceInfo(IEnumerable<LogInfo> logInfos)
-    {
-        var newServiceInfo = new ServiceInfo();
         foreach (var logInfo in logInfos)
         {
-            if (logInfo.Level == LogLevel.Error) newServiceInfo.ErrorsCount++;
-            if (logInfo.Level == LogLevel.Warning) newServiceInfo.WarningsCount++;
-            if (logInfo.Message.Contains("stopped")) newServiceInfo.State = State.Down;
-            if (logInfo.Message.Contains("collected")) newServiceInfo.CollectedCommentsCount += int.Parse(logInfo.Message.Split(" ")[1]);
-            if (logInfo.Message.Contains("evaluated")) newServiceInfo.CollectedCommentsCount += int.Parse(logInfo.Message.Split(" ")[1]);
+            if (logInfo.Level == LogLevel.Error) updatedServiceInfo.ErrorsCount++;
+            if (logInfo.Level == LogLevel.Warning) updatedServiceInfo.WarningsCount++;
+            if (logInfo.Message.Contains("stopped")) updatedServiceInfo.State = State.Down;
+            if (logInfo.Message.Contains("started")) updatedServiceInfo.State = State.Up;
+            if (logInfo.Message.Contains("collected")) updatedServiceInfo.CollectedCommentsCount = int.Parse(logInfo.Message.Trim().Split(" ")[0]);
+            if (logInfo.Message.Contains("evaluated")) updatedServiceInfo.EvaluatedCommentsCount = int.Parse(logInfo.Message.Trim().Split(" ")[0]);
+            if (logInfo.Message.Contains("Uptime")) updatedServiceInfo.Uptime = TimeSpan.Parse(logInfo.Message.Trim().Replace('"', ' ').Split(" ")[1]);
         }
-        return newServiceInfo;
     }
 
     private static IEnumerable<LogInfo> LogFileParser(string logFile)
@@ -106,7 +150,9 @@ public class ServiceManager
             yield return new LogInfo
             {
                 Date = DateTime.Parse(date),
-                Level = level switch { "Fatal" => LogLevel.Fatal, "Error" => LogLevel.Error, "Warning" => LogLevel.Warning, "Information" => LogLevel.Information },
+                Level = level switch { "[Fatal]" => LogLevel.Fatal, "[Error]" => LogLevel.Error, "[Warning]" => LogLevel.Warning, "[Information]" => LogLevel.Information,
+                    _ => LogLevel.Information
+                },
                 Message = logMessage
             };
         }

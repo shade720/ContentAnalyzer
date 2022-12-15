@@ -40,7 +40,7 @@ public class VkDataCollector : IDataCollector
         {
             scanner.StartScan();
         }
-        Log.Logger.Information("Data collection has begun");
+        Log.Logger.Information("Data collection has started");
     }
 
     public void StopCollecting()
