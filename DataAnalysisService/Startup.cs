@@ -42,10 +42,10 @@ public static class Startup
                 "Weapons", "Body shaming", "Health shaming", "Politics", "Racism", "Religion", "Sexual minorities", 
                 "Sexism", "Social injustice" }
         };
-
         Services.DataAnalysisService.AddModel("InsultThreatObscenityCategories", () => CreateUniversalSentenceEncoderModel(modelInfo1));
         //Services.DataAnalysisService.AddModel("ToxicCategory", () => CreateUniversalSentenceEncoderModel(modelInfo2));
         Services.DataAnalysisService.AddModel("WorkingSet", () => CreateUniversalSentenceEncoderModel(modelInfo3));
+        Services.DataAnalysisService.ObserveDelayMs = int.Parse(configuration["ObserveDelayMs"]);
     }
 
     private static UniversalSentenceEncoderModel CreateUniversalSentenceEncoderModel(AnalyzeModelInfo modelInfo)

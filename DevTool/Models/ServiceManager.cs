@@ -8,7 +8,7 @@ public class ServiceManager
     private readonly ServiceInfo _collectionServiceInfo = new() { State = State.Down};
     private readonly ServiceInfo _analysisServiceInfo = new() { State = State.Down};
 
-    private DateTime _lastPollingTime = DateTime.Today;
+    private DateTime _lastPollingTime = DateTime.Now;
 
     private CancellationTokenSource _cancellationCollectionService;
     private CancellationTokenSource _cancellationAnalysisService;
@@ -69,6 +69,11 @@ public class ServiceManager
     public IEnumerable<LogInfo> ViewCollectionLog(DateTime date) => LogFileParser(_collectionServiceClient.GetLogFile(date));
     public IEnumerable<LogInfo> ViewAnalysisLog(DateTime date) => LogFileParser(_analysisServiceClient.GetLogFile(date));
 
+    public void LoadConfiguration(string settings)
+    {
+        _collectionServiceClient.LoadConfiguration(settings);
+    }
+
     #endregion
 
     #region Private
@@ -114,7 +119,6 @@ public class ServiceManager
         catch
         {
             serviceInfo.ConnectionState = ConnectionState.Disconnected;
-            serviceInfo.State = State.Down;
             return serviceInfo;
         }
         var logs = LogFileParser(logFile).Where(l => l.Date > _lastPollingTime).ToList();

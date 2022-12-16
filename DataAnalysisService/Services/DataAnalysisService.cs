@@ -17,13 +17,14 @@ public class DataAnalysisService : DataAnalysis.DataAnalysisBase
     private static readonly Dictionary<string, AnalyzeModel> AnalyzeModels = new();
     private readonly DatabaseClient<EvaluateResult> _targetDatabase;
     private readonly DatabaseObserver _sourceDatabase;
-    private readonly Stopwatch _stopwatch = new();
+    private static readonly Stopwatch Stopwatch = new();
+    public static int ObserveDelayMs { get; set; }
 
     #region PublicInterface
 
     public DataAnalysisService(IDbContextFactory<CommentsContext> contextFactory)
     {
-        _sourceDatabase = new AllCommentsDb(contextFactory, 60000);
+        _sourceDatabase = new AllCommentsDb(contextFactory, ObserveDelayMs);
         _targetDatabase = new SuspiciousCommentsDb(contextFactory);
     }
 
@@ -31,14 +32,14 @@ public class DataAnalysisService : DataAnalysis.DataAnalysisBase
     {
         if (AnalyzeModels.Count == 0) throw new ArgumentException($"At least one analysis model must be added {nameof(StartAnalysisService)}");
         Log.Logger.Information("Service started, target database is ready");
-        _stopwatch.Start();
+        Stopwatch.Start();
         return Task.FromResult(new StartAnalysisServiceReply());
     }
 
     public override Task<StopAnalysisServiceReply> StopAnalysisService(StopAnalysisServiceRequest request, ServerCallContext context)
     {
         Log.Logger.Information("Service stopped");
-        _stopwatch.Stop();
+        Stopwatch.Stop();
         return Task.FromResult(new StopAnalysisServiceReply());
     }
 
@@ -118,7 +119,7 @@ public class DataAnalysisService : DataAnalysis.DataAnalysisBase
 
     public override Task<LogReply> GetLogs(LogRequest request, ServerCallContext context)
     {
-        Log.Logger.Information("Uptime: {0}", _stopwatch.Elapsed.ToString(@"hh\:mm\:ss"));
+        Log.Logger.Information("Uptime: {0}", Stopwatch.Elapsed.ToString(@"hh\:mm\:ss"));
         var logDate = request.LogDate.ToDateTime().ToLocalTime();
         var requiredFilePath = Directory.GetFiles(@"./Logs/", $"log{logDate:yyyyMMdd}*.txt").SingleOrDefault();
         if (string.IsNullOrEmpty(requiredFilePath)) return Task.FromResult(new LogReply());

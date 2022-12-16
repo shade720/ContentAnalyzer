@@ -40,6 +40,7 @@
             this.StopAnalysisService = new System.Windows.Forms.Button();
             this.StopCollectionService = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.AnalysisLogDate = new System.Windows.Forms.DateTimePicker();
             this.ApplyAnalysisServiceEndpoint = new System.Windows.Forms.Button();
             this.RefreshAnalysisServiceInfo = new System.Windows.Forms.Button();
             this.AnalysisEvaluated = new System.Windows.Forms.Label();
@@ -58,6 +59,7 @@
             this.label21 = new System.Windows.Forms.Label();
             this.AnalysisServiceEndpoint = new System.Windows.Forms.ComboBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.CollectionLogDate = new System.Windows.Forms.DateTimePicker();
             this.ApplyNewCollectionServiceEndpoint = new System.Windows.Forms.Button();
             this.RefreshCollectionServiceInfo = new System.Windows.Forms.Button();
             this.CollectionCollected = new System.Windows.Forms.Label();
@@ -78,12 +80,12 @@
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.SaveConfiguration = new System.Windows.Forms.Button();
-            this.LoadConfiguration = new System.Windows.Forms.Button();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.EvaluateThreshold = new System.Windows.Forms.TextBox();
             this.label33 = new System.Windows.Forms.Label();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.PostQueueSize = new System.Windows.Forms.TextBox();
+            this.LoadConfiguration = new System.Windows.Forms.Button();
             this.label31 = new System.Windows.Forms.Label();
             this.ScanCommentsDelay = new System.Windows.Forms.TextBox();
             this.label30 = new System.Windows.Forms.Label();
@@ -105,8 +107,6 @@
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.tabPage5 = new System.Windows.Forms.TabPage();
-            this.CollectionLogDate = new System.Windows.Forms.DateTimePicker();
-            this.AnalysisLogDate = new System.Windows.Forms.DateTimePicker();
             this.Tabs.SuspendLayout();
             this.MainTab.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -268,6 +268,13 @@
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Collection service info";
+            // 
+            // AnalysisLogDate
+            // 
+            this.AnalysisLogDate.Location = new System.Drawing.Point(88, 59);
+            this.AnalysisLogDate.Name = "AnalysisLogDate";
+            this.AnalysisLogDate.Size = new System.Drawing.Size(156, 27);
+            this.AnalysisLogDate.TabIndex = 18;
             // 
             // ApplyAnalysisServiceEndpoint
             // 
@@ -465,6 +472,13 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Collection service info";
             // 
+            // CollectionLogDate
+            // 
+            this.CollectionLogDate.Location = new System.Drawing.Point(88, 59);
+            this.CollectionLogDate.Name = "CollectionLogDate";
+            this.CollectionLogDate.Size = new System.Drawing.Size(154, 27);
+            this.CollectionLogDate.TabIndex = 17;
+            // 
             // ApplyNewCollectionServiceEndpoint
             // 
             this.ApplyNewCollectionServiceEndpoint.Location = new System.Drawing.Point(248, 25);
@@ -661,23 +675,13 @@
             // 
             // SaveConfiguration
             // 
-            this.SaveConfiguration.Location = new System.Drawing.Point(6, 102);
+            this.SaveConfiguration.Location = new System.Drawing.Point(151, 26);
             this.SaveConfiguration.Name = "SaveConfiguration";
             this.SaveConfiguration.Size = new System.Drawing.Size(106, 49);
             this.SaveConfiguration.TabIndex = 1;
             this.SaveConfiguration.Text = "Save configuration";
             this.SaveConfiguration.UseVisualStyleBackColor = true;
             this.SaveConfiguration.Click += new System.EventHandler(this.SaveConfiguration_Click);
-            // 
-            // LoadConfiguration
-            // 
-            this.LoadConfiguration.Location = new System.Drawing.Point(6, 47);
-            this.LoadConfiguration.Name = "LoadConfiguration";
-            this.LoadConfiguration.Size = new System.Drawing.Size(106, 49);
-            this.LoadConfiguration.TabIndex = 0;
-            this.LoadConfiguration.Text = "Load configuration";
-            this.LoadConfiguration.UseVisualStyleBackColor = true;
-            this.LoadConfiguration.Click += new System.EventHandler(this.LoadConfiguration_Click);
             // 
             // groupBox6
             // 
@@ -692,7 +696,7 @@
             // 
             // EvaluateThreshold
             // 
-            this.EvaluateThreshold.Location = new System.Drawing.Point(177, 29);
+            this.EvaluateThreshold.Location = new System.Drawing.Point(177, 30);
             this.EvaluateThreshold.Margin = new System.Windows.Forms.Padding(5);
             this.EvaluateThreshold.Name = "EvaluateThreshold";
             this.EvaluateThreshold.Size = new System.Drawing.Size(125, 27);
@@ -701,7 +705,7 @@
             // label33
             // 
             this.label33.AutoSize = true;
-            this.label33.Location = new System.Drawing.Point(8, 32);
+            this.label33.Location = new System.Drawing.Point(8, 33);
             this.label33.Margin = new System.Windows.Forms.Padding(5);
             this.label33.Name = "label33";
             this.label33.Size = new System.Drawing.Size(142, 20);
@@ -725,16 +729,26 @@
             // 
             // PostQueueSize
             // 
-            this.PostQueueSize.Location = new System.Drawing.Point(174, 99);
+            this.PostQueueSize.Location = new System.Drawing.Point(174, 104);
             this.PostQueueSize.Margin = new System.Windows.Forms.Padding(5);
             this.PostQueueSize.Name = "PostQueueSize";
             this.PostQueueSize.Size = new System.Drawing.Size(125, 27);
             this.PostQueueSize.TabIndex = 5;
             // 
+            // LoadConfiguration
+            // 
+            this.LoadConfiguration.Location = new System.Drawing.Point(6, 26);
+            this.LoadConfiguration.Name = "LoadConfiguration";
+            this.LoadConfiguration.Size = new System.Drawing.Size(106, 49);
+            this.LoadConfiguration.TabIndex = 0;
+            this.LoadConfiguration.Text = "Load configuration";
+            this.LoadConfiguration.UseVisualStyleBackColor = true;
+            this.LoadConfiguration.Click += new System.EventHandler(this.LoadConfiguration_Click);
+            // 
             // label31
             // 
             this.label31.AutoSize = true;
-            this.label31.Location = new System.Drawing.Point(8, 102);
+            this.label31.Location = new System.Drawing.Point(8, 107);
             this.label31.Margin = new System.Windows.Forms.Padding(5);
             this.label31.Name = "label31";
             this.label31.Size = new System.Drawing.Size(113, 20);
@@ -743,7 +757,7 @@
             // 
             // ScanCommentsDelay
             // 
-            this.ScanCommentsDelay.Location = new System.Drawing.Point(174, 62);
+            this.ScanCommentsDelay.Location = new System.Drawing.Point(174, 67);
             this.ScanCommentsDelay.Margin = new System.Windows.Forms.Padding(5);
             this.ScanCommentsDelay.Name = "ScanCommentsDelay";
             this.ScanCommentsDelay.Size = new System.Drawing.Size(125, 27);
@@ -752,7 +766,7 @@
             // label30
             // 
             this.label30.AutoSize = true;
-            this.label30.Location = new System.Drawing.Point(8, 65);
+            this.label30.Location = new System.Drawing.Point(8, 70);
             this.label30.Margin = new System.Windows.Forms.Padding(5);
             this.label30.Name = "label30";
             this.label30.Size = new System.Drawing.Size(156, 20);
@@ -762,7 +776,7 @@
             // label29
             // 
             this.label29.AutoSize = true;
-            this.label29.Location = new System.Drawing.Point(8, 28);
+            this.label29.Location = new System.Drawing.Point(8, 33);
             this.label29.Margin = new System.Windows.Forms.Padding(5);
             this.label29.Name = "label29";
             this.label29.Size = new System.Drawing.Size(116, 20);
@@ -771,7 +785,7 @@
             // 
             // ScanPostDelay
             // 
-            this.ScanPostDelay.Location = new System.Drawing.Point(174, 25);
+            this.ScanPostDelay.Location = new System.Drawing.Point(174, 30);
             this.ScanPostDelay.Margin = new System.Windows.Forms.Padding(5);
             this.ScanPostDelay.Name = "ScanPostDelay";
             this.ScanPostDelay.Size = new System.Drawing.Size(125, 27);
@@ -800,14 +814,14 @@
             // 
             // NewAnalysisHost
             // 
-            this.NewAnalysisHost.Location = new System.Drawing.Point(194, 160);
+            this.NewAnalysisHost.Location = new System.Drawing.Point(194, 162);
             this.NewAnalysisHost.Name = "NewAnalysisHost";
             this.NewAnalysisHost.Size = new System.Drawing.Size(182, 27);
             this.NewAnalysisHost.TabIndex = 9;
             // 
             // NewCollectionHost
             // 
-            this.NewCollectionHost.Location = new System.Drawing.Point(6, 160);
+            this.NewCollectionHost.Location = new System.Drawing.Point(6, 162);
             this.NewCollectionHost.Name = "NewCollectionHost";
             this.NewCollectionHost.Size = new System.Drawing.Size(182, 27);
             this.NewCollectionHost.TabIndex = 8;
@@ -832,9 +846,9 @@
             // 
             // DeleteAnalysisServiceHost
             // 
-            this.DeleteAnalysisServiceHost.Location = new System.Drawing.Point(293, 200);
+            this.DeleteAnalysisServiceHost.Location = new System.Drawing.Point(286, 187);
             this.DeleteAnalysisServiceHost.Name = "DeleteAnalysisServiceHost";
-            this.DeleteAnalysisServiceHost.Size = new System.Drawing.Size(83, 29);
+            this.DeleteAnalysisServiceHost.Size = new System.Drawing.Size(90, 29);
             this.DeleteAnalysisServiceHost.TabIndex = 7;
             this.DeleteAnalysisServiceHost.Text = "Delete";
             this.DeleteAnalysisServiceHost.UseVisualStyleBackColor = true;
@@ -842,9 +856,9 @@
             // 
             // DeleteCollectionServiceHost
             // 
-            this.DeleteCollectionServiceHost.Location = new System.Drawing.Point(105, 200);
+            this.DeleteCollectionServiceHost.Location = new System.Drawing.Point(97, 187);
             this.DeleteCollectionServiceHost.Name = "DeleteCollectionServiceHost";
-            this.DeleteCollectionServiceHost.Size = new System.Drawing.Size(83, 29);
+            this.DeleteCollectionServiceHost.Size = new System.Drawing.Size(91, 29);
             this.DeleteCollectionServiceHost.TabIndex = 5;
             this.DeleteCollectionServiceHost.Text = "Delete";
             this.DeleteCollectionServiceHost.UseVisualStyleBackColor = true;
@@ -852,9 +866,9 @@
             // 
             // AddCollectionServiceHost
             // 
-            this.AddCollectionServiceHost.Location = new System.Drawing.Point(6, 200);
+            this.AddCollectionServiceHost.Location = new System.Drawing.Point(6, 187);
             this.AddCollectionServiceHost.Name = "AddCollectionServiceHost";
-            this.AddCollectionServiceHost.Size = new System.Drawing.Size(83, 29);
+            this.AddCollectionServiceHost.Size = new System.Drawing.Size(93, 29);
             this.AddCollectionServiceHost.TabIndex = 4;
             this.AddCollectionServiceHost.Text = "Add";
             this.AddCollectionServiceHost.UseVisualStyleBackColor = true;
@@ -862,9 +876,9 @@
             // 
             // AddAnalysisServiceHost
             // 
-            this.AddAnalysisServiceHost.Location = new System.Drawing.Point(194, 200);
+            this.AddAnalysisServiceHost.Location = new System.Drawing.Point(194, 187);
             this.AddAnalysisServiceHost.Name = "AddAnalysisServiceHost";
-            this.AddAnalysisServiceHost.Size = new System.Drawing.Size(83, 29);
+            this.AddAnalysisServiceHost.Size = new System.Drawing.Size(93, 29);
             this.AddAnalysisServiceHost.TabIndex = 6;
             this.AddAnalysisServiceHost.Text = "Add";
             this.AddAnalysisServiceHost.UseVisualStyleBackColor = true;
@@ -892,7 +906,7 @@
             // 
             this.AnalysisServiceHosts.FormattingEnabled = true;
             this.AnalysisServiceHosts.ItemHeight = 20;
-            this.AnalysisServiceHosts.Location = new System.Drawing.Point(194, 50);
+            this.AnalysisServiceHosts.Location = new System.Drawing.Point(194, 58);
             this.AnalysisServiceHosts.Name = "AnalysisServiceHosts";
             this.AnalysisServiceHosts.Size = new System.Drawing.Size(182, 104);
             this.AnalysisServiceHosts.TabIndex = 1;
@@ -901,7 +915,7 @@
             // 
             this.CollectionServiceHosts.FormattingEnabled = true;
             this.CollectionServiceHosts.ItemHeight = 20;
-            this.CollectionServiceHosts.Location = new System.Drawing.Point(6, 50);
+            this.CollectionServiceHosts.Location = new System.Drawing.Point(6, 58);
             this.CollectionServiceHosts.Name = "CollectionServiceHosts";
             this.CollectionServiceHosts.Size = new System.Drawing.Size(182, 104);
             this.CollectionServiceHosts.TabIndex = 0;
@@ -935,20 +949,6 @@
             this.tabPage5.TabIndex = 4;
             this.tabPage5.Text = "Vk collector";
             this.tabPage5.UseVisualStyleBackColor = true;
-            // 
-            // CollectionLogDate
-            // 
-            this.CollectionLogDate.Location = new System.Drawing.Point(88, 59);
-            this.CollectionLogDate.Name = "CollectionLogDate";
-            this.CollectionLogDate.Size = new System.Drawing.Size(154, 27);
-            this.CollectionLogDate.TabIndex = 17;
-            // 
-            // AnalysisLogDate
-            // 
-            this.AnalysisLogDate.Location = new System.Drawing.Point(88, 59);
-            this.AnalysisLogDate.Name = "AnalysisLogDate";
-            this.AnalysisLogDate.Size = new System.Drawing.Size(156, 27);
-            this.AnalysisLogDate.TabIndex = 18;
             // 
             // MainForm
             // 

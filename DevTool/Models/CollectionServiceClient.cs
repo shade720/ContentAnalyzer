@@ -43,6 +43,12 @@ internal class CollectionServiceClient : ServiceClient, IDisposable
             })
             .ToList();
     }
+
+    public void LoadConfiguration(string appsettingFile)
+    {
+        _dataCollectionClient.SetConfiguration(new SetConfigurationRequest {Settings = appsettingFile});
+    }
+
     public new void Dispose()
     {
         Channel.Dispose();

@@ -23,6 +23,10 @@ builder.WebHost.ConfigureLogging(logging =>
 builder.Services.AddGrpc();
 builder.Services.AddDbContextFactory<CommentsContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("Database")));
+builder.Configuration.SetBasePath(Environment.CurrentDirectory)
+    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+    .AddJsonFile($"appsettings.{Environment.UserDomainName}.json", optional: true, reloadOnChange: true)
+    .AddEnvironmentVariables();
 
 Startup.ConfigureService(builder.Configuration);
 

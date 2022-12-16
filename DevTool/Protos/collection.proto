@@ -9,7 +9,14 @@ service DataCollection {
 	rpc StopCollectionService (StopCollectionServiceRequest) returns (StopCollectionServiceReply);
 	rpc GetCommentsFrom (GetCommentsRequest) returns (GetCommentsReply);
 	rpc GetLogs (LogRequest) returns (LogReply);
+	rpc SetConfiguration (SetConfigurationRequest) returns (SetConfigurationReply);
 }
+
+message SetConfigurationRequest {
+ string settings = 1;
+}
+message SetConfigurationReply {}
+
 message StartCollectionServiceRequest{}
 message StartCollectionServiceReply{}
 

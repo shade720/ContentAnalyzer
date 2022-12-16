@@ -255,10 +255,10 @@ namespace DevTool.Forms
         {
             AnalysisServiceHosts.Items.RemoveAt(AnalysisServiceHosts.SelectedIndex);
         }
-
         private void LoadConfiguration_Click(object sender, EventArgs e)
         {
-
+            var file = File.ReadAllText("appsettings.json");
+            _serviceManager.LoadConfiguration(file);
         }
 
         #endregion
