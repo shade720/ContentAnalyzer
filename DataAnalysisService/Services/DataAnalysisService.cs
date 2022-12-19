@@ -15,106 +15,70 @@ namespace DataAnalysisService.Services;
 public class DataAnalysisService : DataAnalysis.DataAnalysisBase
 {
     private static readonly Dictionary<string, AnalyzeModel> AnalyzeModels = new();
-    private readonly DatabaseClient<EvaluateResult> _targetDatabase;
-    private readonly DatabaseObserver _sourceDatabase;
+    private static DatabaseClient<EvaluatedComment> _targetDatabase;
+    private static DatabaseObserver _sourceDatabase;
     private static readonly Stopwatch Stopwatch = new();
+
     public static int ObserveDelayMs { get; set; }
 
     #region PublicInterface
 
     public DataAnalysisService(IDbContextFactory<CommentsContext> contextFactory)
     {
-        _sourceDatabase = new AllCommentsDb(contextFactory, ObserveDelayMs);
-        _targetDatabase = new SuspiciousCommentsDb(contextFactory);
+        _sourceDatabase = new CommentsDatabaseObserver(contextFactory, ObserveDelayMs);
+        _targetDatabase = new EvaluatedCommentsDatabaseClient(contextFactory);
     }
 
     public override Task<StartAnalysisServiceReply> StartAnalysisService(StartAnalysisServiceRequest request, ServerCallContext context)
     {
         if (AnalyzeModels.Count == 0) throw new ArgumentException($"At least one analysis model must be added {nameof(StartAnalysisService)}");
-        Log.Logger.Information("Service started, target database is ready");
         Stopwatch.Start();
+        foreach (var model in AnalyzeModels)
+        {
+            StartModel(model.Key);
+        }
+        Log.Logger.Information("Service started");
         return Task.FromResult(new StartAnalysisServiceReply());
     }
 
     public override Task<StopAnalysisServiceReply> StopAnalysisService(StopAnalysisServiceRequest request, ServerCallContext context)
     {
-        Log.Logger.Information("Service stopped");
         Stopwatch.Stop();
-        return Task.FromResult(new StopAnalysisServiceReply());
-    }
-
-    public override Task<StartAllReply> StartAll(StartAllRequest request, ServerCallContext context)
-    {
-        foreach (var model in AnalyzeModels)
-        {
-            StartModel(model.Key);
-        }
-        return Task.FromResult(new StartAllReply());
-    }
-
-    public override Task<TrainAllReply> TrainAll(TrainAllRequest request, ServerCallContext context)
-    {
-        foreach (var model in AnalyzeModels)
-        {
-            TrainModel(model.Key);
-        }
-        return Task.FromResult(new TrainAllReply());
-    }
-
-    public override Task<StopAllReply> StopAll(StopAllRequest request, ServerCallContext context)
-    {
         foreach (var model in AnalyzeModels)
         {
             Stop(model.Key);
         }
-        Log.Logger.Information("All model are stopped");
-        return Task.FromResult(new StopAllReply());
+        Log.Logger.Information("Service stopped");
+        return Task.FromResult(new StopAnalysisServiceReply());
     }
 
-    public override Task<StartModelReply> StartModel(StartModelRequest request, ServerCallContext context)
-    {
-        StartModel(request.ModelName);
-        return Task.FromResult(new StartModelReply());
-    }
 
-    public override Task<TrainModelReply> TrainModel(TrainModelRequest request, ServerCallContext context)
+    public override Task<EvaluatedCommentsReply> GetEvaluatedComments(EvaluatedCommentsRequest request, ServerCallContext context)
     {
-        TrainModel(request.ModelName);
-        return Task.FromResult(new TrainModelReply());
-    }
+        var range = _targetDatabase.GetRange(request.StartIndex);
 
-    public override Task<StopModelReply> StopModel(StopModelRequest request, ServerCallContext context)
-    {
-        Stop(request.ModelName);
-        return Task.FromResult(new StopModelReply());
-    }
-
-    public override Task<EvaluateResultsReply> GetEvaluateResultsFrom(EvaluateResultsRequest request, ServerCallContext context)
-    {
-        var range = _targetDatabase.GetRange(request.StartIndex).Result;
-
-        var convertedRange = new RepeatedField<EvaluateResultProto>();
+        var convertedRange = new RepeatedField<EvaluatedCommentProto>();
         foreach (var evaluateResult in range)
         {
-            convertedRange.Add(new EvaluateResultProto
+            convertedRange.Add(new EvaluatedCommentProto
             {
                 Id = evaluateResult.Id,
-                CommentId = evaluateResult.CommentDataId,
-                CommentData = new CommentDataProto
+                CommentId = evaluateResult.CommentId,
+                Comment = new CommentProto
                 {
-                    Id = evaluateResult.CommentData.Id,
-                    AuthorId = evaluateResult.CommentData.AuthorId,
-                    CommentId = evaluateResult.CommentData.CommentId,
-                    GroupId = evaluateResult.CommentData.GroupId,
-                    PostDate = Timestamp.FromDateTime(evaluateResult.CommentData.PostDate.ToUniversalTime()),
-                    PostId = evaluateResult.CommentData.PostId,
-                    Text = evaluateResult.CommentData.Text
+                    Id = evaluateResult.RelatedComment.Id,
+                    AuthorId = evaluateResult.RelatedComment.AuthorId,
+                    CommentId = evaluateResult.RelatedComment.CommentId,
+                    GroupId = evaluateResult.RelatedComment.GroupId,
+                    PostDate = Timestamp.FromDateTime(evaluateResult.RelatedComment.PostDate.ToUniversalTime()),
+                    PostId = evaluateResult.RelatedComment.PostId,
+                    Text = evaluateResult.RelatedComment.Text
                 },
                 EvaluateCategory = evaluateResult.EvaluateCategory,
                 EvaluateProbability = evaluateResult.EvaluateProbability
             });
         }
-        return Task.FromResult(new EvaluateResultsReply { Result = { convertedRange } });
+        return Task.FromResult(new EvaluatedCommentsReply { Result = { convertedRange } });
     }
 
     public override Task<LogReply> GetLogs(LogRequest request, ServerCallContext context)
@@ -146,14 +110,14 @@ public class DataAnalysisService : DataAnalysis.DataAnalysisBase
 
     #region Private
 
-    private void AnalyzeByAny(CommentData dataFrame)
+    private void AnalyzeByAny(Comment frame)
     {
         foreach (var model in AnalyzeModels)
         {
-            AnalyzeBy(model.Key, dataFrame);
+            AnalyzeBy(model.Key, frame);
         }
     }
-    private void AnalyzeBy(string modelName, CommentData dataFrame)
+    private void AnalyzeBy(string modelName, Comment frame)
     {
         if (!AnalyzeModels[modelName].IsRunning)
         {
@@ -168,7 +132,7 @@ public class DataAnalysisService : DataAnalysis.DataAnalysisBase
         }
         try
         {
-            AnalyzeModels[modelName].Predict(dataFrame);
+            AnalyzeModels[modelName].Predict(frame);
         }
         catch (Exception e)
         {
@@ -206,9 +170,9 @@ public class DataAnalysisService : DataAnalysis.DataAnalysisBase
         AnalyzeModels[modelName].StopModel();
     }
 
-    private void InsertToTargetDb(EvaluateResult evaluateResult)
+    private void InsertToTargetDb(EvaluatedComment evaluatedComment)
     {
-         _targetDatabase.Add(evaluateResult);
+         _targetDatabase.Add(evaluatedComment);
     }
 
     private void EnsureLoading()
@@ -217,25 +181,6 @@ public class DataAnalysisService : DataAnalysis.DataAnalysisBase
         _sourceDatabase.OnDataArrived(AnalyzeByAny);
         _sourceDatabase.StartLoading();
         Log.Logger.Information("Source database started sending data");
-    }
-
-    private void TrainModel(string modelName)
-    {
-        if (AnalyzeModels[modelName].IsRunning)
-        {
-            Log.Logger.Error("Model {modelName} already in work", modelName);
-            return;
-        }
-        try
-        {
-            AnalyzeModels[modelName].StartTrainModel();
-            Log.Logger.Information("Model {modelName} started training", modelName);
-        }
-        catch (Exception e)
-        {
-            Log.Logger.Fatal("{message} {stackTrace}", e.Message, e.StackTrace);
-            AnalyzeModels[modelName].StopModel();
-        }
     }
 
     private void Stop(string modelName)

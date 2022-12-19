@@ -11,5 +11,5 @@ public abstract class DatabaseObserver
 
     public abstract void StopLoading();
 
-    public abstract void OnDataArrived(Action<CommentData> handler);
+    public abstract void OnDataArrived(Action<Comment> handler);
 }

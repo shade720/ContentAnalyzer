@@ -30,10 +30,10 @@ public class Client
         _dataCollectionClient.StopCollectionService(new StopCollectionServiceRequest());
     }
 
-    public List<CommentData> GetComments(int startIndex)
+    public List<Comment> GetComments(int startIndex)
     {
         var comments = _dataCollectionClient.GetCommentsFrom(new GetCommentsRequest {StartIndex = startIndex});
-        return comments.Result.Select(comment => new CommentData
+        return comments.Result.Select(comment => new Comment
             {
                 Id = comment.Id,
                 CommentId = comment.CommentId,
@@ -66,13 +66,13 @@ public class Client
         _dataAnalysisClient.StopAll(new StopAllRequest());
     }
 
-    public List<EvaluateResult> GetEvaluateResults(int startIndex)
+    public List<EvaluatedComment> GetEvaluateResults(int startIndex)
     {
         var comments = _dataAnalysisClient.GetEvaluateResultsFrom(new EvaluateResultsRequest { StartIndex = startIndex});
-        return comments.Result.Select(evaluateResultProto => new EvaluateResult
+        return comments.Result.Select(evaluateResultProto => new EvaluatedComment
         {
             Id = evaluateResultProto.Id,
-            CommentData = new CommentData
+            RelatedComment = new Comment
             {
                 Id = evaluateResultProto.CommentData.Id,
                 CommentId = evaluateResultProto.CommentData.CommentId,
@@ -82,7 +82,7 @@ public class Client
                 PostId = evaluateResultProto.CommentData.PostId,
                 Text = evaluateResultProto.CommentData.Text
             },
-            CommentDataId = evaluateResultProto.CommentId,
+            CommentId = evaluateResultProto.CommentId,
             EvaluateCategory = evaluateResultProto.EvaluateCategory,
             EvaluateProbability = evaluateResultProto.EvaluateProbability
         }).ToList();

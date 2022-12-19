@@ -11,24 +11,24 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Common.Migrations
 {
     [DbContext(typeof(CommentsContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    partial class CommentsContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.4")
+                .HasAnnotation("ProductVersion", "7.0.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Common.CommentData", b =>
+            modelBuilder.Entity("Common.EntityFramework.Comment", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<long>("AuthorId")
                         .HasColumnType("bigint");
@@ -54,15 +54,15 @@ namespace Common.Migrations
                     b.ToTable("Comments");
                 });
 
-            modelBuilder.Entity("Common.EvaluateResult", b =>
+            modelBuilder.Entity("Common.EntityFramework.EvaluatedComment", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<long>("CommentDataId")
+                    b.Property<long>("CommentId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("EvaluateCategory")
@@ -74,25 +74,25 @@ namespace Common.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CommentDataId");
+                    b.HasIndex("CommentId");
 
-                    b.ToTable("EvaluateResults");
+                    b.ToTable("EvaluatedComments");
                 });
 
-            modelBuilder.Entity("Common.EvaluateResult", b =>
+            modelBuilder.Entity("Common.EntityFramework.EvaluatedComment", b =>
                 {
-                    b.HasOne("Common.CommentData", "CommentData")
-                        .WithMany("EvaluateResults")
-                        .HasForeignKey("CommentDataId")
+                    b.HasOne("Common.EntityFramework.Comment", "RelatedComment")
+                        .WithMany("IncludedInEvaluatedComments")
+                        .HasForeignKey("CommentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("CommentData");
+                    b.Navigation("RelatedComment");
                 });
 
-            modelBuilder.Entity("Common.CommentData", b =>
+            modelBuilder.Entity("Common.EntityFramework.Comment", b =>
                 {
-                    b.Navigation("EvaluateResults");
+                    b.Navigation("IncludedInEvaluatedComments");
                 });
 #pragma warning restore 612, 618
         }

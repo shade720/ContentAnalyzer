@@ -124,9 +124,9 @@
             this.Date.ReadOnly = true;
             this.Date.Width = 150;
             // 
-            // Comment
+            // RelatedComment
             // 
-            this.Comment.HeaderText = "Comment";
+            this.Comment.HeaderText = "RelatedComment";
             this.Comment.MinimumWidth = 6;
             this.Comment.Name = "Comment";
             this.Comment.ReadOnly = true;
@@ -216,7 +216,7 @@
             this.SearchComboBox.Items.AddRange(new object[] {
             "Id",
             "Date",
-            "Comment text",
+            "RelatedComment text",
             "Category",
             "Probability"});
             this.SearchComboBox.Location = new System.Drawing.Point(6, 51);

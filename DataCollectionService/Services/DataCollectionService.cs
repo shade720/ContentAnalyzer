@@ -17,21 +17,22 @@ namespace DataCollectionService.Services;
 public class DataCollectionService : DataCollection.DataCollectionBase
 {
     private static readonly List<IDataCollector> DataCollectors = new();
-    private readonly DatabaseClient<CommentData> _saveDatabase;
+    private static DatabaseClient<Comment> _saveDatabase;
     private static readonly Stopwatch Stopwatch = new();
+    private static bool IsRunning { get; set; } = false;
 
     #region PublicInterface
 
     public DataCollectionService(IDbContextFactory<CommentsContext> contextFactory)
     {
-        _saveDatabase = new AllCommentsDb(contextFactory);
+        _saveDatabase = new CommentsDatabaseClient(contextFactory);
     }
 
     public override Task<StartCollectionServiceReply> StartCollectionService(StartCollectionServiceRequest request, ServerCallContext context)
     {
-        _saveDatabase.Clear();
         StartCollecting();
         Stopwatch.Start();
+        IsRunning = true;
         return Task.FromResult(new StartCollectionServiceReply());
     }
 
@@ -40,12 +41,13 @@ public class DataCollectionService : DataCollection.DataCollectionBase
         StopCollecting();
         Stopwatch.Stop();
         Stopwatch.Reset();
+        IsRunning = false;
         return Task.FromResult(new StopCollectionServiceReply());
     }
 
     public override Task<GetCommentsReply> GetCommentsFrom(GetCommentsRequest request, ServerCallContext context)
     {
-        var range = _saveDatabase.GetRange(request.StartIndex).Result;
+        var range = _saveDatabase.GetRange(request.StartIndex);
         var convertedRange = new RepeatedField<CommentDataProto>();
         foreach (var comment in range)
         {
@@ -88,18 +90,30 @@ public class DataCollectionService : DataCollection.DataCollectionBase
         dynamic oldConfig = JsonConvert.DeserializeObject<ExpandoObject>(appSettingsJson, jsonSettings);
         dynamic newConfig = JsonConvert.DeserializeObject<ExpandoObject>(request.Settings, jsonSettings);
 
-        oldConfig.ScanCommentsDelay = newConfig.ScanCommentsDelay;
-        oldConfig.ScanPostDelay = newConfig.ScanPostDelay;
-        oldConfig.PostQueueSize = newConfig.PostQueueSize;
+        if (((IDictionary<string, object>)newConfig).ContainsKey("ScanCommentsDelay"))
+            oldConfig.ScanCommentsDelay = newConfig.ScanCommentsDelay;
+        if (((IDictionary<string, object>)newConfig).ContainsKey("ScanPostDelay"))
+            oldConfig.ScanPostDelay = newConfig.ScanPostDelay;
+        if (((IDictionary<string, object>)newConfig).ContainsKey("PostQueueSize"))
+            oldConfig.PostQueueSize = newConfig.PostQueueSize;
 
-        var newAppSettingsJso = JsonConvert.SerializeObject(oldConfig, Formatting.Indented, jsonSettings);
-        File.WriteAllText(appSettingsPath, newAppSettingsJso);
+        if (((IDictionary<string, object>)newConfig).ContainsKey("ApplicationId"))
+            oldConfig.VkSettings.ApplicationId = newConfig.ApplicationId;
+        if (((IDictionary<string, object>)newConfig).ContainsKey("SecureKey"))
+            oldConfig.VkSettings.SecureKey = newConfig.SecureKey;
+        if (((IDictionary<string, object>)newConfig).ContainsKey("ServiceAccessKey"))
+            oldConfig.VkSettings.ServiceAccessKey = newConfig.ServiceAccessKey;
+        if (((IDictionary<string, object>)newConfig).ContainsKey("Communities"))
+            oldConfig.VkSettings.Communities = newConfig.Communities;
+
+        var newAppSettingsJson = JsonConvert.SerializeObject(oldConfig, Formatting.Indented, jsonSettings);
+        File.WriteAllText(appSettingsPath, newAppSettingsJson);
         Log.Logger.Information("Settings file updated");
-        Log.Logger.Information("Restarting service...");
 
+        if (!IsRunning) return Task.FromResult(new SetConfigurationReply());
+        Log.Logger.Information("Restarting service...");
         StopCollecting();
         DataCollectors.Clear();
-        
         var configBuilder = new ConfigurationBuilder()
             .SetBasePath(Environment.CurrentDirectory)
             .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
@@ -131,9 +145,9 @@ public class DataCollectionService : DataCollection.DataCollectionBase
         }
     }
 
-    private void InsertToDatabase(CommentData dataFrame)
+    private void InsertToDatabase(Comment frame)
     {
-        _saveDatabase.Add(dataFrame);
+        _saveDatabase.Add(frame);
     }
 
     #region Startup

@@ -22,7 +22,7 @@ public partial class SelectedCommentsForm : Form
         _lastIndex = 0;
         _cancellationTokenSource = new CancellationTokenSource();
         SelectedCommentsDataGridView.Rows.Clear();
-        var progress = new Progress<List<EvaluateResult>>(UpdateControls);
+        var progress = new Progress<List<EvaluatedComment>>(UpdateControls);
         await Task.Run(async () => await GettingResultsLoop(progress), _cancellationTokenSource.Token);
     }
     public void StopDisplayData()
@@ -30,7 +30,7 @@ public partial class SelectedCommentsForm : Form
         _cancellationTokenSource.Cancel();
     }
 
-    private async Task GettingResultsLoop(IProgress<List<EvaluateResult>> progress)
+    private async Task GettingResultsLoop(IProgress<List<EvaluatedComment>> progress)
     {
         while (!_cancellationTokenSource.Token.IsCancellationRequested)
         {
@@ -42,14 +42,14 @@ public partial class SelectedCommentsForm : Form
         }
     }
 
-    private void UpdateControls(List<EvaluateResult> list)
+    private void UpdateControls(List<EvaluatedComment> list)
     {
         foreach (var comment in list)
         {
             SelectedCommentsDataGridView.Rows.Add(
-                comment.CommentData.CommentId,
-                comment.CommentData.PostDate,
-                comment.CommentData.Text,
+                comment.RelatedComment.CommentId,
+                comment.RelatedComment.PostDate,
+                comment.RelatedComment.Text,
                 comment.EvaluateCategory,
                 comment.EvaluateProbability
             );

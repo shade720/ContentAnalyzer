@@ -22,7 +22,7 @@ public partial class AllCommentsForm : Form
         _cancellationTokenSource = new CancellationTokenSource();
         _lastIndex = 0;
         AllCommentsDataGridView.Rows.Clear();
-        var progress = new Progress<List<CommentData>>(UpdateControls);
+        var progress = new Progress<List<Comment>>(UpdateControls);
         await Task.Run(async () => await GettingResultsLoop(progress), _cancellationTokenSource.Token);
     }
 
@@ -31,7 +31,7 @@ public partial class AllCommentsForm : Form
         _cancellationTokenSource.Cancel();
     }
 
-    private async Task GettingResultsLoop(IProgress<List<CommentData>> progress)
+    private async Task GettingResultsLoop(IProgress<List<Comment>> progress)
     {
         while (!_cancellationTokenSource.Token.IsCancellationRequested)
         {
@@ -43,7 +43,7 @@ public partial class AllCommentsForm : Form
         }
     }
 
-    private void UpdateControls(List<CommentData> list)
+    private void UpdateControls(List<Comment> list)
     {
         foreach (var comment in list)
         {

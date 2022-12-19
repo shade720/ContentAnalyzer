@@ -28,10 +28,10 @@ internal class CollectionServiceClient : ServiceClient, IDisposable
         return result.LogFile.ToStringUtf8();
     }
 
-    public List<CommentData> GetComments(int startIndex)
+    public List<Comment> GetComments(int startIndex)
     {
         var comments = _dataCollectionClient.GetCommentsFrom(new GetCommentsRequest { StartIndex = startIndex });
-        return comments.Result.Select(comment => new CommentData
+        return comments.Result.Select(comment => new Comment
             {
                 Id = comment.Id,
                 CommentId = comment.CommentId,

@@ -54,7 +54,7 @@ public static class Startup
 
         void Process(PredictResult predictResult)
         {
-            Log.Logger.Information("Predict {0} ----> {1}\n\n", predictResult.CommentData.Text,
+            Log.Logger.Information("Predict {0} ----> {1}\n\n", predictResult.Comment.Text,
                 predictResult.ToString());
         }
 

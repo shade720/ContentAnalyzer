@@ -5,8 +5,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Common.Migrations
 {
+    /// <inheritdoc />
     public partial class Initial : Migration
     {
+        /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
@@ -28,36 +30,37 @@ namespace Common.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "EvaluateResults",
+                name: "EvaluatedComments",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CommentDataId = table.Column<long>(type: "bigint", nullable: false),
+                    CommentId = table.Column<long>(type: "bigint", nullable: false),
                     EvaluateCategory = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     EvaluateProbability = table.Column<double>(type: "float", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EvaluateResults", x => x.Id);
+                    table.PrimaryKey("PK_EvaluatedComments", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_EvaluateResults_Comments_CommentDataId",
-                        column: x => x.CommentDataId,
+                        name: "FK_EvaluatedComments_Comments_CommentId",
+                        column: x => x.CommentId,
                         principalTable: "Comments",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_EvaluateResults_CommentDataId",
-                table: "EvaluateResults",
-                column: "CommentDataId");
+                name: "IX_EvaluatedComments_CommentId",
+                table: "EvaluatedComments",
+                column: "CommentId");
         }
 
+        /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "EvaluateResults");
+                name: "EvaluatedComments");
 
             migrationBuilder.DropTable(
                 name: "Comments");

@@ -1,4 +1,6 @@
 using DevTool.Models;
+using Configuration = DevTool.Models.Configuration;
+using ConfigurationManager = DevTool.Models.ConfigurationManager;
 
 namespace DevTool.Forms
 {
@@ -11,6 +13,7 @@ namespace DevTool.Forms
             _serviceManager = serviceManager;
 
             SetConfiguration(ConfigurationManager.GetConfiguration());
+            SetVkConfiguration(ConfigurationManager.GetVkConfiguration());
 
             _serviceManager.Subscribe(RefreshCollectionInfo, RefreshAnalysisInfo);
             _serviceManager.SetCollectionServiceHost(CollectionServiceEndpoint.Text);
@@ -31,7 +34,7 @@ namespace DevTool.Forms
 
         private void RefreshAnalysisServiceInfo_Click(object sender, EventArgs e)
         {
-            PollAndRefreshCollection();
+            PollAndRefreshAnalysis();
         }
 
         private void PollAndRefreshCollection()
@@ -209,9 +212,9 @@ namespace DevTool.Forms
             AnalysisServiceEndpoint.Items.Clear();
             CollectionServiceHosts.Items.Clear();
             AnalysisServiceHosts.Items.Clear();
-            CollectionServiceHosts.Items.AddRange(configuration.CollectionServiceEndpoint.ToArray());
+            CollectionServiceHosts.Items.AddRange(configuration.CollectionServiceEndpoints.ToArray());
             AnalysisServiceHosts.Items.AddRange(configuration.AnalysisServiceEndpoints.ToArray());
-            CollectionServiceEndpoint.Items.AddRange(configuration.CollectionServiceEndpoint.ToArray());
+            CollectionServiceEndpoint.Items.AddRange(configuration.CollectionServiceEndpoints.ToArray());
             AnalysisServiceEndpoint.Items.AddRange(configuration.AnalysisServiceEndpoints.ToArray());
             CollectionServiceEndpoint.Text = configuration.CurrentCollectionServiceEndpoint;
             AnalysisServiceEndpoint.Text = configuration.CurrentAnalysisServiceEndpoint;
@@ -219,26 +222,31 @@ namespace DevTool.Forms
             ScanCommentsDelay.Text = configuration.ScanCommentsDelay.ToString();
             ScanPostDelay.Text = configuration.ScanPostDelay.ToString();
             PostQueueSize.Text = configuration.PostQueueSize.ToString();
+            EvaluateThreshold.Text = configuration.EvaluateThreshold.ToString();
+            ObserveDelay.Text = configuration.ObserveDelay.ToString();
         }
 
         private void SaveConfiguration_Click(object sender, EventArgs e)
         {
             var currentConfig = new Configuration
             {
-                CollectionServiceEndpoint = new List<string>(CollectionServiceHosts.Items.OfType<string>()),
+                CollectionServiceEndpoints = new List<string>(CollectionServiceHosts.Items.OfType<string>()),
                 AnalysisServiceEndpoints = new List<string>(AnalysisServiceHosts.Items.OfType<string>()),
                 CurrentCollectionServiceEndpoint = CollectionServiceEndpoint.Text,
                 CurrentAnalysisServiceEndpoint = AnalysisServiceEndpoint.Text,
                 ConnectionString = ConnectionString.Text,
                 ScanCommentsDelay = int.Parse(ScanCommentsDelay.Text),
                 ScanPostDelay = int.Parse(ScanPostDelay.Text),
-                PostQueueSize = int.Parse(PostQueueSize.Text)
+                PostQueueSize = int.Parse(PostQueueSize.Text),
+                ObserveDelay = int.Parse(ObserveDelay.Text),
+                EvaluateThreshold = int.Parse(EvaluateThreshold.Text)
             };
             ConfigurationManager.SaveConfiguration(currentConfig);
         }
         private void AddCollectionServiceHost_Click(object sender, EventArgs e)
         {
             CollectionServiceHosts.Items.Add(NewCollectionHost.Text);
+            NewCommunity.Text = string.Empty;
         }
 
         private void DeleteCollectionServiceHost_Click(object sender, EventArgs e)
@@ -257,8 +265,64 @@ namespace DevTool.Forms
         }
         private void LoadConfiguration_Click(object sender, EventArgs e)
         {
-            var file = File.ReadAllText("appsettings.json");
-            _serviceManager.LoadConfiguration(file);
+            _serviceManager.LoadConfiguration(File.ReadAllText("configuration.json"));
+        }
+
+        private void SetLocalConfig_Click(object sender, EventArgs e)
+        {
+            SetConfiguration(ConfigurationManager.GetConfiguration());
+        }
+
+        #endregion
+
+        #region VkCollector
+
+        private void AddCommunity_Click(object sender, EventArgs e)
+        {
+            Communities.Items.Add(NewCommunity.Text);
+            NewCommunity.Text = string.Empty;
+        }
+
+        private void DeleteCommunity_Click(object sender, EventArgs e)
+        {
+            if (Communities.SelectedIndex == -1) return;
+            Communities.Items.RemoveAt(Communities.SelectedIndex);
+        }
+
+        private void SaveVkSettings_Click(object sender, EventArgs e)
+        {
+            var vkConfiguration = new VkConfiguration
+            {
+                ApplicationId = int.Parse(ApplicationId.Text),
+                SecureKey = SecureKey.Text,
+                ServiceAccessKey = ServiceAccessKey.Text,
+                Communities = new List<int>(Communities.Items.OfType<string>().Select(int.Parse))
+            };
+            ConfigurationManager.SaveVkConfiguration(vkConfiguration);
+        }
+
+        private void LoadVkSettings_Click(object sender, EventArgs e)
+        {
+            _serviceManager.LoadConfiguration(File.ReadAllText("vkSettings.json"));
+        }
+
+        private void LocalConfiguration_Click(object sender, EventArgs e)
+        {
+            var configuration = ConfigurationManager.GetVkConfiguration();
+            if (configuration is null) return;
+            SetVkConfiguration(configuration);
+        }
+
+        private void SetVkConfiguration(VkConfiguration configuration)
+        {
+            ServiceAccessKey.Text = configuration.ServiceAccessKey;
+            SecureKey.Text = configuration.SecureKey;
+            ApplicationId.Text = configuration.ApplicationId.ToString();
+            Communities.Items.Clear();
+            foreach (var community in configuration.Communities)
+            {
+                Communities.Items.Add(community.ToString());
+            }
         }
 
         #endregion

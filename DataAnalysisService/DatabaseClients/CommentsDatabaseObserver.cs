@@ -5,15 +5,14 @@ using Serilog;
 
 namespace DataAnalysisService.DatabaseClients;
 
-public class AllCommentsDb : DatabaseObserver
+public class CommentsDatabaseObserver : DatabaseObserver
 {
-    private long _lastReceivedId;
     private CancellationTokenSource? _cancellation;
-    private Action<CommentData>? _dataProcessor;
+    private Action<Common.EntityFramework.Comment>? _dataProcessor;
     private readonly IDbContextFactory<CommentsContext> _contextFactory;
     private readonly int _observeDelay;
 
-    public AllCommentsDb(IDbContextFactory<CommentsContext> contextFactory, int observeDelayMs)
+    public CommentsDatabaseObserver(IDbContextFactory<CommentsContext> contextFactory, int observeDelayMs)
     {
         _contextFactory = contextFactory;
         _observeDelay = observeDelayMs;
@@ -41,7 +40,7 @@ public class AllCommentsDb : DatabaseObserver
         Log.Logger.Information("Loading stopped");
     }
 
-    public override void OnDataArrived(Action<CommentData> handler) => _dataProcessor = handler;
+    public override void OnDataArrived(Action<Common.EntityFramework.Comment> handler) => _dataProcessor = handler;
 
     #endregion
 
@@ -62,10 +61,9 @@ public class AllCommentsDb : DatabaseObserver
     private void LoadData()
     {
         using var context = _contextFactory.CreateDbContext();
-        var newComments = context.Comments.Where(c => c.Id > _lastReceivedId && c.EvaluateResults.Count == 0);
+        var newComments = context.Comments.Where(c => !c.IncludedInEvaluatedComments.Any());
         foreach (var comment in newComments)
         {
-            _lastReceivedId = comment.Id;
             _dataProcessor?.Invoke(comment);
         }
     }

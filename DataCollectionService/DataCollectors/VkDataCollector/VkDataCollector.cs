@@ -20,8 +20,8 @@ public class VkDataCollector : IDataCollector
         _commentManager = new CommentDataManager();
     }
 
-    public void Subscribe(Action<CommentData> handler) => _commentManager.OnNewCommentFoundEvent += handler.Invoke;
-    public void Unsubscribe(Action<CommentData> handler) => _commentManager.OnNewCommentFoundEvent -= handler.Invoke;
+    public void Subscribe(Action<Comment> handler) => _commentManager.OnNewCommentFoundEvent += handler.Invoke;
+    public void Unsubscribe(Action<Comment> handler) => _commentManager.OnNewCommentFoundEvent -= handler.Invoke;
 
     public void Configure(Config configure) => _config = configure;
 

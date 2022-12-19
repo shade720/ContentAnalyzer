@@ -29,13 +29,13 @@ internal class AnalysisServiceClient : ServiceClient, IDisposable
         _dataAnalysisClient = new DataAnalysis.DataAnalysisClient(Channel);
     }
 
-    public List<EvaluateResult> GetEvaluateResults(int startIndex)
+    public List<EvaluatedComment> GetEvaluateResults(int startIndex)
     {
         var comments = _dataAnalysisClient.GetEvaluateResultsFrom(new EvaluateResultsRequest { StartIndex = startIndex });
-        return comments.Result.Select(evaluateResultProto => new EvaluateResult
+        return comments.Result.Select(evaluateResultProto => new EvaluatedComment
         {
             Id = evaluateResultProto.Id,
-            CommentData = new CommentData
+            RelatedComment = new Comment
             {
                 Id = evaluateResultProto.CommentData.Id,
                 CommentId = evaluateResultProto.CommentData.CommentId,
@@ -45,7 +45,7 @@ internal class AnalysisServiceClient : ServiceClient, IDisposable
                 PostId = evaluateResultProto.CommentData.PostId,
                 Text = evaluateResultProto.CommentData.Text
             },
-            CommentDataId = evaluateResultProto.CommentId,
+            CommentId = evaluateResultProto.CommentId,
             EvaluateCategory = evaluateResultProto.EvaluateCategory,
             EvaluateProbability = evaluateResultProto.EvaluateProbability
         }).ToList();

@@ -1,15 +1,16 @@
 ﻿using System.Text.RegularExpressions;
 using Common.EntityFramework;
 using VkNet.Model;
+using Comment = Common.EntityFramework.Comment;
 
 namespace DataCollectionService.DataCollectors.VkDataCollector.Data;
 
 internal class CommentDataManager
 {
-    public delegate void NewCommentFound(CommentData entry);
+    public delegate void NewCommentFound(Comment entry);
     public event NewCommentFound? OnNewCommentFoundEvent;
 
-    public void SendCommentData(Comment comment)
+    public void SendCommentData(VkNet.Model.Comment comment)
     {
         if (IsCommentInvalid(comment)) return;
         var convertedComment = Convert(comment);
@@ -17,14 +18,14 @@ internal class CommentDataManager
         OnNewCommentFoundEvent?.Invoke(convertedComment);
     }
 
-    public void SendAllCommentData(IEnumerable<Comment> comments)
+    public void SendAllCommentData(IEnumerable<VkNet.Model.Comment> comments)
     {
         foreach (var comment in comments) SendCommentData(comment);
     }
 
-    private static CommentData Convert(Comment comment)
+    private static Comment Convert(VkNet.Model.Comment comment)
     {
-        return new CommentData
+        return new Comment
         {
             CommentId = comment.Id,
             PostId = comment.PostId!.Value,
@@ -43,7 +44,7 @@ internal class CommentDataManager
         return result;
     }
 
-    private static bool IsCommentInvalid(Comment comment)
+    private static bool IsCommentInvalid(VkNet.Model.Comment comment)
     {
         return comment.PostId is null ||
                comment.OwnerId is null ||

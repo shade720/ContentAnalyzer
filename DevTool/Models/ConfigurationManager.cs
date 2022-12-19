@@ -14,4 +14,15 @@ internal static class ConfigurationManager
     {
         File.WriteAllText(@"configuration.json", JsonConvert.SerializeObject(configuration));
     }
+
+    public static VkConfiguration? GetVkConfiguration()
+    {
+        if (!File.Exists(@"vkSettings.json")) return null;
+        var configFile = File.ReadAllText(@"vkSettings.json");
+        return JsonConvert.DeserializeObject<VkConfiguration>(configFile);
+    }
+    public static void SaveVkConfiguration(VkConfiguration configuration)
+    {
+        File.WriteAllText(@"vkSettings.json", JsonConvert.SerializeObject(configuration));
+    }
 }

@@ -9,7 +9,7 @@ public abstract class AnalyzeModel
     
     protected delegate void OnError(string error);
     protected delegate void OnPrediction(PredictResult warning);
-    protected delegate void OnEvaluation(EvaluateResult warning);
+    protected delegate void OnEvaluation(EvaluatedComment warning);
 
     protected OnError? OnErrorEvent;
     protected OnPrediction? OnPredictionEvent;
@@ -22,14 +22,14 @@ public abstract class AnalyzeModel
         AnalyzeModelInfo = modelInfo;
     }
 
-    public void Subscribe(Action<PredictResult>? predictionResultsHandler, Action<EvaluateResult>? evaluateResultsHandler, Action<string>? scriptMessagesHandler)
+    public void Subscribe(Action<PredictResult>? predictionResultsHandler, Action<EvaluatedComment>? evaluateResultsHandler, Action<string>? scriptMessagesHandler)
     {
         if (scriptMessagesHandler is not null) OnErrorEvent += scriptMessagesHandler.Invoke;
         if (predictionResultsHandler is not null) OnPredictionEvent += predictionResultsHandler.Invoke;
         if (evaluateResultsHandler is not null) OnEvaluationEvent += evaluateResultsHandler.Invoke;
     }
 
-    public void Unsubscribe(Action<PredictResult>? predictionResultsHandler, Action<EvaluateResult>? evaluateResultsHandler, Action<string>? scriptMessagesHandler)
+    public void Unsubscribe(Action<PredictResult>? predictionResultsHandler, Action<EvaluatedComment>? evaluateResultsHandler, Action<string>? scriptMessagesHandler)
     {
         if (scriptMessagesHandler is not null) OnErrorEvent -= scriptMessagesHandler.Invoke;
         if (predictionResultsHandler is not null) OnPredictionEvent -= predictionResultsHandler.Invoke;
@@ -40,7 +40,7 @@ public abstract class AnalyzeModel
 
     public abstract void StartTrainModel();
 
-    public abstract void Predict(CommentData comment);
+    public abstract void Predict(Comment comment);
 
     public abstract void StopModel();
 }

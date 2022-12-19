@@ -5,28 +5,27 @@ using Serilog;
 
 namespace DataCollectionService.DatabaseClients;
 
-public class AllCommentsDb : DatabaseClient<CommentData>
+public class CommentsDatabaseClient : DatabaseClient<Comment>
 {
     private readonly IDbContextFactory<CommentsContext> _contextFactory;
-    public AllCommentsDb(IDbContextFactory<CommentsContext> contextFactory)
+    public CommentsDatabaseClient(IDbContextFactory<CommentsContext> contextFactory)
     {
         _contextFactory = contextFactory;
     }
-    public override void Add(CommentData commentData)
+    public override void Add(Comment comment)
     {
-        if (IsDataFrameInvalid(commentData)) return;
+        if (IsDataFrameInvalid(comment)) return;
         using var context = _contextFactory.CreateDbContext();
-        if (context.Comments.Contains(commentData)) return;
-        context.Comments.Add(commentData);
+        if (context.Comments.Any(x => x.CommentId == comment.CommentId)) return;
+        context.Comments.Add(comment);
         context.SaveChanges();
         Log.Logger.Information("{0} comments collected", context.Comments.Count());
     }
 
-    public override GetRangeResult GetRange(int startIndex)
+    public override IQueryable<Comment> GetRange(int startIndex)
     {
         using var context = _contextFactory.CreateDbContext();
-        var queryResult = context.Comments.Where(c => c.Id > startIndex);
-        return new GetRangeResult(queryResult.ToList());
+        return context.Comments.Where(c => c.Id > startIndex);
     }
 
     public override void Clear()
@@ -36,8 +35,8 @@ public class AllCommentsDb : DatabaseClient<CommentData>
         context.SaveChanges();
     }
 
-    private static bool IsDataFrameInvalid(CommentData dataFrame)
+    private static bool IsDataFrameInvalid(Comment frame)
     {
-        return string.IsNullOrEmpty(dataFrame.Text) || string.IsNullOrWhiteSpace(dataFrame.Text) || dataFrame.Text.Length < 5;
+        return string.IsNullOrEmpty(frame.Text) || string.IsNullOrWhiteSpace(frame.Text) || frame.Text.Length < 5;
     }
 }

@@ -32,22 +32,22 @@ internal class UniversalSentenceEncoderModel : AnalyzeModel
         _scriptInitialize.WaitOne();
     }
 
-    public override void Predict(CommentData commentData)
+    public override void Predict(Comment comment)
     {
         if (!IsRunning) throw new Exception("Predict model not initialized");
         if (Runner is null) throw new Exception("Script not running");
 
-        Runner.WriteToScript(commentData.Text);
+        Runner.WriteToScript(comment.Text);
         var predictFromScript = Runner.ReadFromScript();
-        var predictResult = new PredictResult(commentData, predictFromScript, AnalyzeModelInfo.Categories);
+        var predictResult = new PredictResult(comment, predictFromScript, AnalyzeModelInfo.Categories);
         OnPredictionEvent?.Invoke(predictResult);
         if (!Filter(predictResult)) return;
         var maxPredict = predictResult.Predicts.MaxBy(x => x.PredictValue);
         if (maxPredict is null) throw new Exception("Exception due evaluating");
-        var evaluateResult = new EvaluateResult
+        var evaluateResult = new EvaluatedComment
         {
-            CommentDataId = predictResult.CommentData.Id, 
-            CommentData = predictResult.CommentData, 
+            CommentId = predictResult.Comment.Id, 
+            RelatedComment = predictResult.Comment, 
             EvaluateCategory = maxPredict.Title, 
             EvaluateProbability = maxPredict.PredictValue
         };

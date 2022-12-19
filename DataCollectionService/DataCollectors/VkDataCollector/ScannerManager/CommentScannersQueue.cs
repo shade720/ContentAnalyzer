@@ -21,7 +21,7 @@ internal class CommentScannersQueue
     {
         scanner.StartScan();
         _queue.Enqueue(scanner);
-        Log.Logger.Information("Comment scanner added to queue");
+        Log.Logger.Information("RelatedComment scanner added to queue");
     }
 
     private void RemoveScanner()

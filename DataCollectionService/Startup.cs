@@ -10,18 +10,20 @@ public static class Startup
         Services.DataCollectionService.AddDataCollector(() =>
         {
             var vkDataCollector = new VkDataCollector();
+            var vkSection = configuration.GetSection("VkSettings");
             vkDataCollector.Configure(new Config
             {
-                ApplicationId = Convert.ToUInt64(configuration["VkApplicationId"]),
-                SecureKey = configuration["VkSecureKey"],
-                ServiceAccessKey = configuration["VkServiceAccessKey"],
+                ApplicationId = Convert.ToUInt64(vkSection["ApplicationId"]),
+                SecureKey = vkSection["SecureKey"],
+                ServiceAccessKey = vkSection["ServiceAccessKey"],
                 ScanCommentsDelay = Convert.ToInt32(configuration["ScanCommentsDelay"]),
                 ScanPostDelay = Convert.ToInt32(configuration["ScanPostDelay"]),
                 ObservedPostQueueSize = Convert.ToInt32(configuration["PostQueueSize"]),
             });
-            vkDataCollector.AddCommunity(Convert.ToInt64(configuration["NRGroupId"]));
-            vkDataCollector.AddCommunity(Convert.ToInt64(configuration["LentachGroupId"]));
-            vkDataCollector.AddCommunity(Convert.ToInt64(configuration["CSGOHSGroupId"]));
+            foreach (var community in vkSection.GetSection("Communities").Get<List<string>>())
+            {
+                vkDataCollector.AddCommunity(Convert.ToInt64(community));
+            }
             vkDataCollector.Subscribe(commentData => Log.Logger.Information("Add {0} {1} {2} {3} {4} {5}",commentData.CommentId, commentData.PostId, commentData.GroupId, commentData.AuthorId, commentData.Text, commentData.PostDate));
             return vkDataCollector;
         });

@@ -156,10 +156,10 @@
             this.Date.ReadOnly = true;
             this.Date.Width = 125;
             // 
-            // Comment
+            // RelatedComment
             // 
             this.Comment.Frozen = true;
-            this.Comment.HeaderText = "Comment";
+            this.Comment.HeaderText = "RelatedComment";
             this.Comment.MinimumWidth = 30;
             this.Comment.Name = "Comment";
             this.Comment.ReadOnly = true;
@@ -194,7 +194,7 @@
             "Group id",
             "Author id",
             "Date",
-            "Comment text"});
+            "RelatedComment text"});
             this.SearchComboBox.Location = new System.Drawing.Point(6, 51);
             this.SearchComboBox.Name = "SearchComboBox";
             this.SearchComboBox.Size = new System.Drawing.Size(175, 31);
