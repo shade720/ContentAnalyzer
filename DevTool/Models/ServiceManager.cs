@@ -1,4 +1,7 @@
-﻿namespace DevTool.Models;
+﻿using Common;
+using Common.EntityFramework;
+
+namespace DevTool.Models;
 
 public class ServiceManager
 {
@@ -17,6 +20,11 @@ public class ServiceManager
     private IProgress<ServiceInfo> OnAnalysisServicInfoArrived;
 
     #region Public
+
+    public IEnumerable<EvaluatedComment> GetEvaluatedComments(CommentsQueryFilter filter)
+    {
+        return _analysisServiceClient.GetEvaluateResults(filter);
+    }
 
     public void Subscribe(Action<ServiceInfo> collectionInfoProcessor, Action<ServiceInfo> analysisInfoProcessor)
     {

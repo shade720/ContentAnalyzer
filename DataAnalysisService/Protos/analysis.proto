@@ -2,7 +2,6 @@ syntax = "proto3";
 
 option csharp_namespace = "DataAnalysisService";
 import "google/protobuf/timestamp.proto";
-
 package analysis;
 
 service DataAnalysis {
@@ -25,11 +24,19 @@ message StartAnalysisServiceReply{}
 message StopAnalysisServiceRequest{}
 message StopAnalysisServiceReply{}
 
+message CommentsQueryFilterProto{
+	int64 PostId = 1;
+	int64 GroupId = 2;
+	int64 AuthorId = 3;
+	google.protobuf.Timestamp FromDate = 4;
+	google.protobuf.Timestamp ToDate = 5;
+}
+
 message EvaluatedCommentsRequest{
- int32 StartIndex = 1;
+	CommentsQueryFilterProto Filter = 1;
 }
 message EvaluatedCommentsReply{
- repeated EvaluatedCommentProto result = 1;
+	repeated EvaluatedCommentProto EvaluatedComments = 1;
 }
 
 message EvaluatedCommentProto{

@@ -47,7 +47,8 @@ public class DataCollectionService : DataCollection.DataCollectionBase
 
     public override Task<GetCommentsReply> GetCommentsFrom(GetCommentsRequest request, ServerCallContext context)
     {
-        var range = _saveDatabase.GetRange(request.StartIndex);
+        var filter = new CommentsQueryFilter {Id = request.StartIndex};
+        var range = _saveDatabase.GetRange(filter);
         var convertedRange = new RepeatedField<CommentDataProto>();
         foreach (var comment in range)
         {
@@ -127,6 +128,8 @@ public class DataCollectionService : DataCollection.DataCollectionBase
 
     #endregion
 
+    #region Private
+
     private void StartCollecting()
     {
         foreach (var dataCollector in DataCollectors)
@@ -149,6 +152,8 @@ public class DataCollectionService : DataCollection.DataCollectionBase
     {
         _saveDatabase.Add(frame);
     }
+
+    #endregion
 
     #region Startup
 

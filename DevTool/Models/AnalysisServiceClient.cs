@@ -1,5 +1,6 @@
-﻿using Common.EntityFramework;
-using DataAnalysisServiceClient;
+﻿using Common;
+using Common.EntityFramework;
+using DataAnalysisClient;
 using Google.Protobuf.WellKnownTypes;
 
 namespace DevTool.Models;
@@ -29,26 +30,34 @@ internal class AnalysisServiceClient : ServiceClient, IDisposable
         _dataAnalysisClient = new DataAnalysis.DataAnalysisClient(Channel);
     }
 
-    public List<EvaluatedComment> GetEvaluateResults(int startIndex)
+    public IEnumerable<EvaluatedComment> GetEvaluateResults(CommentsQueryFilter filter)
     {
-        var comments = _dataAnalysisClient.GetEvaluateResultsFrom(new EvaluateResultsRequest { StartIndex = startIndex });
-        return comments.Result.Select(evaluateResultProto => new EvaluatedComment
+        var requestFilter = new CommentsQueryFilterProto
+        {
+            AuthorId = filter.AuthorId,
+            PostId = filter.PostId,
+            GroupId = filter.GroupId,
+            FromDate = new Timestamp { Seconds = new DateTimeOffset(filter.FromDate).ToUnixTimeSeconds() },
+            ToDate = new Timestamp { Seconds = new DateTimeOffset(filter.ToDate).ToUnixTimeSeconds() }
+        };
+        var comments = _dataAnalysisClient.GetEvaluatedComments(new EvaluatedCommentsRequest { Filter = requestFilter });
+        return comments.EvaluatedComments.Select(evaluateResultProto => new EvaluatedComment
         {
             Id = evaluateResultProto.Id,
             RelatedComment = new Comment
             {
-                Id = evaluateResultProto.CommentData.Id,
-                CommentId = evaluateResultProto.CommentData.CommentId,
-                AuthorId = evaluateResultProto.CommentData.AuthorId,
-                GroupId = evaluateResultProto.CommentData.GroupId,
-                PostDate = evaluateResultProto.CommentData.PostDate.ToDateTime(),
-                PostId = evaluateResultProto.CommentData.PostId,
-                Text = evaluateResultProto.CommentData.Text
+                Id = evaluateResultProto.Comment.Id,
+                CommentId = evaluateResultProto.Comment.CommentId,
+                AuthorId = evaluateResultProto.Comment.AuthorId,
+                GroupId = evaluateResultProto.Comment.GroupId,
+                PostDate = evaluateResultProto.Comment.PostDate.ToDateTime(),
+                PostId = evaluateResultProto.Comment.PostId,
+                Text = evaluateResultProto.Comment.Text
             },
             CommentId = evaluateResultProto.CommentId,
             EvaluateCategory = evaluateResultProto.EvaluateCategory,
             EvaluateProbability = evaluateResultProto.EvaluateProbability
-        }).ToList();
+        });
     }
 
     public new void Dispose()

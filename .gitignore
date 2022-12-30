@@ -364,3 +364,6 @@ MigrationBackup/
 FodyWeavers.xsd
 /Testtt
 /Environment/env/Lib/site-packages
+/Environment/env
+/Environment/torchEnv
+*.py

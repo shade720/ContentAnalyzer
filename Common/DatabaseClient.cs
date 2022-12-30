@@ -1,10 +1,8 @@
-﻿using Common.EntityFramework;
-
-namespace Common;
+﻿namespace Common;
 
 public abstract class DatabaseClient<T>
 {
     public abstract void Add(T result);
-    public abstract IQueryable<T> GetRange(int startIndex);
+    public abstract List<T> GetRange(CommentsQueryFilter filter);
     public abstract void Clear();
 }

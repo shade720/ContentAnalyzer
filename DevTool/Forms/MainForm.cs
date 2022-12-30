@@ -78,15 +78,16 @@ namespace DevTool.Forms
             new LogViewerWindow(_serviceManager.ViewAnalysisLog(DateTime.Parse(AnalysisLogDate.Text))).Show();
         }
 
-        private void ApplyNewCollectionServiceEndpoint_Click(object sender, EventArgs e)
+        private void ApplyNewCollectionServiceEndpoint_Click_1(object sender, EventArgs e)
         {
             _serviceManager.SetCollectionServiceHost(CollectionServiceEndpoint.Text);
             PollAndRefreshCollection();
         }
 
-        private void ApplyAnalysisServiceEndpoint_Click(object sender, EventArgs e)
+
+        private void ApplyAnalysisServiceEndpoint_Click_1(object sender, EventArgs e)
         {
-            _serviceManager.SetCollectionServiceHost(AnalysisServiceEndpoint.Text);
+            _serviceManager.SetAnalysisServiceHost(AnalysisServiceEndpoint.Text);
             PollAndRefreshAnalysis();
         }
 
@@ -107,6 +108,8 @@ namespace DevTool.Forms
             }
             StartCollectionService.Visible = false;
             StopCollectionService.Visible = true;
+            StartAll.Visible = StartAnalysisService.Visible;
+            StopAll.Visible = !StartAnalysisService.Visible;
         }
 
         private void StartAnalysisService_Click(object sender, EventArgs e)
@@ -122,6 +125,8 @@ namespace DevTool.Forms
             }
             StartAnalysisService.Visible = false;
             StopAnalysisService.Visible = true;
+            StartAll.Visible = StartCollectionService.Visible;
+            StopAll.Visible = !StartCollectionService.Visible;
         }
 
         private void StopCollectionService_Click(object sender, EventArgs e)
@@ -138,6 +143,8 @@ namespace DevTool.Forms
             }
             StartCollectionService.Visible = true;
             StopCollectionService.Visible = false;
+            StartAll.Visible = StartAnalysisService.Visible;
+            StopAll.Visible = !StartAnalysisService.Visible;
         }
 
         private void StopAnalysisService_Click(object sender, EventArgs e)
@@ -154,6 +161,8 @@ namespace DevTool.Forms
             }
             StartAnalysisService.Visible = true;
             StopAnalysisService.Visible = false;
+            StartAll.Visible = StartCollectionService.Visible;
+            StopAll.Visible = !StartCollectionService.Visible;
         }
 
         private void ClearCommentsDatabase_Click(object sender, EventArgs e)
@@ -180,6 +189,10 @@ namespace DevTool.Forms
             }
             StartAll.Visible = false;
             StopAll.Visible = true;
+            StartAnalysisService.Visible = false;
+            StartCollectionService.Visible = false;
+            StopAnalysisService.Visible = true;
+            StopCollectionService.Visible = true;
         }
 
         private void StopAll_Click(object sender, EventArgs e)
@@ -198,6 +211,10 @@ namespace DevTool.Forms
             }
             StartAll.Visible = true;
             StopAll.Visible = false;
+            StartAnalysisService.Visible = true;
+            StartCollectionService.Visible = true;
+            StopAnalysisService.Visible = false;
+            StopCollectionService.Visible = false;
         }
 
         #endregion
@@ -218,7 +235,6 @@ namespace DevTool.Forms
             AnalysisServiceEndpoint.Items.AddRange(configuration.AnalysisServiceEndpoints.ToArray());
             CollectionServiceEndpoint.Text = configuration.CurrentCollectionServiceEndpoint;
             AnalysisServiceEndpoint.Text = configuration.CurrentAnalysisServiceEndpoint;
-            ConnectionString.Text = configuration.ConnectionString;
             ScanCommentsDelay.Text = configuration.ScanCommentsDelay.ToString();
             ScanPostDelay.Text = configuration.ScanPostDelay.ToString();
             PostQueueSize.Text = configuration.PostQueueSize.ToString();
@@ -234,7 +250,6 @@ namespace DevTool.Forms
                 AnalysisServiceEndpoints = new List<string>(AnalysisServiceHosts.Items.OfType<string>()),
                 CurrentCollectionServiceEndpoint = CollectionServiceEndpoint.Text,
                 CurrentAnalysisServiceEndpoint = AnalysisServiceEndpoint.Text,
-                ConnectionString = ConnectionString.Text,
                 ScanCommentsDelay = int.Parse(ScanCommentsDelay.Text),
                 ScanPostDelay = int.Parse(ScanPostDelay.Text),
                 PostQueueSize = int.Parse(PostQueueSize.Text),
@@ -323,6 +338,140 @@ namespace DevTool.Forms
             {
                 Communities.Items.Add(community.ToString());
             }
+        }
+
+        #endregion
+
+        #region Report
+
+        private void OpenReport_Click(object sender, EventArgs e)
+        {
+            if (SaveFileDialog.ShowDialog() != DialogResult.OK) return;
+
+            var fromDate = DateTime.UnixEpoch;
+            var toDate = DateTime.UnixEpoch;
+            if (TodayCheckBox.Checked)
+                fromDate = DateTime.Today;
+            if (Last3DaysCheckBox.Checked)
+                fromDate = DateTime.Today.AddDays(-3);
+            if (LastWeekCheckBox.Checked)
+                fromDate = DateTime.Today.AddDays(-7);
+            if (LastMonthCheckBox.Checked)
+                fromDate = DateTime.Today.AddMonths(-1);
+            if (SelectedDateCheckBox.Checked)
+            {
+                fromDate = DateTime.Parse(FromDate.Text);
+                toDate = DateTime.Parse(ToDate.Text);
+                if (fromDate.Ticks >= toDate.Ticks)
+                    MessageBox.Show(@"'To' date must be more than 'From' date");
+            }
+
+            var filter = new Common.CommentsQueryFilter
+            {
+                AuthorId = !string.IsNullOrEmpty(AuthorId.Text) ? long.Parse(AuthorId.Text) : 0,
+                PostId = !string.IsNullOrEmpty(PostId.Text) ? long.Parse(PostId.Text) : 0,
+                GroupId = !string.IsNullOrEmpty(CommunityId.Text) ? long.Parse(CommunityId.Text) : 0,
+                FromDate = fromDate,
+                ToDate = toDate
+            };
+            try
+            {
+                Reporter.OpenReport(SaveFileDialog.FileName, _serviceManager.GetEvaluatedComments(filter));
+                MessageBox.Show(@"The report was created successfully");
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show($"Error: \r\n{exception.Message}\r\n{exception.StackTrace}");
+            }
+        }
+
+        #region CheckBoxHandlers
+
+        private void TodayCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            NonFiringState(() =>
+            {
+                TodayCheckBox.Checked = true;
+                Last3DaysCheckBox.Checked = false;
+                LastWeekCheckBox.Checked = false;
+                LastMonthCheckBox.Checked = false;
+                SelectedDateCheckBox.Checked = false;
+                FromDate.Enabled = false;
+                ToDate.Enabled = false;
+            });
+        }
+
+        private void Last3DaysCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            NonFiringState(() =>
+            {
+                TodayCheckBox.Checked = false;
+                Last3DaysCheckBox.Checked = true;
+                LastWeekCheckBox.Checked = false;
+                LastMonthCheckBox.Checked = false;
+                SelectedDateCheckBox.Checked = false;
+                FromDate.Enabled = false;
+                ToDate.Enabled = false;
+            });
+        }
+
+        private void LastWeekCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            NonFiringState(() =>
+            {
+                TodayCheckBox.Checked = false;
+                Last3DaysCheckBox.Checked = false;
+                LastWeekCheckBox.Checked = true;
+                LastMonthCheckBox.Checked = false;
+                SelectedDateCheckBox.Checked = false;
+                FromDate.Enabled = false;
+                ToDate.Enabled = false;
+            });
+        }
+
+        private void LastMonthCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            NonFiringState(() =>
+            {
+                TodayCheckBox.Checked = false;
+                Last3DaysCheckBox.Checked = false;
+                LastWeekCheckBox.Checked = false;
+                LastMonthCheckBox.Checked = true;
+                SelectedDateCheckBox.Checked = false;
+                FromDate.Enabled = false;
+                ToDate.Enabled = false;
+            });
+        }
+
+        private void SelectedDateCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            NonFiringState(() =>
+            {
+                TodayCheckBox.Checked = false;
+                Last3DaysCheckBox.Checked = false;
+                LastWeekCheckBox.Checked = false;
+                LastMonthCheckBox.Checked = false;
+                SelectedDateCheckBox.Checked = true;
+                FromDate.Enabled = true;
+                ToDate.Enabled = true;
+            });
+        }
+
+        #endregion
+
+        private void NonFiringState(Action action)
+        {
+            TodayCheckBox.CheckedChanged -= TodayCheckBox_CheckedChanged!;
+            Last3DaysCheckBox.CheckedChanged -= Last3DaysCheckBox_CheckedChanged!;
+            LastWeekCheckBox.CheckedChanged -= LastWeekCheckBox_CheckedChanged!;
+            LastMonthCheckBox.CheckedChanged -= LastMonthCheckBox_CheckedChanged!;
+            SelectedDateCheckBox.CheckedChanged -= SelectedDateCheckBox_CheckedChanged!;
+            action();
+            TodayCheckBox.CheckedChanged += TodayCheckBox_CheckedChanged!;
+            Last3DaysCheckBox.CheckedChanged += Last3DaysCheckBox_CheckedChanged!;
+            LastWeekCheckBox.CheckedChanged += LastWeekCheckBox_CheckedChanged!;
+            LastMonthCheckBox.CheckedChanged += LastMonthCheckBox_CheckedChanged!;
+            SelectedDateCheckBox.CheckedChanged += SelectedDateCheckBox_CheckedChanged!;
         }
 
         #endregion

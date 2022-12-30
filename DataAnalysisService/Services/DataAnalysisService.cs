@@ -55,7 +55,15 @@ public class DataAnalysisService : DataAnalysis.DataAnalysisBase
 
     public override Task<EvaluatedCommentsReply> GetEvaluatedComments(EvaluatedCommentsRequest request, ServerCallContext context)
     {
-        var range = _targetDatabase.GetRange(request.StartIndex);
+        var filter = new CommentsQueryFilter
+        {
+            AuthorId = request.Filter.AuthorId,
+            PostId = request.Filter.PostId,
+            GroupId = request.Filter.GroupId,
+            FromDate = request.Filter.FromDate.ToDateTime(),
+            ToDate = request.Filter.ToDate.ToDateTime()
+        };
+        var range = _targetDatabase.GetRange(filter);
 
         var convertedRange = new RepeatedField<EvaluatedCommentProto>();
         foreach (var evaluateResult in range)
@@ -78,7 +86,7 @@ public class DataAnalysisService : DataAnalysis.DataAnalysisBase
                 EvaluateProbability = evaluateResult.EvaluateProbability
             });
         }
-        return Task.FromResult(new EvaluatedCommentsReply { Result = { convertedRange } });
+        return Task.FromResult(new EvaluatedCommentsReply { EvaluatedComments = { convertedRange } });
     }
 
     public override Task<LogReply> GetLogs(LogRequest request, ServerCallContext context)

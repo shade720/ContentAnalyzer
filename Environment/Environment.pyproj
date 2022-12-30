@@ -4,15 +4,19 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>24b8a00f-6aff-4238-ba3c-5f54e192f0d2</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>predict3.py</StartupFile>
+    <StartupFile>last.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
     <Name>Environment</Name>
     <RootNamespace>Environment</RootNamespace>
-    <InterpreterId>MSBuild|env|$(MSBuildProjectFullPath)</InterpreterId>
+    <InterpreterId>MSBuild|torchEnv|$(MSBuildProjectFullPath)</InterpreterId>
     <IsWindowsApplication>False</IsWindowsApplication>
+    <LaunchProvider>Standard Python launcher</LaunchProvider>
+    <CommandLineArguments>
+    </CommandLineArguments>
+    <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -24,6 +28,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Environment.py" />
+    <Compile Include="fixNvPe.py" />
+    <Compile Include="last.py" />
+    <Compile Include="newModel.py" />
     <Compile Include="predict1.py" />
     <Compile Include="predict3.py" />
     <Compile Include="train1.py" />
@@ -39,6 +46,18 @@
       <PathEnvironmentVariable>PYTHONPATH</PathEnvironmentVariable>
       <Architecture>X64</Architecture>
     </Interpreter>
+    <Interpreter Include="torchEnv\">
+      <Id>torchEnv</Id>
+      <Version>3.9</Version>
+      <Description>torchEnv (Python 3.9 (64-bit))</Description>
+      <InterpreterPath>Scripts\python.exe</InterpreterPath>
+      <WindowsInterpreterPath>Scripts\pythonw.exe</WindowsInterpreterPath>
+      <PathEnvironmentVariable>PYTHONPATH</PathEnvironmentVariable>
+      <Architecture>X64</Architecture>
+    </Interpreter>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Last.ipynb" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in

@@ -22,10 +22,10 @@ public class CommentsDatabaseClient : DatabaseClient<Comment>
         Log.Logger.Information("{0} comments collected", context.Comments.Count());
     }
 
-    public override IQueryable<Comment> GetRange(int startIndex)
+    public override List<Comment> GetRange(CommentsQueryFilter filter)
     {
         using var context = _contextFactory.CreateDbContext();
-        return context.Comments.Where(c => c.Id > startIndex);
+        return context.Comments.Where(c => c.Id > filter.Id).ToList();
     }
 
     public override void Clear()
