@@ -5,32 +5,20 @@ using Google.Protobuf.WellKnownTypes;
 
 namespace DevTool.Models;
 
-internal class AnalysisServiceClient : ServiceClient, IDisposable
+internal class AnalysisServiceClient : ServiceClient<EvaluatedComment>
 {
     private readonly DataAnalysis.DataAnalysisClient _dataAnalysisClient;
-
-    public override void StartService()
-    {
-        _dataAnalysisClient.StartAnalysisService(new StartAnalysisServiceRequest());
-    }
-
-    public override void StopService()
-    {
-        _dataAnalysisClient.StopAnalysisService(new StopAnalysisServiceRequest());
-    }
-
-    public override string GetLogFile(DateTime date)
-    {
-        var result = _dataAnalysisClient.GetLogs(new LogRequest { LogDate = Timestamp.FromDateTime(date.ToUniversalTime()) });
-        return result.LogFile.ToStringUtf8();
-    }
-
     public AnalysisServiceClient(string dataAnalysisServiceHost) : base(dataAnalysisServiceHost)
     {
         _dataAnalysisClient = new DataAnalysis.DataAnalysisClient(Channel);
     }
 
-    public IEnumerable<EvaluatedComment> GetEvaluateResults(CommentsQueryFilter filter)
+    public override void ClearDatabase()
+    {
+        _dataAnalysisClient.ClearEvaluatedDatabase(new ClearEvaluatedDatabaseRequest());
+    }
+
+    public override IEnumerable<EvaluatedComment> GetResults(CommentsQueryFilter filter)
     {
         var requestFilter = new CommentsQueryFilterProto
         {
@@ -58,6 +46,25 @@ internal class AnalysisServiceClient : ServiceClient, IDisposable
             EvaluateCategory = evaluateResultProto.EvaluateCategory,
             EvaluateProbability = evaluateResultProto.EvaluateProbability
         });
+    }
+    public override void LoadConfiguration(string settings)
+    {
+        _dataAnalysisClient.SetConfiguration(new SetConfigurationRequest { Settings = settings });
+    }
+    public override void StartService()
+    {
+        _dataAnalysisClient.StartAnalysisService(new StartAnalysisServiceRequest());
+    }
+
+    public override void StopService()
+    {
+        _dataAnalysisClient.StopAnalysisService(new StopAnalysisServiceRequest());
+    }
+
+    protected override string GetLogFile(DateTime date)
+    {
+        var result = _dataAnalysisClient.GetLogs(new LogRequest { LogDate = Timestamp.FromDateTime(date.ToUniversalTime()) });
+        return result.LogFile.ToStringUtf8();
     }
 
     public new void Dispose()

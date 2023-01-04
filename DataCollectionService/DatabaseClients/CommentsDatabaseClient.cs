@@ -1,6 +1,7 @@
 ﻿using Common;
 using Common.EntityFramework;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Serilog;
 
 namespace DataCollectionService.DatabaseClients;
@@ -19,6 +20,7 @@ public class CommentsDatabaseClient : DatabaseClient<Comment>
         if (context.Comments.Any(x => x.CommentId == comment.CommentId)) return;
         context.Comments.Add(comment);
         context.SaveChanges();
+        Log.Logger.Information("Add {0} {1} {2} {3} {4} {5}", comment.CommentId, comment.PostId, comment.GroupId, comment.AuthorId, comment.Text, comment.PostDate);
         Log.Logger.Information("{0} comments collected", context.Comments.Count());
     }
 
@@ -31,7 +33,7 @@ public class CommentsDatabaseClient : DatabaseClient<Comment>
     public override void Clear()
     {
         using var context = _contextFactory.CreateDbContext();
-        context.Comments.RemoveRange(context.Comments.ToList());
+        context.Comments.ExecuteDelete();
         context.SaveChanges();
     }
 

@@ -2,6 +2,11 @@
 
 public class Comment
 {
+    public Comment()
+    {
+        IncludedInEvaluatedComments = new HashSet<EvaluatedComment>();
+    }
+
     public long Id { get; init; }
     public long CommentId { get; init; }
     public long PostId { get; init; }
@@ -9,5 +14,5 @@ public class Comment
     public long AuthorId { get; init; }
     public string Text { get; init; }
     public DateTime PostDate { get; init; }
-    public List<EvaluatedComment> IncludedInEvaluatedComments { get; set; } = new();
+    public ICollection<EvaluatedComment> IncludedInEvaluatedComments { get; }
 }

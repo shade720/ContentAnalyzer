@@ -78,8 +78,6 @@
             this.DeleteAnalysisServiceHost = new System.Windows.Forms.Button();
             this.ObserveDelay = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
-            this.EvaluateThreshold = new System.Windows.Forms.TextBox();
-            this.label33 = new System.Windows.Forms.Label();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.ApplyNewCollectionServiceEndpoint = new System.Windows.Forms.Button();
@@ -110,6 +108,7 @@
             this.AnalysisLogDate = new System.Windows.Forms.DateTimePicker();
             this.RefreshAnalysisServiceInfo = new System.Windows.Forms.Button();
             this.AnalysisEvaluated = new System.Windows.Forms.Label();
+            this.ViewAnalysisServiceLogs = new System.Windows.Forms.Button();
             this.AnalysisWarnings = new System.Windows.Forms.Label();
             this.label26 = new System.Windows.Forms.Label();
             this.AnalysisErrors = new System.Windows.Forms.Label();
@@ -120,7 +119,6 @@
             this.label23 = new System.Windows.Forms.Label();
             this.AnalysisConnection = new System.Windows.Forms.Label();
             this.label22 = new System.Windows.Forms.Label();
-            this.ViewAnalysisServiceLogs = new System.Windows.Forms.Button();
             this.label21 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.CollectionLogDate = new System.Windows.Forms.DateTimePicker();
@@ -548,8 +546,6 @@
             this.groupBox6.Controls.Add(this.groupBox10);
             this.groupBox6.Controls.Add(this.ObserveDelay);
             this.groupBox6.Controls.Add(this.label8);
-            this.groupBox6.Controls.Add(this.EvaluateThreshold);
-            this.groupBox6.Controls.Add(this.label33);
             this.groupBox6.Location = new System.Drawing.Point(356, 6);
             this.groupBox6.Name = "groupBox6";
             this.groupBox6.Size = new System.Drawing.Size(310, 539);
@@ -587,7 +583,7 @@
             // label20
             // 
             this.label20.AutoSize = true;
-            this.label20.Location = new System.Drawing.Point(8, 154);
+            this.label20.Location = new System.Drawing.Point(15, 154);
             this.label20.Margin = new System.Windows.Forms.Padding(5);
             this.label20.Name = "label20";
             this.label20.Size = new System.Drawing.Size(43, 20);
@@ -622,7 +618,7 @@
             // label28
             // 
             this.label28.AutoSize = true;
-            this.label28.Location = new System.Drawing.Point(6, 26);
+            this.label28.Location = new System.Drawing.Point(15, 29);
             this.label28.Name = "label28";
             this.label28.Size = new System.Drawing.Size(53, 20);
             this.label28.TabIndex = 3;
@@ -650,7 +646,7 @@
             // 
             // ObserveDelay
             // 
-            this.ObserveDelay.Location = new System.Drawing.Point(177, 290);
+            this.ObserveDelay.Location = new System.Drawing.Point(177, 253);
             this.ObserveDelay.Margin = new System.Windows.Forms.Padding(5);
             this.ObserveDelay.Name = "ObserveDelay";
             this.ObserveDelay.Size = new System.Drawing.Size(125, 27);
@@ -659,30 +655,12 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(8, 293);
+            this.label8.Location = new System.Drawing.Point(8, 256);
             this.label8.Margin = new System.Windows.Forms.Padding(5);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(106, 20);
             this.label8.TabIndex = 8;
             this.label8.Text = "Observe delay:";
-            // 
-            // EvaluateThreshold
-            // 
-            this.EvaluateThreshold.Location = new System.Drawing.Point(177, 253);
-            this.EvaluateThreshold.Margin = new System.Windows.Forms.Padding(5);
-            this.EvaluateThreshold.Name = "EvaluateThreshold";
-            this.EvaluateThreshold.Size = new System.Drawing.Size(125, 27);
-            this.EvaluateThreshold.TabIndex = 7;
-            // 
-            // label33
-            // 
-            this.label33.AutoSize = true;
-            this.label33.Location = new System.Drawing.Point(8, 256);
-            this.label33.Margin = new System.Windows.Forms.Padding(5);
-            this.label33.Name = "label33";
-            this.label33.Size = new System.Drawing.Size(142, 20);
-            this.label33.TabIndex = 6;
-            this.label33.Text = "Evaluate threshhold:";
             // 
             // groupBox5
             // 
@@ -730,7 +708,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(6, 154);
+            this.label7.Location = new System.Drawing.Point(16, 154);
             this.label7.Margin = new System.Windows.Forms.Padding(5);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(43, 20);
@@ -765,11 +743,11 @@
             // label27
             // 
             this.label27.AutoSize = true;
-            this.label27.Location = new System.Drawing.Point(6, 29);
+            this.label27.Location = new System.Drawing.Point(10, 30);
             this.label27.Name = "label27";
-            this.label27.Size = new System.Drawing.Size(53, 20);
+            this.label27.Size = new System.Drawing.Size(49, 20);
             this.label27.TabIndex = 2;
-            this.label27.Text = "Hosts: ";
+            this.label27.Text = "Hosts:";
             // 
             // DeleteCollectionServiceHost
             // 
@@ -868,16 +846,16 @@
             this.groupBox3.Controls.Add(this.StopAll);
             this.groupBox3.Controls.Add(this.StopAnalysisService);
             this.groupBox3.Controls.Add(this.StopCollectionService);
-            this.groupBox3.Location = new System.Drawing.Point(8, 456);
+            this.groupBox3.Location = new System.Drawing.Point(8, 400);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(660, 140);
+            this.groupBox3.Size = new System.Drawing.Size(660, 196);
             this.groupBox3.TabIndex = 2;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Control";
             // 
             // StartAll
             // 
-            this.StartAll.Location = new System.Drawing.Point(474, 26);
+            this.StartAll.Location = new System.Drawing.Point(96, 138);
             this.StartAll.Name = "StartAll";
             this.StartAll.Size = new System.Drawing.Size(175, 50);
             this.StartAll.TabIndex = 6;
@@ -891,7 +869,7 @@
             this.ClearEvaluatedDatabase.Name = "ClearEvaluatedDatabase";
             this.ClearEvaluatedDatabase.Size = new System.Drawing.Size(175, 50);
             this.ClearEvaluatedDatabase.TabIndex = 3;
-            this.ClearEvaluatedDatabase.Text = "Clear evaluated database";
+            this.ClearEvaluatedDatabase.Text = "Clear evaluated comments";
             this.ClearEvaluatedDatabase.UseVisualStyleBackColor = true;
             this.ClearEvaluatedDatabase.Click += new System.EventHandler(this.ClearEvaluatedDatabase_Click);
             // 
@@ -901,7 +879,7 @@
             this.ClearCommentsDatabase.Name = "ClearCommentsDatabase";
             this.ClearCommentsDatabase.Size = new System.Drawing.Size(175, 50);
             this.ClearCommentsDatabase.TabIndex = 2;
-            this.ClearCommentsDatabase.Text = "Clear comments database";
+            this.ClearCommentsDatabase.Text = "Clear database";
             this.ClearCommentsDatabase.UseVisualStyleBackColor = true;
             this.ClearCommentsDatabase.Click += new System.EventHandler(this.ClearCommentsDatabase_Click);
             // 
@@ -927,7 +905,7 @@
             // 
             // StopAll
             // 
-            this.StopAll.Location = new System.Drawing.Point(474, 26);
+            this.StopAll.Location = new System.Drawing.Point(96, 138);
             this.StopAll.Name = "StopAll";
             this.StopAll.Size = new System.Drawing.Size(175, 50);
             this.StopAll.TabIndex = 7;
@@ -960,6 +938,7 @@
             this.groupBox2.Controls.Add(this.AnalysisLogDate);
             this.groupBox2.Controls.Add(this.RefreshAnalysisServiceInfo);
             this.groupBox2.Controls.Add(this.AnalysisEvaluated);
+            this.groupBox2.Controls.Add(this.ViewAnalysisServiceLogs);
             this.groupBox2.Controls.Add(this.AnalysisWarnings);
             this.groupBox2.Controls.Add(this.label26);
             this.groupBox2.Controls.Add(this.AnalysisErrors);
@@ -970,25 +949,24 @@
             this.groupBox2.Controls.Add(this.label23);
             this.groupBox2.Controls.Add(this.AnalysisConnection);
             this.groupBox2.Controls.Add(this.label22);
-            this.groupBox2.Controls.Add(this.ViewAnalysisServiceLogs);
             this.groupBox2.Controls.Add(this.label21);
             this.groupBox2.Location = new System.Drawing.Point(353, 6);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(315, 446);
+            this.groupBox2.Size = new System.Drawing.Size(315, 318);
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Collection service info";
             // 
             // AnalysisLogDate
             // 
-            this.AnalysisLogDate.Location = new System.Drawing.Point(80, 418);
+            this.AnalysisLogDate.Location = new System.Drawing.Point(73, 232);
             this.AnalysisLogDate.Name = "AnalysisLogDate";
-            this.AnalysisLogDate.Size = new System.Drawing.Size(156, 27);
+            this.AnalysisLogDate.Size = new System.Drawing.Size(175, 27);
             this.AnalysisLogDate.TabIndex = 18;
             // 
             // RefreshAnalysisServiceInfo
             // 
-            this.RefreshAnalysisServiceInfo.Location = new System.Drawing.Point(4, 417);
+            this.RefreshAnalysisServiceInfo.Location = new System.Drawing.Point(240, 11);
             this.RefreshAnalysisServiceInfo.Name = "RefreshAnalysisServiceInfo";
             this.RefreshAnalysisServiceInfo.Size = new System.Drawing.Size(75, 29);
             this.RefreshAnalysisServiceInfo.TabIndex = 16;
@@ -1005,6 +983,16 @@
             this.AnalysisEvaluated.Size = new System.Drawing.Size(45, 20);
             this.AnalysisEvaluated.TabIndex = 29;
             this.AnalysisEvaluated.Text = "None";
+            // 
+            // ViewAnalysisServiceLogs
+            // 
+            this.ViewAnalysisServiceLogs.Location = new System.Drawing.Point(73, 259);
+            this.ViewAnalysisServiceLogs.Name = "ViewAnalysisServiceLogs";
+            this.ViewAnalysisServiceLogs.Size = new System.Drawing.Size(175, 50);
+            this.ViewAnalysisServiceLogs.TabIndex = 23;
+            this.ViewAnalysisServiceLogs.Text = "View analysis log";
+            this.ViewAnalysisServiceLogs.UseVisualStyleBackColor = true;
+            this.ViewAnalysisServiceLogs.Click += new System.EventHandler(this.ViewAnalysisServiceLogs_Click);
             // 
             // AnalysisWarnings
             // 
@@ -1106,16 +1094,6 @@
             this.label22.TabIndex = 19;
             this.label22.Text = "Warnings:";
             // 
-            // ViewAnalysisServiceLogs
-            // 
-            this.ViewAnalysisServiceLogs.Location = new System.Drawing.Point(238, 417);
-            this.ViewAnalysisServiceLogs.Name = "ViewAnalysisServiceLogs";
-            this.ViewAnalysisServiceLogs.Size = new System.Drawing.Size(75, 29);
-            this.ViewAnalysisServiceLogs.TabIndex = 23;
-            this.ViewAnalysisServiceLogs.Text = "View log";
-            this.ViewAnalysisServiceLogs.UseVisualStyleBackColor = true;
-            this.ViewAnalysisServiceLogs.Click += new System.EventHandler(this.ViewAnalysisServiceLogs_Click);
-            // 
             // label21
             // 
             this.label21.AutoSize = true;
@@ -1145,21 +1123,21 @@
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Location = new System.Drawing.Point(6, 6);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(315, 446);
+            this.groupBox1.Size = new System.Drawing.Size(315, 318);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Collection service info";
             // 
             // CollectionLogDate
             // 
-            this.CollectionLogDate.Location = new System.Drawing.Point(79, 417);
+            this.CollectionLogDate.Location = new System.Drawing.Point(63, 232);
             this.CollectionLogDate.Name = "CollectionLogDate";
-            this.CollectionLogDate.Size = new System.Drawing.Size(154, 27);
+            this.CollectionLogDate.Size = new System.Drawing.Size(175, 27);
             this.CollectionLogDate.TabIndex = 17;
             // 
             // RefreshCollectionServiceInfo
             // 
-            this.RefreshCollectionServiceInfo.Location = new System.Drawing.Point(2, 416);
+            this.RefreshCollectionServiceInfo.Location = new System.Drawing.Point(240, 11);
             this.RefreshCollectionServiceInfo.Name = "RefreshCollectionServiceInfo";
             this.RefreshCollectionServiceInfo.Size = new System.Drawing.Size(75, 29);
             this.RefreshCollectionServiceInfo.TabIndex = 15;
@@ -1229,11 +1207,11 @@
             // 
             // ViewCollectionServiceLogs
             // 
-            this.ViewCollectionServiceLogs.Location = new System.Drawing.Point(235, 416);
+            this.ViewCollectionServiceLogs.Location = new System.Drawing.Point(63, 259);
             this.ViewCollectionServiceLogs.Name = "ViewCollectionServiceLogs";
-            this.ViewCollectionServiceLogs.Size = new System.Drawing.Size(75, 29);
+            this.ViewCollectionServiceLogs.Size = new System.Drawing.Size(175, 50);
             this.ViewCollectionServiceLogs.TabIndex = 8;
-            this.ViewCollectionServiceLogs.Text = "View log";
+            this.ViewCollectionServiceLogs.Text = "View collection log";
             this.ViewCollectionServiceLogs.UseVisualStyleBackColor = true;
             this.ViewCollectionServiceLogs.Click += new System.EventHandler(this.ViewCollectionServiceLogs_Click);
             // 
@@ -1318,6 +1296,7 @@
             this.ClientSize = new System.Drawing.Size(682, 653);
             this.Controls.Add(this.Tabs);
             this.Name = "MainForm";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.VkCollectorTab.ResumeLayout(false);
             this.groupBox8.ResumeLayout(false);
             this.groupBox8.PerformLayout();
@@ -1395,8 +1374,6 @@
         private Button DeleteAnalysisServiceHost;
         private TextBox ObserveDelay;
         private Label label8;
-        private TextBox EvaluateThreshold;
-        private Label label33;
         private GroupBox groupBox5;
         private GroupBox groupBox7;
         private Button ApplyNewCollectionServiceEndpoint;

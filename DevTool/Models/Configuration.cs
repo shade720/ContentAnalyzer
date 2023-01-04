@@ -9,6 +9,5 @@ public class Configuration
     public int ScanPostDelay { get; init; }
     public int ScanCommentsDelay { get; init; }
     public int PostQueueSize { get; init; }
-    public int EvaluateThreshold { get; init; }
     public int ObserveDelay { get; init; }
 }

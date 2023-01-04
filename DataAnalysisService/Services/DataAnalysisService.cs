@@ -9,6 +9,9 @@ using Grpc.Core;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using System.Diagnostics;
+using System.Dynamic;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace DataAnalysisService.Services;
 
@@ -18,6 +21,7 @@ public class DataAnalysisService : DataAnalysis.DataAnalysisBase
     private static DatabaseClient<EvaluatedComment> _targetDatabase;
     private static DatabaseObserver _sourceDatabase;
     private static readonly Stopwatch Stopwatch = new();
+    private static bool IsRunning { get; set; } = false;
 
     public static int ObserveDelayMs { get; set; }
 
@@ -32,22 +36,25 @@ public class DataAnalysisService : DataAnalysis.DataAnalysisBase
     public override Task<StartAnalysisServiceReply> StartAnalysisService(StartAnalysisServiceRequest request, ServerCallContext context)
     {
         if (AnalyzeModels.Count == 0) throw new ArgumentException($"At least one analysis model must be added {nameof(StartAnalysisService)}");
-        Stopwatch.Start();
         foreach (var model in AnalyzeModels)
         {
             StartModel(model.Key);
         }
+        Stopwatch.Start();
+        IsRunning = true;
         Log.Logger.Information("Service started");
         return Task.FromResult(new StartAnalysisServiceReply());
     }
 
     public override Task<StopAnalysisServiceReply> StopAnalysisService(StopAnalysisServiceRequest request, ServerCallContext context)
     {
-        Stopwatch.Stop();
         foreach (var model in AnalyzeModels)
         {
             Stop(model.Key);
         }
+        Stopwatch.Stop();
+        Stopwatch.Reset();
+        IsRunning = false;
         Log.Logger.Information("Service stopped");
         return Task.FromResult(new StopAnalysisServiceReply());
     }
@@ -100,6 +107,34 @@ public class DataAnalysisService : DataAnalysis.DataAnalysisBase
         return Task.FromResult(new LogReply { LogFile = ByteString.FromStream(fileStream) });
     }
 
+    public override Task<SetConfigurationReply> SetConfiguration(SetConfigurationRequest request, ServerCallContext context)
+    {
+        Log.Logger.Information("Updating settings...");
+        UpdateSettings(request.Settings);
+        Log.Logger.Information("Settings file updated");
+
+        if (!IsRunning) return Task.FromResult(new SetConfigurationReply());
+        Log.Logger.Information("Restarting service...");
+        foreach (var model in AnalyzeModels)
+        {
+            Stop(model.Key);
+        }
+        AnalyzeModels.Clear();
+        var config = new ConfigurationBuilder()
+            .SetBasePath(Environment.CurrentDirectory)
+            .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+            .AddJsonFile($"appsettings.{Environment.UserDomainName}.json", optional: true, reloadOnChange: true)
+            .AddEnvironmentVariables()
+            .Build();
+        Startup.ConfigureService(config);
+        foreach (var model in AnalyzeModels)
+        {
+            StartModel(model.Key);
+        }
+        Log.Logger.Information("Service restarted on new configuration");
+        return Task.FromResult(new SetConfigurationReply());
+    }
+
     #endregion
 
     #region Startup
@@ -118,6 +153,40 @@ public class DataAnalysisService : DataAnalysis.DataAnalysisBase
 
     #region Private
 
+    private static void UpdateSettings(string settings)
+    {
+        var appSettingsPath = Path.Combine(Directory.GetCurrentDirectory(), "appsettings.json");
+        var appSettingsJson = File.ReadAllText(appSettingsPath);
+
+        var jsonSettings = new JsonSerializerSettings();
+        jsonSettings.Converters.Add(new ExpandoObjectConverter());
+        jsonSettings.Converters.Add(new StringEnumConverter());
+
+        dynamic oldConfig = JsonConvert.DeserializeObject<ExpandoObject>(appSettingsJson, jsonSettings);
+        dynamic newConfig = JsonConvert.DeserializeObject<ExpandoObject>(settings, jsonSettings);
+
+        if (oldConfig is null) throw new FileLoadException("Cannot deserialize appsettings.json file");
+        if (newConfig is null) throw new FileLoadException("Cannot deserialize new settings file");
+
+        if (((IDictionary<string, object>)newConfig).ContainsKey("ScanCommentsDelay"))
+            oldConfig.ScanCommentsDelay = newConfig.ScanCommentsDelay;
+        if (((IDictionary<string, object>)newConfig).ContainsKey("ScanPostDelay"))
+            oldConfig.ScanPostDelay = newConfig.ScanPostDelay;
+        if (((IDictionary<string, object>)newConfig).ContainsKey("PostQueueSize"))
+            oldConfig.PostQueueSize = newConfig.PostQueueSize;
+
+        if (((IDictionary<string, object>)newConfig).ContainsKey("ApplicationId"))
+            oldConfig.VkSettings.ApplicationId = newConfig.ApplicationId;
+        if (((IDictionary<string, object>)newConfig).ContainsKey("SecureKey"))
+            oldConfig.VkSettings.SecureKey = newConfig.SecureKey;
+        if (((IDictionary<string, object>)newConfig).ContainsKey("ServiceAccessKey"))
+            oldConfig.VkSettings.ServiceAccessKey = newConfig.ServiceAccessKey;
+        if (((IDictionary<string, object>)newConfig).ContainsKey("Communities"))
+            oldConfig.VkSettings.Communities = newConfig.Communities;
+
+        var newAppSettingsJson = JsonConvert.SerializeObject(oldConfig, Formatting.Indented, jsonSettings);
+        File.WriteAllText(appSettingsPath, newAppSettingsJson);
+    }
     private void AnalyzeByAny(Comment frame)
     {
         foreach (var model in AnalyzeModels)

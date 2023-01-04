@@ -24,7 +24,6 @@ public static class Startup
             {
                 vkDataCollector.AddCommunity(Convert.ToInt64(community));
             }
-            vkDataCollector.Subscribe(commentData => Log.Logger.Information("Add {0} {1} {2} {3} {4} {5}",commentData.CommentId, commentData.PostId, commentData.GroupId, commentData.AuthorId, commentData.Text, commentData.PostDate));
             return vkDataCollector;
         });
     }

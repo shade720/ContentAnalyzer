@@ -60,7 +60,7 @@ public static class Startup
 
         neuralModel.Subscribe(Process
             ,null,
-            Log.Logger.Information);
+            null);
         return neuralModel;
     }
 }

@@ -60,7 +60,7 @@
             this.LogDataGrid.RowHeadersWidth = 51;
             this.LogDataGrid.RowTemplate.Height = 29;
             this.LogDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.LogDataGrid.Size = new System.Drawing.Size(981, 381);
+            this.LogDataGrid.Size = new System.Drawing.Size(1209, 445);
             this.LogDataGrid.TabIndex = 0;
             this.LogDataGrid.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.LogDataGrid_CellClick);
             // 
@@ -69,7 +69,7 @@
             this.SearchTextbox.Location = new System.Drawing.Point(152, 2);
             this.SearchTextbox.Name = "SearchTextbox";
             this.SearchTextbox.PlaceholderText = "Search for...";
-            this.SearchTextbox.Size = new System.Drawing.Size(737, 27);
+            this.SearchTextbox.Size = new System.Drawing.Size(958, 27);
             this.SearchTextbox.TabIndex = 1;
             // 
             // LogLevel
@@ -89,16 +89,16 @@
             // 
             // MessageTextbox
             // 
-            this.MessageTextbox.Location = new System.Drawing.Point(1, 416);
+            this.MessageTextbox.Location = new System.Drawing.Point(1, 480);
             this.MessageTextbox.Name = "MessageTextbox";
             this.MessageTextbox.RightMargin = 600;
-            this.MessageTextbox.Size = new System.Drawing.Size(978, 320);
+            this.MessageTextbox.Size = new System.Drawing.Size(1209, 320);
             this.MessageTextbox.TabIndex = 3;
             this.MessageTextbox.Text = "";
             // 
             // SearchButton
             // 
-            this.SearchButton.Location = new System.Drawing.Point(888, 1);
+            this.SearchButton.Location = new System.Drawing.Point(1116, 1);
             this.SearchButton.Name = "SearchButton";
             this.SearchButton.Size = new System.Drawing.Size(94, 29);
             this.SearchButton.TabIndex = 4;
@@ -128,13 +128,13 @@
             this.Message.MinimumWidth = 6;
             this.Message.Name = "Message";
             this.Message.ReadOnly = true;
-            this.Message.Width = 695;
+            this.Message.Width = 880;
             // 
             // LogViewerWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(982, 737);
+            this.ClientSize = new System.Drawing.Size(1211, 802);
             this.Controls.Add(this.SearchTextbox);
             this.Controls.Add(this.SearchButton);
             this.Controls.Add(this.MessageTextbox);
@@ -142,6 +142,7 @@
             this.Controls.Add(this.LogDataGrid);
             this.Name = "LogViewerWindow";
             this.Text = "LogViewerWindow";
+            this.Load += new System.EventHandler(this.LogViewerWindow_Load);
             ((System.ComponentModel.ISupportInitialize)(this.LogDataGrid)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

@@ -47,4 +47,9 @@ public partial class LogViewerWindow : Form
     {
 
     }
+
+    private void LogViewerWindow_Load(object sender, EventArgs e)
+    {
+        LogLevel.SelectedIndex = 0;
+    }
 }

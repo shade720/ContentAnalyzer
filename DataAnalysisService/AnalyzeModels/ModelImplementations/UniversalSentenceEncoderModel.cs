@@ -30,6 +30,7 @@ internal class UniversalSentenceEncoderModel : AnalyzeModel
         var result = Runner.RunAsync(Path.GetFullPath(scriptModel), Path.GetFullPath(resourcePath));
 
         _scriptInitialize.WaitOne();
+        IsRunning = true;
     }
 
     public override void Predict(Comment comment)
@@ -41,7 +42,6 @@ internal class UniversalSentenceEncoderModel : AnalyzeModel
         var predictFromScript = Runner.ReadFromScript();
         var predictResult = new PredictResult(comment, predictFromScript, AnalyzeModelInfo.Categories);
         OnPredictionEvent?.Invoke(predictResult);
-        if (!Filter(predictResult)) return;
         var maxPredict = predictResult.Predicts.MaxBy(x => x.PredictValue);
         if (maxPredict is null) throw new Exception("Exception due evaluating");
         var evaluateResult = new EvaluatedComment
@@ -69,28 +69,6 @@ internal class UniversalSentenceEncoderModel : AnalyzeModel
     #endregion
 
     #region Private
-
-    private bool ExceedsThreshold(PredictResult predictResult)
-    {
-        for (var i = 1; i < predictResult.Predicts.Length; i++)
-            if (predictResult.Predicts[i].PredictValue > AnalyzeModelInfo.EvaluateThresholdPercent / (double)100)
-                return true;
-        return false;
-    }
-
-    private bool Filter(PredictResult predictResult)
-    {
-        var allowedCategories = new List<string> {
-            "Offline crime", "Online crime", "Drugs",
-            "Pornography", "Terrorism", "Politics",
-            "Racism", "Religion", "Sexual minorities", "Social injustice",
-            "Insult", "Threat", "Obscenity"
-        };
-        for (var i = 1; i < predictResult.Predicts.Length; i++)
-            if (predictResult.Predicts[i].PredictValue > AnalyzeModelInfo.EvaluateThresholdPercent / (double)100 && allowedCategories.Contains(predictResult.Predicts[i].Title))
-                return true;
-        return false;
-    }
 
     private void RunnerOnExitEventHandler()
     {

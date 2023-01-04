@@ -1,14 +1,16 @@
-﻿using Common.EntityFramework;
-using DataCollectionServiceClient;
+﻿using Common;
+using Common.EntityFramework;
+using DataCollectionClient;
 using Google.Protobuf.WellKnownTypes;
 
 namespace DevTool.Models;
 
-internal class CollectionServiceClient : ServiceClient, IDisposable
+internal class CollectionServiceClient : ServiceClient<Comment>
 {
     private readonly DataCollection.DataCollectionClient _dataCollectionClient;
 
-    public CollectionServiceClient(string dataCollectionServiceHost) : base(dataCollectionServiceHost)
+    public CollectionServiceClient(string dataCollectionServiceHost) 
+        : base(dataCollectionServiceHost)
     {
         _dataCollectionClient = new DataCollection.DataCollectionClient(Channel);
     }
@@ -22,16 +24,34 @@ internal class CollectionServiceClient : ServiceClient, IDisposable
     {
         _dataCollectionClient.StopCollectionService(new StopCollectionServiceRequest());
     }
-    public override string GetLogFile(DateTime date)
+
+    public override void ClearDatabase()
+    {
+        _dataCollectionClient.ClearCommentsDatabase(new ClearCommentsDatabaseRequest());
+    }
+
+    protected override string GetLogFile(DateTime date)
     {
         var result = _dataCollectionClient.GetLogs(new LogRequest { LogDate = Timestamp.FromDateTime(date.ToUniversalTime()) });
         return result.LogFile.ToStringUtf8();
     }
-
-    public List<Comment> GetComments(int startIndex)
+    public override void LoadConfiguration(string settings)
     {
-        var comments = _dataCollectionClient.GetCommentsFrom(new GetCommentsRequest { StartIndex = startIndex });
-        return comments.Result.Select(comment => new Comment
+        _dataCollectionClient.SetConfiguration(new SetConfigurationRequest { Settings = settings });
+    }
+
+    public override IEnumerable<Comment> GetResults(CommentsQueryFilter filter)
+    {
+        var requestFilter = new CommentsQueryFilterProto
+        {
+            AuthorId = filter.AuthorId,
+            PostId = filter.PostId,
+            GroupId = filter.GroupId,
+            FromDate = new Timestamp { Seconds = new DateTimeOffset(filter.FromDate).ToUnixTimeSeconds() },
+            ToDate = new Timestamp { Seconds = new DateTimeOffset(filter.ToDate).ToUnixTimeSeconds() }
+        };
+        var comments = _dataCollectionClient.GetComments(new GetCommentsRequest { Filter = requestFilter });
+        return comments.CommentData.Select(comment => new Comment
             {
                 Id = comment.Id,
                 CommentId = comment.CommentId,
@@ -42,15 +62,5 @@ internal class CollectionServiceClient : ServiceClient, IDisposable
                 Text = comment.Text
             })
             .ToList();
-    }
-
-    public void LoadConfiguration(string appsettingFile)
-    {
-        _dataCollectionClient.SetConfiguration(new SetConfigurationRequest {Settings = appsettingFile});
-    }
-
-    public new void Dispose()
-    {
-        Channel.Dispose();
     }
 }

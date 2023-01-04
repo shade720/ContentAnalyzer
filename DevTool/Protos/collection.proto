@@ -1,27 +1,31 @@
 syntax = "proto3";
 
-option csharp_namespace = "DataCollectionServiceClient";
+option csharp_namespace = "DataCollectionClient";
 import "google/protobuf/timestamp.proto";
+
 package collection;
 
 service DataCollection {
 	rpc StartCollectionService (StartCollectionServiceRequest) returns (StartCollectionServiceReply);
 	rpc StopCollectionService (StopCollectionServiceRequest) returns (StopCollectionServiceReply);
-	rpc GetCommentsFrom (GetCommentsRequest) returns (GetCommentsReply);
+	rpc GetComments (GetCommentsRequest) returns (GetCommentsReply);
 	rpc GetLogs (LogRequest) returns (LogReply);
+	rpc ClearCommentsDatabase (ClearCommentsDatabaseRequest) returns (ClearCommentsDatabaseReply);
 	rpc SetConfiguration (SetConfigurationRequest) returns (SetConfigurationReply);
 }
-
-message SetConfigurationRequest {
- string settings = 1;
-}
-message SetConfigurationReply {}
 
 message StartCollectionServiceRequest{}
 message StartCollectionServiceReply{}
 
 message StopCollectionServiceRequest{}
 message StopCollectionServiceReply{}
+
+message GetCommentsRequest{
+	CommentsQueryFilterProto Filter = 1;
+}
+message GetCommentsReply{
+	repeated CommentDataProto CommentData = 1;
+}
 
 message LogRequest{
 	google.protobuf.Timestamp LogDate = 1;
@@ -30,12 +34,14 @@ message LogReply{
 	bytes LogFile = 1;
 }
 
-message GetCommentsRequest{
-	int32 StartIndex = 1;
+message CommentsQueryFilterProto{
+	int64 PostId = 1;
+	int64 GroupId = 2;
+	int64 AuthorId = 3;
+	google.protobuf.Timestamp FromDate = 4;
+	google.protobuf.Timestamp ToDate = 5;
 }
-message GetCommentsReply{
-	repeated CommentDataProto result = 1;
-}
+
 message CommentDataProto{
 	int64 Id = 1;
 	int64 CommentId = 2;
@@ -45,3 +51,11 @@ message CommentDataProto{
 	string Text = 6;
 	google.protobuf.Timestamp PostDate = 7;
 }
+
+message ClearCommentsDatabaseRequest{}
+message ClearCommentsDatabaseReply{}
+
+message SetConfigurationRequest {
+ string settings = 1;
+}
+message SetConfigurationReply {}

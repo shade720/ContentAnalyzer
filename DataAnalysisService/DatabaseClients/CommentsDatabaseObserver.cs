@@ -8,7 +8,7 @@ namespace DataAnalysisService.DatabaseClients;
 public class CommentsDatabaseObserver : DatabaseObserver
 {
     private CancellationTokenSource? _cancellation;
-    private Action<Common.EntityFramework.Comment>? _dataProcessor;
+    private Action<Comment>? _dataProcessor;
     private readonly IDbContextFactory<CommentsContext> _contextFactory;
     private readonly int _observeDelay;
 
@@ -26,7 +26,7 @@ public class CommentsDatabaseObserver : DatabaseObserver
         if (_dataProcessor is null) throw new Exception($"Data processor not set {nameof(StopLoading)}");
         _cancellation = new CancellationTokenSource();
         IsLoadingStarted = true;
-        var _ = LoadingLoop(_cancellation.Token);
+        var _ = StartLoadingLoop(_cancellation.Token);
         Log.Logger.Information("Loading started on with delay {_observeDelay}", _observeDelay);
     }
 
@@ -40,11 +40,11 @@ public class CommentsDatabaseObserver : DatabaseObserver
         Log.Logger.Information("Loading stopped");
     }
 
-    public override void OnDataArrived(Action<Common.EntityFramework.Comment> handler) => _dataProcessor = handler;
+    public override void OnDataArrived(Action<Comment> handler) => _dataProcessor = handler;
 
     #endregion
 
-    private async Task LoadingLoop(CancellationToken cancellationToken)
+    private async Task StartLoadingLoop(CancellationToken cancellationToken)
     {
         await Task.Run(async () =>
         {
@@ -54,14 +54,16 @@ public class CommentsDatabaseObserver : DatabaseObserver
                 await Task.Delay(_observeDelay, cancellationToken);
                 Log.Logger.Information("Loading loop working");
             }
+            Log.Logger.Information("Loading loop break");
         }, cancellationToken);
-        Log.Logger.Information("Loading loop break");
     }
 
     private void LoadData()
     {
         using var context = _contextFactory.CreateDbContext();
-        var newComments = context.Comments.Where(c => !c.IncludedInEvaluatedComments.Any());
+        var newComments = context.Comments
+            .Where(c => !context.EvaluatedComments.Any(e => e.CommentId == c.Id));
+            
         foreach (var comment in newComments)
         {
             _dataProcessor?.Invoke(comment);
