@@ -72,31 +72,36 @@ public class DataAnalyzer
 
     private static IEnumerable<NeuralModel> GetConfiguredModels(IConfiguration configuration)
     {
+        var insultTopicsUSEModel = configuration.GetSection("InsultTopicsUSEModel");
         var modelInfo1 = new USEModelInfo
         {
-            Interpreter = configuration["Interpreter"],
-            PredictScript = configuration["Predict1"],
-            TrainScript = configuration["Train1"],
-            DataSet = configuration["Dataset1"],
-            Model = configuration["Model1"],
+            Interpreter = insultTopicsUSEModel["Interpreter"],
+            PredictScript = insultTopicsUSEModel["Predict1"],
+            TrainScript = insultTopicsUSEModel["Train1"],
+            DataSet = insultTopicsUSEModel["Dataset1"],
+            Model = insultTopicsUSEModel["Model1"],
             Categories = new[] { "Normal", "Insult", "Threat", "Obscenity" }
         };
+
+        var toxicTopicsUSEModel = configuration.GetSection("ToxicTopicsUSEModel");
         var modelInfo2 = new USEModelInfo
         {
-            Interpreter = configuration["Interpreter"],
-            PredictScript = configuration["Predict2"],
-            TrainScript = configuration["Train2"],
-            DataSet = configuration["Dataset2"],
-            Model = configuration["Model2"],
+            Interpreter = toxicTopicsUSEModel["Interpreter"],
+            PredictScript = toxicTopicsUSEModel["Predict2"],
+            TrainScript = toxicTopicsUSEModel["Train2"],
+            DataSet = toxicTopicsUSEModel["Dataset2"],
+            Model = toxicTopicsUSEModel["Model2"],
             Categories = new[] { "Normal", "Toxic" }
         };
+
+        var sensetiveTopicsUSEModel = configuration.GetSection("SensetiveTopicsUSEModel");
         var modelInfo3 = new USEModelInfo
         {
-            Interpreter = configuration["Interpreter"],
-            PredictScript = configuration["Predict3"],
-            TrainScript = configuration["Train3"],
-            DataSet = configuration["Dataset3"],
-            Model = configuration["Model3"],
+            Interpreter = sensetiveTopicsUSEModel["Interpreter"],
+            PredictScript = sensetiveTopicsUSEModel["Predict3"],
+            TrainScript = sensetiveTopicsUSEModel["Train3"],
+            DataSet = sensetiveTopicsUSEModel["Dataset3"],
+            Model = sensetiveTopicsUSEModel["Model3"],
             Categories = new[] { "Offline crime", "Online crime",
                 "Drugs", "Gambling", "Pornography", "Prostitution", "Slavery", "Suicide", "Terrorism",
                 "Weapons", "Body shaming", "Health shaming", "Politics", "Racism", "Religion", "Sexual minorities",
@@ -105,10 +110,11 @@ public class DataAnalyzer
         //Services.DataAnalysisApiImplementation.AddModel(() => new UniversalSentenceEncoderModel(modelInfo1));
         //Services.DataAnalysisApiImplementation.AddModel(() => new UniversalSentenceEncoderModel(modelInfo2));
         //Services.DataAnalysisApiImplementation.AddModel(() => new UniversalSentenceEncoderModel(modelInfo3));
+        var sensetiveTopicsBERTModel = configuration.GetSection("SensetiveTopicsBERTModel");
 
         return new List<NeuralModel>
         {
-            new BertModel(configuration["Vocabulary"], configuration["ONNXBertModel"], configuration["LabelEncoding"])
+            new BertModel(sensetiveTopicsBERTModel["Vocabulary"], sensetiveTopicsBERTModel["ONNXBertModel"], sensetiveTopicsBERTModel["LabelEncoding"])
         };
     }
 

@@ -10,7 +10,7 @@ internal class PostScanner : Scanner
     public bool IsScanning { get; private set; }
 
     public PostScanner(long communityId, VkApi vkApi, CommentDataManager dataManager, IConfiguration configuration) : base(communityId, vkApi,
-        dataManager, configuration) => _commentScannersQueue = new CommentScannersQueue(int.Parse(configuration["ObservedPostQueueSize"]));
+        dataManager, configuration) => _commentScannersQueue = new CommentScannersQueue(int.Parse(configuration["PostQueueSize"]));
 
     public override void StartScan()
     {
