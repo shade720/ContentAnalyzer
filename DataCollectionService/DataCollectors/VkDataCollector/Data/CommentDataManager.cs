@@ -38,8 +38,7 @@ internal class CommentDataManager
 
     private static string ClearText(string text)
     {
-        var regex = new Regex(@"[\p{Cc}\p{Cf}\p{Mn}\p{Me}\p{Zl}\p{Zp}]");
-        var result = regex.Replace(text, "");
+        var result = Regex.Replace(text, @"\p{Cs}", "");
         if (result.StartsWith('[')) result = result.Remove(result.IndexOf('['), result.IndexOf(']') - result.IndexOf('[') + 2).Trim();
         return result;
     }

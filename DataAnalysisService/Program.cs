@@ -1,5 +1,5 @@
 using Common.EntityFramework;
-using DataAnalysisService;
+using DataAnalysisService.Services;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Serilog.Events;
@@ -27,13 +27,12 @@ builder.Configuration.SetBasePath(Environment.CurrentDirectory)
     .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
     .AddJsonFile($"appsettings.{Environment.UserDomainName}.json", optional: true, reloadOnChange: true)
     .AddEnvironmentVariables();
-
-Startup.ConfigureService(builder.Configuration);
+builder.Services.AddSingleton<DataAnalysisService.BusinessLogicLayer.DataAnalyzer>();
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-app.MapGrpcService<DataAnalysisService.Services.DataAnalysisService>();
+app.MapGrpcService<DataAnalysisAPI>();
 app.MapGet("/", () => "Communication with gRPC endpoints must be made through a gRPC client. To learn how to create a client, visit: https://go.microsoft.com/fwlink/?linkid=2086909");
 
 app.Run();
