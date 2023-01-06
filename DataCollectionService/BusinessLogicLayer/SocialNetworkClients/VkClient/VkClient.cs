@@ -32,7 +32,8 @@ public class VkClient : SocialNetworkClient
 
     public override void StartCollecting()
     {
-        Task.Run(() => _vkApi.AuthAsync(ulong.Parse(_configuration["ApplicationId"]), _configuration["SecureKey"], _configuration["ServiceAccessKey"]));
+        var vkSettings = _configuration.GetSection("VkSettings");
+        Task.Run(() => _vkApi.AuthAsync(ulong.Parse(vkSettings["ApplicationId"]), vkSettings["SecureKey"], vkSettings["ServiceAccessKey"]));
         foreach (var scanner in _postScanners)
         {
             scanner.StartScan();

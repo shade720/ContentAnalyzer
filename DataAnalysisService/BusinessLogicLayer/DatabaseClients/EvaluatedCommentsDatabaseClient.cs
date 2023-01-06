@@ -21,7 +21,7 @@ public class EvaluatedCommentsDatabaseClient : DatabaseClient<EvaluatedComment>
         Log.Logger.Information("{0} comments evaluated", context.EvaluatedComments.Count());
     }
 
-    public override IQueryable<EvaluatedComment> GetRange(CommentsQueryFilter filter)
+    public override List<EvaluatedComment> GetRange(CommentsQueryFilter filter)
     { using var context = _contextFactory.CreateDbContext();
         return context.EvaluatedComments
                 .Include(comment => comment.RelatedComment)
@@ -31,7 +31,7 @@ public class EvaluatedCommentsDatabaseClient : DatabaseClient<EvaluatedComment>
                 .Where(c => filter.GroupId <= 0 || c.RelatedComment.GroupId == filter.GroupId)
                 .Where(c => filter.FromDate.Year <= 1970 || c.RelatedComment.PostDate > filter.FromDate)
                 .Where(c => filter.ToDate.Year <= 1970 || c.RelatedComment.PostDate < filter.ToDate)
-                .AsQueryable();
+                .ToList();
     }
 
     public override void Clear()

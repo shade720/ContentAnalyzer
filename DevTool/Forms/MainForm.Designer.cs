@@ -28,14 +28,16 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.SaveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.VkCollectorTab = new System.Windows.Forms.TabPage();
-            this.LocalConfiguration = new System.Windows.Forms.Button();
-            this.SaveVkSettings = new System.Windows.Forms.Button();
-            this.LoadVkSettings = new System.Windows.Forms.Button();
             this.groupBox8 = new System.Windows.Forms.GroupBox();
+            this.label17 = new System.Windows.Forms.Label();
+            this.LocalConfiguration = new System.Windows.Forms.Button();
             this.NewCommunity = new System.Windows.Forms.TextBox();
+            this.SaveVkSettings = new System.Windows.Forms.Button();
             this.ServiceAccessKey = new System.Windows.Forms.TextBox();
+            this.LoadVkSettings = new System.Windows.Forms.Button();
             this.label11 = new System.Windows.Forms.Label();
             this.DeleteCommunity = new System.Windows.Forms.Button();
             this.SecureKey = new System.Windows.Forms.TextBox();
@@ -95,6 +97,8 @@
             this.label29 = new System.Windows.Forms.Label();
             this.ScanPostDelay = new System.Windows.Forms.TextBox();
             this.MainTab = new System.Windows.Forms.TabPage();
+            this.AnalysisLogDate = new System.Windows.Forms.DateTimePicker();
+            this.CollectionLogDate = new System.Windows.Forms.DateTimePicker();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.StartAll = new System.Windows.Forms.Button();
             this.ClearEvaluatedDatabase = new System.Windows.Forms.Button();
@@ -105,10 +109,8 @@
             this.StopAnalysisService = new System.Windows.Forms.Button();
             this.StopCollectionService = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.AnalysisLogDate = new System.Windows.Forms.DateTimePicker();
             this.RefreshAnalysisServiceInfo = new System.Windows.Forms.Button();
             this.AnalysisEvaluated = new System.Windows.Forms.Label();
-            this.ViewAnalysisServiceLogs = new System.Windows.Forms.Button();
             this.AnalysisWarnings = new System.Windows.Forms.Label();
             this.label26 = new System.Windows.Forms.Label();
             this.AnalysisErrors = new System.Windows.Forms.Label();
@@ -120,8 +122,8 @@
             this.AnalysisConnection = new System.Windows.Forms.Label();
             this.label22 = new System.Windows.Forms.Label();
             this.label21 = new System.Windows.Forms.Label();
+            this.ViewAnalysisServiceLogs = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.CollectionLogDate = new System.Windows.Forms.DateTimePicker();
             this.RefreshCollectionServiceInfo = new System.Windows.Forms.Button();
             this.CollectionCollected = new System.Windows.Forms.Label();
             this.CollectionWarnings = new System.Windows.Forms.Label();
@@ -129,13 +131,13 @@
             this.CollectionUptime = new System.Windows.Forms.Label();
             this.CollectionState = new System.Windows.Forms.Label();
             this.CollectionConnection = new System.Windows.Forms.Label();
-            this.ViewCollectionServiceLogs = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.ViewCollectionServiceLogs = new System.Windows.Forms.Button();
             this.Tabs = new System.Windows.Forms.TabControl();
             this.VkCollectorTab.SuspendLayout();
             this.groupBox8.SuspendLayout();
@@ -160,9 +162,6 @@
             // 
             // VkCollectorTab
             // 
-            this.VkCollectorTab.Controls.Add(this.LocalConfiguration);
-            this.VkCollectorTab.Controls.Add(this.SaveVkSettings);
-            this.VkCollectorTab.Controls.Add(this.LoadVkSettings);
             this.VkCollectorTab.Controls.Add(this.groupBox8);
             this.VkCollectorTab.Location = new System.Drawing.Point(4, 44);
             this.VkCollectorTab.Name = "VkCollectorTab";
@@ -172,40 +171,14 @@
             this.VkCollectorTab.Text = "Vk collector";
             this.VkCollectorTab.UseVisualStyleBackColor = true;
             // 
-            // LocalConfiguration
-            // 
-            this.LocalConfiguration.Location = new System.Drawing.Point(8, 548);
-            this.LocalConfiguration.Name = "LocalConfiguration";
-            this.LocalConfiguration.Size = new System.Drawing.Size(165, 50);
-            this.LocalConfiguration.TabIndex = 19;
-            this.LocalConfiguration.Text = "Default configuration";
-            this.LocalConfiguration.UseVisualStyleBackColor = true;
-            this.LocalConfiguration.Click += new System.EventHandler(this.LocalConfiguration_Click);
-            // 
-            // SaveVkSettings
-            // 
-            this.SaveVkSettings.Location = new System.Drawing.Point(257, 548);
-            this.SaveVkSettings.Name = "SaveVkSettings";
-            this.SaveVkSettings.Size = new System.Drawing.Size(165, 50);
-            this.SaveVkSettings.TabIndex = 18;
-            this.SaveVkSettings.Text = "Save configuration";
-            this.SaveVkSettings.UseVisualStyleBackColor = true;
-            this.SaveVkSettings.Click += new System.EventHandler(this.SaveVkSettings_Click);
-            // 
-            // LoadVkSettings
-            // 
-            this.LoadVkSettings.Location = new System.Drawing.Point(501, 548);
-            this.LoadVkSettings.Name = "LoadVkSettings";
-            this.LoadVkSettings.Size = new System.Drawing.Size(165, 50);
-            this.LoadVkSettings.TabIndex = 17;
-            this.LoadVkSettings.Text = "Upload configuration";
-            this.LoadVkSettings.UseVisualStyleBackColor = true;
-            this.LoadVkSettings.Click += new System.EventHandler(this.LoadVkSettings_Click);
-            // 
             // groupBox8
             // 
+            this.groupBox8.Controls.Add(this.label17);
+            this.groupBox8.Controls.Add(this.LocalConfiguration);
             this.groupBox8.Controls.Add(this.NewCommunity);
+            this.groupBox8.Controls.Add(this.SaveVkSettings);
             this.groupBox8.Controls.Add(this.ServiceAccessKey);
+            this.groupBox8.Controls.Add(this.LoadVkSettings);
             this.groupBox8.Controls.Add(this.label11);
             this.groupBox8.Controls.Add(this.DeleteCommunity);
             this.groupBox8.Controls.Add(this.SecureKey);
@@ -217,30 +190,72 @@
             this.groupBox8.Controls.Add(this.Communities);
             this.groupBox8.Location = new System.Drawing.Point(3, 3);
             this.groupBox8.Name = "groupBox8";
-            this.groupBox8.Size = new System.Drawing.Size(668, 360);
+            this.groupBox8.Size = new System.Drawing.Size(668, 599);
             this.groupBox8.TabIndex = 0;
             this.groupBox8.TabStop = false;
             this.groupBox8.Text = "Settings";
             // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(15, 34);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(469, 80);
+            this.label17.TabIndex = 20;
+            this.label17.Text = resources.GetString("label17.Text");
+            // 
+            // LocalConfiguration
+            // 
+            this.LocalConfiguration.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.LocalConfiguration.Location = new System.Drawing.Point(6, 543);
+            this.LocalConfiguration.Name = "LocalConfiguration";
+            this.LocalConfiguration.Size = new System.Drawing.Size(165, 50);
+            this.LocalConfiguration.TabIndex = 19;
+            this.LocalConfiguration.Text = "Default configuration";
+            this.LocalConfiguration.UseVisualStyleBackColor = true;
+            this.LocalConfiguration.Click += new System.EventHandler(this.LocalConfiguration_Click);
+            // 
             // NewCommunity
             // 
-            this.NewCommunity.Location = new System.Drawing.Point(156, 159);
+            this.NewCommunity.Location = new System.Drawing.Point(164, 332);
             this.NewCommunity.Name = "NewCommunity";
             this.NewCommunity.Size = new System.Drawing.Size(183, 27);
             this.NewCommunity.TabIndex = 16;
             // 
+            // SaveVkSettings
+            // 
+            this.SaveVkSettings.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.SaveVkSettings.Location = new System.Drawing.Point(255, 543);
+            this.SaveVkSettings.Name = "SaveVkSettings";
+            this.SaveVkSettings.Size = new System.Drawing.Size(165, 50);
+            this.SaveVkSettings.TabIndex = 18;
+            this.SaveVkSettings.Text = "Save configuration";
+            this.SaveVkSettings.UseVisualStyleBackColor = true;
+            this.SaveVkSettings.Click += new System.EventHandler(this.SaveVkSettings_Click);
+            // 
             // ServiceAccessKey
             // 
-            this.ServiceAccessKey.Location = new System.Drawing.Point(156, 278);
+            this.ServiceAccessKey.Location = new System.Drawing.Point(164, 194);
             this.ServiceAccessKey.Margin = new System.Windows.Forms.Padding(5);
             this.ServiceAccessKey.Name = "ServiceAccessKey";
             this.ServiceAccessKey.Size = new System.Drawing.Size(479, 27);
             this.ServiceAccessKey.TabIndex = 11;
             // 
+            // LoadVkSettings
+            // 
+            this.LoadVkSettings.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.LoadVkSettings.Location = new System.Drawing.Point(499, 543);
+            this.LoadVkSettings.Name = "LoadVkSettings";
+            this.LoadVkSettings.Size = new System.Drawing.Size(165, 50);
+            this.LoadVkSettings.TabIndex = 17;
+            this.LoadVkSettings.Text = "Upload configuration";
+            this.LoadVkSettings.UseVisualStyleBackColor = true;
+            this.LoadVkSettings.Click += new System.EventHandler(this.LoadVkSettings_Click);
+            // 
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(10, 281);
+            this.label11.Location = new System.Drawing.Point(18, 197);
             this.label11.Margin = new System.Windows.Forms.Padding(5);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(131, 20);
@@ -249,7 +264,8 @@
             // 
             // DeleteCommunity
             // 
-            this.DeleteCommunity.Location = new System.Drawing.Point(248, 184);
+            this.DeleteCommunity.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.DeleteCommunity.Location = new System.Drawing.Point(256, 357);
             this.DeleteCommunity.Name = "DeleteCommunity";
             this.DeleteCommunity.Size = new System.Drawing.Size(91, 29);
             this.DeleteCommunity.TabIndex = 15;
@@ -259,7 +275,7 @@
             // 
             // SecureKey
             // 
-            this.SecureKey.Location = new System.Drawing.Point(156, 248);
+            this.SecureKey.Location = new System.Drawing.Point(164, 164);
             this.SecureKey.Margin = new System.Windows.Forms.Padding(5);
             this.SecureKey.Name = "SecureKey";
             this.SecureKey.Size = new System.Drawing.Size(479, 27);
@@ -268,7 +284,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(59, 251);
+            this.label10.Location = new System.Drawing.Point(67, 167);
             this.label10.Margin = new System.Windows.Forms.Padding(5);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(82, 20);
@@ -277,9 +293,10 @@
             // 
             // AddCommunity
             // 
-            this.AddCommunity.Location = new System.Drawing.Point(155, 184);
+            this.AddCommunity.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.AddCommunity.Location = new System.Drawing.Point(164, 357);
             this.AddCommunity.Name = "AddCommunity";
-            this.AddCommunity.Size = new System.Drawing.Size(93, 29);
+            this.AddCommunity.Size = new System.Drawing.Size(92, 29);
             this.AddCommunity.TabIndex = 14;
             this.AddCommunity.Text = "Add";
             this.AddCommunity.UseVisualStyleBackColor = true;
@@ -287,7 +304,7 @@
             // 
             // ApplicationId
             // 
-            this.ApplicationId.Location = new System.Drawing.Point(156, 218);
+            this.ApplicationId.Location = new System.Drawing.Point(164, 134);
             this.ApplicationId.Margin = new System.Windows.Forms.Padding(5);
             this.ApplicationId.Name = "ApplicationId";
             this.ApplicationId.Size = new System.Drawing.Size(479, 27);
@@ -296,7 +313,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(33, 221);
+            this.label9.Location = new System.Drawing.Point(41, 137);
             this.label9.Margin = new System.Windows.Forms.Padding(5);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(108, 20);
@@ -306,7 +323,7 @@
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(33, 56);
+            this.label12.Location = new System.Drawing.Point(33, 229);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(116, 20);
             this.label12.TabIndex = 13;
@@ -316,7 +333,7 @@
             // 
             this.Communities.FormattingEnabled = true;
             this.Communities.ItemHeight = 20;
-            this.Communities.Location = new System.Drawing.Point(156, 56);
+            this.Communities.Location = new System.Drawing.Point(164, 229);
             this.Communities.Name = "Communities";
             this.Communities.Size = new System.Drawing.Size(183, 104);
             this.Communities.TabIndex = 12;
@@ -335,7 +352,8 @@
             // 
             // OpenReport
             // 
-            this.OpenReport.Location = new System.Drawing.Point(463, 20);
+            this.OpenReport.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.OpenReport.Location = new System.Drawing.Point(242, 538);
             this.OpenReport.Name = "OpenReport";
             this.OpenReport.Size = new System.Drawing.Size(175, 50);
             this.OpenReport.TabIndex = 1;
@@ -361,14 +379,14 @@
             this.groupBox4.Controls.Add(this.label13);
             this.groupBox4.Location = new System.Drawing.Point(6, 6);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(410, 226);
+            this.groupBox4.Size = new System.Drawing.Size(411, 229);
             this.groupBox4.TabIndex = 0;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Filter";
             // 
             // CommunityId
             // 
-            this.CommunityId.Location = new System.Drawing.Point(262, 89);
+            this.CommunityId.Location = new System.Drawing.Point(262, 91);
             this.CommunityId.Name = "CommunityId";
             this.CommunityId.Size = new System.Drawing.Size(125, 27);
             this.CommunityId.TabIndex = 13;
@@ -376,7 +394,7 @@
             // label16
             // 
             this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(151, 91);
+            this.label16.Location = new System.Drawing.Point(151, 93);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(105, 20);
             this.label16.TabIndex = 12;
@@ -384,7 +402,7 @@
             // 
             // PostId
             // 
-            this.PostId.Location = new System.Drawing.Point(262, 58);
+            this.PostId.Location = new System.Drawing.Point(262, 60);
             this.PostId.Name = "PostId";
             this.PostId.Size = new System.Drawing.Size(125, 27);
             this.PostId.TabIndex = 11;
@@ -392,7 +410,7 @@
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(200, 61);
+            this.label15.Location = new System.Drawing.Point(200, 63);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(56, 20);
             this.label15.TabIndex = 10;
@@ -400,7 +418,7 @@
             // 
             // AuthorId
             // 
-            this.AuthorId.Location = new System.Drawing.Point(262, 27);
+            this.AuthorId.Location = new System.Drawing.Point(262, 29);
             this.AuthorId.Name = "AuthorId";
             this.AuthorId.Size = new System.Drawing.Size(125, 27);
             this.AuthorId.TabIndex = 9;
@@ -490,7 +508,7 @@
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(182, 30);
+            this.label13.Location = new System.Drawing.Point(182, 32);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(74, 20);
             this.label13.TabIndex = 0;
@@ -513,6 +531,7 @@
             // 
             // LoadConfiguration
             // 
+            this.LoadConfiguration.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.LoadConfiguration.Location = new System.Drawing.Point(501, 550);
             this.LoadConfiguration.Name = "LoadConfiguration";
             this.LoadConfiguration.Size = new System.Drawing.Size(165, 50);
@@ -523,6 +542,7 @@
             // 
             // SaveConfiguration
             // 
+            this.SaveConfiguration.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.SaveConfiguration.Location = new System.Drawing.Point(257, 550);
             this.SaveConfiguration.Name = "SaveConfiguration";
             this.SaveConfiguration.Size = new System.Drawing.Size(165, 50);
@@ -533,6 +553,7 @@
             // 
             // SetLocalConfig
             // 
+            this.SetLocalConfig.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.SetLocalConfig.Location = new System.Drawing.Point(8, 550);
             this.SetLocalConfig.Name = "SetLocalConfig";
             this.SetLocalConfig.Size = new System.Drawing.Size(165, 50);
@@ -565,16 +586,17 @@
             this.groupBox10.Controls.Add(this.DeleteAnalysisServiceHost);
             this.groupBox10.Location = new System.Drawing.Point(6, 26);
             this.groupBox10.Name = "groupBox10";
-            this.groupBox10.Size = new System.Drawing.Size(298, 213);
+            this.groupBox10.Size = new System.Drawing.Size(298, 222);
             this.groupBox10.TabIndex = 9;
             this.groupBox10.TabStop = false;
             this.groupBox10.Text = "Host configuration";
             // 
             // ApplyAnalysisServiceEndpoint
             // 
-            this.ApplyAnalysisServiceEndpoint.Location = new System.Drawing.Point(65, 179);
+            this.ApplyAnalysisServiceEndpoint.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ApplyAnalysisServiceEndpoint.Location = new System.Drawing.Point(66, 179);
             this.ApplyAnalysisServiceEndpoint.Name = "ApplyAnalysisServiceEndpoint";
-            this.ApplyAnalysisServiceEndpoint.Size = new System.Drawing.Size(184, 28);
+            this.ApplyAnalysisServiceEndpoint.Size = new System.Drawing.Size(182, 28);
             this.ApplyAnalysisServiceEndpoint.TabIndex = 33;
             this.ApplyAnalysisServiceEndpoint.Text = "Reconnect";
             this.ApplyAnalysisServiceEndpoint.UseVisualStyleBackColor = true;
@@ -612,6 +634,7 @@
             // 
             this.NewAnalysisHost.Location = new System.Drawing.Point(66, 96);
             this.NewAnalysisHost.Name = "NewAnalysisHost";
+            this.NewAnalysisHost.PlaceholderText = "New host...";
             this.NewAnalysisHost.Size = new System.Drawing.Size(182, 27);
             this.NewAnalysisHost.TabIndex = 9;
             // 
@@ -626,9 +649,10 @@
             // 
             // AddAnalysisServiceHost
             // 
-            this.AddAnalysisServiceHost.Location = new System.Drawing.Point(65, 122);
+            this.AddAnalysisServiceHost.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.AddAnalysisServiceHost.Location = new System.Drawing.Point(66, 122);
             this.AddAnalysisServiceHost.Name = "AddAnalysisServiceHost";
-            this.AddAnalysisServiceHost.Size = new System.Drawing.Size(93, 29);
+            this.AddAnalysisServiceHost.Size = new System.Drawing.Size(92, 29);
             this.AddAnalysisServiceHost.TabIndex = 6;
             this.AddAnalysisServiceHost.Text = "Add";
             this.AddAnalysisServiceHost.UseVisualStyleBackColor = true;
@@ -636,9 +660,10 @@
             // 
             // DeleteAnalysisServiceHost
             // 
+            this.DeleteAnalysisServiceHost.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.DeleteAnalysisServiceHost.Location = new System.Drawing.Point(158, 122);
             this.DeleteAnalysisServiceHost.Name = "DeleteAnalysisServiceHost";
-            this.DeleteAnalysisServiceHost.Size = new System.Drawing.Size(91, 29);
+            this.DeleteAnalysisServiceHost.Size = new System.Drawing.Size(90, 29);
             this.DeleteAnalysisServiceHost.TabIndex = 7;
             this.DeleteAnalysisServiceHost.Text = "Delete";
             this.DeleteAnalysisServiceHost.UseVisualStyleBackColor = true;
@@ -646,7 +671,7 @@
             // 
             // ObserveDelay
             // 
-            this.ObserveDelay.Location = new System.Drawing.Point(177, 253);
+            this.ObserveDelay.Location = new System.Drawing.Point(179, 273);
             this.ObserveDelay.Margin = new System.Windows.Forms.Padding(5);
             this.ObserveDelay.Name = "ObserveDelay";
             this.ObserveDelay.Size = new System.Drawing.Size(125, 27);
@@ -655,7 +680,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(8, 256);
+            this.label8.Location = new System.Drawing.Point(10, 276);
             this.label8.Margin = new System.Windows.Forms.Padding(5);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(106, 20);
@@ -690,16 +715,17 @@
             this.groupBox7.Controls.Add(this.AddCollectionServiceHost);
             this.groupBox7.Location = new System.Drawing.Point(6, 26);
             this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(306, 213);
+            this.groupBox7.Size = new System.Drawing.Size(306, 222);
             this.groupBox7.TabIndex = 6;
             this.groupBox7.TabStop = false;
             this.groupBox7.Text = "Host configuration";
             // 
             // ApplyNewCollectionServiceEndpoint
             // 
-            this.ApplyNewCollectionServiceEndpoint.Location = new System.Drawing.Point(64, 179);
+            this.ApplyNewCollectionServiceEndpoint.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ApplyNewCollectionServiceEndpoint.Location = new System.Drawing.Point(65, 179);
             this.ApplyNewCollectionServiceEndpoint.Name = "ApplyNewCollectionServiceEndpoint";
-            this.ApplyNewCollectionServiceEndpoint.Size = new System.Drawing.Size(185, 28);
+            this.ApplyNewCollectionServiceEndpoint.Size = new System.Drawing.Size(183, 28);
             this.ApplyNewCollectionServiceEndpoint.TabIndex = 19;
             this.ApplyNewCollectionServiceEndpoint.Text = "Reconnect";
             this.ApplyNewCollectionServiceEndpoint.UseVisualStyleBackColor = true;
@@ -737,6 +763,7 @@
             // 
             this.NewCollectionHost.Location = new System.Drawing.Point(65, 96);
             this.NewCollectionHost.Name = "NewCollectionHost";
+            this.NewCollectionHost.PlaceholderText = "New host...";
             this.NewCollectionHost.Size = new System.Drawing.Size(183, 27);
             this.NewCollectionHost.TabIndex = 8;
             // 
@@ -751,9 +778,10 @@
             // 
             // DeleteCollectionServiceHost
             // 
+            this.DeleteCollectionServiceHost.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.DeleteCollectionServiceHost.Location = new System.Drawing.Point(158, 122);
             this.DeleteCollectionServiceHost.Name = "DeleteCollectionServiceHost";
-            this.DeleteCollectionServiceHost.Size = new System.Drawing.Size(91, 29);
+            this.DeleteCollectionServiceHost.Size = new System.Drawing.Size(90, 29);
             this.DeleteCollectionServiceHost.TabIndex = 5;
             this.DeleteCollectionServiceHost.Text = "Delete";
             this.DeleteCollectionServiceHost.UseVisualStyleBackColor = true;
@@ -761,9 +789,10 @@
             // 
             // AddCollectionServiceHost
             // 
-            this.AddCollectionServiceHost.Location = new System.Drawing.Point(64, 122);
+            this.AddCollectionServiceHost.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.AddCollectionServiceHost.Location = new System.Drawing.Point(65, 122);
             this.AddCollectionServiceHost.Name = "AddCollectionServiceHost";
-            this.AddCollectionServiceHost.Size = new System.Drawing.Size(93, 29);
+            this.AddCollectionServiceHost.Size = new System.Drawing.Size(92, 29);
             this.AddCollectionServiceHost.TabIndex = 4;
             this.AddCollectionServiceHost.Text = "Add";
             this.AddCollectionServiceHost.UseVisualStyleBackColor = true;
@@ -771,7 +800,7 @@
             // 
             // PostQueueSize
             // 
-            this.PostQueueSize.Location = new System.Drawing.Point(178, 327);
+            this.PostQueueSize.Location = new System.Drawing.Point(174, 347);
             this.PostQueueSize.Margin = new System.Windows.Forms.Padding(5);
             this.PostQueueSize.Name = "PostQueueSize";
             this.PostQueueSize.Size = new System.Drawing.Size(125, 27);
@@ -780,7 +809,7 @@
             // label31
             // 
             this.label31.AutoSize = true;
-            this.label31.Location = new System.Drawing.Point(12, 330);
+            this.label31.Location = new System.Drawing.Point(8, 350);
             this.label31.Margin = new System.Windows.Forms.Padding(5);
             this.label31.Name = "label31";
             this.label31.Size = new System.Drawing.Size(113, 20);
@@ -789,7 +818,7 @@
             // 
             // ScanCommentsDelay
             // 
-            this.ScanCommentsDelay.Location = new System.Drawing.Point(178, 290);
+            this.ScanCommentsDelay.Location = new System.Drawing.Point(174, 310);
             this.ScanCommentsDelay.Margin = new System.Windows.Forms.Padding(5);
             this.ScanCommentsDelay.Name = "ScanCommentsDelay";
             this.ScanCommentsDelay.Size = new System.Drawing.Size(125, 27);
@@ -798,7 +827,7 @@
             // label30
             // 
             this.label30.AutoSize = true;
-            this.label30.Location = new System.Drawing.Point(12, 293);
+            this.label30.Location = new System.Drawing.Point(8, 313);
             this.label30.Margin = new System.Windows.Forms.Padding(5);
             this.label30.Name = "label30";
             this.label30.Size = new System.Drawing.Size(156, 20);
@@ -808,7 +837,7 @@
             // label29
             // 
             this.label29.AutoSize = true;
-            this.label29.Location = new System.Drawing.Point(12, 256);
+            this.label29.Location = new System.Drawing.Point(8, 276);
             this.label29.Margin = new System.Windows.Forms.Padding(5);
             this.label29.Name = "label29";
             this.label29.Size = new System.Drawing.Size(116, 20);
@@ -817,7 +846,7 @@
             // 
             // ScanPostDelay
             // 
-            this.ScanPostDelay.Location = new System.Drawing.Point(178, 253);
+            this.ScanPostDelay.Location = new System.Drawing.Point(174, 273);
             this.ScanPostDelay.Margin = new System.Windows.Forms.Padding(5);
             this.ScanPostDelay.Name = "ScanPostDelay";
             this.ScanPostDelay.Size = new System.Drawing.Size(125, 27);
@@ -825,9 +854,13 @@
             // 
             // MainTab
             // 
+            this.MainTab.Controls.Add(this.AnalysisLogDate);
+            this.MainTab.Controls.Add(this.CollectionLogDate);
             this.MainTab.Controls.Add(this.groupBox3);
             this.MainTab.Controls.Add(this.groupBox2);
+            this.MainTab.Controls.Add(this.ViewAnalysisServiceLogs);
             this.MainTab.Controls.Add(this.groupBox1);
+            this.MainTab.Controls.Add(this.ViewCollectionServiceLogs);
             this.MainTab.Location = new System.Drawing.Point(4, 44);
             this.MainTab.Name = "MainTab";
             this.MainTab.Padding = new System.Windows.Forms.Padding(3);
@@ -836,11 +869,25 @@
             this.MainTab.Text = "Main";
             this.MainTab.UseVisualStyleBackColor = true;
             // 
+            // AnalysisLogDate
+            // 
+            this.AnalysisLogDate.Location = new System.Drawing.Point(353, 351);
+            this.AnalysisLogDate.Name = "AnalysisLogDate";
+            this.AnalysisLogDate.Size = new System.Drawing.Size(154, 27);
+            this.AnalysisLogDate.TabIndex = 18;
+            // 
+            // CollectionLogDate
+            // 
+            this.CollectionLogDate.Location = new System.Drawing.Point(6, 351);
+            this.CollectionLogDate.Name = "CollectionLogDate";
+            this.CollectionLogDate.Size = new System.Drawing.Size(154, 27);
+            this.CollectionLogDate.TabIndex = 17;
+            // 
             // groupBox3
             // 
-            this.groupBox3.Controls.Add(this.StartAll);
             this.groupBox3.Controls.Add(this.ClearEvaluatedDatabase);
             this.groupBox3.Controls.Add(this.ClearCommentsDatabase);
+            this.groupBox3.Controls.Add(this.StartAll);
             this.groupBox3.Controls.Add(this.StartAnalysisService);
             this.groupBox3.Controls.Add(this.StartCollectionService);
             this.groupBox3.Controls.Add(this.StopAll);
@@ -855,7 +902,8 @@
             // 
             // StartAll
             // 
-            this.StartAll.Location = new System.Drawing.Point(96, 138);
+            this.StartAll.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.StartAll.Location = new System.Drawing.Point(248, 140);
             this.StartAll.Name = "StartAll";
             this.StartAll.Size = new System.Drawing.Size(175, 50);
             this.StartAll.TabIndex = 6;
@@ -865,7 +913,8 @@
             // 
             // ClearEvaluatedDatabase
             // 
-            this.ClearEvaluatedDatabase.Location = new System.Drawing.Point(187, 82);
+            this.ClearEvaluatedDatabase.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ClearEvaluatedDatabase.Location = new System.Drawing.Point(479, 84);
             this.ClearEvaluatedDatabase.Name = "ClearEvaluatedDatabase";
             this.ClearEvaluatedDatabase.Size = new System.Drawing.Size(175, 50);
             this.ClearEvaluatedDatabase.TabIndex = 3;
@@ -875,7 +924,8 @@
             // 
             // ClearCommentsDatabase
             // 
-            this.ClearCommentsDatabase.Location = new System.Drawing.Point(6, 82);
+            this.ClearCommentsDatabase.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ClearCommentsDatabase.Location = new System.Drawing.Point(6, 84);
             this.ClearCommentsDatabase.Name = "ClearCommentsDatabase";
             this.ClearCommentsDatabase.Size = new System.Drawing.Size(175, 50);
             this.ClearCommentsDatabase.TabIndex = 2;
@@ -885,7 +935,8 @@
             // 
             // StartAnalysisService
             // 
-            this.StartAnalysisService.Location = new System.Drawing.Point(187, 26);
+            this.StartAnalysisService.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.StartAnalysisService.Location = new System.Drawing.Point(479, 140);
             this.StartAnalysisService.Name = "StartAnalysisService";
             this.StartAnalysisService.Size = new System.Drawing.Size(175, 50);
             this.StartAnalysisService.TabIndex = 1;
@@ -895,7 +946,8 @@
             // 
             // StartCollectionService
             // 
-            this.StartCollectionService.Location = new System.Drawing.Point(6, 26);
+            this.StartCollectionService.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.StartCollectionService.Location = new System.Drawing.Point(6, 140);
             this.StartCollectionService.Name = "StartCollectionService";
             this.StartCollectionService.Size = new System.Drawing.Size(175, 50);
             this.StartCollectionService.TabIndex = 0;
@@ -905,7 +957,8 @@
             // 
             // StopAll
             // 
-            this.StopAll.Location = new System.Drawing.Point(96, 138);
+            this.StopAll.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.StopAll.Location = new System.Drawing.Point(248, 140);
             this.StopAll.Name = "StopAll";
             this.StopAll.Size = new System.Drawing.Size(175, 50);
             this.StopAll.TabIndex = 7;
@@ -915,7 +968,8 @@
             // 
             // StopAnalysisService
             // 
-            this.StopAnalysisService.Location = new System.Drawing.Point(187, 26);
+            this.StopAnalysisService.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.StopAnalysisService.Location = new System.Drawing.Point(479, 140);
             this.StopAnalysisService.Name = "StopAnalysisService";
             this.StopAnalysisService.Size = new System.Drawing.Size(175, 50);
             this.StopAnalysisService.TabIndex = 5;
@@ -925,7 +979,8 @@
             // 
             // StopCollectionService
             // 
-            this.StopCollectionService.Location = new System.Drawing.Point(6, 26);
+            this.StopCollectionService.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.StopCollectionService.Location = new System.Drawing.Point(6, 140);
             this.StopCollectionService.Name = "StopCollectionService";
             this.StopCollectionService.Size = new System.Drawing.Size(175, 50);
             this.StopCollectionService.TabIndex = 4;
@@ -935,10 +990,8 @@
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.AnalysisLogDate);
             this.groupBox2.Controls.Add(this.RefreshAnalysisServiceInfo);
             this.groupBox2.Controls.Add(this.AnalysisEvaluated);
-            this.groupBox2.Controls.Add(this.ViewAnalysisServiceLogs);
             this.groupBox2.Controls.Add(this.AnalysisWarnings);
             this.groupBox2.Controls.Add(this.label26);
             this.groupBox2.Controls.Add(this.AnalysisErrors);
@@ -952,20 +1005,14 @@
             this.groupBox2.Controls.Add(this.label21);
             this.groupBox2.Location = new System.Drawing.Point(353, 6);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(315, 318);
+            this.groupBox2.Size = new System.Drawing.Size(315, 345);
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Collection service info";
-            // 
-            // AnalysisLogDate
-            // 
-            this.AnalysisLogDate.Location = new System.Drawing.Point(73, 232);
-            this.AnalysisLogDate.Name = "AnalysisLogDate";
-            this.AnalysisLogDate.Size = new System.Drawing.Size(175, 27);
-            this.AnalysisLogDate.TabIndex = 18;
+            this.groupBox2.Text = "Analysis service info";
             // 
             // RefreshAnalysisServiceInfo
             // 
+            this.RefreshAnalysisServiceInfo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.RefreshAnalysisServiceInfo.Location = new System.Drawing.Point(240, 11);
             this.RefreshAnalysisServiceInfo.Name = "RefreshAnalysisServiceInfo";
             this.RefreshAnalysisServiceInfo.Size = new System.Drawing.Size(75, 29);
@@ -983,16 +1030,6 @@
             this.AnalysisEvaluated.Size = new System.Drawing.Size(45, 20);
             this.AnalysisEvaluated.TabIndex = 29;
             this.AnalysisEvaluated.Text = "None";
-            // 
-            // ViewAnalysisServiceLogs
-            // 
-            this.ViewAnalysisServiceLogs.Location = new System.Drawing.Point(73, 259);
-            this.ViewAnalysisServiceLogs.Name = "ViewAnalysisServiceLogs";
-            this.ViewAnalysisServiceLogs.Size = new System.Drawing.Size(175, 50);
-            this.ViewAnalysisServiceLogs.TabIndex = 23;
-            this.ViewAnalysisServiceLogs.Text = "View analysis log";
-            this.ViewAnalysisServiceLogs.UseVisualStyleBackColor = true;
-            this.ViewAnalysisServiceLogs.Click += new System.EventHandler(this.ViewAnalysisServiceLogs_Click);
             // 
             // AnalysisWarnings
             // 
@@ -1104,9 +1141,19 @@
             this.label21.TabIndex = 20;
             this.label21.Text = "Evaluated:";
             // 
+            // ViewAnalysisServiceLogs
+            // 
+            this.ViewAnalysisServiceLogs.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ViewAnalysisServiceLogs.Location = new System.Drawing.Point(513, 351);
+            this.ViewAnalysisServiceLogs.Name = "ViewAnalysisServiceLogs";
+            this.ViewAnalysisServiceLogs.Size = new System.Drawing.Size(155, 37);
+            this.ViewAnalysisServiceLogs.TabIndex = 23;
+            this.ViewAnalysisServiceLogs.Text = "View analysis log";
+            this.ViewAnalysisServiceLogs.UseVisualStyleBackColor = true;
+            this.ViewAnalysisServiceLogs.Click += new System.EventHandler(this.ViewAnalysisServiceLogs_Click);
+            // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.CollectionLogDate);
             this.groupBox1.Controls.Add(this.RefreshCollectionServiceInfo);
             this.groupBox1.Controls.Add(this.CollectionCollected);
             this.groupBox1.Controls.Add(this.CollectionWarnings);
@@ -1114,7 +1161,6 @@
             this.groupBox1.Controls.Add(this.CollectionUptime);
             this.groupBox1.Controls.Add(this.CollectionState);
             this.groupBox1.Controls.Add(this.CollectionConnection);
-            this.groupBox1.Controls.Add(this.ViewCollectionServiceLogs);
             this.groupBox1.Controls.Add(this.label6);
             this.groupBox1.Controls.Add(this.label5);
             this.groupBox1.Controls.Add(this.label4);
@@ -1123,20 +1169,14 @@
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Location = new System.Drawing.Point(6, 6);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(315, 318);
+            this.groupBox1.Size = new System.Drawing.Size(315, 345);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Collection service info";
             // 
-            // CollectionLogDate
-            // 
-            this.CollectionLogDate.Location = new System.Drawing.Point(63, 232);
-            this.CollectionLogDate.Name = "CollectionLogDate";
-            this.CollectionLogDate.Size = new System.Drawing.Size(175, 27);
-            this.CollectionLogDate.TabIndex = 17;
-            // 
             // RefreshCollectionServiceInfo
             // 
+            this.RefreshCollectionServiceInfo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.RefreshCollectionServiceInfo.Location = new System.Drawing.Point(240, 11);
             this.RefreshCollectionServiceInfo.Name = "RefreshCollectionServiceInfo";
             this.RefreshCollectionServiceInfo.Size = new System.Drawing.Size(75, 29);
@@ -1205,16 +1245,6 @@
             this.CollectionConnection.TabIndex = 9;
             this.CollectionConnection.Text = "None";
             // 
-            // ViewCollectionServiceLogs
-            // 
-            this.ViewCollectionServiceLogs.Location = new System.Drawing.Point(63, 259);
-            this.ViewCollectionServiceLogs.Name = "ViewCollectionServiceLogs";
-            this.ViewCollectionServiceLogs.Size = new System.Drawing.Size(175, 50);
-            this.ViewCollectionServiceLogs.TabIndex = 8;
-            this.ViewCollectionServiceLogs.Text = "View collection log";
-            this.ViewCollectionServiceLogs.UseVisualStyleBackColor = true;
-            this.ViewCollectionServiceLogs.Click += new System.EventHandler(this.ViewCollectionServiceLogs_Click);
-            // 
             // label6
             // 
             this.label6.AutoSize = true;
@@ -1274,6 +1304,17 @@
             this.label1.Size = new System.Drawing.Size(87, 20);
             this.label1.TabIndex = 0;
             this.label1.Text = "Connection:";
+            // 
+            // ViewCollectionServiceLogs
+            // 
+            this.ViewCollectionServiceLogs.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ViewCollectionServiceLogs.Location = new System.Drawing.Point(166, 351);
+            this.ViewCollectionServiceLogs.Name = "ViewCollectionServiceLogs";
+            this.ViewCollectionServiceLogs.Size = new System.Drawing.Size(155, 37);
+            this.ViewCollectionServiceLogs.TabIndex = 8;
+            this.ViewCollectionServiceLogs.Text = "View collection log";
+            this.ViewCollectionServiceLogs.UseVisualStyleBackColor = true;
+            this.ViewCollectionServiceLogs.Click += new System.EventHandler(this.ViewCollectionServiceLogs_Click);
             // 
             // Tabs
             // 
@@ -1433,5 +1474,6 @@
         private Label label2;
         private Label label1;
         private TabControl Tabs;
+        private Label label17;
     }
 }

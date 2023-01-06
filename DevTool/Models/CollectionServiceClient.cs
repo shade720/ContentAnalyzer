@@ -17,27 +17,27 @@ internal class CollectionServiceClient : ServiceClient<Comment>
 
     public override void StartService()
     {
-        _dataCollectionClient.StartCollectionService(new StartCollectionServiceRequest());
+        _dataCollectionClient.StartCollectionServiceAsync(new StartCollectionServiceRequest());
     }
 
     public override void StopService()
     {
-        _dataCollectionClient.StopCollectionService(new StopCollectionServiceRequest());
+        _dataCollectionClient.StopCollectionServiceAsync(new StopCollectionServiceRequest());
     }
 
     public override void ClearDatabase()
     {
-        _dataCollectionClient.ClearCommentsDatabase(new ClearCommentsDatabaseRequest());
+        _dataCollectionClient.ClearCommentsDatabaseAsync(new ClearCommentsDatabaseRequest());
     }
 
     protected override string GetLogFile(DateTime date)
     {
-        var result = _dataCollectionClient.GetLogs(new LogRequest { LogDate = Timestamp.FromDateTime(date.ToUniversalTime()) });
+        var result = _dataCollectionClient.GetLogsAsync(new LogRequest { LogDate = Timestamp.FromDateTime(date.ToUniversalTime()) }).ResponseAsync.Result;
         return result.LogFile.ToStringUtf8();
     }
     public override void LoadConfiguration(string settings)
     {
-        _dataCollectionClient.SetConfiguration(new SetConfigurationRequest { Settings = settings });
+        _dataCollectionClient.SetConfigurationAsync(new SetConfigurationRequest { Settings = settings });
     }
 
     public override IEnumerable<Comment> GetResults(CommentsQueryFilter filter)
@@ -50,7 +50,7 @@ internal class CollectionServiceClient : ServiceClient<Comment>
             FromDate = new Timestamp { Seconds = new DateTimeOffset(filter.FromDate).ToUnixTimeSeconds() },
             ToDate = new Timestamp { Seconds = new DateTimeOffset(filter.ToDate).ToUnixTimeSeconds() }
         };
-        var comments = _dataCollectionClient.GetComments(new GetCommentsRequest { Filter = requestFilter });
+        var comments = _dataCollectionClient.GetCommentsAsync(new GetCommentsRequest { Filter = requestFilter }).ResponseAsync.Result;
         return comments.CommentData.Select(comment => new Comment
             {
                 Id = comment.Id,

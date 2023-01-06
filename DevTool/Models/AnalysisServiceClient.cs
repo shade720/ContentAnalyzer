@@ -15,7 +15,7 @@ internal class AnalysisServiceClient : ServiceClient<EvaluatedComment>
 
     public override void ClearDatabase()
     {
-        _dataAnalysisClient.ClearEvaluatedDatabase(new ClearEvaluatedDatabaseRequest());
+        _dataAnalysisClient.ClearEvaluatedDatabaseAsync(new ClearEvaluatedDatabaseRequest());
     }
 
     public override IEnumerable<EvaluatedComment> GetResults(CommentsQueryFilter filter)
@@ -28,7 +28,7 @@ internal class AnalysisServiceClient : ServiceClient<EvaluatedComment>
             FromDate = new Timestamp { Seconds = new DateTimeOffset(filter.FromDate).ToUnixTimeSeconds() },
             ToDate = new Timestamp { Seconds = new DateTimeOffset(filter.ToDate).ToUnixTimeSeconds() }
         };
-        var comments = _dataAnalysisClient.GetEvaluatedComments(new EvaluatedCommentsRequest { Filter = requestFilter });
+        var comments = _dataAnalysisClient.GetEvaluatedCommentsAsync(new EvaluatedCommentsRequest { Filter = requestFilter }).ResponseAsync.Result;
         return comments.EvaluatedComments.Select(evaluateResultProto => new EvaluatedComment
         {
             Id = evaluateResultProto.Id,
@@ -49,21 +49,21 @@ internal class AnalysisServiceClient : ServiceClient<EvaluatedComment>
     }
     public override void LoadConfiguration(string settings)
     {
-        _dataAnalysisClient.SetConfiguration(new SetConfigurationRequest { Settings = settings });
+        _dataAnalysisClient.SetConfigurationAsync(new SetConfigurationRequest { Settings = settings });
     }
     public override void StartService()
     {
-        _dataAnalysisClient.StartAnalysisService(new StartAnalysisServiceRequest());
+        _dataAnalysisClient.StartAnalysisServiceAsync(new StartAnalysisServiceRequest());
     }
 
     public override void StopService()
     {
-        _dataAnalysisClient.StopAnalysisService(new StopAnalysisServiceRequest());
+        _dataAnalysisClient.StopAnalysisServiceAsync(new StopAnalysisServiceRequest());
     }
 
     protected override string GetLogFile(DateTime date)
     {
-        var result = _dataAnalysisClient.GetLogs(new LogRequest { LogDate = Timestamp.FromDateTime(date.ToUniversalTime()) });
+        var result = _dataAnalysisClient.GetLogsAsync(new LogRequest { LogDate = Timestamp.FromDateTime(date.ToUniversalTime()) }).ResponseAsync.Result;
         return result.LogFile.ToStringUtf8();
     }
 

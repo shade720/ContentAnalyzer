@@ -48,6 +48,11 @@ internal partial class MainForm : Form
         CollectionErrors.Text = serviceInfo.ErrorsCount.ToString();
         CollectionWarnings.Text = serviceInfo.WarningsCount.ToString();
         CollectionCollected.Text = serviceInfo.CollectedCommentsCount.ToString();
+
+        StartCollectionService.Visible = serviceInfo.State != State.Up;
+        StartAll.Visible = serviceInfo.State != State.Up;
+        StopCollectionService.Visible = serviceInfo.State == State.Up;
+        StopAll.Visible = serviceInfo.State == State.Up;
     }
 
     private void RefreshAnalysisInfo(ServiceInfo serviceInfo)
@@ -58,6 +63,11 @@ internal partial class MainForm : Form
         AnalysisErrors.Text = serviceInfo.ErrorsCount.ToString();
         AnalysisWarnings.Text = serviceInfo.WarningsCount.ToString();
         AnalysisEvaluated.Text = serviceInfo.EvaluatedCommentsCount.ToString();
+
+        StartAnalysisService.Visible = serviceInfo.State != State.Up;
+        StartAll.Visible = serviceInfo.State != State.Up;
+        StopAnalysisService.Visible = serviceInfo.State == State.Up;
+        StopAll.Visible = serviceInfo.State == State.Up;
     }
 
     private void ViewCollectionServiceLogs_Click(object sender, EventArgs e)

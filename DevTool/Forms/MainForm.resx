@@ -60,4 +60,10 @@
   <metadata name="SaveFileDialog.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
+  <data name="label17.Text" xml:space="preserve">
+    <value>Personal data from vk application. To get it, you need:
+      - create an standalone vk application;
+      - copy the personal data of the created standalone vk application;
+      - run the standalone vk application.</value>
+  </data>
 </root>
