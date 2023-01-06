@@ -1,18 +1,17 @@
-﻿using DataCollectionService.DataCollectors.VkDataCollector.Data;
-using Serilog;
-using System.Runtime.ExceptionServices;
+﻿using Serilog;
 using VkNet.Enums;
 using VkNet.Model;
+using DataCollectionService.BusinessLogicLayer.SocialNetworkClients.VkClient.Data;
+using DataCollectionService.BusinessLogicLayer.SocialNetworkClients.VkClient;
 
-namespace DataCollectionService.DataCollectors.VkDataCollector.Scanners;
+namespace DataCollectionService.BusinessLogicLayer.SocialNetworkClients.VkClient.Scanners;
 
 internal class CommentScanner : Scanner
 {
     public long PostId { get; }
     private readonly List<CommentInfo> _receivedCommentInfos = new();
 
-    public CommentScanner(long communityId, long postId, VkApi vkApi, CommentDataManager dataManager, Config configuration)
-        : base(communityId, vkApi, dataManager, configuration)
+    public CommentScanner(long communityId, long postId, VkApi vkApi, CommentDataManager dataManager, IConfiguration configuration) : base(communityId, vkApi, dataManager, configuration)
     {
         PostId = postId;
     }
@@ -64,7 +63,7 @@ internal class CommentScanner : Scanner
         while (!StopScanToken.Token.IsCancellationRequested)
         {
             Log.Logger.Information("Comment scanner post {@PostId} started new iteration", PostId);
-            await Task.Delay(Configuration.ScanCommentsDelay, StopScanToken.Token).ContinueWith(_ => { }); //to avoid exception
+            await Task.Delay(int.Parse(Configuration["ScanCommentsDelay"]), StopScanToken.Token).ContinueWith(_ => { }); //to avoid exception
             var anyNewComments = await AnyNewComments();
             if (StopScanToken.IsCancellationRequested || !anyNewComments) continue;
             var mainBranch = await ScanBranchAsync();

@@ -1,17 +1,17 @@
-﻿using DataCollectionService.DataCollectors.VkDataCollector.Data;
+﻿using DataCollectionService.BusinessLogicLayer.SocialNetworkClients.VkClient.Data;
 
-namespace DataCollectionService.DataCollectors.VkDataCollector.Scanners;
+namespace DataCollectionService.BusinessLogicLayer.SocialNetworkClients.VkClient.Scanners;
 
 internal abstract class Scanner
 {
     protected readonly long CommunityId;
 
-    protected readonly Config Configuration;
+    protected readonly IConfiguration Configuration;
     protected readonly VkApi ClientApi;
     protected readonly CommentDataManager CommentManager;
     protected CancellationTokenSource StopScanToken;
-    
-    protected Scanner(long communityId, VkApi clientApi, CommentDataManager dataManager, Config configuration)
+
+    protected Scanner(long communityId, VkApi clientApi, CommentDataManager dataManager, IConfiguration configuration)
     {
         ClientApi = clientApi;
         CommentManager = dataManager;

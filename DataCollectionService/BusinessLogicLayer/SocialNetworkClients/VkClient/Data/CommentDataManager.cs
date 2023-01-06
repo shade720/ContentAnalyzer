@@ -3,7 +3,7 @@ using Common.EntityFramework;
 using VkNet.Model;
 using Comment = Common.EntityFramework.Comment;
 
-namespace DataCollectionService.DataCollectors.VkDataCollector.Data;
+namespace DataCollectionService.BusinessLogicLayer.SocialNetworkClients.VkClient.Data;
 
 internal class CommentDataManager
 {
@@ -48,11 +48,11 @@ internal class CommentDataManager
         return comment.PostId is null ||
                comment.OwnerId is null ||
                comment.FromId is null ||
-               comment.Date is null||
-               comment.Id <= 0 || 
-               comment.PostId <= 0 || 
-               comment.OwnerId > 0 || 
-               string.IsNullOrEmpty(comment.Text) || 
+               comment.Date is null ||
+               comment.Id <= 0 ||
+               comment.PostId <= 0 ||
+               comment.OwnerId > 0 ||
+               string.IsNullOrEmpty(comment.Text) ||
                comment.Text.Length <= 5;
     }
 }

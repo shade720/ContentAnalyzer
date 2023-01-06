@@ -1,7 +1,8 @@
-﻿using DataCollectionService.DataCollectors.VkDataCollector.Scanners;
+﻿using DataCollectionService.BusinessLogicLayer.SocialNetworkClients.VkClient;
+using DataCollectionService.BusinessLogicLayer.SocialNetworkClients.VkClient.Scanners;
 using Serilog;
 
-namespace DataCollectionService.DataCollectors.VkDataCollector.ScannerManager;
+namespace DataCollectionService.BusinessLogicLayer.SocialNetworkClients.VkClient.ScannerManager;
 
 internal class CommentScannersQueue
 {

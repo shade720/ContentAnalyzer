@@ -1,4 +1,4 @@
-﻿namespace DataCollectionService.DataCollectors.VkDataCollector;
+﻿namespace DataCollectionService.BusinessLogicLayer.SocialNetworkClients.VkClient;
 
 public class Config
 {

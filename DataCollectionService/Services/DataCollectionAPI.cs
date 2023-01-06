@@ -1,47 +1,34 @@
-using System.Diagnostics;
 using System.Dynamic;
 using Common;
-using Common.EntityFramework;
-using DataCollectionService.DatabaseClients;
 using Google.Protobuf;
 using Google.Protobuf.Collections;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
-using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json;
 using Serilog;
+using DataCollectionService.BusinessLogicLayer;
 
 namespace DataCollectionService.Services;
 
-public class DataCollectionService : DataCollection.DataCollectionBase
+public class DataCollectionAPI : DataCollection.DataCollectionBase
 {
-    private static readonly List<IDataCollector> DataCollectors = new();
-    private static DatabaseClient<Comment> _saveDatabase;
-    private static readonly Stopwatch Stopwatch = new();
-    private static bool IsRunning { get; set; } = false;
+    private readonly DataCollector _dataCollector;
 
-    #region PublicInterface
-
-    public DataCollectionService(IDbContextFactory<CommentsContext> contextFactory)
+    public DataCollectionAPI(DataCollector dataCollector)
     {
-        _saveDatabase = new CommentsDatabaseClient(contextFactory);
+        _dataCollector = dataCollector;
     }
 
     public override Task<StartCollectionServiceReply> StartCollectionService(StartCollectionServiceRequest request, ServerCallContext context)
     {
-        StartCollecting();
-        Stopwatch.Start();
-        IsRunning = true;
+        _dataCollector.StartCollecting();
         return Task.FromResult(new StartCollectionServiceReply());
     }
 
     public override Task<StopCollectionServiceReply> StopCollectionService(StopCollectionServiceRequest request, ServerCallContext context)
     {
-        StopCollecting();
-        Stopwatch.Stop();
-        Stopwatch.Reset();
-        IsRunning = false;
+        _dataCollector.StopCollecting();
         return Task.FromResult(new StopCollectionServiceReply());
     }
 
@@ -55,11 +42,9 @@ public class DataCollectionService : DataCollection.DataCollectionBase
             FromDate = request.Filter.FromDate.ToDateTime(),
             ToDate = request.Filter.ToDate.ToDateTime()
         };
-        var range = _saveDatabase.GetRange(filter);
-        var convertedRange = new RepeatedField<CommentDataProto>();
-        foreach (var comment in range)
-        {
-            convertedRange.Add(new CommentDataProto
+        var range = _dataCollector
+            .GetCollectedComments(filter).
+            Select(comment => new CommentDataProto
             {
                 Id = comment.Id,
                 AuthorId = comment.AuthorId,
@@ -69,20 +54,18 @@ public class DataCollectionService : DataCollection.DataCollectionBase
                 PostId = comment.PostId,
                 Text = comment.Text
             });
-        }
-
-        return Task.FromResult(new GetCommentsReply {CommentData = { convertedRange } });
+        return Task.FromResult(new GetCommentsReply {CommentData = { new RepeatedField<CommentDataProto> { range } } });
     }
 
     public override Task<ClearCommentsDatabaseReply> ClearCommentsDatabase(ClearCommentsDatabaseRequest request, ServerCallContext context)
     {
-        _saveDatabase.Clear();
+        _dataCollector.ClearCollectedComments();
         return Task.FromResult(new ClearCommentsDatabaseReply());
     }
 
     public override Task<LogReply> GetLogs(LogRequest request, ServerCallContext context)
     {
-        Log.Logger.Information("Uptime: {0}", Stopwatch.Elapsed.ToString(@"hh\:mm\:ss"));
+        Log.Logger.Information("Uptime: {0}", _dataCollector.CurrentWorkingTime);
         var logDate = request.LogDate.ToDateTime().ToLocalTime();
         var requiredFilePath = Directory.GetFiles(@"./Logs/", $"log{logDate:yyyyMMdd}*.txt").SingleOrDefault();
         if (string.IsNullOrEmpty(requiredFilePath)) return Task.FromResult(new LogReply());
@@ -97,48 +80,15 @@ public class DataCollectionService : DataCollection.DataCollectionBase
         UpdateSettings(request.Settings);
         Log.Logger.Information("Settings file updated");
 
-        if (!IsRunning) return Task.FromResult(new SetConfigurationReply());
+        if (!_dataCollector.IsRunning) return Task.FromResult(new SetConfigurationReply());
         Log.Logger.Information("Restarting service...");
-        StopCollecting();
-        DataCollectors.Clear();
-        var config = new ConfigurationBuilder()
-            .SetBasePath(Environment.CurrentDirectory)
-            .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-            .AddJsonFile($"appsettings.{Environment.UserDomainName}.json", optional: true, reloadOnChange: true)
-            .AddEnvironmentVariables()
-            .Build();
-        Startup.ConfigureService(config);
-        StartCollecting();
+        
+        _dataCollector.RestartCollecting();
+
         Log.Logger.Information("Service restarted on new configuration");
         return Task.FromResult(new SetConfigurationReply());
     }
 
-    #endregion
-
-    #region Private
-
-    private void StartCollecting()
-    {
-        foreach (var dataCollector in DataCollectors)
-        {
-            dataCollector.StartCollecting();
-            dataCollector.Subscribe(InsertToDatabase);
-        }
-    }
-
-    private void StopCollecting()
-    {
-        foreach (var dataCollector in DataCollectors)
-        {
-            dataCollector.StopCollecting();
-            dataCollector.Unsubscribe(InsertToDatabase);
-        }
-    }
-
-    private static void InsertToDatabase(Comment frame)
-    {
-        _saveDatabase.Add(frame);
-    }
 
     private static void UpdateSettings(string settings)
     {
@@ -174,14 +124,4 @@ public class DataCollectionService : DataCollection.DataCollectionBase
         var newAppSettingsJson = JsonConvert.SerializeObject(oldConfig, Formatting.Indented, jsonSettings);
         File.WriteAllText(appSettingsPath, newAppSettingsJson);
     }
-
-    #endregion
-
-    #region Startup
-
-    public static void AddDataCollector(Func<IDataCollector> dataCollectorConfiguration)
-    {
-        DataCollectors.Add(dataCollectorConfiguration.Invoke());
-    }
-    #endregion
 }

@@ -4,7 +4,7 @@ using VkNet.Enums.Filters;
 using VkNet.Model;
 using VkNet.Model.RequestParams;
 
-namespace DataCollectionService.DataCollectors.VkDataCollector;
+namespace DataCollectionService.BusinessLogicLayer.SocialNetworkClients.VkClient;
 
 internal class VkApi
 {

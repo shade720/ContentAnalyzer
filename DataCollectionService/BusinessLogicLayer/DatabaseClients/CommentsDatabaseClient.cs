@@ -4,7 +4,7 @@ using Common.EntityFramework;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 
-namespace DataCollectionService.DatabaseClients;
+namespace DataCollectionService.BusinessLogicLayer.DatabaseClients;
 
 public class CommentsDatabaseClient : DatabaseClient<Comment>
 {

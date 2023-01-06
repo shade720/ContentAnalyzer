@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 
-namespace DataCollectionService.DataCollectors.VkDataCollector;
+namespace DataCollectionService.BusinessLogicLayer.SocialNetworkClients.VkClient;
 
 public class FixedQueue<T> : IEnumerable<T>
 {
