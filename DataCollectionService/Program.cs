@@ -1,5 +1,5 @@
 using Common.EntityFramework;
-using DataCollectionService;
+using DataCollectionService.BusinessLogicLayer;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Serilog.Events;
@@ -23,11 +23,11 @@ builder.WebHost.ConfigureLogging(logging =>
 builder.Services.AddGrpc();
 builder.Services.AddDbContextFactory<CommentsContext>(options => 
     options.UseSqlServer(builder.Configuration.GetConnectionString("Database")));
-Startup.ConfigureService(builder.Configuration);
+builder.Services.AddSingleton<DataCollector>();
 
 var app = builder.Build();
 
-app.MapGrpcService<DataCollectionService.Services.DataCollectionService>();
+app.MapGrpcService<DataCollectionService.Services.DataCollectionAPI>();
 app.MapGet("/", () => "Communication with gRPC endpoints must be made through a gRPC client. To learn how to create a client, visit: https://go.microsoft.com/fwlink/?linkid=2086909");
 
 app.Run();
