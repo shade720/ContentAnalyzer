@@ -11,7 +11,6 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json;
 using Serilog;
-using Azure.Core;
 
 namespace DataCollectionService.Services;
 

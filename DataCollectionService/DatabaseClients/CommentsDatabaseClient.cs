@@ -1,7 +1,7 @@
-﻿using Common;
+﻿using System.Text.RegularExpressions;
+using Common;
 using Common.EntityFramework;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Serilog;
 
 namespace DataCollectionService.DatabaseClients;
@@ -24,10 +24,10 @@ public class CommentsDatabaseClient : DatabaseClient<Comment>
         Log.Logger.Information("{0} comments collected", context.Comments.Count());
     }
 
-    public override List<Comment> GetRange(CommentsQueryFilter filter)
+    public override IQueryable<Comment> GetRange(CommentsQueryFilter filter)
     {
         using var context = _contextFactory.CreateDbContext();
-        return context.Comments.Where(c => c.Id > filter.Id).ToList();
+        return context.Comments.Where(c => c.Id > filter.Id);
     }
 
     public override void Clear()

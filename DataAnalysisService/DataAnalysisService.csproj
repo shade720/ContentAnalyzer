@@ -8,8 +8,19 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Grpc.AspNetCore" Version="2.44.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
+    <Content Remove="C:\Users\Unh0ly\.nuget\packages\berttokenizers\1.2.0\contentFiles\any\net6.0\Vocabularies\base_cased.txt" />
+    <Content Remove="C:\Users\Unh0ly\.nuget\packages\berttokenizers\1.2.0\contentFiles\any\net6.0\Vocabularies\base_cased_german.txt" />
+    <Content Remove="C:\Users\Unh0ly\.nuget\packages\berttokenizers\1.2.0\contentFiles\any\net6.0\Vocabularies\base_cased_large.txt" />
+    <Content Remove="C:\Users\Unh0ly\.nuget\packages\berttokenizers\1.2.0\contentFiles\any\net6.0\Vocabularies\base_cased_multilingual.txt" />
+    <Content Remove="C:\Users\Unh0ly\.nuget\packages\berttokenizers\1.2.0\contentFiles\any\net6.0\Vocabularies\base_uncased.txt" />
+    <Content Remove="C:\Users\Unh0ly\.nuget\packages\berttokenizers\1.2.0\contentFiles\any\net6.0\Vocabularies\base_uncased_large.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BERTTokenizers" Version="1.2.0" />
+    <PackageReference Include="Grpc.AspNetCore" Version="2.51.0" />
+    <PackageReference Include="Microsoft.ML" Version="2.0.0" />
+    <PackageReference Include="Microsoft.ML.OnnxRuntime" Version="1.13.1" />
   </ItemGroup>
 	<ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj" />
