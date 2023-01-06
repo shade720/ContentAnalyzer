@@ -367,3 +367,4 @@ FodyWeavers.xsd
 /Environment/env
 /Environment/torchEnv
 *.py
+*.onnx
