@@ -1,11 +1,8 @@
-using System.Dynamic;
 using Common;
 using Google.Protobuf;
 using Google.Protobuf.Collections;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 using Serilog;
 
 namespace DataAnalysisService.Services;
@@ -76,6 +73,11 @@ public class DataAnalysisAPI : DataAnalysis.DataAnalysisBase
         var logDate = request.LogDate.ToDateTime().ToLocalTime();
 
         var requiredFilePath = Directory.GetFiles(@"./Logs/", $"log{logDate:yyyyMMdd}*.txt").SingleOrDefault();
+        if (requiredFilePath is null)
+        {
+            Log.Logger.Error("Log file for {date} does not exist", logDate.ToString("yyyyMMdd"));
+            return Task.FromResult(new LogReply());
+        }
 
         using var fileStream = new FileStream(requiredFilePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
 
@@ -85,7 +87,10 @@ public class DataAnalysisAPI : DataAnalysis.DataAnalysisBase
     public override Task<SetConfigurationReply> SetConfiguration(SetConfigurationRequest request, ServerCallContext context)
     {
         Log.Logger.Information("Updating settings...");
-        UpdateSettings(request.Settings);
+        var success = _dataAnalyzer.UpdateSettings(request.Settings);
+        if (!success)
+            return Task.FromResult(new SetConfigurationReply());
+
         Log.Logger.Information("Settings file updated");
 
         if (!_dataAnalyzer.IsRunning)
@@ -96,27 +101,5 @@ public class DataAnalysisAPI : DataAnalysis.DataAnalysisBase
 
         Log.Logger.Information("Service restarted on new configuration");
         return Task.FromResult(new SetConfigurationReply());
-    }
-
-    private static void UpdateSettings(string settings)
-    {
-        var appSettingsPath = Path.Combine(Directory.GetCurrentDirectory(), "appsettings.json");
-        var appSettingsJson = File.ReadAllText(appSettingsPath);
-
-        var jsonSettings = new JsonSerializerSettings();
-        jsonSettings.Converters.Add(new ExpandoObjectConverter());
-        jsonSettings.Converters.Add(new StringEnumConverter());
-
-        dynamic oldConfig = JsonConvert.DeserializeObject<ExpandoObject>(appSettingsJson, jsonSettings);
-        dynamic newConfig = JsonConvert.DeserializeObject<ExpandoObject>(settings, jsonSettings);
-
-        if (oldConfig is null) throw new FileLoadException("Cannot deserialize appsettings.json file");
-        if (newConfig is null) throw new FileLoadException("Cannot deserialize new settings file");
-
-        if (((IDictionary<string, object>)newConfig).ContainsKey("ObserveDelay"))
-            oldConfig.ObserveDelayMs = newConfig.ObserveDelay;
-
-        var newAppSettingsJson = JsonConvert.SerializeObject(oldConfig, Formatting.Indented, jsonSettings);
-        File.WriteAllText(appSettingsPath, newAppSettingsJson);
     }
 }

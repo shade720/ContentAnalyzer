@@ -5,6 +5,10 @@ using System.Diagnostics;
 using DataCollectionService.BusinessLogicLayer.DatabaseClients;
 using DataCollectionService.BusinessLogicLayer.SocialNetworkClients;
 using DataCollectionService.BusinessLogicLayer.SocialNetworkClients.VkClient;
+using Newtonsoft.Json.Converters;
+using Newtonsoft.Json;
+using System.Dynamic;
+using Serilog;
 
 namespace DataCollectionService.BusinessLogicLayer;
 
@@ -79,5 +83,42 @@ public class DataCollector
             vkDataCollector.AddCommunity(Convert.ToInt64(community));
         }
         return new List<SocialNetworkClient> { vkDataCollector };
+    }
+
+    public bool UpdateSettings(string settings)
+    {
+        var appSettingsPath = Path.Combine(Directory.GetCurrentDirectory(), "appsettings.json");
+        var appSettingsJson = File.ReadAllText(appSettingsPath);
+
+        var jsonSettings = new JsonSerializerSettings();
+        jsonSettings.Converters.Add(new ExpandoObjectConverter());
+        jsonSettings.Converters.Add(new StringEnumConverter());
+
+        dynamic? oldConfig = JsonConvert.DeserializeObject<ExpandoObject>(appSettingsJson, jsonSettings);
+        dynamic? newConfig = JsonConvert.DeserializeObject<ExpandoObject>(settings, jsonSettings);
+
+        if (oldConfig is null)
+        {
+            Log.Logger.Error("Cannot deserialize appsettings.json file");
+            return false;
+        }
+        if (newConfig is null)
+        {
+            Log.Logger.Error("Cannot deserialize new settings file");
+            return false;
+        }
+
+        var newConfigDict = (IDictionary<string, object>)newConfig;
+        var oldConfigDict = (IDictionary<string, object>)oldConfig;
+
+        foreach (var pair in newConfigDict)
+        {
+            if (oldConfigDict.ContainsKey(pair.Key))
+                oldConfigDict[pair.Key] = pair.Value;
+        }
+
+        var newAppSettingsJson = JsonConvert.SerializeObject(oldConfig, Formatting.Indented, jsonSettings);
+        File.WriteAllText(appSettingsPath, newAppSettingsJson);
+        return true;
     }
 }

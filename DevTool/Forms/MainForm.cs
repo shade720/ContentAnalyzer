@@ -22,6 +22,12 @@ internal partial class MainForm : Form
         _analysisServiceClient.OnServiceInfoProgress = new Progress<ServiceInfo>(RefreshAnalysisInfo);
         _collectionServiceClient.OnServiceInfoProgress = new Progress<ServiceInfo>(RefreshCollectionInfo);
 
+        _collectionServiceClient.OnProgressBarStep = new Progress<bool>(CollectionProgressBarStep);
+        _analysisServiceClient.OnProgressBarStep = new Progress<bool>(AnalysisProgressBarStep);
+
+        AnalysisServiceProgressBar.Value = 0;
+        CollectionServiceProgressBar.Value = 0;
+
         _analysisServiceClient.StartPolling();
         _collectionServiceClient.StartPolling();
     }
@@ -29,6 +35,17 @@ internal partial class MainForm : Form
     #region MainTab
 
     #region Info
+
+    private void CollectionProgressBarStep(bool isNeedToReset)
+    {
+        CollectionServiceProgressBar.PerformStep();
+        if (isNeedToReset) CollectionServiceProgressBar.Value = 0;
+    }
+    private void AnalysisProgressBarStep(bool isNeedToReset)
+    {
+        AnalysisServiceProgressBar.PerformStep();
+        if (isNeedToReset) AnalysisServiceProgressBar.Value = 0;
+    }
 
     private void RefreshCollectionServiceInfo_Click(object sender, EventArgs e)
     {
@@ -53,6 +70,17 @@ internal partial class MainForm : Form
         StartAll.Visible = serviceInfo.State != State.Up;
         StopCollectionService.Visible = serviceInfo.State == State.Up;
         StopAll.Visible = serviceInfo.State == State.Up;
+
+        if (serviceInfo.ConnectionState == ConnectionState.Connected)
+        {
+            CollectionProgressBarRed.Visible = false;
+            CollectionServiceProgressBar.Visible = true;
+        }
+        else
+        {
+            CollectionProgressBarRed.Visible = true;
+            CollectionServiceProgressBar.Visible = false;
+        }
     }
 
     private void RefreshAnalysisInfo(ServiceInfo serviceInfo)
@@ -68,6 +96,16 @@ internal partial class MainForm : Form
         StartAll.Visible = serviceInfo.State != State.Up;
         StopAnalysisService.Visible = serviceInfo.State == State.Up;
         StopAll.Visible = serviceInfo.State == State.Up;
+        if (serviceInfo.ConnectionState == ConnectionState.Connected)
+        {
+            AnalysisProgressBarRed.Visible = false;
+            AnalysisServiceProgressBar.Visible = true;
+        }
+        else
+        {
+            AnalysisProgressBarRed.Visible = true;
+            AnalysisServiceProgressBar.Visible = false;
+        }
     }
 
     private void ViewCollectionServiceLogs_Click(object sender, EventArgs e)

@@ -4,8 +4,6 @@ using Google.Protobuf;
 using Google.Protobuf.Collections;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
-using Newtonsoft.Json.Converters;
-using Newtonsoft.Json;
 using Serilog;
 using DataCollectionService.BusinessLogicLayer;
 
@@ -66,18 +64,30 @@ public class DataCollectionAPI : DataCollection.DataCollectionBase
     public override Task<LogReply> GetLogs(LogRequest request, ServerCallContext context)
     {
         Log.Logger.Information("Uptime: {0}", _dataCollector.CurrentWorkingTime);
+
         var logDate = request.LogDate.ToDateTime().ToLocalTime();
+
         var requiredFilePath = Directory.GetFiles(@"./Logs/", $"log{logDate:yyyyMMdd}*.txt").SingleOrDefault();
-        if (string.IsNullOrEmpty(requiredFilePath)) return Task.FromResult(new LogReply());
-        if (!File.Exists(requiredFilePath)) return Task.FromResult(new LogReply());
+
+        if (requiredFilePath is null)
+        {
+            Log.Logger.Error("Log file for {date} does not exist", logDate.ToString("yyyyMMdd"));
+            return Task.FromResult(new LogReply());
+        }
+
         using var fileStream = new FileStream(requiredFilePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+
         return Task.FromResult(new LogReply { LogFile = ByteString.FromStream(fileStream) });
     }
 
     public override Task<SetConfigurationReply> SetConfiguration(SetConfigurationRequest request, ServerCallContext context)
     {
         Log.Logger.Information("Updating settings...");
-        UpdateSettings(request.Settings);
+
+        var success = _dataCollector.UpdateSettings(request.Settings);
+        if (!success) 
+            return Task.FromResult(new SetConfigurationReply());
+
         Log.Logger.Information("Settings file updated");
 
         if (!_dataCollector.IsRunning) return Task.FromResult(new SetConfigurationReply());
@@ -87,41 +97,5 @@ public class DataCollectionAPI : DataCollection.DataCollectionBase
 
         Log.Logger.Information("Service restarted on new configuration");
         return Task.FromResult(new SetConfigurationReply());
-    }
-
-
-    private static void UpdateSettings(string settings)
-    {
-        var appSettingsPath = Path.Combine(Directory.GetCurrentDirectory(), "appsettings.json");
-        var appSettingsJson = File.ReadAllText(appSettingsPath);
-
-        var jsonSettings = new JsonSerializerSettings();
-        jsonSettings.Converters.Add(new ExpandoObjectConverter());
-        jsonSettings.Converters.Add(new StringEnumConverter());
-
-        dynamic oldConfig = JsonConvert.DeserializeObject<ExpandoObject>(appSettingsJson, jsonSettings);
-        dynamic newConfig = JsonConvert.DeserializeObject<ExpandoObject>(settings, jsonSettings);
-
-        if (oldConfig is null) throw new FileLoadException("Cannot deserialize appsettings.json file");
-        if (newConfig is null) throw new FileLoadException("Cannot deserialize new settings file");
-
-        if (((IDictionary<string, object>)newConfig).ContainsKey("ScanCommentsDelay"))
-            oldConfig.ScanCommentsDelay = newConfig.ScanCommentsDelay;
-        if (((IDictionary<string, object>)newConfig).ContainsKey("ScanPostDelay"))
-            oldConfig.ScanPostDelay = newConfig.ScanPostDelay;
-        if (((IDictionary<string, object>)newConfig).ContainsKey("PostQueueSize"))
-            oldConfig.PostQueueSize = newConfig.PostQueueSize;
-
-        if (((IDictionary<string, object>)newConfig).ContainsKey("ApplicationId"))
-            oldConfig.VkSettings.ApplicationId = newConfig.ApplicationId;
-        if (((IDictionary<string, object>)newConfig).ContainsKey("SecureKey"))
-            oldConfig.VkSettings.SecureKey = newConfig.SecureKey;
-        if (((IDictionary<string, object>)newConfig).ContainsKey("ServiceAccessKey"))
-            oldConfig.VkSettings.ServiceAccessKey = newConfig.ServiceAccessKey;
-        if (((IDictionary<string, object>)newConfig).ContainsKey("Communities"))
-            oldConfig.VkSettings.Communities = newConfig.Communities;
-
-        var newAppSettingsJson = JsonConvert.SerializeObject(oldConfig, Formatting.Indented, jsonSettings);
-        File.WriteAllText(appSettingsPath, newAppSettingsJson);
     }
 }

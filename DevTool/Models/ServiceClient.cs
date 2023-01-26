@@ -22,6 +22,8 @@ internal abstract class ServiceClient<TData> : IDisposable
     #region Public
 
     public IProgress<ServiceInfo> OnServiceInfoProgress;
+    public IProgress<bool> OnProgressBarStep;
+
     public abstract void StartService();
     public abstract void StopService();
     public abstract void ClearDatabase();
@@ -41,12 +43,12 @@ internal abstract class ServiceClient<TData> : IDisposable
             while (!_cancellationTokenSource.IsCancellationRequested)
             {
                 Poll();
-                if (_serviceInfo.ConnectionState == ConnectionState.Disconnected)
+                for (var i = 0; i < 10; i++)
                 {
-                    _cancellationTokenSource.Cancel();
-                    break;
+                    OnProgressBarStep.Report(false);
+                    Thread.Sleep(1000);
                 }
-                Thread.Sleep(10000);
+                OnProgressBarStep.Report(true);
             }
         }, _cancellationTokenSource.Token);
     }
@@ -73,6 +75,7 @@ internal abstract class ServiceClient<TData> : IDisposable
         UpdateServiceInfo(_serviceInfo, log);
         OnServiceInfoProgress.Report(_serviceInfo);
     }
+
     public void Dispose() => Channel.Dispose();
 
     #endregion
@@ -82,6 +85,7 @@ internal abstract class ServiceClient<TData> : IDisposable
     private readonly ServiceInfo _serviceInfo;
     private DateTime _lastPollingTime;
     private CancellationTokenSource _cancellationTokenSource;
+    private bool _pollingRestartRequested;
 
     private static void UpdateServiceInfo(ServiceInfo updatedServiceInfo, IEnumerable<LogInfo> logInfos)
     {
