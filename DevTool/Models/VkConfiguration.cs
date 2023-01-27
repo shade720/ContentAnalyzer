@@ -2,8 +2,8 @@
 
 public class VkConfiguration
 {
-    public List<int> Communities { get; set; }
-    public int ApplicationId { get; set; }
-    public string SecureKey { get; set; }
-    public string ServiceAccessKey { get; set; }
+    public List<int> Communities { get; init; } = new();
+    public int ApplicationId { get; init; }
+    public string SecureKey { get; init; } = string.Empty;
+    public string ServiceAccessKey { get; init; } = string.Empty;
 }

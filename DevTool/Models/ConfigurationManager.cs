@@ -1,28 +1,43 @@
-﻿using Newtonsoft.Json;
+﻿using System.Reflection;
+using Newtonsoft.Json;
 
 namespace DevTool.Models;
 
 internal static class ConfigurationManager
 {
-    public static Configuration? GetConfiguration()
+    private const string ConfigurationDirectoryName = "configurations";
+    private const string ConfigurationFile = "configuration.json";
+    private const string DefaultProfile = "default";
+
+    static ConfigurationManager()
     {
-        if (!File.Exists(@"configuration.json")) return null;
-        var configFile = File.ReadAllText(@"configuration.json");
-        return JsonConvert.DeserializeObject<Configuration>(configFile);
-    }
-    public static void SaveConfiguration(Configuration configuration)
-    {
-        File.WriteAllText(@"configuration.json", JsonConvert.SerializeObject(configuration));
+        if (!Directory.Exists(ConfigurationDirectoryName)) 
+            Directory.CreateDirectory(ConfigurationDirectoryName);
     }
 
-    public static VkConfiguration? GetVkConfiguration()
+    private static string GetProfileConfigurationFilename(string profileName, MemberInfo configurationType) => 
+        profileName.Replace(":", "-").Replace("/","") + "-" + configurationType.Name + "-" + ConfigurationFile;
+
+    public static T GetConfiguration<T>(string profileName = DefaultProfile) where T : new()
     {
-        if (!File.Exists(@"vkSettings.json")) return null;
-        var configFile = File.ReadAllText(@"vkSettings.json");
-        return JsonConvert.DeserializeObject<VkConfiguration>(configFile);
+        var configPath = Path.Combine(ConfigurationDirectoryName, GetProfileConfigurationFilename(profileName, typeof(T)));
+        if (!File.Exists(configPath)) File.Create(configPath).Close();
+        var configFile = File.ReadAllText(configPath);
+        var configuration = JsonConvert.DeserializeObject<T>(configFile);
+        return configuration ?? new T();
     }
-    public static void SaveVkConfiguration(VkConfiguration configuration)
+
+    public static string GetConfigurationContent<T>(string profileName = DefaultProfile) where T : new()
     {
-        File.WriteAllText(@"vkSettings.json", JsonConvert.SerializeObject(configuration));
+        var configPath = Path.Combine(ConfigurationDirectoryName, GetProfileConfigurationFilename(profileName, typeof(T)));
+        if (!File.Exists(configPath)) File.Create(configPath).Close();
+        var configFile = File.ReadAllText(configPath);
+        return configFile;
+    }
+
+    public static void SaveConfiguration<T>(T configuration, string profileName = DefaultProfile)
+    {
+        var configPath = Path.Combine(ConfigurationDirectoryName, GetProfileConfigurationFilename(profileName, typeof(T)));
+        File.WriteAllText(configPath, JsonConvert.SerializeObject(configuration));
     }
 }

@@ -1,6 +1,5 @@
 using Common.EntityFramework;
 using DevTool.Models;
-using Configuration = DevTool.Models.Configuration;
 using ConfigurationManager = DevTool.Models.ConfigurationManager;
 
 namespace DevTool.Forms;
@@ -14,8 +13,10 @@ internal partial class MainForm : Form
     {
         InitializeComponent();
 
-        SetConfiguration(ConfigurationManager.GetConfiguration());
-        SetVkConfiguration(ConfigurationManager.GetVkConfiguration());
+        SetGenericConfiguration(ConfigurationManager.GetConfiguration<GenericConfiguration>());
+        SetCollectionConfiguration(ConfigurationManager.GetConfiguration<CollectionServiceConfiguration>());
+        SetAnalysisConfiguration(ConfigurationManager.GetConfiguration<AnalysisServiceConfiguration>());
+        SetVkConfiguration(ConfigurationManager.GetConfiguration<VkConfiguration>());
 
         _analysisServiceClient = new AnalysisServiceClient(AnalysisServiceEndpoint.Text);
         _collectionServiceClient = new CollectionServiceClient(CollectionServiceEndpoint.Text);
@@ -158,7 +159,7 @@ internal partial class MainForm : Form
             }
             StartCollectionService.Enabled = true;
             StartAll.Enabled = true;
-        });
+        }, CancellationToken.None, TaskContinuationOptions.None, TaskScheduler.FromCurrentSynchronizationContext());
     }
 
     private void StartAnalysisService_Click(object sender, EventArgs e)
@@ -337,82 +338,115 @@ internal partial class MainForm : Form
 
     #endregion
 
-    #region Configuration
+    #region CollectionServiceConfiguration
 
-    private void SetConfiguration(Configuration configuration)
+    private void SetGenericConfiguration(GenericConfiguration genericConfiguration)
     {
         CollectionServiceEndpoint.Items.Clear();
         AnalysisServiceEndpoint.Items.Clear();
         CollectionServiceHosts.Items.Clear();
         AnalysisServiceHosts.Items.Clear();
-        CollectionServiceHosts.Items.AddRange(configuration.CollectionServiceEndpoints.ToArray());
-        AnalysisServiceHosts.Items.AddRange(configuration.AnalysisServiceEndpoints.ToArray());
-        CollectionServiceEndpoint.Items.AddRange(configuration.CollectionServiceEndpoints.ToArray());
-        AnalysisServiceEndpoint.Items.AddRange(configuration.AnalysisServiceEndpoints.ToArray());
-        CollectionServiceEndpoint.Text = configuration.CurrentCollectionServiceEndpoint;
-        AnalysisServiceEndpoint.Text = configuration.CurrentAnalysisServiceEndpoint;
-        ScanCommentsDelay.Text = configuration.ScanCommentsDelay.ToString();
-        ScanPostDelay.Text = configuration.ScanPostDelay.ToString();
-        PostQueueSize.Text = configuration.PostQueueSize.ToString();
-        ObserveDelay.Text = configuration.ObserveDelay.ToString();
+        CollectionServiceHosts.Items.AddRange(genericConfiguration.CollectionServiceEndpoints.ToArray());
+        AnalysisServiceHosts.Items.AddRange(genericConfiguration.AnalysisServiceEndpoints.ToArray());
+        CollectionServiceEndpoint.Items.AddRange(genericConfiguration.CollectionServiceEndpoints.ToArray());
+        AnalysisServiceEndpoint.Items.AddRange(genericConfiguration.AnalysisServiceEndpoints.ToArray());
+        CollectionServiceEndpoint.Text = genericConfiguration.CurrentCollectionServiceEndpoint;
+        AnalysisServiceEndpoint.Text = genericConfiguration.CurrentAnalysisServiceEndpoint;
     }
 
-    private void SaveConfiguration_Click(object sender, EventArgs e)
+    private void SetCollectionConfiguration(CollectionServiceConfiguration collectionServiceConfiguration)
     {
-        var currentConfig = new Configuration
+        ScanCommentsDelay.Text = collectionServiceConfiguration.ScanCommentsDelay.ToString();
+        ScanPostDelay.Text = collectionServiceConfiguration.ScanPostDelay.ToString();
+        PostQueueSize.Text = collectionServiceConfiguration.PostQueueSize.ToString();
+    }
+
+    private void SetAnalysisConfiguration(AnalysisServiceConfiguration analysisServiceConfiguration)
+    {
+        ObserveDelay.Text = analysisServiceConfiguration.ObserveDelay.ToString();
+    }
+
+    private void SaveCurrentConfiguration(bool saveToDefault = false)
+    {
+        var genericConfig = new GenericConfiguration
         {
             CollectionServiceEndpoints = new List<string>(CollectionServiceHosts.Items.OfType<string>()),
             AnalysisServiceEndpoints = new List<string>(AnalysisServiceHosts.Items.OfType<string>()),
             CurrentCollectionServiceEndpoint = CollectionServiceEndpoint.Text,
-            CurrentAnalysisServiceEndpoint = AnalysisServiceEndpoint.Text,
+            CurrentAnalysisServiceEndpoint = AnalysisServiceEndpoint.Text
+        };
+        var analysisServiceConfig = new AnalysisServiceConfiguration
+        {
+            ObserveDelay = int.Parse(ObserveDelay.Text)
+        };
+        var collectionServiceConfig = new CollectionServiceConfiguration
+        {
             ScanCommentsDelay = int.Parse(ScanCommentsDelay.Text),
             ScanPostDelay = int.Parse(ScanPostDelay.Text),
-            PostQueueSize = int.Parse(PostQueueSize.Text),
-            ObserveDelay = int.Parse(ObserveDelay.Text),
+            PostQueueSize = int.Parse(PostQueueSize.Text)
         };
-        ConfigurationManager.SaveConfiguration(currentConfig);
+
+        ConfigurationManager.SaveConfiguration(genericConfig);
+        ConfigurationManager.SaveConfiguration(analysisServiceConfig, saveToDefault ? "default" : AnalysisServiceEndpoint.Text);
+        ConfigurationManager.SaveConfiguration(collectionServiceConfig, saveToDefault ? "default" : CollectionServiceEndpoint.Text);
     }
+
+    private void SaveConfiguration_Click(object sender, EventArgs e)
+    {
+        SaveCurrentConfiguration();
+    }
+
     private void AddCollectionServiceHost_Click(object sender, EventArgs e)
     {
         CollectionServiceHosts.Items.Add(NewCollectionHost.Text);
-        NewCommunity.Text = string.Empty;
+        CollectionServiceEndpoint.Items.Add(NewCollectionHost.Text);
+        NewCollectionHost.Text = string.Empty;
+        CollectionServiceEndpoint.SelectedIndex = CollectionServiceEndpoint.Items.Count - 1;
     }
 
     private void DeleteCollectionServiceHost_Click(object sender, EventArgs e)
     {
+        var setToDelete = CollectionServiceHosts.Items[CollectionServiceHosts.SelectedIndex];
         CollectionServiceHosts.Items.RemoveAt(CollectionServiceHosts.SelectedIndex);
+        CollectionServiceEndpoint.Items.Remove(setToDelete);
     }
 
     private void AddAnalysisServiceHost_Click(object sender, EventArgs e)
     {
         AnalysisServiceHosts.Items.Add(NewAnalysisHost.Text);
+        AnalysisServiceEndpoint.Items.Add(NewAnalysisHost.Text);
+        NewAnalysisHost.Text = string.Empty;
+        AnalysisServiceEndpoint.SelectedIndex = AnalysisServiceEndpoint.Items.Count - 1;
     }
 
     private void DeleteAnalysisServiceHost_Click(object sender, EventArgs e)
     {
+        var setToDelete = AnalysisServiceHosts.Items[AnalysisServiceHosts.SelectedIndex];
         AnalysisServiceHosts.Items.RemoveAt(AnalysisServiceHosts.SelectedIndex);
+        AnalysisServiceEndpoint.Items.Remove(setToDelete);
     }
+
     private void LoadConfiguration_Click(object sender, EventArgs e)
     {
-        var currentConfig = new Configuration
+        LoadConfiguration.Enabled = false;
+        SaveCurrentConfiguration();
+        Task.Run(() =>
         {
-            CollectionServiceEndpoints = new List<string>(CollectionServiceHosts.Items.OfType<string>()),
-            AnalysisServiceEndpoints = new List<string>(AnalysisServiceHosts.Items.OfType<string>()),
-            CurrentCollectionServiceEndpoint = CollectionServiceEndpoint.Text,
-            CurrentAnalysisServiceEndpoint = AnalysisServiceEndpoint.Text,
-            ScanCommentsDelay = int.Parse(ScanCommentsDelay.Text),
-            ScanPostDelay = int.Parse(ScanPostDelay.Text),
-            PostQueueSize = int.Parse(PostQueueSize.Text),
-            ObserveDelay = int.Parse(ObserveDelay.Text),
-        };
-        ConfigurationManager.SaveConfiguration(currentConfig);
-        _collectionServiceClient.LoadConfiguration(File.ReadAllText("configuration.json"));
-        _analysisServiceClient.LoadConfiguration(File.ReadAllText("configuration.json"));
+            _collectionServiceClient.LoadConfiguration(ConfigurationManager.GetConfigurationContent<CollectionServiceConfiguration>(CollectionServiceEndpoint.Text));
+            _analysisServiceClient.LoadConfiguration(ConfigurationManager.GetConfigurationContent<AnalysisServiceConfiguration>(AnalysisServiceEndpoint.Text));
+        }).ContinueWith(result =>
+        {
+            if (!result.IsCompleted) MessageBox.Show(@"Connection error");
+            LoadConfiguration.Enabled = true;
+        }, CancellationToken.None, TaskContinuationOptions.None, TaskScheduler.FromCurrentSynchronizationContext());
     }
 
     private void SetLocalConfig_Click(object sender, EventArgs e)
     {
-        SetConfiguration(ConfigurationManager.GetConfiguration());
+        SetGenericConfiguration(ConfigurationManager.GetConfiguration<GenericConfiguration>());
+        SetCollectionConfiguration(ConfigurationManager.GetConfiguration<CollectionServiceConfiguration>(CollectionServiceEndpoint.Text));
+        SetAnalysisConfiguration(ConfigurationManager.GetConfiguration<AnalysisServiceConfiguration>(AnalysisServiceEndpoint.Text));
+        SetVkConfiguration(ConfigurationManager.GetConfiguration<VkConfiguration>(CollectionServiceEndpoint.Text));
     }
 
     #endregion
@@ -440,18 +474,17 @@ internal partial class MainForm : Form
             ServiceAccessKey = ServiceAccessKey.Text,
             Communities = new List<int>(Communities.Items.OfType<string>().Select(int.Parse))
         };
-        ConfigurationManager.SaveVkConfiguration(vkConfiguration);
+        ConfigurationManager.SaveConfiguration(vkConfiguration, CollectionServiceEndpoint.Text);
     }
 
     private void LoadVkSettings_Click(object sender, EventArgs e)
     {
-        _collectionServiceClient.LoadConfiguration(File.ReadAllText("vkSettings.json"));
+        _collectionServiceClient.LoadConfiguration(ConfigurationManager.GetConfigurationContent<VkConfiguration>(CollectionServiceEndpoint.Text));
     }
 
     private void LocalConfiguration_Click(object sender, EventArgs e)
     {
-        var configuration = ConfigurationManager.GetVkConfiguration();
-        if (configuration is null) return;
+        var configuration = ConfigurationManager.GetConfiguration<VkConfiguration>(CollectionServiceEndpoint.Text);
         SetVkConfiguration(configuration);
     }
 
@@ -606,6 +639,15 @@ internal partial class MainForm : Form
 
     private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
     {
+        SaveCurrentConfiguration(true);
+        var vkConfiguration = new VkConfiguration
+        {
+            ApplicationId = int.Parse(ApplicationId.Text),
+            SecureKey = SecureKey.Text,
+            ServiceAccessKey = ServiceAccessKey.Text,
+            Communities = new List<int>(Communities.Items.OfType<string>().Select(int.Parse))
+        };
+        ConfigurationManager.SaveConfiguration(vkConfiguration);
         _analysisServiceClient.StopPolling();
         _collectionServiceClient.StopPolling();
     }

@@ -7,8 +7,11 @@ internal abstract class ServiceClient<TData> : IDisposable
 {
     #region Protected
 
+    private const string StabHost = "http://localhost:0";
+
     protected ServiceClient(string host)
     {
+        if (string.IsNullOrEmpty(host)) host = StabHost;
         Channel = GrpcChannel.ForAddress(host);
         _serviceInfo = new ServiceInfo { State = State.Down };
         _lastPollingTime = DateTime.Today;
