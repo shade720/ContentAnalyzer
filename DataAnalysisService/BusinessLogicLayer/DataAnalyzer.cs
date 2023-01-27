@@ -64,7 +64,7 @@ public class DataAnalyzer
         _workTimer.Reset();
     }
 
-    public List<EvaluatedComment> GetProcessedComments(CommentsQueryFilter filter)
+    public IEnumerable<EvaluatedComment> GetProcessedComments(CommentsQueryFilter filter)
     {
         return _targetDatabase.GetRange(filter);
     }

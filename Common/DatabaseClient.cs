@@ -1,6 +1,4 @@
-﻿using Common.EntityFramework;
-
-namespace Common;
+﻿namespace Common;
 
 public abstract class DatabaseClient<T>
 {

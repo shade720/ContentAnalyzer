@@ -141,140 +141,196 @@ internal partial class MainForm : Form
 
     private void StartCollectionService_Click(object sender, EventArgs e)
     {
-        try
+        StartCollectionService.Enabled = false;
+        StartAll.Enabled = false;
+        Task.Run(() => _collectionServiceClient.StartService()).ContinueWith(result =>
         {
-            _collectionServiceClient.StartService();
-        }
-        catch
-        {
-            MessageBox.Show(@"Connection error");
-            return;
-        }
-        StartCollectionService.Visible = false;
-        StopCollectionService.Visible = true;
-        StartAll.Visible = StartAnalysisService.Visible;
-        StopAll.Visible = !StartAnalysisService.Visible;
+            if (result.IsCompleted)
+            {
+                StartCollectionService.Visible = false;
+                StopCollectionService.Visible = true;
+                StartAll.Visible = StartAnalysisService.Visible;
+                StopAll.Visible = !StartAnalysisService.Visible;
+            }
+            else
+            {
+                MessageBox.Show(@"Connection error");
+            }
+            StartCollectionService.Enabled = true;
+            StartAll.Enabled = true;
+        });
     }
 
     private void StartAnalysisService_Click(object sender, EventArgs e)
     {
-        try
+        StartAnalysisService.Enabled = false;
+        StartAll.Enabled = false;
+        Task.Run(() => _analysisServiceClient.StartService()).ContinueWith(result =>
         {
-            _analysisServiceClient.StartService();
-        }
-        catch
-        {
-            MessageBox.Show(@"Connection error");
-            return;
-        }
-        StartAnalysisService.Visible = false;
-        StopAnalysisService.Visible = true;
-        StartAll.Visible = StartCollectionService.Visible;
-        StopAll.Visible = !StartCollectionService.Visible;
+            if (result.IsCompleted)
+            {
+                StartAnalysisService.Visible = false;
+                StopAnalysisService.Visible = true;
+                StartAll.Visible = StartCollectionService.Visible;
+                StopAll.Visible = !StartCollectionService.Visible;
+            }
+            else
+            {
+                MessageBox.Show(@"Connection error");
+            }
+            StartAnalysisService.Enabled = true;
+            StartAll.Enabled = true;
+        }, CancellationToken.None, TaskContinuationOptions.None, TaskScheduler.FromCurrentSynchronizationContext());
     }
 
     private void StopCollectionService_Click(object sender, EventArgs e)
     {
-        try
+        StopCollectionService.Enabled = false;
+        StopAll.Enabled = false;
+        Task.Run(() =>
         {
             _collectionServiceClient.StopService();
             _collectionServiceClient.Poll();
-        }
-        catch
+        }).ContinueWith(result =>
         {
-            MessageBox.Show(@"Connection error");
-            return;
-        }
-        StartCollectionService.Visible = true;
-        StopCollectionService.Visible = false;
-        StartAll.Visible = StartAnalysisService.Visible;
-        StopAll.Visible = !StartAnalysisService.Visible;
+            if (result.IsCompleted)
+            {
+                StartCollectionService.Visible = true;
+                StopCollectionService.Visible = false;
+                StartAll.Visible = StartAnalysisService.Visible;
+                StopAll.Visible = !StartAnalysisService.Visible;
+            }
+            else
+            {
+                MessageBox.Show(@"Connection error");
+            }
+            StopCollectionService.Enabled = true;
+            StopAll.Enabled = true;
+        }, CancellationToken.None, TaskContinuationOptions.None, TaskScheduler.FromCurrentSynchronizationContext());
     }
 
     private void StopAnalysisService_Click(object sender, EventArgs e)
     {
-        try
+        StopAnalysisService.Enabled = false;
+        StopAll.Enabled = false;
+        Task.Run(() =>
         {
             _analysisServiceClient.StopService();
             _analysisServiceClient.Poll();
-        }
-        catch
+        }).ContinueWith(result =>
         {
-            MessageBox.Show(@"Connection error");
-            return;
-        }
-        StartAnalysisService.Visible = true;
-        StopAnalysisService.Visible = false;
-        StartAll.Visible = StartCollectionService.Visible;
-        StopAll.Visible = !StartCollectionService.Visible;
+            if (result.IsCompleted)
+            {
+                StartAnalysisService.Visible = true;
+                StopAnalysisService.Visible = false;
+                StartAll.Visible = StartCollectionService.Visible;
+                StopAll.Visible = !StartCollectionService.Visible;
+            }
+            else
+            {
+                MessageBox.Show(@"Connection error");
+            }
+            StopAnalysisService.Enabled = true;
+            StopAll.Enabled = true;
+        }, CancellationToken.None, TaskContinuationOptions.None, TaskScheduler.FromCurrentSynchronizationContext());
     }
 
     private void ClearCommentsDatabase_Click(object sender, EventArgs e)
     {
-        if (MessageBox.Show(@"Are you sure you want to clear the comments database?", "", MessageBoxButtons.YesNo) != DialogResult.Yes) return;
-        try
+        if (MessageBox.Show(@"Are you sure you want to clear the comments database?", "", MessageBoxButtons.YesNo) !=
+            DialogResult.Yes) return;
+        ClearCommentsDatabase.Enabled = false;
+        Task.Run(() => _collectionServiceClient.ClearDatabase()).ContinueWith(result =>
         {
-            _collectionServiceClient.ClearDatabase();
-        }
-        catch
-        {
-            MessageBox.Show(@"Connection error");
-        }
+            if (result.IsCompleted)
+            {
+                ClearCommentsDatabase.Enabled = true;
+            }
+            else
+            {
+                MessageBox.Show(@"Connection error");
+            }
+        }, CancellationToken.None, TaskContinuationOptions.None, TaskScheduler.FromCurrentSynchronizationContext());
     }
 
     private void ClearEvaluatedDatabase_Click(object sender, EventArgs e)
     {
         if (MessageBox.Show(@"Are you sure you want to clear the evaluated comments database?", "", MessageBoxButtons.YesNo) != DialogResult.Yes) return;
-        try
+        ClearEvaluatedDatabase.Enabled = false;
+        Task.Run(() => _analysisServiceClient.ClearDatabase()).ContinueWith(result =>
         {
-            _analysisServiceClient.ClearDatabase();
-        }
-        catch
-        {
-            MessageBox.Show(@"Connection error");
-        }
+            if (result.IsCompleted)
+            {
+                ClearEvaluatedDatabase.Enabled = true;
+            }
+            else
+            {
+                MessageBox.Show(@"Connection error");
+            }
+        }, CancellationToken.None, TaskContinuationOptions.None, TaskScheduler.FromCurrentSynchronizationContext());
     }
 
     private void StartAll_Click(object sender, EventArgs e)
     {
-        try
+        StartAll.Enabled = false;
+        StartAnalysisService.Enabled = false;
+        StartCollectionService.Enabled = false;
+        Task.Run(() =>
         {
             _collectionServiceClient.StartService();
             _analysisServiceClient.StartService();
-        }
-        catch
+        }).ContinueWith(result =>
         {
-            MessageBox.Show(@"Connection error");
-            return;
-        }
-        StartAll.Visible = false;
-        StopAll.Visible = true;
-        StartAnalysisService.Visible = false;
-        StartCollectionService.Visible = false;
-        StopAnalysisService.Visible = true;
-        StopCollectionService.Visible = true;
+            if (result.IsCompleted)
+            {
+                StartAll.Visible = false;
+                StopAll.Visible = true;
+                StartAnalysisService.Visible = false;
+                StartCollectionService.Visible = false;
+                StopAnalysisService.Visible = true;
+                StopCollectionService.Visible = true;
+            }
+            else
+            {
+                MessageBox.Show(@"Connection error");
+            }
+            StartAll.Enabled = true;
+            StartAnalysisService.Enabled = true;
+            StartCollectionService.Enabled = true;
+        }, CancellationToken.None, TaskContinuationOptions.None, TaskScheduler.FromCurrentSynchronizationContext());
     }
 
     private void StopAll_Click(object sender, EventArgs e)
     {
-        try
+        StopAll.Enabled = false;
+        StopAnalysisService.Enabled = false;
+        StopCollectionService.Enabled = false;
+
+        Task.Run(() =>
         {
             _collectionServiceClient.StopService();
             _analysisServiceClient.StopService();
             _collectionServiceClient.Poll();
             _analysisServiceClient.Poll();
-        }
-        catch
+        }).ContinueWith(result =>
         {
-            MessageBox.Show(@"Connection error");
-            return;
-        }
-        StartAll.Visible = true;
-        StopAll.Visible = false;
-        StartAnalysisService.Visible = true;
-        StartCollectionService.Visible = true;
-        StopAnalysisService.Visible = false;
-        StopCollectionService.Visible = false;
+            if (result.IsCompleted)
+            {
+                StartAll.Visible = true;
+                StopAll.Visible = false;
+                StartAnalysisService.Visible = true;
+                StartCollectionService.Visible = true;
+                StopAnalysisService.Visible = false;
+                StopCollectionService.Visible = false;
+            }
+            else
+            {
+                MessageBox.Show(@"Connection error");
+            }
+            StopAll.Enabled = false;
+            StopAnalysisService.Enabled = false;
+            StopCollectionService.Enabled = false;
+        }, CancellationToken.None, TaskContinuationOptions.None, TaskScheduler.FromCurrentSynchronizationContext());
     }
 
     #endregion
@@ -419,6 +475,7 @@ internal partial class MainForm : Form
     {
         if (SaveFileDialog.ShowDialog() != DialogResult.OK) return;
 
+        OpenReport.Enabled = false;
         var fromDate = DateTime.UnixEpoch;
         var toDate = DateTime.UnixEpoch;
         if (TodayCheckBox.Checked)
@@ -445,15 +502,15 @@ internal partial class MainForm : Form
             FromDate = fromDate,
             ToDate = toDate
         };
-        try
-        {
-            Reporter.OpenReport(SaveFileDialog.FileName, _analysisServiceClient.GetResults(filter));
-            MessageBox.Show(@"The report was created successfully");
-        }
-        catch (Exception exception)
-        {
-            MessageBox.Show($"Error: \r\n{exception.Message}\r\n{exception.StackTrace}");
-        }
+
+        Task.Run(() => Reporter.OpenReport(SaveFileDialog.FileName, _analysisServiceClient.GetResults(filter)))
+            .ContinueWith(result =>
+            {
+                MessageBox.Show(result.IsCompleted
+                    ? @"The report was created successfully"
+                    : $"Error: \r\n{result.Exception.Message}\r\n{result.Exception.StackTrace}");
+                OpenReport.Enabled = true;
+            }, CancellationToken.None, TaskContinuationOptions.None, TaskScheduler.FromCurrentSynchronizationContext());
     }
 
     #region CheckBoxHandlers

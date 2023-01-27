@@ -85,7 +85,6 @@ internal abstract class ServiceClient<TData> : IDisposable
     private readonly ServiceInfo _serviceInfo;
     private DateTime _lastPollingTime;
     private CancellationTokenSource _cancellationTokenSource;
-    private bool _pollingRestartRequested;
 
     private static void UpdateServiceInfo(ServiceInfo updatedServiceInfo, IEnumerable<LogInfo> logInfos)
     {
@@ -97,10 +96,13 @@ internal abstract class ServiceClient<TData> : IDisposable
             else if (logInfo.Level == LogLevel.Warning) updatedServiceInfo.WarningsCount++;
             else if (logInfo.Message.Contains("stopped")) updatedServiceInfo.State = State.Down;
             else if (logInfo.Message.Contains("started")) updatedServiceInfo.State = State.Up;
-            else if (logInfo.Message.Contains("Uptime: 00:00:00")) updatedServiceInfo.State = State.Down;
             else if (logInfo.Message.Contains("collected")) updatedServiceInfo.CollectedCommentsCount = int.Parse(logInfo.Message.Trim().Split(" ")[0]);
             else if (logInfo.Message.Contains("evaluated")) updatedServiceInfo.EvaluatedCommentsCount = int.Parse(logInfo.Message.Trim().Split(" ")[0]);
-            else if (logInfo.Message.Contains("Uptime")) updatedServiceInfo.Uptime = TimeSpan.Parse(logInfo.Message.Trim().Replace('"', ' ').Split(" ")[1]);
+            else if (logInfo.Message.Contains("Uptime"))
+            {
+                updatedServiceInfo.Uptime = TimeSpan.Parse(logInfo.Message.Trim().Replace('"', ' ').Split(" ")[1]);
+                if (logInfo.Message.Contains("00:00:00")) updatedServiceInfo.State = State.Down;
+            }
         }
     }
 

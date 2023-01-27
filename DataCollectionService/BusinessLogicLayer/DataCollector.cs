@@ -41,10 +41,10 @@ public class DataCollector
 
     public void RestartCollecting()
     {
-        StartCollecting();
+        StopCollecting();
         _socialNetworkClients.Clear();
         _socialNetworkClients.AddRange(GetConfiguredDataCollector(_configuration));
-        StopCollecting();
+        StartCollecting();
     }
 
     public void StopCollecting()

@@ -123,6 +123,7 @@
             this.AnalysisConnection = new System.Windows.Forms.Label();
             this.label22 = new System.Windows.Forms.Label();
             this.label21 = new System.Windows.Forms.Label();
+            this.AnalysisProgressBarRed = new System.Windows.Forms.Panel();
             this.ViewAnalysisServiceLogs = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.CollectionServiceProgressBar = new System.Windows.Forms.ProgressBar();
@@ -139,10 +140,9 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.CollectionProgressBarRed = new System.Windows.Forms.Panel();
             this.ViewCollectionServiceLogs = new System.Windows.Forms.Button();
             this.Tabs = new System.Windows.Forms.TabControl();
-            this.CollectionProgressBarRed = new System.Windows.Forms.Panel();
-            this.AnalysisProgressBarRed = new System.Windows.Forms.Panel();
             this.VkCollectorTab.SuspendLayout();
             this.groupBox8.SuspendLayout();
             this.ReportsTab.SuspendLayout();
@@ -611,7 +611,7 @@
             this.ApplyAnalysisServiceEndpoint.Name = "ApplyAnalysisServiceEndpoint";
             this.ApplyAnalysisServiceEndpoint.Size = new System.Drawing.Size(182, 28);
             this.ApplyAnalysisServiceEndpoint.TabIndex = 33;
-            this.ApplyAnalysisServiceEndpoint.Text = "Reconnect";
+            this.ApplyAnalysisServiceEndpoint.Text = "Сonnect";
             this.ApplyAnalysisServiceEndpoint.UseVisualStyleBackColor = true;
             this.ApplyAnalysisServiceEndpoint.Click += new System.EventHandler(this.ApplyAnalysisServiceEndpoint_Click_1);
             // 
@@ -740,7 +740,7 @@
             this.ApplyNewCollectionServiceEndpoint.Name = "ApplyNewCollectionServiceEndpoint";
             this.ApplyNewCollectionServiceEndpoint.Size = new System.Drawing.Size(183, 28);
             this.ApplyNewCollectionServiceEndpoint.TabIndex = 19;
-            this.ApplyNewCollectionServiceEndpoint.Text = "Reconnect";
+            this.ApplyNewCollectionServiceEndpoint.Text = "Сonnect";
             this.ApplyNewCollectionServiceEndpoint.UseVisualStyleBackColor = true;
             this.ApplyNewCollectionServiceEndpoint.Click += new System.EventHandler(this.ApplyNewCollectionServiceEndpoint_Click_1);
             // 
@@ -1175,6 +1175,14 @@
             this.label21.TabIndex = 20;
             this.label21.Text = "Evaluated:";
             // 
+            // AnalysisProgressBarRed
+            // 
+            this.AnalysisProgressBarRed.BackColor = System.Drawing.Color.Red;
+            this.AnalysisProgressBarRed.Location = new System.Drawing.Point(6, 32);
+            this.AnalysisProgressBarRed.Name = "AnalysisProgressBarRed";
+            this.AnalysisProgressBarRed.Size = new System.Drawing.Size(222, 17);
+            this.AnalysisProgressBarRed.TabIndex = 31;
+            // 
             // ViewAnalysisServiceLogs
             // 
             this.ViewAnalysisServiceLogs.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -1349,6 +1357,14 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Connection:";
             // 
+            // CollectionProgressBarRed
+            // 
+            this.CollectionProgressBarRed.BackColor = System.Drawing.Color.Red;
+            this.CollectionProgressBarRed.Location = new System.Drawing.Point(6, 32);
+            this.CollectionProgressBarRed.Name = "CollectionProgressBarRed";
+            this.CollectionProgressBarRed.Size = new System.Drawing.Size(222, 17);
+            this.CollectionProgressBarRed.TabIndex = 17;
+            // 
             // ViewCollectionServiceLogs
             // 
             this.ViewCollectionServiceLogs.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -1374,22 +1390,6 @@
             this.Tabs.Size = new System.Drawing.Size(682, 653);
             this.Tabs.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
             this.Tabs.TabIndex = 0;
-            // 
-            // CollectionProgressBarRed
-            // 
-            this.CollectionProgressBarRed.BackColor = System.Drawing.Color.Red;
-            this.CollectionProgressBarRed.Location = new System.Drawing.Point(6, 32);
-            this.CollectionProgressBarRed.Name = "CollectionProgressBarRed";
-            this.CollectionProgressBarRed.Size = new System.Drawing.Size(222, 17);
-            this.CollectionProgressBarRed.TabIndex = 17;
-            // 
-            // AnalysisProgressBarRed
-            // 
-            this.AnalysisProgressBarRed.BackColor = System.Drawing.Color.Red;
-            this.AnalysisProgressBarRed.Location = new System.Drawing.Point(6, 32);
-            this.AnalysisProgressBarRed.Name = "AnalysisProgressBarRed";
-            this.AnalysisProgressBarRed.Size = new System.Drawing.Size(222, 17);
-            this.AnalysisProgressBarRed.TabIndex = 31;
             // 
             // MainForm
             // 
