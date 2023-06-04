@@ -1,7 +1,6 @@
 ﻿using System.Text;
 using BERTTokenizers;
 using DataAnalysisService.BusinessLogicLayer.NeuralModels.Base;
-using DataAnalysisService.BusinessLogicLayer.NeuralModels.BERT.Base;
 using Microsoft.ML.OnnxRuntime;
 using Microsoft.ML.OnnxRuntime.Tensors;
 using Newtonsoft.Json;

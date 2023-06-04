@@ -3,7 +3,6 @@ using Common.EntityFramework;
 using DataAnalysisService.BusinessLogicLayer.DatabaseClients;
 using DataAnalysisService.BusinessLogicLayer.NeuralModels.Base;
 using DataAnalysisService.BusinessLogicLayer.NeuralModels.BERT;
-using DataAnalysisService.BusinessLogicLayer.NeuralModels.USE.Base;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 using Serilog;
@@ -112,44 +111,6 @@ public class DataAnalyzer
 
     private static IEnumerable<NeuralModel> GetConfiguredModels(IConfiguration configuration)
     {
-        var insultTopicsUSEModel = configuration.GetSection("InsultTopicsUSEModel");
-        var modelInfo1 = new USEModelInfo
-        {
-            Interpreter = insultTopicsUSEModel["Interpreter"],
-            PredictScript = insultTopicsUSEModel["Predict1"],
-            TrainScript = insultTopicsUSEModel["Train1"],
-            DataSet = insultTopicsUSEModel["Dataset1"],
-            Model = insultTopicsUSEModel["Model1"],
-            Categories = new[] { "Normal", "Insult", "Threat", "Obscenity" }
-        };
-
-        var toxicTopicsUSEModel = configuration.GetSection("ToxicTopicsUSEModel");
-        var modelInfo2 = new USEModelInfo
-        {
-            Interpreter = toxicTopicsUSEModel["Interpreter"],
-            PredictScript = toxicTopicsUSEModel["Predict2"],
-            TrainScript = toxicTopicsUSEModel["Train2"],
-            DataSet = toxicTopicsUSEModel["Dataset2"],
-            Model = toxicTopicsUSEModel["Model2"],
-            Categories = new[] { "Normal", "Toxic" }
-        };
-
-        var sensetiveTopicsUSEModel = configuration.GetSection("SensetiveTopicsUSEModel");
-        var modelInfo3 = new USEModelInfo
-        {
-            Interpreter = sensetiveTopicsUSEModel["Interpreter"],
-            PredictScript = sensetiveTopicsUSEModel["Predict3"],
-            TrainScript = sensetiveTopicsUSEModel["Train3"],
-            DataSet = sensetiveTopicsUSEModel["Dataset3"],
-            Model = sensetiveTopicsUSEModel["Model3"],
-            Categories = new[] { "Offline crime", "Online crime",
-                "Drugs", "Gambling", "Pornography", "Prostitution", "Slavery", "Suicide", "Terrorism",
-                "Weapons", "Body shaming", "Health shaming", "Politics", "Racism", "Religion", "Sexual minorities",
-                "Sexism", "Social injustice" }
-        };
-        //Services.DataAnalysisApiImplementation.AddModel(() => new UniversalSentenceEncoderModel(modelInfo1));
-        //Services.DataAnalysisApiImplementation.AddModel(() => new UniversalSentenceEncoderModel(modelInfo2));
-        //Services.DataAnalysisApiImplementation.AddModel(() => new UniversalSentenceEncoderModel(modelInfo3));
         var sensetiveTopicsBERTModel = configuration.GetSection("SensetiveTopicsBERTModel");
 
         return new List<NeuralModel>
@@ -200,20 +161,20 @@ public class DataAnalyzer
         if (_sourceDatabase.IsLoadingStarted) return;
         try
         {
-            _sourceDatabase.OnDataEvent += ProcessComment;
+            _sourceDatabase.OnNewDataEvent += ProcessComment;
             _sourceDatabase.StartLoading();
         }
         catch (Exception e)
         {
             Log.Logger.Fatal("{@message} {@stackTrace}", e.Message, e.StackTrace);
-            _sourceDatabase.OnDataEvent -= ProcessComment;
+            _sourceDatabase.OnNewDataEvent -= ProcessComment;
             _sourceDatabase.StopLoading();
         }
     }
     private void EnsureStopped()
     {
         if (!_sourceDatabase.IsLoadingStarted) return;
-        _sourceDatabase.OnDataEvent -= ProcessComment;
+        _sourceDatabase.OnNewDataEvent -= ProcessComment;
         _sourceDatabase.StopLoading();
     }
 

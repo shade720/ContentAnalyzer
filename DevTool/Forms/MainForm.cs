@@ -14,8 +14,12 @@ internal partial class MainForm : Form
     {
         InitializeComponent();
 
-        SetConfiguration(ConfigurationManager.GetConfiguration());
-        SetVkConfiguration(ConfigurationManager.GetVkConfiguration());
+        var settings = ConfigurationManager.GetConfiguration();
+        if (settings != null)
+            SetConfiguration(settings);
+        var vkConfig = ConfigurationManager.GetVkConfiguration();
+        if (vkConfig != null)
+            SetVkConfiguration(vkConfig);
 
         _analysisServiceClient = new AnalysisServiceClient(AnalysisServiceEndpoint.Text);
         _collectionServiceClient = new CollectionServiceClient(CollectionServiceEndpoint.Text);

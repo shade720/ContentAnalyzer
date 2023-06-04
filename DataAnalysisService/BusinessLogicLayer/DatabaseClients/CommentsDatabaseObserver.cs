@@ -57,7 +57,7 @@ public class CommentsDatabaseObserver : DatabaseObserver
         var newComments = context.Comments.Where(c => !context.EvaluatedComments.Any(e => e.CommentId == c.Id));
         foreach (var comment in newComments)
         {
-            OnDataEvent(comment);
+            OnNewDataEvent(comment);
         }
     }
 }

@@ -5,7 +5,7 @@ namespace Common;
 public abstract class DatabaseObserver
 {
     public delegate void OnData(Comment data);
-    public OnData OnDataEvent;
+    public OnData OnNewDataEvent;
 
     public bool IsLoadingStarted { get; protected set; }
 
