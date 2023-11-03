@@ -369,3 +369,4 @@ FodyWeavers.xsd
 *.py
 *.onnx
 /DataAnalysisService/BusinessLogicLayer/NeuralModels/BERT/Resources/sensetive-topics/model.onnx
+*.json
