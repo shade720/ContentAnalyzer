@@ -13,12 +13,16 @@ public class FixedQueue<T> : IEnumerable<T>
         _limit = limit;
         _queue = new Queue<T>(_limit);
     }
+
     public void Enqueue(T item)
     {
-        if (item is null) return;
-        if (_queue.Count == _limit) _queue.Dequeue();
+        if (item is null) 
+            return;
+        if (_queue.Count == _limit) 
+            _queue.Dequeue();
         _queue.Enqueue(item);
     }
+
     public T Dequeue()
     {
         return _queue.Dequeue();

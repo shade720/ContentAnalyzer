@@ -12,7 +12,7 @@ public class VkCommentObserver : VkObserver<VkComment>, IDisposable
 
     private readonly Dictionary<long, long> _threadsCounts;
 
-    public override event OnVkNewInfo? OnNewInfoEvent;
+    public override event EventHandler<VkComment>? OnNewInfoEvent;
 
     public VkCommentObserver(
         long communityId, long postId, 
@@ -23,7 +23,7 @@ public class VkCommentObserver : VkObserver<VkComment>, IDisposable
         _communityId = communityId;
         _postId = postId;
         _threadsCounts = new Dictionary<long, long>();
-        Task.Run(async () => await PullingCommentsLoop());
+        Task.Run(PullingCommentsLoop);
         Log.Logger.Information("Comments observer has been created for post {0}", _postId);
     }
 
@@ -47,7 +47,7 @@ public class VkCommentObserver : VkObserver<VkComment>, IDisposable
                 if (!_threadsCounts.ContainsKey(comment.CommentId))
                     _threadsCounts.Add(comment.CommentId, 0);
 
-                await OnNewInfoEvent(this, comment);
+                OnNewInfoEvent?.Invoke(this, comment);
 
                 if (comment.ThreadCommentsCount <= _threadsCounts[comment.CommentId])
                     continue;
@@ -55,7 +55,7 @@ public class VkCommentObserver : VkObserver<VkComment>, IDisposable
                 await foreach (var threadComment in GetBranch(comment.CommentId))
                 {
                     _threadsCounts[comment.CommentId] += 1;
-                    await OnNewInfoEvent(this, threadComment);
+                    OnNewInfoEvent?.Invoke(this, threadComment);
                 }
             }
         }
@@ -91,7 +91,7 @@ public class VkCommentObserver : VkObserver<VkComment>, IDisposable
 
     public void Dispose()
     {
-        CancellationTokenSource?.Cancel();
+        CancellationTokenSource.Cancel();
         OnNewInfoEvent = null;
         Log.Logger.Information("Comments observer have been disposed (post {0})", _postId);
     }

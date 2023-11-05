@@ -6,9 +6,8 @@ namespace DataCollectionService.Application.VkObservers;
 
 public class VkPostObserver : VkObserver<long>, IDisposable
 {
+    public override event EventHandler<long>? OnNewInfoEvent;
     public long CommunityId { get; }
-
-    public override event OnVkNewInfo? OnNewInfoEvent;
 
     public VkPostObserver(
         long communityId, 
@@ -17,7 +16,7 @@ public class VkPostObserver : VkObserver<long>, IDisposable
         : base(vkApi, configuration)
     {
         CommunityId = communityId;
-        Task.Run(async () => await PullingLastPostLoop());
+        Task.Run(PullingLastPostLoop);
         Log.Logger.Information("Post observer created for {0}", CommunityId);
     }
 
@@ -44,8 +43,7 @@ public class VkPostObserver : VkObserver<long>, IDisposable
 
             CollectedIds.Add(lastPostId);
 
-            if (OnNewInfoEvent is not null)
-                await OnNewInfoEvent.Invoke(this, lastPostId);
+            OnNewInfoEvent?.Invoke(this, lastPostId);
         }
         Log.Logger.Information("Post observing {0} stopped", CommunityId);
     }

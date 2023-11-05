@@ -101,7 +101,7 @@ public class VkApi : IVkApi
                 OwnerId = groupId,
                 Count = 1,
                 Extended = false,
-                Offset = 1
+                Offset = 1,
             });
             return id.WallPosts[0].Id.GetValueOrDefault(0);
         });
@@ -151,7 +151,7 @@ public class VkApi : IVkApi
                 AuthorId = wallComment.FromId!.Value,
                 Text = ClearText(wallComment.Text),
                 PostDate = wallComment.Date!.Value.ToLocalTime(),
-                ThreadCommentsCount = wallComment.Thread.Count!.Value
+                ThreadCommentsCount = wallComment.Thread?.Count ?? 0
             };
     }
 
@@ -168,7 +168,6 @@ public class VkApi : IVkApi
                comment.OwnerId is null ||
                comment.FromId is null ||
                comment.Date is null || 
-               comment.Thread?.Count is null || 
                comment.Id <= 0 || 
                comment.PostId <= 0 || 
                comment.OwnerId > 0 || 

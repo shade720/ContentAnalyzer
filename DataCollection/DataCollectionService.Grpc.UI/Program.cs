@@ -1,5 +1,6 @@
 using Common.EntityFramework;
 using DataCollectionService.Application;
+using DataCollectionService.Domain;
 using DataCollectionService.Domain.Abstractions;
 using DataCollectionService.Infrastructure;
 using Microsoft.EntityFrameworkCore;
@@ -22,9 +23,21 @@ builder.Logging.ClearProviders().AddSerilog(Log.Logger);
 builder.Services.AddGrpc();
 
 builder.Services.AddSingleton<ICollector, VkCollector>();
-builder.Services.AddSingleton<IVkApi, VkApi>();
+builder.Services.AddSingleton<IVkApi, VkApi>(_ =>
+{
+    var vkSettings = builder.Configuration.GetSection("VkSettings");
+    var vkApi = new VkApi();
+    var authenticatedSuccessfully = vkApi.LogInAsync(new VkApiCredentials
+    {
+        ApplicationId = ulong.Parse(vkSettings["ApplicationId"]),
+        SecureKey = vkSettings["SecureKey"],
+        ServiceAccessKey = vkSettings["ServiceAccessKey"]
+    }).GetAwaiter().GetResult();
+    return authenticatedSuccessfully 
+        ? vkApi 
+        : throw new ApplicationException("Vk authorization failed! Stopping the application...");
+});
 builder.Services.AddSingleton<ICommentsRepository, CommentRepository>();
-
 builder.Services.AddDbContextFactory<CommentsContext>(options => 
     options.UseSqlServer(builder.Configuration.GetConnectionString("Database")));
 

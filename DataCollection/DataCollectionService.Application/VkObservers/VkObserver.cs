@@ -19,6 +19,5 @@ public abstract class VkObserver<T>
         CancellationTokenSource = new CancellationTokenSource();
     }
 
-    public delegate Task OnVkNewInfo(object sender, T obj);
-    public abstract event OnVkNewInfo? OnNewInfoEvent;
+    public abstract event EventHandler<T>? OnNewInfoEvent;
 }

@@ -11,8 +11,8 @@ public class VkCollector : ICollector, IAsyncDisposable
     private readonly IVkApi _vkApi;
     private readonly IConfiguration _configuration;
 
-    private readonly List<VkPostObserver> _postObservers;
-    private readonly FixedQueue<VkCommentObserver> _commentsObservers;
+    public List<VkPostObserver> PostObservers { get; }
+    public FixedQueue<VkCommentObserver> CommentsObservers { get; }
 
     public event ICollector.OnCommentCollected? OnCommentCollectedEvent;
 
@@ -21,16 +21,8 @@ public class VkCollector : ICollector, IAsyncDisposable
         _vkApi = vkApi;
         _configuration = configuration;
 
-        _postObservers = new List<VkPostObserver>();
-        _commentsObservers = new FixedQueue<VkCommentObserver>(int.Parse(configuration["PostQueueSize"]));
-
-        var vkSettings = _configuration.GetSection("VkSettings");
-        _vkApi.LogInAsync(new VkApiCredentials
-        {
-            ApplicationId = ulong.Parse(vkSettings["ApplicationId"]),
-            SecureKey = vkSettings["SecureKey"],
-            ServiceAccessKey = vkSettings["ServiceAccessKey"]
-        });
+        PostObservers = new List<VkPostObserver>();
+        CommentsObservers = new FixedQueue<VkCommentObserver>(int.Parse(configuration["PostQueueSize"]));
     }
 
     public void StartCollecting()
@@ -40,48 +32,47 @@ public class VkCollector : ICollector, IAsyncDisposable
         {
             var postObserver = new VkPostObserver(long.Parse(communityId), _vkApi, _configuration);
             postObserver.OnNewInfoEvent += OnNewPostEventHandler;
-            _postObservers.Add(postObserver);
+            PostObservers.Add(postObserver);
         }
         Log.Logger.Information("Data collection has started");
     }
 
     public void StopCollecting()
     {
-        foreach (var commentObserver in _commentsObservers)
+        foreach (var commentObserver in CommentsObservers)
         {
             commentObserver.OnNewInfoEvent -= OnNewCommentEventHandler;
             commentObserver.Dispose();
         }
+        CommentsObservers.Clear();
 
-        _commentsObservers.Clear();
-
-        foreach (var postObserver in _postObservers)
+        foreach (var postObserver in PostObservers)
         {
             postObserver.OnNewInfoEvent -= OnNewPostEventHandler;
             postObserver.Dispose();
         }
-        
+        PostObservers.Clear();
+
         Log.Logger.Information("Data collection has stopped");
     }
 
-    private Task OnNewPostEventHandler(object sender, long postId)
+    private void OnNewPostEventHandler(object? sender, long postId)
     {
         if (sender is not VkPostObserver postObserver)
             throw new ArgumentException($"Incorrect sender {nameof(OnNewPostEventHandler)}, expected VkPostObserver");
         var commentObserver = new VkCommentObserver(postObserver.CommunityId, postId, _vkApi, _configuration);
         commentObserver.OnNewInfoEvent += OnNewCommentEventHandler;
-        _commentsObservers.Enqueue(commentObserver);
-        return Task.CompletedTask;
+        CommentsObservers.Enqueue(commentObserver);
     }
 
-    private async Task OnNewCommentEventHandler(object sender, VkComment comment)
+    private void OnNewCommentEventHandler(object? sender, VkComment comment)
     {
         if (OnCommentCollectedEvent is null)
         {
             Log.Warning($"{nameof(VkCollector)} doesn't have a handler");
             return;
         }
-        await OnCommentCollectedEvent(comment);
+        OnCommentCollectedEvent(comment);
     }
 
     public async ValueTask DisposeAsync()
