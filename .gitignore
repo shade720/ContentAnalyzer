@@ -370,3 +370,6 @@ FodyWeavers.xsd
 *.onnx
 /DataAnalysisService/BusinessLogicLayer/NeuralModels/BERT/Resources/sensetive-topics/model.onnx
 *.json
+/DataAnalysis/Resources/sensetive-topics/model.onnx
+/DataAnalysis/Resources/sensetive-topics/vocab.txt
+/DataAnalysis/Resources/sensetive-topics/tokenizer_config.json
