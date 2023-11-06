@@ -373,3 +373,5 @@ FodyWeavers.xsd
 /DataAnalysis/Resources/sensetive-topics/model.onnx
 /DataAnalysis/Resources/sensetive-topics/vocab.txt
 /DataAnalysis/Resources/sensetive-topics/tokenizer_config.json
+/DataAnalysis/Tests/DataAnalysisService.Application.Tests/Resources/sensetive-topics/tokenizer_config.json
+/DataAnalysis/Tests/DataAnalysisService.Application.Tests/Resources/sensetive-topics/vocab.txt
