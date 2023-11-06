@@ -12,6 +12,10 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Serilog.Extensions.Hosting" Version="7.0.0" />
+    <PackageReference Include="Serilog.Extensions.Logging" Version="7.0.0" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="4.1.0" />
+    <PackageReference Include="Serilog.Sinks.RollingFile" Version="3.3.0" />
     <ProjectReference Include="..\..\Common\Common.csproj" />
     <ProjectReference Include="..\DataCollectionService.Application\DataCollectionService.Application.csproj" />
     <ProjectReference Include="..\DataCollectionService.Infrastructure\DataCollectionService.Infrastructure.csproj" />

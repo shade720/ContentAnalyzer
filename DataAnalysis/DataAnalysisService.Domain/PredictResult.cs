@@ -1,4 +1,4 @@
-﻿namespace DataAnalysisService.BusinessLogicLayer.NeuralModels.Base;
+﻿namespace DataAnalysisService.Domain;
 
 public class PredictResult
 {

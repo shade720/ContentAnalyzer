@@ -1,5 +1,9 @@
+using Common;
 using Common.EntityFramework;
-using DataAnalysisService.Services;
+using DataAnalysisService.Application;
+using DataAnalysisService.Domain.Abstractions;
+using DataAnalysisService.Grpc.UI.Services;
+using DataAnalysisService.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Serilog.Events;
@@ -15,24 +19,28 @@ Log.Logger = new LoggerConfiguration()
     .CreateLogger();
 
 var builder = WebApplication.CreateBuilder(args);
-builder.WebHost.ConfigureLogging(logging =>
-{
-    logging.ClearProviders();
-    logging.AddSerilog(Log.Logger);
-});
-builder.Services.AddGrpc();
-builder.Services.AddDbContextFactory<CommentsContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("Database")));
+builder.Logging.ClearProviders().AddSerilog(Log.Logger);
 builder.Configuration.SetBasePath(Environment.CurrentDirectory)
     .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
     .AddJsonFile($"appsettings.{Environment.UserDomainName}.json", optional: true, reloadOnChange: true)
     .AddEnvironmentVariables();
-builder.Services.AddSingleton<DataAnalysisService.BusinessLogicLayer.DataAnalyzer>();
+
+builder.Services.AddGrpc();
+
+builder.Services.AddSingleton<DataAnalyzer>();
+builder.Services.AddSingleton<IArtificialIntelligenceModelFactory, BERTModelFactory>();
+builder.Services.AddSingleton<ICommentsObserver, CommentsDatabaseObserver>();
+builder.Services.AddSingleton<ICommentsRepository, CommentsRepository>();
+builder.Services.AddSingleton<IEvaluatedCommentsRepository, EvaluatedCommentsRepository>();
+
+
+builder.Services.AddDbContextFactory<CommentsContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("Database")));
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-app.MapGrpcService<DataAnalysisAPI>();
 app.MapGet("/", () => "Communication with gRPC endpoints must be made through a gRPC client. To learn how to create a client, visit: https://go.microsoft.com/fwlink/?linkid=2086909");
+app.MapGrpcService<DataAnalysisAPI>();
 
 app.Run();

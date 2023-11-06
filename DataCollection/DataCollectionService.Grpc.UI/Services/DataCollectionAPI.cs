@@ -1,4 +1,4 @@
-using DataCollectionService.Application;
+using Common;
 using DataCollectionService.Domain;
 using DataCollectionService.Domain.Abstractions;
 using Google.Protobuf;
@@ -10,7 +10,7 @@ using Newtonsoft.Json.Converters;
 using Serilog;
 using System.Dynamic;
 
-namespace DataCollectionService.Services;
+namespace DataCollectionService.Grpc.UI.Services;
 
 public class DataCollectionAPI : DataCollection.DataCollectionBase
 {
@@ -32,7 +32,7 @@ public class DataCollectionAPI : DataCollection.DataCollectionBase
 
     private async Task OnCommentCollected(VkComment comment)
     {
-        await _repository.Add(comment);
+        await _repository.Add(CommentsConverter.ConvertFromVkComment(comment));
     }
 
     public override async Task<StopCollectionServiceReply> StopCollectionService(StopCollectionServiceRequest request, ServerCallContext context)

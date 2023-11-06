@@ -1,7 +1,7 @@
 ﻿using Common.EntityFramework;
 using DataCollectionService.Domain;
 
-namespace DataCollectionService.Infrastructure;
+namespace DataCollectionService.Grpc.UI;
 
 public static class CommentsConverter
 {

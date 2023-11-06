@@ -1,9 +1,7 @@
-﻿using Common.EntityFramework;
-using DataCollectionService.Application;
-using DataCollectionService.Domain;
+﻿using Common;
+using Common.EntityFramework;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
-using CommentsQueryFilter = DataCollectionService.Domain.CommentsQueryFilter;
 
 namespace DataCollectionService.Infrastructure;
 
@@ -16,7 +14,7 @@ public class CommentRepository : ICommentsRepository
         _contextFactory = contextFactory;
     }
 
-    public async Task Add(VkComment comment)
+    public async Task Add(Comment comment)
     {
         if (IsCommentInvalid(comment)) 
             return;
@@ -24,7 +22,7 @@ public class CommentRepository : ICommentsRepository
 
         if (context.Comments.Any(x => x.CommentId == comment.CommentId))
             return;
-        context.Comments.Add(CommentsConverter.ConvertFromVkComment(comment));
+        context.Comments.Add(comment);
         await context.SaveChangesAsync();
         Log.Logger.Information("Add {0} {1} {2} {3} {4} {5}",
             comment.CommentId,
@@ -36,12 +34,10 @@ public class CommentRepository : ICommentsRepository
         Log.Logger.Information("{0} comments collected", context.Comments.Count());
     }
 
-    public async Task<IQueryable<VkComment>> GetRange(CommentsQueryFilter filter)
+    public async Task<IQueryable<Comment>> GetRange(CommentsQueryFilter filter)
     {
         await using var context = await _contextFactory.CreateDbContextAsync();
-        return context.Comments
-            .Where(c => c.Id > filter.Id)
-            .Select(c => CommentsConverter.ConvertToVkComment(c));
+        return context.Comments.Where(c => c.Id > filter.Id);
     }
 
     public async Task Clear()
@@ -51,7 +47,7 @@ public class CommentRepository : ICommentsRepository
         await context.SaveChangesAsync();
     }
 
-    private static bool IsCommentInvalid(VkComment comment)
+    private static bool IsCommentInvalid(Comment comment)
     {
         return 
             string.IsNullOrEmpty(comment.Text) || 

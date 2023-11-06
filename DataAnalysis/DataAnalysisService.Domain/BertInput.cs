@@ -1,6 +1,6 @@
 ﻿using Microsoft.ML.Data;
 
-namespace DataAnalysisService.BusinessLogicLayer.NeuralModels.BERT;
+namespace DataAnalysisService.Domain;
 
 public class BertInput
 {
