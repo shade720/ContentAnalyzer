@@ -1,5 +1,4 @@
-﻿using Common.EntityFramework;
-using Common.SharedDomain;
+﻿using Common.SharedDomain;
 using DataAnalysisService.Domain.Abstractions;
 using Microsoft.Extensions.Configuration;
 using Serilog;

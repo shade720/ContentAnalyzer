@@ -58,7 +58,7 @@ public class VkPostObserverTests
         const long expectedEventsCount = 1;
 
         const string delayBetweenEvents = "2000";
-        const int timeFor2Events = 4000;
+        const int timeFor2Events = 3000;
 
         var actualEvents = new List<long>();
 

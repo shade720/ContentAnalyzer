@@ -28,7 +28,7 @@ builder.Configuration.SetBasePath(Environment.CurrentDirectory)
 builder.Services.AddGrpc();
 
 builder.Services.AddSingleton<DataAnalyzer>();
-builder.Services.AddSingleton<IArtificialIntelligenceModelFactory, BERTModelFactory>();
+builder.Services.AddSingleton<IArtificialIntelligenceModelFactory, BertModelFactory>();
 builder.Services.AddSingleton<ICommentsObserver, CommentsDatabaseObserver>();
 builder.Services.AddSingleton<ICommentsRepository, CommentsRepository>();
 builder.Services.AddSingleton<IEvaluatedCommentsRepository, EvaluatedCommentsRepository>();

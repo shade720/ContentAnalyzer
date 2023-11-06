@@ -3,11 +3,11 @@ using Microsoft.Extensions.Configuration;
 
 namespace DataAnalysisService.Application;
 
-public class BERTModelFactory : IArtificialIntelligenceModelFactory
+public class BertModelFactory : IArtificialIntelligenceModelFactory
 {
     private readonly IConfiguration _configuration;
 
-    public BERTModelFactory(IConfiguration configuration)
+    public BertModelFactory(IConfiguration configuration)
     {
         _configuration = configuration;
     }
