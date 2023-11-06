@@ -1,4 +1,4 @@
-﻿using Common.EntityFramework;
+﻿using Common.SharedDomain;
 
 namespace DataAnalysisService.Domain.Abstractions;
 

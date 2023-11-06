@@ -1,5 +1,5 @@
-﻿using Common;
-using Common.EntityFramework;
+﻿using Common.EntityFramework;
+using Common.SharedDomain;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAnalysisService.Infrastructure;

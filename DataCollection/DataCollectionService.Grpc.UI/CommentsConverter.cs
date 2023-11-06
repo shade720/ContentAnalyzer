@@ -1,4 +1,4 @@
-﻿using Common.EntityFramework;
+﻿using Common.SharedDomain;
 using DataCollectionService.Domain;
 
 namespace DataCollectionService.Grpc.UI;

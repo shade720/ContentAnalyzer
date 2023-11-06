@@ -1,4 +1,4 @@
-using Common;
+using Common.SharedDomain;
 using DataCollectionService.Domain;
 using DataCollectionService.Domain.Abstractions;
 using Google.Protobuf;

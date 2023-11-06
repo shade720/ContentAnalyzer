@@ -1,4 +1,4 @@
-using Common;
+using Common.SharedDomain;
 using DataAnalysisService.Application;
 using Google.Protobuf;
 using Google.Protobuf.Collections;

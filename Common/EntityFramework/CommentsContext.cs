@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Common.SharedDomain;
+using Microsoft.EntityFrameworkCore;
 
 namespace Common.EntityFramework;
 

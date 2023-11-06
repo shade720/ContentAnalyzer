@@ -1,4 +1,4 @@
-﻿using Common.EntityFramework;
+﻿using Common.SharedDomain;
 using DataAnalysisServiceClient;
 using DataCollectionServiceClient;
 using Google.Protobuf.WellKnownTypes;

@@ -1,4 +1,4 @@
-﻿namespace Common.EntityFramework;
+﻿namespace Common.SharedDomain;
 
 public class Comment
 {

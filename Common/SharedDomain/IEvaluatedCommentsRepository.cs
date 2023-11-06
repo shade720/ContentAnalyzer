@@ -1,6 +1,4 @@
-﻿using Common.EntityFramework;
-
-namespace Common;
+﻿namespace Common.SharedDomain;
 
 public interface IEvaluatedCommentsRepository
 {

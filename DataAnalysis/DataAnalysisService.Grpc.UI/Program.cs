@@ -1,5 +1,5 @@
-using Common;
 using Common.EntityFramework;
+using Common.SharedDomain;
 using DataAnalysisService.Application;
 using DataAnalysisService.Domain.Abstractions;
 using DataAnalysisService.Grpc.UI.Services;

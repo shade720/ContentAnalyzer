@@ -1,5 +1,4 @@
-﻿using Common;
-using Common.EntityFramework;
+﻿using Common.SharedDomain;
 using DataAnalysisClient;
 using Google.Protobuf.WellKnownTypes;
 

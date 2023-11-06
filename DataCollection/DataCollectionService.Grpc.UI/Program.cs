@@ -1,5 +1,5 @@
-using Common;
 using Common.EntityFramework;
+using Common.SharedDomain;
 using DataCollectionService.Application;
 using DataCollectionService.Domain;
 using DataCollectionService.Domain.Abstractions;

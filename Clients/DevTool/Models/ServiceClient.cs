@@ -1,4 +1,4 @@
-﻿using Common;
+﻿using Common.SharedDomain;
 using Grpc.Net.Client;
 
 namespace DevTool.Models;

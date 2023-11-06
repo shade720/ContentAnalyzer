@@ -1,4 +1,4 @@
-﻿using Common;
+﻿using Common.SharedDomain;
 using DataAnalysisService.Domain.Abstractions;
 using Microsoft.Extensions.Configuration;
 using Serilog;

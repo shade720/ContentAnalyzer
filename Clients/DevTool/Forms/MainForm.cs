@@ -1,4 +1,4 @@
-using Common.EntityFramework;
+using Common.SharedDomain;
 using DevTool.Models;
 using Configuration = DevTool.Models.Configuration;
 using ConfigurationManager = DevTool.Models.ConfigurationManager;
@@ -498,7 +498,7 @@ internal partial class MainForm : Form
                 MessageBox.Show(@"'To' date must be more than 'From' date");
         }
 
-        var filter = new Common.CommentsQueryFilter
+        var filter = new CommentsQueryFilter
         {
             AuthorId = !string.IsNullOrEmpty(AuthorId.Text) ? long.Parse(AuthorId.Text) : 0,
             PostId = !string.IsNullOrEmpty(PostId.Text) ? long.Parse(PostId.Text) : 0,
