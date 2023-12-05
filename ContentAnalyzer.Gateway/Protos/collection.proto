@@ -1,0 +1,61 @@
+syntax = "proto3";
+
+option csharp_namespace = "DataCollectionService";
+import "google/protobuf/timestamp.proto";
+
+package collection;
+
+service DataCollection {
+	rpc StartCollectionService (StartCollectionServiceRequest) returns (StartCollectionServiceReply);
+	rpc StopCollectionService (StopCollectionServiceRequest) returns (StopCollectionServiceReply);
+	rpc GetComments (GetCommentsRequest) returns (GetCommentsReply);
+	rpc GetLogs (LogRequest) returns (LogReply);
+	rpc ClearCommentsDatabase (ClearCommentsDatabaseRequest) returns (ClearCommentsDatabaseReply);
+	rpc SetConfiguration (SetConfigurationRequest) returns (SetConfigurationReply);
+}
+
+message StartCollectionServiceRequest{}
+message StartCollectionServiceReply{}
+
+message StopCollectionServiceRequest{}
+message StopCollectionServiceReply{}
+
+message GetCommentsRequest{
+	CommentsQueryFilterProto Filter = 1;
+}
+message GetCommentsReply{
+	repeated CommentDataProto CommentData = 1;
+}
+
+message LogRequest{
+	google.protobuf.Timestamp LogDate = 1;
+}
+message LogReply{
+	bytes LogFile = 1;
+}
+
+message CommentsQueryFilterProto{
+	int64 PostId = 1;
+	int64 GroupId = 2;
+	int64 AuthorId = 3;
+	google.protobuf.Timestamp FromDate = 4;
+	google.protobuf.Timestamp ToDate = 5;
+}
+
+message CommentDataProto{
+	int64 Id = 1;
+	int64 CommentId = 2;
+	int64 PostId = 3;
+	int64 GroupId = 4;
+	int64 AuthorId = 5;
+	string Text = 6;
+	google.protobuf.Timestamp PostDate = 7;
+}
+
+message ClearCommentsDatabaseRequest{}
+message ClearCommentsDatabaseReply{}
+
+message SetConfigurationRequest {
+ string settings = 1;
+}
+message SetConfigurationReply {}

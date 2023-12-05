@@ -1,0 +1,68 @@
+syntax = "proto3";
+
+option csharp_namespace = "DataAnalysisService";
+import "google/protobuf/timestamp.proto";
+package analysis;
+
+service DataAnalysis {
+  rpc StartAnalysisService (StartAnalysisServiceRequest) returns (StartAnalysisServiceReply);
+  rpc StopAnalysisService (StopAnalysisServiceRequest) returns (StopAnalysisServiceReply);
+  rpc GetEvaluatedComments (EvaluatedCommentsRequest) returns (EvaluatedCommentsReply);
+  rpc ClearEvaluatedDatabase (ClearEvaluatedDatabaseRequest) returns (ClearEvaluatedDatabaseReply);
+  rpc GetLogs (LogRequest) returns (LogReply);
+  rpc SetConfiguration (SetConfigurationRequest) returns (SetConfigurationReply);
+}
+
+message StartAnalysisServiceRequest{}
+message StartAnalysisServiceReply{}
+
+message StopAnalysisServiceRequest{}
+message StopAnalysisServiceReply{}
+
+message EvaluatedCommentsRequest{
+	CommentsQueryFilterProto Filter = 1;
+}
+message EvaluatedCommentsReply{
+	repeated EvaluatedCommentProto EvaluatedComments = 1;
+}
+
+message CommentsQueryFilterProto{
+	int64 PostId = 1;
+	int64 GroupId = 2;
+	int64 AuthorId = 3;
+	google.protobuf.Timestamp FromDate = 4;
+	google.protobuf.Timestamp ToDate = 5;
+}
+
+message EvaluatedCommentProto{
+	int32 Id = 1;
+	int64 CommentId = 2;
+	CommentProto Comment = 3;
+	string EvaluateCategory = 4;
+	double EvaluateProbability = 5;
+}
+
+message CommentProto{
+	int64 Id = 1;
+	int64 CommentId = 2;
+	int64 PostId = 3;
+	int64 GroupId = 4;
+	int64 AuthorId = 5;
+	string Text = 6;
+	google.protobuf.Timestamp PostDate = 7;
+}
+
+message ClearEvaluatedDatabaseRequest{}
+message ClearEvaluatedDatabaseReply{}
+
+message LogRequest{
+	google.protobuf.Timestamp LogDate = 1;
+}
+message LogReply{
+	bytes LogFile = 1;
+}
+
+message SetConfigurationRequest {
+ string settings = 1;
+}
+message SetConfigurationReply {}
