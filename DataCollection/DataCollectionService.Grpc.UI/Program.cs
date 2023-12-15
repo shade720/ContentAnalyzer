@@ -40,11 +40,23 @@ builder.Services.AddSingleton<IVkApi, VkApi>(_ =>
         : throw new ApplicationException("Vk authorization failed! Stopping the application...");
 });
 builder.Services.AddSingleton<ICommentsRepository, CommentRepository>();
-builder.Services.AddDbContextFactory<CommentsContext>(options => 
-    options.UseSqlServer(builder.Configuration.GetConnectionString("Database")));
+builder.Services.AddDbContextFactory<CommentsContext>(options =>
+{
+    var postgresConnectionString = Environment.GetEnvironmentVariable("POSTGRES_CONNECTION_STRING");
+    if (!string.IsNullOrEmpty(postgresConnectionString))
+    {
+        options.UseNpgsql(postgresConnectionString);
+    }
+    else
+    {
+        var sqlServerConnectionString = builder.Configuration.GetConnectionString("SqlServerConnectionString");
+        options.UseSqlServer(sqlServerConnectionString);
+    }
+});
 
 var app = builder.Build();
 
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 app.MapGrpcService<DataCollectionAPI>();
 app.MapGet("/", () => "Communication with gRPC endpoints must be made through a gRPC client. To learn how to create a client, visit: https://go.microsoft.com/fwlink/?linkid=2086909");
 

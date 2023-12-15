@@ -17,6 +17,8 @@ public class BertModel : IArtificialIntelligenceModel
     private readonly InferenceSession _model;
     private readonly Dictionary<string, string> _labelEncoding;
 
+    private const int MaxSentenceLength = 2000;
+
     public BertModel(
         string modelTitle,
         string tokenizerVocabPath, 
@@ -44,7 +46,7 @@ public class BertModel : IArtificialIntelligenceModel
 
     public PredictResult Predict(string sentence)
     {
-        sentence = RemoveSpecialCharacters(sentence);
+        sentence = RemoveSpecialCharacters(TrimToLength(sentence, MaxSentenceLength));
 
         var tokens = _tokenizer.Tokenize(sentence);
         var encoded = _tokenizer.Encode(tokens.Count, sentence);
@@ -78,6 +80,11 @@ public class BertModel : IArtificialIntelligenceModel
             Category = label,
             Probability = probability
         };
+    }
+
+    private static string TrimToLength(string str, int length)
+    {
+        return string.Join("", str.Take(length));
     }
 
     private static string RemoveSpecialCharacters(string str)

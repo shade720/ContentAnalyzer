@@ -8,11 +8,15 @@ using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Serilog.Events;
 
+var logFolderPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Logs");
+if (!Directory.Exists(logFolderPath))
+    Directory.CreateDirectory(logFolderPath);
+
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
     .WriteTo.Console()
-    .WriteTo.RollingFile(
-        @".\Logs\log{Date}.txt",
+    .WriteTo.File(
+        logFolderPath + "/log-{Date}.txt",
         LogEventLevel.Information,
         outputTemplate: "`~{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level}] {Message:lj}{NewLine}{Exception}",
         retainedFileCountLimit: 3)
@@ -35,12 +39,22 @@ builder.Services.AddSingleton<IEvaluatedCommentsRepository, EvaluatedCommentsRep
 
 
 builder.Services.AddDbContextFactory<CommentsContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("Database")));
+{
+    var postgresConnectionString = Environment.GetEnvironmentVariable("POSTGRES_CONNECTION_STRING");
+    if (!string.IsNullOrEmpty(postgresConnectionString))
+    {
+        options.UseNpgsql(postgresConnectionString);
+    }
+    else
+    {
+        var sqlServerConnectionString = builder.Configuration.GetConnectionString("SqlServerConnectionString");
+        options.UseSqlServer(sqlServerConnectionString);
+    }
+});
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-app.MapGet("/", () => "Communication with gRPC endpoints must be made through a gRPC client. To learn how to create a client, visit: https://go.microsoft.com/fwlink/?linkid=2086909");
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 app.MapGrpcService<DataAnalysisAPI>();
 
 app.Run();

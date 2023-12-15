@@ -64,14 +64,14 @@ public class VkCollectorTests
 
         await Task.Delay(int.Parse(scanPostDelay) + 100);
 
-        var commentsObserversCountBeforeStopping = _sut.CommentsObservers.Count;
+        var commentsObserversCountBeforeStopping = _sut.CommentsObserversByPost.Count;
 
         await Task.Delay(int.Parse(scanCommentsDelay) + 100);
 
         _sut.StopCollecting();
 
         var postObserversCountAfterStopping = _sut.PostObservers.Count;
-        var commentsObserversCountAfterStopping = _sut.CommentsObservers.Count;
+        var commentsObserversCountAfterStopping = _sut.CommentsObserversByPost.Count;
 
         // Assert
 

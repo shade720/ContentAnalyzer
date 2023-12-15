@@ -12,7 +12,7 @@ public class VkCollector : ICollector, IAsyncDisposable
     private readonly IConfiguration _configuration;
 
     public List<VkPostObserver> PostObservers { get; }
-    public FixedQueue<VkCommentObserver> CommentsObservers { get; }
+    public Dictionary<string, Queue<VkCommentObserver>> CommentsObserversByPost { get; }
 
     public event ICollector.OnCommentCollected? OnCommentCollectedEvent;
 
@@ -22,7 +22,7 @@ public class VkCollector : ICollector, IAsyncDisposable
         _configuration = configuration;
 
         PostObservers = new List<VkPostObserver>();
-        CommentsObservers = new FixedQueue<VkCommentObserver>(int.Parse(configuration["PostQueueSize"]));
+        CommentsObserversByPost = new Dictionary<string, Queue<VkCommentObserver>>();
     }
 
     public void StartCollecting()
@@ -33,18 +33,23 @@ public class VkCollector : ICollector, IAsyncDisposable
             var postObserver = new VkPostObserver(long.Parse(communityId), _vkApi, _configuration);
             postObserver.OnNewInfoEvent += OnNewPostEventHandler;
             PostObservers.Add(postObserver);
+            CommentsObserversByPost.Add(communityId, new Queue<VkCommentObserver>());
         }
         Log.Logger.Information("Data collection has started");
     }
 
     public void StopCollecting()
     {
-        foreach (var commentObserver in CommentsObservers)
+        foreach (var observersQueue in CommentsObserversByPost)
         {
-            commentObserver.OnNewInfoEvent -= OnNewCommentEventHandler;
-            commentObserver.Dispose();
+            foreach (var vkCommentObserver in observersQueue.Value)
+            {
+                vkCommentObserver.OnNewInfoEvent -= OnNewCommentEventHandler;
+                vkCommentObserver.Dispose();
+            }
+            observersQueue.Value.Clear();
         }
-        CommentsObservers.Clear();
+        CommentsObserversByPost.Clear();
 
         foreach (var postObserver in PostObservers)
         {
@@ -62,7 +67,12 @@ public class VkCollector : ICollector, IAsyncDisposable
             throw new ArgumentException($"Incorrect sender {nameof(OnNewPostEventHandler)}, expected VkPostObserver");
         var commentObserver = new VkCommentObserver(postObserver.CommunityId, postId, _vkApi, _configuration);
         commentObserver.OnNewInfoEvent += OnNewCommentEventHandler;
-        CommentsObservers.Enqueue(commentObserver);
+        if (CommentsObserversByPost[postObserver.CommunityId.ToString()].Count == int.Parse(_configuration["PostQueueSize"]))
+        {
+            var commentObserverToStop = CommentsObserversByPost[postObserver.CommunityId.ToString()].Dequeue();
+            commentObserverToStop.Dispose();
+        }
+        CommentsObserversByPost[postObserver.CommunityId.ToString()].Enqueue(commentObserver);
     }
 
     private void OnNewCommentEventHandler(object? sender, VkComment comment)

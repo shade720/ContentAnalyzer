@@ -24,7 +24,7 @@ public class VkCommentObserver : VkObserver<VkComment>, IDisposable
         _postId = postId;
         _threadsCounts = new Dictionary<long, long>();
         Task.Run(PullingCommentsLoop);
-        Log.Logger.Information("Comments observer has been created for post {0}", _postId);
+        Log.Logger.Information("Comments observer has been created. Community/post: {0}/{1}", _communityId, _postId);
     }
 
     private async Task PullingCommentsLoop()
@@ -37,7 +37,8 @@ public class VkCommentObserver : VkObserver<VkComment>, IDisposable
             await Task.Delay(int.Parse(Configuration["ScanCommentsDelay"]!), CancellationTokenSource.Token)
                 .ContinueWith(_ => { }); //to avoid exception
 
-            Log.Logger.Information("Comment observer has started new iteration for post {0}", _postId);
+            Log.Logger.Information("Comment observer has started new iteration after {0}ms delay. Community/post: {1}/{2}", 
+                int.Parse(Configuration["ScanCommentsDelay"]!),_communityId, _postId);
 
             if (CancellationTokenSource.IsCancellationRequested || !await IsThereNewComments() || OnNewInfoEvent is null)
                 continue;
@@ -60,7 +61,7 @@ public class VkCommentObserver : VkObserver<VkComment>, IDisposable
             }
         }
 
-        Log.Logger.Information("Comments observing stopped on post {0}", _postId);
+        Log.Logger.Information("Comments observing stopped. Community/post: {0}/{1}", _communityId, _postId);
     }
 
     private async IAsyncEnumerable<VkComment> GetBranch(long? commentId = null)
@@ -93,6 +94,6 @@ public class VkCommentObserver : VkObserver<VkComment>, IDisposable
     {
         CancellationTokenSource.Cancel();
         OnNewInfoEvent = null;
-        Log.Logger.Information("Comments observer have been disposed (post {0})", _postId);
+        Log.Logger.Information("Comments observer have been disposed. Community/post: {0}/{1}",_communityId, _postId);
     }
 }

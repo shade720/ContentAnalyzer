@@ -42,16 +42,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAnalysisService.Infrast
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAnalysisService.Grpc.UI", "DataAnalysis\DataAnalysisService.Grpc.UI\DataAnalysisService.Grpc.UI.csproj", "{D5C7A06A-B10B-4D6A-AFAF-B748FDDC6817}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Resources", "Resources", "{4D7D761A-0E4F-4616-B118-20FC16AE95CE}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sensetive-topics", "sensetive-topics", "{A3C75C9E-08A8-4DD1-80EE-A3235D450FB6}"
-	ProjectSection(SolutionItems) = preProject
-		DataAnalysis\Resources\sensetive-topics\id2topic.json = DataAnalysis\Resources\sensetive-topics\id2topic.json
-		DataAnalysis\Resources\sensetive-topics\model.onnx = DataAnalysis\Resources\sensetive-topics\model.onnx
-		DataAnalysis\Resources\sensetive-topics\tokenizer_config.json = DataAnalysis\Resources\sensetive-topics\tokenizer_config.json
-		DataAnalysis\Resources\sensetive-topics\vocab.txt = DataAnalysis\Resources\sensetive-topics\vocab.txt
-	EndProjectSection
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAnalysisService.Infrastructure.Tests", "DataAnalysis\Tests\DataAnalysisService.Infrastructure.Tests\DataAnalysisService.Infrastructure.Tests.csproj", "{BE91467C-54AB-4E27-8EAE-DE4D6984577F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAnalysisService.Application.Tests", "DataAnalysis\Tests\DataAnalysisService.Application.Tests\DataAnalysisService.Application.Tests.csproj", "{F6422706-AC7C-4CAC-9F7B-761AA316914E}"
@@ -147,8 +137,6 @@ Global
 		{410B7F28-1732-45D1-A862-58651F160787} = {01403E3E-9DFF-49C9-94A1-E8F93C2E261B}
 		{2007E224-B422-48BE-80D2-8CF1E078CC86} = {01403E3E-9DFF-49C9-94A1-E8F93C2E261B}
 		{D5C7A06A-B10B-4D6A-AFAF-B748FDDC6817} = {01403E3E-9DFF-49C9-94A1-E8F93C2E261B}
-		{4D7D761A-0E4F-4616-B118-20FC16AE95CE} = {01403E3E-9DFF-49C9-94A1-E8F93C2E261B}
-		{A3C75C9E-08A8-4DD1-80EE-A3235D450FB6} = {4D7D761A-0E4F-4616-B118-20FC16AE95CE}
 		{BE91467C-54AB-4E27-8EAE-DE4D6984577F} = {83BC3699-AEC9-4DC7-8D61-500C4A21E549}
 		{F6422706-AC7C-4CAC-9F7B-761AA316914E} = {83BC3699-AEC9-4DC7-8D61-500C4A21E549}
 	EndGlobalSection
