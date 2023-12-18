@@ -1,6 +1,7 @@
-﻿using Newtonsoft.Json;
+﻿using DevTool.Models.ConfigurationModel;
+using Newtonsoft.Json;
 
-namespace DevTool.Models;
+namespace DevTool.BLL;
 
 internal static class ConfigurationManager
 {
@@ -10,6 +11,7 @@ internal static class ConfigurationManager
         var configFile = File.ReadAllText(@"configuration.json");
         return JsonConvert.DeserializeObject<Configuration>(configFile);
     }
+
     public static void SaveConfiguration(Configuration configuration)
     {
         File.WriteAllText(@"configuration.json", JsonConvert.SerializeObject(configuration));
@@ -21,6 +23,7 @@ internal static class ConfigurationManager
         var configFile = File.ReadAllText(@"vkSettings.json");
         return JsonConvert.DeserializeObject<VkConfiguration>(configFile);
     }
+
     public static void SaveVkConfiguration(VkConfiguration configuration)
     {
         File.WriteAllText(@"vkSettings.json", JsonConvert.SerializeObject(configuration));

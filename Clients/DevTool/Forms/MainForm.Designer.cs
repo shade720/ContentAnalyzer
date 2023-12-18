@@ -29,1401 +29,1500 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            this.SaveFileDialog = new System.Windows.Forms.SaveFileDialog();
-            this.VkCollectorTab = new System.Windows.Forms.TabPage();
-            this.groupBox8 = new System.Windows.Forms.GroupBox();
-            this.label17 = new System.Windows.Forms.Label();
-            this.LocalConfiguration = new System.Windows.Forms.Button();
-            this.NewCommunity = new System.Windows.Forms.TextBox();
-            this.SaveVkSettings = new System.Windows.Forms.Button();
-            this.ServiceAccessKey = new System.Windows.Forms.TextBox();
-            this.LoadVkSettings = new System.Windows.Forms.Button();
-            this.label11 = new System.Windows.Forms.Label();
-            this.DeleteCommunity = new System.Windows.Forms.Button();
-            this.SecureKey = new System.Windows.Forms.TextBox();
-            this.label10 = new System.Windows.Forms.Label();
-            this.AddCommunity = new System.Windows.Forms.Button();
-            this.ApplicationId = new System.Windows.Forms.TextBox();
-            this.label9 = new System.Windows.Forms.Label();
-            this.label12 = new System.Windows.Forms.Label();
-            this.Communities = new System.Windows.Forms.ListBox();
-            this.ReportsTab = new System.Windows.Forms.TabPage();
-            this.OpenReport = new System.Windows.Forms.Button();
-            this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.CommunityId = new System.Windows.Forms.TextBox();
-            this.label16 = new System.Windows.Forms.Label();
-            this.PostId = new System.Windows.Forms.TextBox();
-            this.label15 = new System.Windows.Forms.Label();
-            this.AuthorId = new System.Windows.Forms.TextBox();
-            this.ToDate = new System.Windows.Forms.DateTimePicker();
-            this.label14 = new System.Windows.Forms.Label();
-            this.FromDate = new System.Windows.Forms.DateTimePicker();
-            this.SelectedDateCheckBox = new System.Windows.Forms.CheckBox();
-            this.LastMonthCheckBox = new System.Windows.Forms.CheckBox();
-            this.LastWeekCheckBox = new System.Windows.Forms.CheckBox();
-            this.Last3DaysCheckBox = new System.Windows.Forms.CheckBox();
-            this.TodayCheckBox = new System.Windows.Forms.CheckBox();
-            this.label13 = new System.Windows.Forms.Label();
-            this.ConfigureTab = new System.Windows.Forms.TabPage();
-            this.LoadConfiguration = new System.Windows.Forms.Button();
-            this.SaveConfiguration = new System.Windows.Forms.Button();
-            this.SetLocalConfig = new System.Windows.Forms.Button();
-            this.groupBox6 = new System.Windows.Forms.GroupBox();
-            this.groupBox10 = new System.Windows.Forms.GroupBox();
-            this.ApplyAnalysisServiceEndpoint = new System.Windows.Forms.Button();
-            this.label20 = new System.Windows.Forms.Label();
-            this.AnalysisServiceEndpoint = new System.Windows.Forms.ComboBox();
-            this.AnalysisServiceHosts = new System.Windows.Forms.ListBox();
-            this.NewAnalysisHost = new System.Windows.Forms.TextBox();
-            this.label28 = new System.Windows.Forms.Label();
-            this.AddAnalysisServiceHost = new System.Windows.Forms.Button();
-            this.DeleteAnalysisServiceHost = new System.Windows.Forms.Button();
-            this.ObserveDelay = new System.Windows.Forms.TextBox();
-            this.label8 = new System.Windows.Forms.Label();
-            this.groupBox5 = new System.Windows.Forms.GroupBox();
-            this.groupBox7 = new System.Windows.Forms.GroupBox();
-            this.ApplyNewCollectionServiceEndpoint = new System.Windows.Forms.Button();
-            this.label7 = new System.Windows.Forms.Label();
-            this.CollectionServiceEndpoint = new System.Windows.Forms.ComboBox();
-            this.CollectionServiceHosts = new System.Windows.Forms.ListBox();
-            this.NewCollectionHost = new System.Windows.Forms.TextBox();
-            this.label27 = new System.Windows.Forms.Label();
-            this.DeleteCollectionServiceHost = new System.Windows.Forms.Button();
-            this.AddCollectionServiceHost = new System.Windows.Forms.Button();
-            this.PostQueueSize = new System.Windows.Forms.TextBox();
-            this.label31 = new System.Windows.Forms.Label();
-            this.ScanCommentsDelay = new System.Windows.Forms.TextBox();
-            this.label30 = new System.Windows.Forms.Label();
-            this.label29 = new System.Windows.Forms.Label();
-            this.ScanPostDelay = new System.Windows.Forms.TextBox();
-            this.MainTab = new System.Windows.Forms.TabPage();
-            this.AnalysisLogDate = new System.Windows.Forms.DateTimePicker();
-            this.CollectionLogDate = new System.Windows.Forms.DateTimePicker();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.ClearEvaluatedDatabase = new System.Windows.Forms.Button();
-            this.ClearCommentsDatabase = new System.Windows.Forms.Button();
-            this.StartAll = new System.Windows.Forms.Button();
-            this.StartAnalysisService = new System.Windows.Forms.Button();
-            this.StartCollectionService = new System.Windows.Forms.Button();
-            this.StopAll = new System.Windows.Forms.Button();
-            this.StopAnalysisService = new System.Windows.Forms.Button();
-            this.StopCollectionService = new System.Windows.Forms.Button();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.AnalysisServiceProgressBar = new System.Windows.Forms.ProgressBar();
-            this.RefreshAnalysisServiceInfo = new System.Windows.Forms.Button();
-            this.AnalysisEvaluated = new System.Windows.Forms.Label();
-            this.AnalysisWarnings = new System.Windows.Forms.Label();
-            this.label26 = new System.Windows.Forms.Label();
-            this.AnalysisErrors = new System.Windows.Forms.Label();
-            this.label25 = new System.Windows.Forms.Label();
-            this.AnalysisUptime = new System.Windows.Forms.Label();
-            this.label24 = new System.Windows.Forms.Label();
-            this.AnalysisState = new System.Windows.Forms.Label();
-            this.label23 = new System.Windows.Forms.Label();
-            this.AnalysisConnection = new System.Windows.Forms.Label();
-            this.label22 = new System.Windows.Forms.Label();
-            this.label21 = new System.Windows.Forms.Label();
-            this.AnalysisProgressBarRed = new System.Windows.Forms.Panel();
-            this.ViewAnalysisServiceLogs = new System.Windows.Forms.Button();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.CollectionServiceProgressBar = new System.Windows.Forms.ProgressBar();
-            this.RefreshCollectionServiceInfo = new System.Windows.Forms.Button();
-            this.CollectionCollected = new System.Windows.Forms.Label();
-            this.CollectionWarnings = new System.Windows.Forms.Label();
-            this.CollectionErrors = new System.Windows.Forms.Label();
-            this.CollectionUptime = new System.Windows.Forms.Label();
-            this.CollectionState = new System.Windows.Forms.Label();
-            this.CollectionConnection = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.CollectionProgressBarRed = new System.Windows.Forms.Panel();
-            this.ViewCollectionServiceLogs = new System.Windows.Forms.Button();
-            this.Tabs = new System.Windows.Forms.TabControl();
-            this.VkCollectorTab.SuspendLayout();
-            this.groupBox8.SuspendLayout();
-            this.ReportsTab.SuspendLayout();
-            this.groupBox4.SuspendLayout();
-            this.ConfigureTab.SuspendLayout();
-            this.groupBox6.SuspendLayout();
-            this.groupBox10.SuspendLayout();
-            this.groupBox5.SuspendLayout();
-            this.groupBox7.SuspendLayout();
-            this.MainTab.SuspendLayout();
-            this.groupBox3.SuspendLayout();
-            this.groupBox2.SuspendLayout();
-            this.groupBox1.SuspendLayout();
-            this.Tabs.SuspendLayout();
-            this.SuspendLayout();
+            SaveFileDialog = new SaveFileDialog();
+            VkCollectorTab = new TabPage();
+            groupBox8 = new GroupBox();
+            label17 = new Label();
+            LocalConfiguration = new Button();
+            NewCommunity = new TextBox();
+            SaveVkSettings = new Button();
+            ServiceAccessKey = new TextBox();
+            LoadVkSettings = new Button();
+            label11 = new Label();
+            DeleteCommunity = new Button();
+            SecureKey = new TextBox();
+            label10 = new Label();
+            AddCommunity = new Button();
+            ApplicationId = new TextBox();
+            label9 = new Label();
+            label12 = new Label();
+            Communities = new ListBox();
+            ReportsTab = new TabPage();
+            OpenReport = new Button();
+            groupBox4 = new GroupBox();
+            CommunityId = new TextBox();
+            label16 = new Label();
+            PostId = new TextBox();
+            label15 = new Label();
+            AuthorId = new TextBox();
+            ToDate = new DateTimePicker();
+            label14 = new Label();
+            FromDate = new DateTimePicker();
+            SelectedDateCheckBox = new CheckBox();
+            LastMonthCheckBox = new CheckBox();
+            LastWeekCheckBox = new CheckBox();
+            Last3DaysCheckBox = new CheckBox();
+            TodayCheckBox = new CheckBox();
+            label13 = new Label();
+            ConfigureTab = new TabPage();
+            LoadConfiguration = new Button();
+            SaveConfiguration = new Button();
+            SetLocalConfig = new Button();
+            groupBox6 = new GroupBox();
+            ObserveDelay = new TextBox();
+            label8 = new Label();
+            groupBox5 = new GroupBox();
+            PostQueueSize = new TextBox();
+            label31 = new Label();
+            ScanCommentsDelay = new TextBox();
+            label30 = new Label();
+            label29 = new Label();
+            ScanPostDelay = new TextBox();
+            MainTab = new TabPage();
+            ServicesTabs = new TabControl();
+            tabPage1 = new TabPage();
+            groupBox7 = new GroupBox();
+            groupBox13 = new GroupBox();
+            CollectionServiceEndpoint = new ComboBox();
+            ApplyNewCollectionServiceEndpoint = new Button();
+            groupBox9 = new GroupBox();
+            CollectionServiceHosts = new ListBox();
+            AddCollectionServiceHost = new Button();
+            DeleteCollectionServiceHost = new Button();
+            NewCollectionHost = new TextBox();
+            groupBox3 = new GroupBox();
+            ClearCommentsDatabase = new Button();
+            CollectionLogDate = new DateTimePicker();
+            StartCollectionService = new Button();
+            ViewCollectionServiceLogs = new Button();
+            StopCollectionService = new Button();
+            groupBox1 = new GroupBox();
+            CollectionServiceProgressBar = new ProgressBar();
+            RefreshCollectionServiceInfo = new Button();
+            CollectionCollected = new Label();
+            CollectionWarnings = new Label();
+            CollectionErrors = new Label();
+            CollectionUptime = new Label();
+            CollectionState = new Label();
+            CollectionConnection = new Label();
+            label6 = new Label();
+            label5 = new Label();
+            label4 = new Label();
+            label3 = new Label();
+            label2 = new Label();
+            label1 = new Label();
+            CollectionProgressBarRed = new Panel();
+            tabPage2 = new TabPage();
+            groupBox10 = new GroupBox();
+            groupBox14 = new GroupBox();
+            AnalysisServiceEndpoint = new ComboBox();
+            ApplyAnalysisServiceEndpoint = new Button();
+            groupBox12 = new GroupBox();
+            AnalysisServiceHosts = new ListBox();
+            DeleteAnalysisServiceHost = new Button();
+            AddAnalysisServiceHost = new Button();
+            NewAnalysisHost = new TextBox();
+            groupBox11 = new GroupBox();
+            ViewAnalysisServiceLogs = new Button();
+            ClearEvaluatedDatabase = new Button();
+            StopAnalysisService = new Button();
+            AnalysisLogDate = new DateTimePicker();
+            StartAnalysisService = new Button();
+            groupBox2 = new GroupBox();
+            AnalysisServiceProgressBar = new ProgressBar();
+            RefreshAnalysisServiceInfo = new Button();
+            AnalysisEvaluated = new Label();
+            AnalysisWarnings = new Label();
+            label26 = new Label();
+            AnalysisErrors = new Label();
+            label25 = new Label();
+            AnalysisUptime = new Label();
+            label24 = new Label();
+            AnalysisState = new Label();
+            label23 = new Label();
+            AnalysisConnection = new Label();
+            label22 = new Label();
+            label21 = new Label();
+            AnalysisProgressBarRed = new Panel();
+            Tabs = new TabControl();
+            VkCollectorTab.SuspendLayout();
+            groupBox8.SuspendLayout();
+            ReportsTab.SuspendLayout();
+            groupBox4.SuspendLayout();
+            ConfigureTab.SuspendLayout();
+            groupBox6.SuspendLayout();
+            groupBox5.SuspendLayout();
+            MainTab.SuspendLayout();
+            ServicesTabs.SuspendLayout();
+            tabPage1.SuspendLayout();
+            groupBox7.SuspendLayout();
+            groupBox13.SuspendLayout();
+            groupBox9.SuspendLayout();
+            groupBox3.SuspendLayout();
+            groupBox1.SuspendLayout();
+            tabPage2.SuspendLayout();
+            groupBox10.SuspendLayout();
+            groupBox14.SuspendLayout();
+            groupBox12.SuspendLayout();
+            groupBox11.SuspendLayout();
+            groupBox2.SuspendLayout();
+            Tabs.SuspendLayout();
+            SuspendLayout();
             // 
             // SaveFileDialog
             // 
-            this.SaveFileDialog.DefaultExt = "xlsx";
-            this.SaveFileDialog.FileName = "EvaluatedCommentsReport.xlsx";
+            SaveFileDialog.DefaultExt = "xlsx";
+            SaveFileDialog.FileName = "EvaluatedCommentsReport.xlsx";
             // 
             // VkCollectorTab
             // 
-            this.VkCollectorTab.Controls.Add(this.groupBox8);
-            this.VkCollectorTab.Location = new System.Drawing.Point(4, 44);
-            this.VkCollectorTab.Name = "VkCollectorTab";
-            this.VkCollectorTab.Padding = new System.Windows.Forms.Padding(3);
-            this.VkCollectorTab.Size = new System.Drawing.Size(674, 605);
-            this.VkCollectorTab.TabIndex = 4;
-            this.VkCollectorTab.Text = "Vk collector";
-            this.VkCollectorTab.UseVisualStyleBackColor = true;
+            VkCollectorTab.Controls.Add(groupBox8);
+            VkCollectorTab.Location = new Point(4, 44);
+            VkCollectorTab.Margin = new Padding(3, 2, 3, 2);
+            VkCollectorTab.Name = "VkCollectorTab";
+            VkCollectorTab.Padding = new Padding(3, 2, 3, 2);
+            VkCollectorTab.Size = new Size(590, 448);
+            VkCollectorTab.TabIndex = 4;
+            VkCollectorTab.Text = "Vk collector";
+            VkCollectorTab.UseVisualStyleBackColor = true;
             // 
             // groupBox8
             // 
-            this.groupBox8.Controls.Add(this.label17);
-            this.groupBox8.Controls.Add(this.LocalConfiguration);
-            this.groupBox8.Controls.Add(this.NewCommunity);
-            this.groupBox8.Controls.Add(this.SaveVkSettings);
-            this.groupBox8.Controls.Add(this.ServiceAccessKey);
-            this.groupBox8.Controls.Add(this.LoadVkSettings);
-            this.groupBox8.Controls.Add(this.label11);
-            this.groupBox8.Controls.Add(this.DeleteCommunity);
-            this.groupBox8.Controls.Add(this.SecureKey);
-            this.groupBox8.Controls.Add(this.label10);
-            this.groupBox8.Controls.Add(this.AddCommunity);
-            this.groupBox8.Controls.Add(this.ApplicationId);
-            this.groupBox8.Controls.Add(this.label9);
-            this.groupBox8.Controls.Add(this.label12);
-            this.groupBox8.Controls.Add(this.Communities);
-            this.groupBox8.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox8.Location = new System.Drawing.Point(3, 3);
-            this.groupBox8.Name = "groupBox8";
-            this.groupBox8.Size = new System.Drawing.Size(668, 599);
-            this.groupBox8.TabIndex = 0;
-            this.groupBox8.TabStop = false;
-            this.groupBox8.Text = "Settings";
+            groupBox8.Controls.Add(label17);
+            groupBox8.Controls.Add(LocalConfiguration);
+            groupBox8.Controls.Add(NewCommunity);
+            groupBox8.Controls.Add(SaveVkSettings);
+            groupBox8.Controls.Add(ServiceAccessKey);
+            groupBox8.Controls.Add(LoadVkSettings);
+            groupBox8.Controls.Add(label11);
+            groupBox8.Controls.Add(DeleteCommunity);
+            groupBox8.Controls.Add(SecureKey);
+            groupBox8.Controls.Add(label10);
+            groupBox8.Controls.Add(AddCommunity);
+            groupBox8.Controls.Add(ApplicationId);
+            groupBox8.Controls.Add(label9);
+            groupBox8.Controls.Add(label12);
+            groupBox8.Controls.Add(Communities);
+            groupBox8.Dock = DockStyle.Fill;
+            groupBox8.Location = new Point(3, 2);
+            groupBox8.Margin = new Padding(3, 2, 3, 2);
+            groupBox8.Name = "groupBox8";
+            groupBox8.Padding = new Padding(3, 2, 3, 2);
+            groupBox8.Size = new Size(584, 444);
+            groupBox8.TabIndex = 0;
+            groupBox8.TabStop = false;
+            groupBox8.Text = "Settings";
             // 
             // label17
             // 
-            this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(15, 34);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(469, 80);
-            this.label17.TabIndex = 20;
-            this.label17.Text = resources.GetString("label17.Text");
+            label17.AutoSize = true;
+            label17.Location = new Point(13, 26);
+            label17.Name = "label17";
+            label17.Size = new Size(370, 60);
+            label17.TabIndex = 20;
+            label17.Text = resources.GetString("label17.Text");
             // 
             // LocalConfiguration
             // 
-            this.LocalConfiguration.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.LocalConfiguration.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.LocalConfiguration.Location = new System.Drawing.Point(6, 543);
-            this.LocalConfiguration.Name = "LocalConfiguration";
-            this.LocalConfiguration.Size = new System.Drawing.Size(165, 50);
-            this.LocalConfiguration.TabIndex = 19;
-            this.LocalConfiguration.Text = "Default configuration";
-            this.LocalConfiguration.UseVisualStyleBackColor = true;
-            this.LocalConfiguration.Click += new System.EventHandler(this.LocalConfiguration_Click);
+            LocalConfiguration.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            LocalConfiguration.FlatStyle = FlatStyle.Flat;
+            LocalConfiguration.Location = new Point(5, 402);
+            LocalConfiguration.Margin = new Padding(3, 2, 3, 2);
+            LocalConfiguration.Name = "LocalConfiguration";
+            LocalConfiguration.Size = new Size(144, 38);
+            LocalConfiguration.TabIndex = 19;
+            LocalConfiguration.Text = "Default configuration";
+            LocalConfiguration.UseVisualStyleBackColor = true;
+            LocalConfiguration.Click += LocalConfiguration_Click;
             // 
             // NewCommunity
             // 
-            this.NewCommunity.Location = new System.Drawing.Point(164, 332);
-            this.NewCommunity.Name = "NewCommunity";
-            this.NewCommunity.Size = new System.Drawing.Size(183, 27);
-            this.NewCommunity.TabIndex = 16;
+            NewCommunity.Location = new Point(144, 249);
+            NewCommunity.Margin = new Padding(3, 2, 3, 2);
+            NewCommunity.Name = "NewCommunity";
+            NewCommunity.Size = new Size(161, 23);
+            NewCommunity.TabIndex = 16;
             // 
             // SaveVkSettings
             // 
-            this.SaveVkSettings.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.SaveVkSettings.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.SaveVkSettings.Location = new System.Drawing.Point(255, 543);
-            this.SaveVkSettings.Name = "SaveVkSettings";
-            this.SaveVkSettings.Size = new System.Drawing.Size(165, 50);
-            this.SaveVkSettings.TabIndex = 18;
-            this.SaveVkSettings.Text = "Save configuration";
-            this.SaveVkSettings.UseVisualStyleBackColor = true;
-            this.SaveVkSettings.Click += new System.EventHandler(this.SaveVkSettings_Click);
+            SaveVkSettings.Anchor = AnchorStyles.Bottom;
+            SaveVkSettings.FlatStyle = FlatStyle.Flat;
+            SaveVkSettings.Location = new Point(223, 402);
+            SaveVkSettings.Margin = new Padding(3, 2, 3, 2);
+            SaveVkSettings.Name = "SaveVkSettings";
+            SaveVkSettings.Size = new Size(144, 38);
+            SaveVkSettings.TabIndex = 18;
+            SaveVkSettings.Text = "Save configuration";
+            SaveVkSettings.UseVisualStyleBackColor = true;
+            SaveVkSettings.Click += SaveVkSettings_Click;
             // 
             // ServiceAccessKey
             // 
-            this.ServiceAccessKey.Location = new System.Drawing.Point(164, 194);
-            this.ServiceAccessKey.Margin = new System.Windows.Forms.Padding(5);
-            this.ServiceAccessKey.Name = "ServiceAccessKey";
-            this.ServiceAccessKey.Size = new System.Drawing.Size(479, 27);
-            this.ServiceAccessKey.TabIndex = 11;
+            ServiceAccessKey.Location = new Point(144, 146);
+            ServiceAccessKey.Margin = new Padding(4);
+            ServiceAccessKey.Name = "ServiceAccessKey";
+            ServiceAccessKey.Size = new Size(420, 23);
+            ServiceAccessKey.TabIndex = 11;
             // 
             // LoadVkSettings
             // 
-            this.LoadVkSettings.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.LoadVkSettings.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.LoadVkSettings.Location = new System.Drawing.Point(499, 543);
-            this.LoadVkSettings.Name = "LoadVkSettings";
-            this.LoadVkSettings.Size = new System.Drawing.Size(165, 50);
-            this.LoadVkSettings.TabIndex = 17;
-            this.LoadVkSettings.Text = "Upload configuration";
-            this.LoadVkSettings.UseVisualStyleBackColor = true;
-            this.LoadVkSettings.Click += new System.EventHandler(this.LoadVkSettings_Click);
+            LoadVkSettings.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            LoadVkSettings.FlatStyle = FlatStyle.Flat;
+            LoadVkSettings.Location = new Point(437, 402);
+            LoadVkSettings.Margin = new Padding(3, 2, 3, 2);
+            LoadVkSettings.Name = "LoadVkSettings";
+            LoadVkSettings.Size = new Size(144, 38);
+            LoadVkSettings.TabIndex = 17;
+            LoadVkSettings.Text = "Upload configuration";
+            LoadVkSettings.UseVisualStyleBackColor = true;
+            LoadVkSettings.Click += LoadVkSettings_Click;
             // 
             // label11
             // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(18, 197);
-            this.label11.Margin = new System.Windows.Forms.Padding(5);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(131, 20);
-            this.label11.TabIndex = 10;
-            this.label11.Text = "Service access key:";
+            label11.AutoSize = true;
+            label11.Location = new Point(16, 148);
+            label11.Margin = new Padding(4);
+            label11.Name = "label11";
+            label11.Size = new Size(105, 15);
+            label11.TabIndex = 10;
+            label11.Text = "Service access key:";
             // 
             // DeleteCommunity
             // 
-            this.DeleteCommunity.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.DeleteCommunity.Location = new System.Drawing.Point(256, 357);
-            this.DeleteCommunity.Name = "DeleteCommunity";
-            this.DeleteCommunity.Size = new System.Drawing.Size(91, 29);
-            this.DeleteCommunity.TabIndex = 15;
-            this.DeleteCommunity.Text = "Delete";
-            this.DeleteCommunity.UseVisualStyleBackColor = true;
-            this.DeleteCommunity.Click += new System.EventHandler(this.DeleteCommunity_Click);
+            DeleteCommunity.FlatStyle = FlatStyle.Flat;
+            DeleteCommunity.Location = new Point(224, 268);
+            DeleteCommunity.Margin = new Padding(3, 2, 3, 2);
+            DeleteCommunity.Name = "DeleteCommunity";
+            DeleteCommunity.Size = new Size(80, 22);
+            DeleteCommunity.TabIndex = 15;
+            DeleteCommunity.Text = "Delete";
+            DeleteCommunity.UseVisualStyleBackColor = true;
+            DeleteCommunity.Click += DeleteCommunity_Click;
             // 
             // SecureKey
             // 
-            this.SecureKey.Location = new System.Drawing.Point(164, 164);
-            this.SecureKey.Margin = new System.Windows.Forms.Padding(5);
-            this.SecureKey.Name = "SecureKey";
-            this.SecureKey.Size = new System.Drawing.Size(479, 27);
-            this.SecureKey.TabIndex = 9;
+            SecureKey.Location = new Point(144, 123);
+            SecureKey.Margin = new Padding(4);
+            SecureKey.Name = "SecureKey";
+            SecureKey.Size = new Size(420, 23);
+            SecureKey.TabIndex = 9;
             // 
             // label10
             // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(67, 167);
-            this.label10.Margin = new System.Windows.Forms.Padding(5);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(82, 20);
-            this.label10.TabIndex = 8;
-            this.label10.Text = "Secure key:";
+            label10.AutoSize = true;
+            label10.Location = new Point(55, 126);
+            label10.Margin = new Padding(4);
+            label10.Name = "label10";
+            label10.Size = new Size(66, 15);
+            label10.TabIndex = 8;
+            label10.Text = "Secure key:";
             // 
             // AddCommunity
             // 
-            this.AddCommunity.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.AddCommunity.Location = new System.Drawing.Point(164, 357);
-            this.AddCommunity.Name = "AddCommunity";
-            this.AddCommunity.Size = new System.Drawing.Size(92, 29);
-            this.AddCommunity.TabIndex = 14;
-            this.AddCommunity.Text = "Add";
-            this.AddCommunity.UseVisualStyleBackColor = true;
-            this.AddCommunity.Click += new System.EventHandler(this.AddCommunity_Click);
+            AddCommunity.FlatStyle = FlatStyle.Flat;
+            AddCommunity.Location = new Point(144, 268);
+            AddCommunity.Margin = new Padding(3, 2, 3, 2);
+            AddCommunity.Name = "AddCommunity";
+            AddCommunity.Size = new Size(80, 22);
+            AddCommunity.TabIndex = 14;
+            AddCommunity.Text = "Add";
+            AddCommunity.UseVisualStyleBackColor = true;
+            AddCommunity.Click += AddCommunity_Click;
             // 
             // ApplicationId
             // 
-            this.ApplicationId.Location = new System.Drawing.Point(164, 134);
-            this.ApplicationId.Margin = new System.Windows.Forms.Padding(5);
-            this.ApplicationId.Name = "ApplicationId";
-            this.ApplicationId.Size = new System.Drawing.Size(479, 27);
-            this.ApplicationId.TabIndex = 7;
+            ApplicationId.Location = new Point(144, 100);
+            ApplicationId.Margin = new Padding(4);
+            ApplicationId.Name = "ApplicationId";
+            ApplicationId.Size = new Size(420, 23);
+            ApplicationId.TabIndex = 7;
             // 
             // label9
             // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(41, 137);
-            this.label9.Margin = new System.Windows.Forms.Padding(5);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(108, 20);
-            this.label9.TabIndex = 6;
-            this.label9.Text = "Application ID:";
+            label9.AutoSize = true;
+            label9.Location = new Point(36, 103);
+            label9.Margin = new Padding(4);
+            label9.Name = "label9";
+            label9.Size = new Size(85, 15);
+            label9.TabIndex = 6;
+            label9.Text = "Application ID:";
             // 
             // label12
             // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(33, 229);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(116, 20);
-            this.label12.TabIndex = 13;
-            this.label12.Text = "Communities id:";
+            label12.AutoSize = true;
+            label12.Location = new Point(26, 172);
+            label12.Name = "label12";
+            label12.Size = new Size(95, 15);
+            label12.TabIndex = 13;
+            label12.Text = "Communities id:";
             // 
             // Communities
             // 
-            this.Communities.FormattingEnabled = true;
-            this.Communities.ItemHeight = 20;
-            this.Communities.Location = new System.Drawing.Point(164, 229);
-            this.Communities.Name = "Communities";
-            this.Communities.Size = new System.Drawing.Size(183, 104);
-            this.Communities.TabIndex = 12;
+            Communities.FormattingEnabled = true;
+            Communities.ItemHeight = 15;
+            Communities.Location = new Point(144, 172);
+            Communities.Margin = new Padding(3, 2, 3, 2);
+            Communities.Name = "Communities";
+            Communities.Size = new Size(161, 79);
+            Communities.TabIndex = 12;
             // 
             // ReportsTab
             // 
-            this.ReportsTab.Controls.Add(this.OpenReport);
-            this.ReportsTab.Controls.Add(this.groupBox4);
-            this.ReportsTab.Location = new System.Drawing.Point(4, 44);
-            this.ReportsTab.Name = "ReportsTab";
-            this.ReportsTab.Padding = new System.Windows.Forms.Padding(3);
-            this.ReportsTab.Size = new System.Drawing.Size(674, 605);
-            this.ReportsTab.TabIndex = 2;
-            this.ReportsTab.Text = "Reports";
-            this.ReportsTab.UseVisualStyleBackColor = true;
+            ReportsTab.Controls.Add(OpenReport);
+            ReportsTab.Controls.Add(groupBox4);
+            ReportsTab.Location = new Point(4, 44);
+            ReportsTab.Margin = new Padding(3, 2, 3, 2);
+            ReportsTab.Name = "ReportsTab";
+            ReportsTab.Padding = new Padding(3, 2, 3, 2);
+            ReportsTab.Size = new Size(590, 448);
+            ReportsTab.TabIndex = 2;
+            ReportsTab.Text = "Reports";
+            ReportsTab.UseVisualStyleBackColor = true;
             // 
             // OpenReport
             // 
-            this.OpenReport.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.OpenReport.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.OpenReport.Location = new System.Drawing.Point(242, 538);
-            this.OpenReport.Name = "OpenReport";
-            this.OpenReport.Size = new System.Drawing.Size(175, 50);
-            this.OpenReport.TabIndex = 1;
-            this.OpenReport.Text = "Open report";
-            this.OpenReport.UseVisualStyleBackColor = true;
-            this.OpenReport.Click += new System.EventHandler(this.OpenReport_Click);
+            OpenReport.Anchor = AnchorStyles.Bottom;
+            OpenReport.FlatStyle = FlatStyle.Flat;
+            OpenReport.Location = new Point(212, 404);
+            OpenReport.Margin = new Padding(3, 2, 3, 2);
+            OpenReport.Name = "OpenReport";
+            OpenReport.Size = new Size(153, 38);
+            OpenReport.TabIndex = 1;
+            OpenReport.Text = "Open report";
+            OpenReport.UseVisualStyleBackColor = true;
+            OpenReport.Click += OpenReport_Click;
             // 
             // groupBox4
             // 
-            this.groupBox4.Controls.Add(this.CommunityId);
-            this.groupBox4.Controls.Add(this.label16);
-            this.groupBox4.Controls.Add(this.PostId);
-            this.groupBox4.Controls.Add(this.label15);
-            this.groupBox4.Controls.Add(this.AuthorId);
-            this.groupBox4.Controls.Add(this.ToDate);
-            this.groupBox4.Controls.Add(this.label14);
-            this.groupBox4.Controls.Add(this.FromDate);
-            this.groupBox4.Controls.Add(this.SelectedDateCheckBox);
-            this.groupBox4.Controls.Add(this.LastMonthCheckBox);
-            this.groupBox4.Controls.Add(this.LastWeekCheckBox);
-            this.groupBox4.Controls.Add(this.Last3DaysCheckBox);
-            this.groupBox4.Controls.Add(this.TodayCheckBox);
-            this.groupBox4.Controls.Add(this.label13);
-            this.groupBox4.Location = new System.Drawing.Point(6, 6);
-            this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(411, 229);
-            this.groupBox4.TabIndex = 0;
-            this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "Filter";
+            groupBox4.Controls.Add(CommunityId);
+            groupBox4.Controls.Add(label16);
+            groupBox4.Controls.Add(PostId);
+            groupBox4.Controls.Add(label15);
+            groupBox4.Controls.Add(AuthorId);
+            groupBox4.Controls.Add(ToDate);
+            groupBox4.Controls.Add(label14);
+            groupBox4.Controls.Add(FromDate);
+            groupBox4.Controls.Add(SelectedDateCheckBox);
+            groupBox4.Controls.Add(LastMonthCheckBox);
+            groupBox4.Controls.Add(LastWeekCheckBox);
+            groupBox4.Controls.Add(Last3DaysCheckBox);
+            groupBox4.Controls.Add(TodayCheckBox);
+            groupBox4.Controls.Add(label13);
+            groupBox4.Location = new Point(5, 4);
+            groupBox4.Margin = new Padding(3, 2, 3, 2);
+            groupBox4.Name = "groupBox4";
+            groupBox4.Padding = new Padding(3, 2, 3, 2);
+            groupBox4.Size = new Size(360, 172);
+            groupBox4.TabIndex = 0;
+            groupBox4.TabStop = false;
+            groupBox4.Text = "Filter";
             // 
             // CommunityId
             // 
-            this.CommunityId.Location = new System.Drawing.Point(262, 91);
-            this.CommunityId.Name = "CommunityId";
-            this.CommunityId.Size = new System.Drawing.Size(125, 27);
-            this.CommunityId.TabIndex = 13;
+            CommunityId.Location = new Point(229, 68);
+            CommunityId.Margin = new Padding(3, 2, 3, 2);
+            CommunityId.Name = "CommunityId";
+            CommunityId.Size = new Size(110, 23);
+            CommunityId.TabIndex = 13;
             // 
             // label16
             // 
-            this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(151, 93);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(105, 20);
-            this.label16.TabIndex = 12;
-            this.label16.Text = "Community id:";
+            label16.AutoSize = true;
+            label16.Location = new Point(132, 71);
+            label16.Name = "label16";
+            label16.Size = new Size(87, 15);
+            label16.TabIndex = 12;
+            label16.Text = "Community id:";
             // 
             // PostId
             // 
-            this.PostId.Location = new System.Drawing.Point(262, 60);
-            this.PostId.Name = "PostId";
-            this.PostId.Size = new System.Drawing.Size(125, 27);
-            this.PostId.TabIndex = 11;
+            PostId.Location = new Point(229, 45);
+            PostId.Margin = new Padding(3, 2, 3, 2);
+            PostId.Name = "PostId";
+            PostId.Size = new Size(110, 23);
+            PostId.TabIndex = 11;
             // 
             // label15
             // 
-            this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(200, 63);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(56, 20);
-            this.label15.TabIndex = 10;
-            this.label15.Text = "Post id:";
+            label15.AutoSize = true;
+            label15.Location = new Point(173, 47);
+            label15.Name = "label15";
+            label15.Size = new Size(46, 15);
+            label15.TabIndex = 10;
+            label15.Text = "Post id:";
             // 
             // AuthorId
             // 
-            this.AuthorId.Location = new System.Drawing.Point(262, 29);
-            this.AuthorId.Name = "AuthorId";
-            this.AuthorId.Size = new System.Drawing.Size(125, 27);
-            this.AuthorId.TabIndex = 9;
+            AuthorId.Location = new Point(229, 22);
+            AuthorId.Margin = new Padding(3, 2, 3, 2);
+            AuthorId.Name = "AuthorId";
+            AuthorId.Size = new Size(110, 23);
+            AuthorId.TabIndex = 9;
             // 
             // ToDate
             // 
-            this.ToDate.Enabled = false;
-            this.ToDate.Location = new System.Drawing.Point(221, 181);
-            this.ToDate.Name = "ToDate";
-            this.ToDate.Size = new System.Drawing.Size(166, 27);
-            this.ToDate.TabIndex = 8;
+            ToDate.Enabled = false;
+            ToDate.Location = new Point(193, 136);
+            ToDate.Margin = new Padding(3, 2, 3, 2);
+            ToDate.Name = "ToDate";
+            ToDate.Size = new Size(146, 23);
+            ToDate.TabIndex = 8;
             // 
             // label14
             // 
-            this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(200, 186);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(15, 20);
-            this.label14.TabIndex = 7;
-            this.label14.Text = "-";
+            label14.AutoSize = true;
+            label14.Location = new Point(175, 140);
+            label14.Name = "label14";
+            label14.Size = new Size(12, 15);
+            label14.TabIndex = 7;
+            label14.Text = "-";
             // 
             // FromDate
             // 
-            this.FromDate.Enabled = false;
-            this.FromDate.Location = new System.Drawing.Point(28, 181);
-            this.FromDate.Name = "FromDate";
-            this.FromDate.Size = new System.Drawing.Size(166, 27);
-            this.FromDate.TabIndex = 6;
+            FromDate.Enabled = false;
+            FromDate.Location = new Point(24, 136);
+            FromDate.Margin = new Padding(3, 2, 3, 2);
+            FromDate.Name = "FromDate";
+            FromDate.Size = new Size(146, 23);
+            FromDate.TabIndex = 6;
             // 
             // SelectedDateCheckBox
             // 
-            this.SelectedDateCheckBox.AutoSize = true;
-            this.SelectedDateCheckBox.Location = new System.Drawing.Point(28, 151);
-            this.SelectedDateCheckBox.Name = "SelectedDateCheckBox";
-            this.SelectedDateCheckBox.Size = new System.Drawing.Size(125, 24);
-            this.SelectedDateCheckBox.TabIndex = 5;
-            this.SelectedDateCheckBox.Text = "Selected date:";
-            this.SelectedDateCheckBox.UseVisualStyleBackColor = true;
-            this.SelectedDateCheckBox.CheckedChanged += new System.EventHandler(this.SelectedDateCheckBox_CheckedChanged);
+            SelectedDateCheckBox.AutoSize = true;
+            SelectedDateCheckBox.Location = new Point(24, 113);
+            SelectedDateCheckBox.Margin = new Padding(3, 2, 3, 2);
+            SelectedDateCheckBox.Name = "SelectedDateCheckBox";
+            SelectedDateCheckBox.Size = new Size(99, 19);
+            SelectedDateCheckBox.TabIndex = 5;
+            SelectedDateCheckBox.Text = "Selected date:";
+            SelectedDateCheckBox.UseVisualStyleBackColor = true;
+            SelectedDateCheckBox.CheckedChanged += SelectedDateCheckBox_CheckedChanged;
             // 
             // LastMonthCheckBox
             // 
-            this.LastMonthCheckBox.AutoSize = true;
-            this.LastMonthCheckBox.Location = new System.Drawing.Point(28, 121);
-            this.LastMonthCheckBox.Name = "LastMonthCheckBox";
-            this.LastMonthCheckBox.Size = new System.Drawing.Size(104, 24);
-            this.LastMonthCheckBox.TabIndex = 4;
-            this.LastMonthCheckBox.Text = "Last month";
-            this.LastMonthCheckBox.UseVisualStyleBackColor = true;
-            this.LastMonthCheckBox.CheckedChanged += new System.EventHandler(this.LastMonthCheckBox_CheckedChanged);
+            LastMonthCheckBox.AutoSize = true;
+            LastMonthCheckBox.Location = new Point(24, 91);
+            LastMonthCheckBox.Margin = new Padding(3, 2, 3, 2);
+            LastMonthCheckBox.Name = "LastMonthCheckBox";
+            LastMonthCheckBox.Size = new Size(86, 19);
+            LastMonthCheckBox.TabIndex = 4;
+            LastMonthCheckBox.Text = "Last month";
+            LastMonthCheckBox.UseVisualStyleBackColor = true;
+            LastMonthCheckBox.CheckedChanged += LastMonthCheckBox_CheckedChanged;
             // 
             // LastWeekCheckBox
             // 
-            this.LastWeekCheckBox.AutoSize = true;
-            this.LastWeekCheckBox.Location = new System.Drawing.Point(28, 91);
-            this.LastWeekCheckBox.Name = "LastWeekCheckBox";
-            this.LastWeekCheckBox.Size = new System.Drawing.Size(95, 24);
-            this.LastWeekCheckBox.TabIndex = 3;
-            this.LastWeekCheckBox.Text = "Last week";
-            this.LastWeekCheckBox.UseVisualStyleBackColor = true;
-            this.LastWeekCheckBox.CheckedChanged += new System.EventHandler(this.LastWeekCheckBox_CheckedChanged);
+            LastWeekCheckBox.AutoSize = true;
+            LastWeekCheckBox.Location = new Point(24, 68);
+            LastWeekCheckBox.Margin = new Padding(3, 2, 3, 2);
+            LastWeekCheckBox.Name = "LastWeekCheckBox";
+            LastWeekCheckBox.Size = new Size(77, 19);
+            LastWeekCheckBox.TabIndex = 3;
+            LastWeekCheckBox.Text = "Last week";
+            LastWeekCheckBox.UseVisualStyleBackColor = true;
+            LastWeekCheckBox.CheckedChanged += LastWeekCheckBox_CheckedChanged;
             // 
             // Last3DaysCheckBox
             // 
-            this.Last3DaysCheckBox.AutoSize = true;
-            this.Last3DaysCheckBox.Location = new System.Drawing.Point(28, 61);
-            this.Last3DaysCheckBox.Name = "Last3DaysCheckBox";
-            this.Last3DaysCheckBox.Size = new System.Drawing.Size(103, 24);
-            this.Last3DaysCheckBox.TabIndex = 2;
-            this.Last3DaysCheckBox.Text = "Last 3 days";
-            this.Last3DaysCheckBox.UseVisualStyleBackColor = true;
-            this.Last3DaysCheckBox.CheckedChanged += new System.EventHandler(this.Last3DaysCheckBox_CheckedChanged);
+            Last3DaysCheckBox.AutoSize = true;
+            Last3DaysCheckBox.Location = new Point(24, 46);
+            Last3DaysCheckBox.Margin = new Padding(3, 2, 3, 2);
+            Last3DaysCheckBox.Name = "Last3DaysCheckBox";
+            Last3DaysCheckBox.Size = new Size(83, 19);
+            Last3DaysCheckBox.TabIndex = 2;
+            Last3DaysCheckBox.Text = "Last 3 days";
+            Last3DaysCheckBox.UseVisualStyleBackColor = true;
+            Last3DaysCheckBox.CheckedChanged += Last3DaysCheckBox_CheckedChanged;
             // 
             // TodayCheckBox
             // 
-            this.TodayCheckBox.AutoSize = true;
-            this.TodayCheckBox.Checked = true;
-            this.TodayCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.TodayCheckBox.Location = new System.Drawing.Point(28, 31);
-            this.TodayCheckBox.Name = "TodayCheckBox";
-            this.TodayCheckBox.Size = new System.Drawing.Size(71, 24);
-            this.TodayCheckBox.TabIndex = 1;
-            this.TodayCheckBox.Text = "Today";
-            this.TodayCheckBox.UseVisualStyleBackColor = true;
-            this.TodayCheckBox.CheckedChanged += new System.EventHandler(this.TodayCheckBox_CheckedChanged);
+            TodayCheckBox.AutoSize = true;
+            TodayCheckBox.Checked = true;
+            TodayCheckBox.CheckState = CheckState.Checked;
+            TodayCheckBox.Location = new Point(24, 23);
+            TodayCheckBox.Margin = new Padding(3, 2, 3, 2);
+            TodayCheckBox.Name = "TodayCheckBox";
+            TodayCheckBox.Size = new Size(57, 19);
+            TodayCheckBox.TabIndex = 1;
+            TodayCheckBox.Text = "Today";
+            TodayCheckBox.UseVisualStyleBackColor = true;
+            TodayCheckBox.CheckedChanged += TodayCheckBox_CheckedChanged;
             // 
             // label13
             // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(182, 32);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(74, 20);
-            this.label13.TabIndex = 0;
-            this.label13.Text = "Author id:";
+            label13.AutoSize = true;
+            label13.Location = new Point(159, 25);
+            label13.Name = "label13";
+            label13.Size = new Size(60, 15);
+            label13.TabIndex = 0;
+            label13.Text = "Author id:";
             // 
             // ConfigureTab
             // 
-            this.ConfigureTab.Controls.Add(this.LoadConfiguration);
-            this.ConfigureTab.Controls.Add(this.SaveConfiguration);
-            this.ConfigureTab.Controls.Add(this.SetLocalConfig);
-            this.ConfigureTab.Controls.Add(this.groupBox6);
-            this.ConfigureTab.Controls.Add(this.groupBox5);
-            this.ConfigureTab.Location = new System.Drawing.Point(4, 44);
-            this.ConfigureTab.Name = "ConfigureTab";
-            this.ConfigureTab.Padding = new System.Windows.Forms.Padding(3);
-            this.ConfigureTab.Size = new System.Drawing.Size(674, 605);
-            this.ConfigureTab.TabIndex = 1;
-            this.ConfigureTab.Text = "Configure";
-            this.ConfigureTab.UseVisualStyleBackColor = true;
+            ConfigureTab.Controls.Add(LoadConfiguration);
+            ConfigureTab.Controls.Add(SaveConfiguration);
+            ConfigureTab.Controls.Add(SetLocalConfig);
+            ConfigureTab.Controls.Add(groupBox6);
+            ConfigureTab.Controls.Add(groupBox5);
+            ConfigureTab.Location = new Point(4, 44);
+            ConfigureTab.Margin = new Padding(3, 2, 3, 2);
+            ConfigureTab.Name = "ConfigureTab";
+            ConfigureTab.Padding = new Padding(3, 2, 3, 2);
+            ConfigureTab.Size = new Size(590, 448);
+            ConfigureTab.TabIndex = 1;
+            ConfigureTab.Text = "Configure";
+            ConfigureTab.UseVisualStyleBackColor = true;
             // 
             // LoadConfiguration
             // 
-            this.LoadConfiguration.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.LoadConfiguration.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.LoadConfiguration.Location = new System.Drawing.Point(501, 550);
-            this.LoadConfiguration.Name = "LoadConfiguration";
-            this.LoadConfiguration.Size = new System.Drawing.Size(165, 50);
-            this.LoadConfiguration.TabIndex = 0;
-            this.LoadConfiguration.Text = "Upload configuration";
-            this.LoadConfiguration.UseVisualStyleBackColor = true;
-            this.LoadConfiguration.Click += new System.EventHandler(this.LoadConfiguration_Click);
+            LoadConfiguration.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            LoadConfiguration.FlatStyle = FlatStyle.Flat;
+            LoadConfiguration.Location = new Point(439, 418);
+            LoadConfiguration.Margin = new Padding(3, 2, 3, 2);
+            LoadConfiguration.Name = "LoadConfiguration";
+            LoadConfiguration.Size = new Size(144, 38);
+            LoadConfiguration.TabIndex = 0;
+            LoadConfiguration.Text = "Upload configuration";
+            LoadConfiguration.UseVisualStyleBackColor = true;
+            LoadConfiguration.Click += LoadConfiguration_Click;
             // 
             // SaveConfiguration
             // 
-            this.SaveConfiguration.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.SaveConfiguration.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.SaveConfiguration.Location = new System.Drawing.Point(257, 550);
-            this.SaveConfiguration.Name = "SaveConfiguration";
-            this.SaveConfiguration.Size = new System.Drawing.Size(165, 50);
-            this.SaveConfiguration.TabIndex = 1;
-            this.SaveConfiguration.Text = "Save configuration";
-            this.SaveConfiguration.UseVisualStyleBackColor = true;
-            this.SaveConfiguration.Click += new System.EventHandler(this.SaveConfiguration_Click);
+            SaveConfiguration.Anchor = AnchorStyles.Bottom;
+            SaveConfiguration.FlatStyle = FlatStyle.Flat;
+            SaveConfiguration.Location = new Point(226, 418);
+            SaveConfiguration.Margin = new Padding(3, 2, 3, 2);
+            SaveConfiguration.Name = "SaveConfiguration";
+            SaveConfiguration.Size = new Size(144, 38);
+            SaveConfiguration.TabIndex = 1;
+            SaveConfiguration.Text = "Save configuration";
+            SaveConfiguration.UseVisualStyleBackColor = true;
+            SaveConfiguration.Click += SaveConfiguration_Click;
             // 
             // SetLocalConfig
             // 
-            this.SetLocalConfig.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.SetLocalConfig.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.SetLocalConfig.Location = new System.Drawing.Point(8, 550);
-            this.SetLocalConfig.Name = "SetLocalConfig";
-            this.SetLocalConfig.Size = new System.Drawing.Size(165, 50);
-            this.SetLocalConfig.TabIndex = 20;
-            this.SetLocalConfig.Text = "Default configuration";
-            this.SetLocalConfig.UseVisualStyleBackColor = true;
-            this.SetLocalConfig.Click += new System.EventHandler(this.SetLocalConfig_Click);
+            SetLocalConfig.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            SetLocalConfig.FlatStyle = FlatStyle.Flat;
+            SetLocalConfig.Location = new Point(7, 418);
+            SetLocalConfig.Margin = new Padding(3, 2, 3, 2);
+            SetLocalConfig.Name = "SetLocalConfig";
+            SetLocalConfig.Size = new Size(144, 38);
+            SetLocalConfig.TabIndex = 20;
+            SetLocalConfig.Text = "Default configuration";
+            SetLocalConfig.UseVisualStyleBackColor = true;
+            SetLocalConfig.Click += SetLocalConfig_Click;
             // 
             // groupBox6
             // 
-            this.groupBox6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox6.Controls.Add(this.groupBox10);
-            this.groupBox6.Controls.Add(this.ObserveDelay);
-            this.groupBox6.Controls.Add(this.label8);
-            this.groupBox6.Location = new System.Drawing.Point(356, 6);
-            this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(310, 539);
-            this.groupBox6.TabIndex = 2;
-            this.groupBox6.TabStop = false;
-            this.groupBox6.Text = "Analysis service configuration";
-            // 
-            // groupBox10
-            // 
-            this.groupBox10.Controls.Add(this.ApplyAnalysisServiceEndpoint);
-            this.groupBox10.Controls.Add(this.label20);
-            this.groupBox10.Controls.Add(this.AnalysisServiceEndpoint);
-            this.groupBox10.Controls.Add(this.AnalysisServiceHosts);
-            this.groupBox10.Controls.Add(this.NewAnalysisHost);
-            this.groupBox10.Controls.Add(this.label28);
-            this.groupBox10.Controls.Add(this.AddAnalysisServiceHost);
-            this.groupBox10.Controls.Add(this.DeleteAnalysisServiceHost);
-            this.groupBox10.Location = new System.Drawing.Point(6, 26);
-            this.groupBox10.Name = "groupBox10";
-            this.groupBox10.Size = new System.Drawing.Size(298, 222);
-            this.groupBox10.TabIndex = 9;
-            this.groupBox10.TabStop = false;
-            this.groupBox10.Text = "Host configuration";
-            // 
-            // ApplyAnalysisServiceEndpoint
-            // 
-            this.ApplyAnalysisServiceEndpoint.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ApplyAnalysisServiceEndpoint.Location = new System.Drawing.Point(66, 179);
-            this.ApplyAnalysisServiceEndpoint.Name = "ApplyAnalysisServiceEndpoint";
-            this.ApplyAnalysisServiceEndpoint.Size = new System.Drawing.Size(182, 28);
-            this.ApplyAnalysisServiceEndpoint.TabIndex = 33;
-            this.ApplyAnalysisServiceEndpoint.Text = "Сonnect";
-            this.ApplyAnalysisServiceEndpoint.UseVisualStyleBackColor = true;
-            this.ApplyAnalysisServiceEndpoint.Click += new System.EventHandler(this.ApplyAnalysisServiceEndpoint_Click_1);
-            // 
-            // label20
-            // 
-            this.label20.AutoSize = true;
-            this.label20.Location = new System.Drawing.Point(15, 154);
-            this.label20.Margin = new System.Windows.Forms.Padding(5);
-            this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(43, 20);
-            this.label20.TabIndex = 32;
-            this.label20.Text = "Host:";
-            // 
-            // AnalysisServiceEndpoint
-            // 
-            this.AnalysisServiceEndpoint.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.AnalysisServiceEndpoint.FormattingEnabled = true;
-            this.AnalysisServiceEndpoint.Location = new System.Drawing.Point(66, 151);
-            this.AnalysisServiceEndpoint.Name = "AnalysisServiceEndpoint";
-            this.AnalysisServiceEndpoint.Size = new System.Drawing.Size(182, 28);
-            this.AnalysisServiceEndpoint.TabIndex = 31;
-            // 
-            // AnalysisServiceHosts
-            // 
-            this.AnalysisServiceHosts.FormattingEnabled = true;
-            this.AnalysisServiceHosts.ItemHeight = 20;
-            this.AnalysisServiceHosts.Location = new System.Drawing.Point(66, 30);
-            this.AnalysisServiceHosts.Name = "AnalysisServiceHosts";
-            this.AnalysisServiceHosts.Size = new System.Drawing.Size(182, 64);
-            this.AnalysisServiceHosts.TabIndex = 1;
-            // 
-            // NewAnalysisHost
-            // 
-            this.NewAnalysisHost.Location = new System.Drawing.Point(66, 96);
-            this.NewAnalysisHost.Name = "NewAnalysisHost";
-            this.NewAnalysisHost.PlaceholderText = "New host...";
-            this.NewAnalysisHost.Size = new System.Drawing.Size(182, 27);
-            this.NewAnalysisHost.TabIndex = 9;
-            // 
-            // label28
-            // 
-            this.label28.AutoSize = true;
-            this.label28.Location = new System.Drawing.Point(15, 29);
-            this.label28.Name = "label28";
-            this.label28.Size = new System.Drawing.Size(53, 20);
-            this.label28.TabIndex = 3;
-            this.label28.Text = "Hosts: ";
-            // 
-            // AddAnalysisServiceHost
-            // 
-            this.AddAnalysisServiceHost.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.AddAnalysisServiceHost.Location = new System.Drawing.Point(66, 122);
-            this.AddAnalysisServiceHost.Name = "AddAnalysisServiceHost";
-            this.AddAnalysisServiceHost.Size = new System.Drawing.Size(92, 29);
-            this.AddAnalysisServiceHost.TabIndex = 6;
-            this.AddAnalysisServiceHost.Text = "Add";
-            this.AddAnalysisServiceHost.UseVisualStyleBackColor = true;
-            this.AddAnalysisServiceHost.Click += new System.EventHandler(this.AddAnalysisServiceHost_Click);
-            // 
-            // DeleteAnalysisServiceHost
-            // 
-            this.DeleteAnalysisServiceHost.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.DeleteAnalysisServiceHost.Location = new System.Drawing.Point(158, 122);
-            this.DeleteAnalysisServiceHost.Name = "DeleteAnalysisServiceHost";
-            this.DeleteAnalysisServiceHost.Size = new System.Drawing.Size(90, 29);
-            this.DeleteAnalysisServiceHost.TabIndex = 7;
-            this.DeleteAnalysisServiceHost.Text = "Delete";
-            this.DeleteAnalysisServiceHost.UseVisualStyleBackColor = true;
-            this.DeleteAnalysisServiceHost.Click += new System.EventHandler(this.DeleteAnalysisServiceHost_Click);
+            groupBox6.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            groupBox6.Controls.Add(ObserveDelay);
+            groupBox6.Controls.Add(label8);
+            groupBox6.Location = new Point(313, 4);
+            groupBox6.Margin = new Padding(3, 2, 3, 2);
+            groupBox6.Name = "groupBox6";
+            groupBox6.Padding = new Padding(3, 2, 3, 2);
+            groupBox6.Size = new Size(271, 404);
+            groupBox6.TabIndex = 2;
+            groupBox6.TabStop = false;
+            groupBox6.Text = "Analysis service configuration";
             // 
             // ObserveDelay
             // 
-            this.ObserveDelay.Location = new System.Drawing.Point(179, 273);
-            this.ObserveDelay.Margin = new System.Windows.Forms.Padding(5);
-            this.ObserveDelay.Name = "ObserveDelay";
-            this.ObserveDelay.Size = new System.Drawing.Size(125, 27);
-            this.ObserveDelay.TabIndex = 9;
+            ObserveDelay.Location = new Point(157, 205);
+            ObserveDelay.Margin = new Padding(4);
+            ObserveDelay.Name = "ObserveDelay";
+            ObserveDelay.Size = new Size(110, 23);
+            ObserveDelay.TabIndex = 9;
             // 
             // label8
             // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(10, 276);
-            this.label8.Margin = new System.Windows.Forms.Padding(5);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(106, 20);
-            this.label8.TabIndex = 8;
-            this.label8.Text = "Observe delay:";
+            label8.AutoSize = true;
+            label8.Location = new Point(9, 207);
+            label8.Margin = new Padding(4);
+            label8.Name = "label8";
+            label8.Size = new Size(84, 15);
+            label8.TabIndex = 8;
+            label8.Text = "Observe delay:";
             // 
             // groupBox5
             // 
-            this.groupBox5.Controls.Add(this.groupBox7);
-            this.groupBox5.Controls.Add(this.PostQueueSize);
-            this.groupBox5.Controls.Add(this.label31);
-            this.groupBox5.Controls.Add(this.ScanCommentsDelay);
-            this.groupBox5.Controls.Add(this.label30);
-            this.groupBox5.Controls.Add(this.label29);
-            this.groupBox5.Controls.Add(this.ScanPostDelay);
-            this.groupBox5.Location = new System.Drawing.Point(6, 6);
-            this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(318, 539);
-            this.groupBox5.TabIndex = 1;
-            this.groupBox5.TabStop = false;
-            this.groupBox5.Text = "Collection service configuration";
-            // 
-            // groupBox7
-            // 
-            this.groupBox7.Controls.Add(this.ApplyNewCollectionServiceEndpoint);
-            this.groupBox7.Controls.Add(this.label7);
-            this.groupBox7.Controls.Add(this.CollectionServiceEndpoint);
-            this.groupBox7.Controls.Add(this.CollectionServiceHosts);
-            this.groupBox7.Controls.Add(this.NewCollectionHost);
-            this.groupBox7.Controls.Add(this.label27);
-            this.groupBox7.Controls.Add(this.DeleteCollectionServiceHost);
-            this.groupBox7.Controls.Add(this.AddCollectionServiceHost);
-            this.groupBox7.Location = new System.Drawing.Point(6, 26);
-            this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(306, 222);
-            this.groupBox7.TabIndex = 6;
-            this.groupBox7.TabStop = false;
-            this.groupBox7.Text = "Host configuration";
-            // 
-            // ApplyNewCollectionServiceEndpoint
-            // 
-            this.ApplyNewCollectionServiceEndpoint.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ApplyNewCollectionServiceEndpoint.Location = new System.Drawing.Point(65, 179);
-            this.ApplyNewCollectionServiceEndpoint.Name = "ApplyNewCollectionServiceEndpoint";
-            this.ApplyNewCollectionServiceEndpoint.Size = new System.Drawing.Size(183, 28);
-            this.ApplyNewCollectionServiceEndpoint.TabIndex = 19;
-            this.ApplyNewCollectionServiceEndpoint.Text = "Сonnect";
-            this.ApplyNewCollectionServiceEndpoint.UseVisualStyleBackColor = true;
-            this.ApplyNewCollectionServiceEndpoint.Click += new System.EventHandler(this.ApplyNewCollectionServiceEndpoint_Click_1);
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(16, 154);
-            this.label7.Margin = new System.Windows.Forms.Padding(5);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(43, 20);
-            this.label7.TabIndex = 18;
-            this.label7.Text = "Host:";
-            // 
-            // CollectionServiceEndpoint
-            // 
-            this.CollectionServiceEndpoint.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.CollectionServiceEndpoint.FormattingEnabled = true;
-            this.CollectionServiceEndpoint.Location = new System.Drawing.Point(65, 151);
-            this.CollectionServiceEndpoint.Name = "CollectionServiceEndpoint";
-            this.CollectionServiceEndpoint.Size = new System.Drawing.Size(183, 28);
-            this.CollectionServiceEndpoint.TabIndex = 17;
-            // 
-            // CollectionServiceHosts
-            // 
-            this.CollectionServiceHosts.FormattingEnabled = true;
-            this.CollectionServiceHosts.ItemHeight = 20;
-            this.CollectionServiceHosts.Location = new System.Drawing.Point(65, 30);
-            this.CollectionServiceHosts.Name = "CollectionServiceHosts";
-            this.CollectionServiceHosts.Size = new System.Drawing.Size(183, 64);
-            this.CollectionServiceHosts.TabIndex = 0;
-            // 
-            // NewCollectionHost
-            // 
-            this.NewCollectionHost.Location = new System.Drawing.Point(65, 96);
-            this.NewCollectionHost.Name = "NewCollectionHost";
-            this.NewCollectionHost.PlaceholderText = "New host...";
-            this.NewCollectionHost.Size = new System.Drawing.Size(183, 27);
-            this.NewCollectionHost.TabIndex = 8;
-            // 
-            // label27
-            // 
-            this.label27.AutoSize = true;
-            this.label27.Location = new System.Drawing.Point(10, 30);
-            this.label27.Name = "label27";
-            this.label27.Size = new System.Drawing.Size(49, 20);
-            this.label27.TabIndex = 2;
-            this.label27.Text = "Hosts:";
-            // 
-            // DeleteCollectionServiceHost
-            // 
-            this.DeleteCollectionServiceHost.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.DeleteCollectionServiceHost.Location = new System.Drawing.Point(158, 122);
-            this.DeleteCollectionServiceHost.Name = "DeleteCollectionServiceHost";
-            this.DeleteCollectionServiceHost.Size = new System.Drawing.Size(90, 29);
-            this.DeleteCollectionServiceHost.TabIndex = 5;
-            this.DeleteCollectionServiceHost.Text = "Delete";
-            this.DeleteCollectionServiceHost.UseVisualStyleBackColor = true;
-            this.DeleteCollectionServiceHost.Click += new System.EventHandler(this.DeleteCollectionServiceHost_Click);
-            // 
-            // AddCollectionServiceHost
-            // 
-            this.AddCollectionServiceHost.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.AddCollectionServiceHost.Location = new System.Drawing.Point(65, 122);
-            this.AddCollectionServiceHost.Name = "AddCollectionServiceHost";
-            this.AddCollectionServiceHost.Size = new System.Drawing.Size(92, 29);
-            this.AddCollectionServiceHost.TabIndex = 4;
-            this.AddCollectionServiceHost.Text = "Add";
-            this.AddCollectionServiceHost.UseVisualStyleBackColor = true;
-            this.AddCollectionServiceHost.Click += new System.EventHandler(this.AddCollectionServiceHost_Click);
+            groupBox5.Controls.Add(PostQueueSize);
+            groupBox5.Controls.Add(label31);
+            groupBox5.Controls.Add(ScanCommentsDelay);
+            groupBox5.Controls.Add(label30);
+            groupBox5.Controls.Add(label29);
+            groupBox5.Controls.Add(ScanPostDelay);
+            groupBox5.Location = new Point(5, 4);
+            groupBox5.Margin = new Padding(3, 2, 3, 2);
+            groupBox5.Name = "groupBox5";
+            groupBox5.Padding = new Padding(3, 2, 3, 2);
+            groupBox5.Size = new Size(278, 404);
+            groupBox5.TabIndex = 1;
+            groupBox5.TabStop = false;
+            groupBox5.Text = "Collection service configuration";
             // 
             // PostQueueSize
             // 
-            this.PostQueueSize.Location = new System.Drawing.Point(174, 347);
-            this.PostQueueSize.Margin = new System.Windows.Forms.Padding(5);
-            this.PostQueueSize.Name = "PostQueueSize";
-            this.PostQueueSize.Size = new System.Drawing.Size(125, 27);
-            this.PostQueueSize.TabIndex = 5;
+            PostQueueSize.Location = new Point(152, 260);
+            PostQueueSize.Margin = new Padding(4);
+            PostQueueSize.Name = "PostQueueSize";
+            PostQueueSize.Size = new Size(110, 23);
+            PostQueueSize.TabIndex = 5;
             // 
             // label31
             // 
-            this.label31.AutoSize = true;
-            this.label31.Location = new System.Drawing.Point(8, 350);
-            this.label31.Margin = new System.Windows.Forms.Padding(5);
-            this.label31.Name = "label31";
-            this.label31.Size = new System.Drawing.Size(113, 20);
-            this.label31.TabIndex = 4;
-            this.label31.Text = "Post queue size:";
+            label31.AutoSize = true;
+            label31.Location = new Point(7, 262);
+            label31.Margin = new Padding(4);
+            label31.Name = "label31";
+            label31.Size = new Size(91, 15);
+            label31.TabIndex = 4;
+            label31.Text = "Post queue size:";
             // 
             // ScanCommentsDelay
             // 
-            this.ScanCommentsDelay.Location = new System.Drawing.Point(174, 310);
-            this.ScanCommentsDelay.Margin = new System.Windows.Forms.Padding(5);
-            this.ScanCommentsDelay.Name = "ScanCommentsDelay";
-            this.ScanCommentsDelay.Size = new System.Drawing.Size(125, 27);
-            this.ScanCommentsDelay.TabIndex = 3;
+            ScanCommentsDelay.Location = new Point(152, 232);
+            ScanCommentsDelay.Margin = new Padding(4);
+            ScanCommentsDelay.Name = "ScanCommentsDelay";
+            ScanCommentsDelay.Size = new Size(110, 23);
+            ScanCommentsDelay.TabIndex = 3;
             // 
             // label30
             // 
-            this.label30.AutoSize = true;
-            this.label30.Location = new System.Drawing.Point(8, 313);
-            this.label30.Margin = new System.Windows.Forms.Padding(5);
-            this.label30.Name = "label30";
-            this.label30.Size = new System.Drawing.Size(156, 20);
-            this.label30.TabIndex = 2;
-            this.label30.Text = "Scan comments delay:";
+            label30.AutoSize = true;
+            label30.Location = new Point(7, 235);
+            label30.Margin = new Padding(4);
+            label30.Name = "label30";
+            label30.Size = new Size(126, 15);
+            label30.TabIndex = 2;
+            label30.Text = "Scan comments delay:";
             // 
             // label29
             // 
-            this.label29.AutoSize = true;
-            this.label29.Location = new System.Drawing.Point(8, 276);
-            this.label29.Margin = new System.Windows.Forms.Padding(5);
-            this.label29.Name = "label29";
-            this.label29.Size = new System.Drawing.Size(116, 20);
-            this.label29.TabIndex = 1;
-            this.label29.Text = "Scan post delay:";
+            label29.AutoSize = true;
+            label29.Location = new Point(7, 207);
+            label29.Margin = new Padding(4);
+            label29.Name = "label29";
+            label29.Size = new Size(92, 15);
+            label29.TabIndex = 1;
+            label29.Text = "Scan post delay:";
             // 
             // ScanPostDelay
             // 
-            this.ScanPostDelay.Location = new System.Drawing.Point(174, 273);
-            this.ScanPostDelay.Margin = new System.Windows.Forms.Padding(5);
-            this.ScanPostDelay.Name = "ScanPostDelay";
-            this.ScanPostDelay.Size = new System.Drawing.Size(125, 27);
-            this.ScanPostDelay.TabIndex = 0;
+            ScanPostDelay.Location = new Point(152, 205);
+            ScanPostDelay.Margin = new Padding(4);
+            ScanPostDelay.Name = "ScanPostDelay";
+            ScanPostDelay.Size = new Size(110, 23);
+            ScanPostDelay.TabIndex = 0;
             // 
             // MainTab
             // 
-            this.MainTab.Controls.Add(this.AnalysisLogDate);
-            this.MainTab.Controls.Add(this.CollectionLogDate);
-            this.MainTab.Controls.Add(this.groupBox3);
-            this.MainTab.Controls.Add(this.groupBox2);
-            this.MainTab.Controls.Add(this.ViewAnalysisServiceLogs);
-            this.MainTab.Controls.Add(this.groupBox1);
-            this.MainTab.Controls.Add(this.ViewCollectionServiceLogs);
-            this.MainTab.Location = new System.Drawing.Point(4, 44);
-            this.MainTab.Name = "MainTab";
-            this.MainTab.Padding = new System.Windows.Forms.Padding(3);
-            this.MainTab.Size = new System.Drawing.Size(674, 605);
-            this.MainTab.TabIndex = 0;
-            this.MainTab.Text = "Main";
-            this.MainTab.UseVisualStyleBackColor = true;
+            MainTab.Controls.Add(ServicesTabs);
+            MainTab.Location = new Point(4, 44);
+            MainTab.Margin = new Padding(3, 2, 3, 2);
+            MainTab.Name = "MainTab";
+            MainTab.Padding = new Padding(3, 2, 3, 2);
+            MainTab.Size = new Size(590, 448);
+            MainTab.TabIndex = 0;
+            MainTab.Text = "Main";
+            MainTab.UseVisualStyleBackColor = true;
             // 
-            // AnalysisLogDate
+            // ServicesTabs
             // 
-            this.AnalysisLogDate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.AnalysisLogDate.Location = new System.Drawing.Point(353, 351);
-            this.AnalysisLogDate.Name = "AnalysisLogDate";
-            this.AnalysisLogDate.Size = new System.Drawing.Size(154, 27);
-            this.AnalysisLogDate.TabIndex = 18;
+            ServicesTabs.Controls.Add(tabPage1);
+            ServicesTabs.Controls.Add(tabPage2);
+            ServicesTabs.Location = new Point(2, 2);
+            ServicesTabs.Name = "ServicesTabs";
+            ServicesTabs.SelectedIndex = 0;
+            ServicesTabs.Size = new Size(582, 443);
+            ServicesTabs.TabIndex = 24;
             // 
-            // CollectionLogDate
+            // tabPage1
             // 
-            this.CollectionLogDate.Location = new System.Drawing.Point(6, 351);
-            this.CollectionLogDate.Name = "CollectionLogDate";
-            this.CollectionLogDate.Size = new System.Drawing.Size(154, 27);
-            this.CollectionLogDate.TabIndex = 17;
+            tabPage1.Controls.Add(groupBox7);
+            tabPage1.Controls.Add(groupBox3);
+            tabPage1.Controls.Add(groupBox1);
+            tabPage1.Location = new Point(4, 24);
+            tabPage1.Name = "tabPage1";
+            tabPage1.Padding = new Padding(3);
+            tabPage1.Size = new Size(574, 415);
+            tabPage1.TabIndex = 0;
+            tabPage1.Text = "Collection Service";
+            tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // groupBox7
+            // 
+            groupBox7.Controls.Add(groupBox13);
+            groupBox7.Controls.Add(groupBox9);
+            groupBox7.Location = new Point(291, 5);
+            groupBox7.Margin = new Padding(3, 2, 3, 2);
+            groupBox7.Name = "groupBox7";
+            groupBox7.Padding = new Padding(3, 2, 3, 2);
+            groupBox7.Size = new Size(277, 227);
+            groupBox7.TabIndex = 19;
+            groupBox7.TabStop = false;
+            groupBox7.Text = "Host configuration";
+            // 
+            // groupBox13
+            // 
+            groupBox13.Controls.Add(CollectionServiceEndpoint);
+            groupBox13.Controls.Add(ApplyNewCollectionServiceEndpoint);
+            groupBox13.Location = new Point(6, 147);
+            groupBox13.Name = "groupBox13";
+            groupBox13.Size = new Size(265, 75);
+            groupBox13.TabIndex = 18;
+            groupBox13.TabStop = false;
+            groupBox13.Text = "Current host";
+            // 
+            // CollectionServiceEndpoint
+            // 
+            CollectionServiceEndpoint.DropDownStyle = ComboBoxStyle.DropDownList;
+            CollectionServiceEndpoint.FormattingEnabled = true;
+            CollectionServiceEndpoint.Location = new Point(57, 21);
+            CollectionServiceEndpoint.Margin = new Padding(3, 2, 3, 2);
+            CollectionServiceEndpoint.Name = "CollectionServiceEndpoint";
+            CollectionServiceEndpoint.Size = new Size(153, 23);
+            CollectionServiceEndpoint.TabIndex = 17;
+            // 
+            // ApplyNewCollectionServiceEndpoint
+            // 
+            ApplyNewCollectionServiceEndpoint.FlatStyle = FlatStyle.Flat;
+            ApplyNewCollectionServiceEndpoint.Location = new Point(57, 46);
+            ApplyNewCollectionServiceEndpoint.Margin = new Padding(3, 2, 3, 2);
+            ApplyNewCollectionServiceEndpoint.Name = "ApplyNewCollectionServiceEndpoint";
+            ApplyNewCollectionServiceEndpoint.Size = new Size(153, 25);
+            ApplyNewCollectionServiceEndpoint.TabIndex = 19;
+            ApplyNewCollectionServiceEndpoint.Text = "Сonnect";
+            ApplyNewCollectionServiceEndpoint.UseVisualStyleBackColor = true;
+            ApplyNewCollectionServiceEndpoint.Click += ApplyNewCollectionServiceEndpoint_Click_1;
+            // 
+            // groupBox9
+            // 
+            groupBox9.Controls.Add(CollectionServiceHosts);
+            groupBox9.Controls.Add(AddCollectionServiceHost);
+            groupBox9.Controls.Add(DeleteCollectionServiceHost);
+            groupBox9.Controls.Add(NewCollectionHost);
+            groupBox9.Location = new Point(6, 16);
+            groupBox9.Name = "groupBox9";
+            groupBox9.Size = new Size(265, 127);
+            groupBox9.TabIndex = 20;
+            groupBox9.TabStop = false;
+            groupBox9.Text = "Saved hosts";
+            // 
+            // CollectionServiceHosts
+            // 
+            CollectionServiceHosts.FormattingEnabled = true;
+            CollectionServiceHosts.ItemHeight = 15;
+            CollectionServiceHosts.Location = new Point(57, 20);
+            CollectionServiceHosts.Margin = new Padding(3, 2, 3, 2);
+            CollectionServiceHosts.Name = "CollectionServiceHosts";
+            CollectionServiceHosts.Size = new Size(153, 49);
+            CollectionServiceHosts.TabIndex = 0;
+            // 
+            // AddCollectionServiceHost
+            // 
+            AddCollectionServiceHost.FlatStyle = FlatStyle.Flat;
+            AddCollectionServiceHost.Location = new Point(57, 96);
+            AddCollectionServiceHost.Margin = new Padding(3, 2, 3, 2);
+            AddCollectionServiceHost.Name = "AddCollectionServiceHost";
+            AddCollectionServiceHost.Size = new Size(74, 25);
+            AddCollectionServiceHost.TabIndex = 4;
+            AddCollectionServiceHost.Text = "Add";
+            AddCollectionServiceHost.UseVisualStyleBackColor = true;
+            AddCollectionServiceHost.Click += AddCollectionServiceHost_Click;
+            // 
+            // DeleteCollectionServiceHost
+            // 
+            DeleteCollectionServiceHost.FlatStyle = FlatStyle.Flat;
+            DeleteCollectionServiceHost.Location = new Point(136, 96);
+            DeleteCollectionServiceHost.Margin = new Padding(3, 2, 3, 2);
+            DeleteCollectionServiceHost.Name = "DeleteCollectionServiceHost";
+            DeleteCollectionServiceHost.Size = new Size(74, 25);
+            DeleteCollectionServiceHost.TabIndex = 5;
+            DeleteCollectionServiceHost.Text = "Delete";
+            DeleteCollectionServiceHost.UseVisualStyleBackColor = true;
+            DeleteCollectionServiceHost.Click += DeleteCollectionServiceHost_Click;
+            // 
+            // NewCollectionHost
+            // 
+            NewCollectionHost.Location = new Point(57, 71);
+            NewCollectionHost.Margin = new Padding(3, 2, 3, 2);
+            NewCollectionHost.Name = "NewCollectionHost";
+            NewCollectionHost.PlaceholderText = "New host...";
+            NewCollectionHost.Size = new Size(153, 23);
+            NewCollectionHost.TabIndex = 8;
             // 
             // groupBox3
             // 
-            this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox3.Controls.Add(this.ClearEvaluatedDatabase);
-            this.groupBox3.Controls.Add(this.ClearCommentsDatabase);
-            this.groupBox3.Controls.Add(this.StartAll);
-            this.groupBox3.Controls.Add(this.StartAnalysisService);
-            this.groupBox3.Controls.Add(this.StartCollectionService);
-            this.groupBox3.Controls.Add(this.StopAll);
-            this.groupBox3.Controls.Add(this.StopAnalysisService);
-            this.groupBox3.Controls.Add(this.StopCollectionService);
-            this.groupBox3.Location = new System.Drawing.Point(8, 400);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(660, 196);
-            this.groupBox3.TabIndex = 2;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Control";
-            // 
-            // ClearEvaluatedDatabase
-            // 
-            this.ClearEvaluatedDatabase.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.ClearEvaluatedDatabase.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ClearEvaluatedDatabase.Location = new System.Drawing.Point(479, 84);
-            this.ClearEvaluatedDatabase.Name = "ClearEvaluatedDatabase";
-            this.ClearEvaluatedDatabase.Size = new System.Drawing.Size(175, 50);
-            this.ClearEvaluatedDatabase.TabIndex = 3;
-            this.ClearEvaluatedDatabase.Text = "Clear evaluated comments";
-            this.ClearEvaluatedDatabase.UseVisualStyleBackColor = true;
-            this.ClearEvaluatedDatabase.Click += new System.EventHandler(this.ClearEvaluatedDatabase_Click);
+            groupBox3.Controls.Add(ClearCommentsDatabase);
+            groupBox3.Controls.Add(CollectionLogDate);
+            groupBox3.Controls.Add(StartCollectionService);
+            groupBox3.Controls.Add(ViewCollectionServiceLogs);
+            groupBox3.Controls.Add(StopCollectionService);
+            groupBox3.Location = new Point(6, 237);
+            groupBox3.Name = "groupBox3";
+            groupBox3.Size = new Size(562, 172);
+            groupBox3.TabIndex = 18;
+            groupBox3.TabStop = false;
+            groupBox3.Text = "Control";
             // 
             // ClearCommentsDatabase
             // 
-            this.ClearCommentsDatabase.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.ClearCommentsDatabase.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ClearCommentsDatabase.Location = new System.Drawing.Point(6, 84);
-            this.ClearCommentsDatabase.Name = "ClearCommentsDatabase";
-            this.ClearCommentsDatabase.Size = new System.Drawing.Size(175, 50);
-            this.ClearCommentsDatabase.TabIndex = 2;
-            this.ClearCommentsDatabase.Text = "Clear database";
-            this.ClearCommentsDatabase.UseVisualStyleBackColor = true;
-            this.ClearCommentsDatabase.Click += new System.EventHandler(this.ClearCommentsDatabase_Click);
+            ClearCommentsDatabase.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            ClearCommentsDatabase.FlatStyle = FlatStyle.Flat;
+            ClearCommentsDatabase.Location = new Point(403, 77);
+            ClearCommentsDatabase.Margin = new Padding(3, 2, 3, 2);
+            ClearCommentsDatabase.Name = "ClearCommentsDatabase";
+            ClearCommentsDatabase.Size = new Size(153, 38);
+            ClearCommentsDatabase.TabIndex = 2;
+            ClearCommentsDatabase.Text = "Clear database";
+            ClearCommentsDatabase.UseVisualStyleBackColor = true;
+            ClearCommentsDatabase.Click += ClearCommentsDatabase_Click;
             // 
-            // StartAll
+            // CollectionLogDate
             // 
-            this.StartAll.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.StartAll.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.StartAll.Location = new System.Drawing.Point(248, 140);
-            this.StartAll.Name = "StartAll";
-            this.StartAll.Size = new System.Drawing.Size(175, 50);
-            this.StartAll.TabIndex = 6;
-            this.StartAll.Text = "Start all";
-            this.StartAll.UseVisualStyleBackColor = true;
-            this.StartAll.Click += new System.EventHandler(this.StartAll_Click);
-            // 
-            // StartAnalysisService
-            // 
-            this.StartAnalysisService.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.StartAnalysisService.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.StartAnalysisService.Location = new System.Drawing.Point(479, 140);
-            this.StartAnalysisService.Name = "StartAnalysisService";
-            this.StartAnalysisService.Size = new System.Drawing.Size(175, 50);
-            this.StartAnalysisService.TabIndex = 1;
-            this.StartAnalysisService.Text = "Start analysis service";
-            this.StartAnalysisService.UseVisualStyleBackColor = true;
-            this.StartAnalysisService.Click += new System.EventHandler(this.StartAnalysisService_Click);
+            CollectionLogDate.Location = new Point(4, 50);
+            CollectionLogDate.Margin = new Padding(3, 2, 3, 2);
+            CollectionLogDate.Name = "CollectionLogDate";
+            CollectionLogDate.Size = new Size(153, 23);
+            CollectionLogDate.TabIndex = 17;
             // 
             // StartCollectionService
             // 
-            this.StartCollectionService.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.StartCollectionService.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.StartCollectionService.Location = new System.Drawing.Point(6, 140);
-            this.StartCollectionService.Name = "StartCollectionService";
-            this.StartCollectionService.Size = new System.Drawing.Size(175, 50);
-            this.StartCollectionService.TabIndex = 0;
-            this.StartCollectionService.Text = "Start collection service";
-            this.StartCollectionService.UseVisualStyleBackColor = true;
-            this.StartCollectionService.Click += new System.EventHandler(this.StartCollectionService_Click);
-            // 
-            // StopAll
-            // 
-            this.StopAll.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.StopAll.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.StopAll.Location = new System.Drawing.Point(248, 140);
-            this.StopAll.Name = "StopAll";
-            this.StopAll.Size = new System.Drawing.Size(175, 50);
-            this.StopAll.TabIndex = 7;
-            this.StopAll.Text = "Stop all";
-            this.StopAll.UseVisualStyleBackColor = true;
-            this.StopAll.Click += new System.EventHandler(this.StopAll_Click);
-            // 
-            // StopAnalysisService
-            // 
-            this.StopAnalysisService.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.StopAnalysisService.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.StopAnalysisService.Location = new System.Drawing.Point(479, 140);
-            this.StopAnalysisService.Name = "StopAnalysisService";
-            this.StopAnalysisService.Size = new System.Drawing.Size(175, 50);
-            this.StopAnalysisService.TabIndex = 5;
-            this.StopAnalysisService.Text = "Stop analysis service";
-            this.StopAnalysisService.UseVisualStyleBackColor = true;
-            this.StopAnalysisService.Click += new System.EventHandler(this.StopAnalysisService_Click);
-            // 
-            // StopCollectionService
-            // 
-            this.StopCollectionService.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.StopCollectionService.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.StopCollectionService.Location = new System.Drawing.Point(6, 140);
-            this.StopCollectionService.Name = "StopCollectionService";
-            this.StopCollectionService.Size = new System.Drawing.Size(175, 50);
-            this.StopCollectionService.TabIndex = 4;
-            this.StopCollectionService.Text = "Stop collection service";
-            this.StopCollectionService.UseVisualStyleBackColor = true;
-            this.StopCollectionService.Click += new System.EventHandler(this.StopCollectionService_Click);
-            // 
-            // groupBox2
-            // 
-            this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox2.Controls.Add(this.AnalysisServiceProgressBar);
-            this.groupBox2.Controls.Add(this.RefreshAnalysisServiceInfo);
-            this.groupBox2.Controls.Add(this.AnalysisEvaluated);
-            this.groupBox2.Controls.Add(this.AnalysisWarnings);
-            this.groupBox2.Controls.Add(this.label26);
-            this.groupBox2.Controls.Add(this.AnalysisErrors);
-            this.groupBox2.Controls.Add(this.label25);
-            this.groupBox2.Controls.Add(this.AnalysisUptime);
-            this.groupBox2.Controls.Add(this.label24);
-            this.groupBox2.Controls.Add(this.AnalysisState);
-            this.groupBox2.Controls.Add(this.label23);
-            this.groupBox2.Controls.Add(this.AnalysisConnection);
-            this.groupBox2.Controls.Add(this.label22);
-            this.groupBox2.Controls.Add(this.label21);
-            this.groupBox2.Controls.Add(this.AnalysisProgressBarRed);
-            this.groupBox2.Location = new System.Drawing.Point(353, 6);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(315, 345);
-            this.groupBox2.TabIndex = 1;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Analysis service info";
-            // 
-            // AnalysisServiceProgressBar
-            // 
-            this.AnalysisServiceProgressBar.Location = new System.Drawing.Point(6, 32);
-            this.AnalysisServiceProgressBar.Name = "AnalysisServiceProgressBar";
-            this.AnalysisServiceProgressBar.Size = new System.Drawing.Size(222, 17);
-            this.AnalysisServiceProgressBar.TabIndex = 30;
-            // 
-            // RefreshAnalysisServiceInfo
-            // 
-            this.RefreshAnalysisServiceInfo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.RefreshAnalysisServiceInfo.Location = new System.Drawing.Point(234, 26);
-            this.RefreshAnalysisServiceInfo.Name = "RefreshAnalysisServiceInfo";
-            this.RefreshAnalysisServiceInfo.Size = new System.Drawing.Size(75, 29);
-            this.RefreshAnalysisServiceInfo.TabIndex = 16;
-            this.RefreshAnalysisServiceInfo.Text = "Refresh";
-            this.RefreshAnalysisServiceInfo.UseVisualStyleBackColor = true;
-            this.RefreshAnalysisServiceInfo.Click += new System.EventHandler(this.RefreshAnalysisServiceInfo_Click);
-            // 
-            // AnalysisEvaluated
-            // 
-            this.AnalysisEvaluated.AutoSize = true;
-            this.AnalysisEvaluated.Location = new System.Drawing.Point(164, 225);
-            this.AnalysisEvaluated.Margin = new System.Windows.Forms.Padding(5);
-            this.AnalysisEvaluated.Name = "AnalysisEvaluated";
-            this.AnalysisEvaluated.Size = new System.Drawing.Size(45, 20);
-            this.AnalysisEvaluated.TabIndex = 29;
-            this.AnalysisEvaluated.Text = "None";
-            // 
-            // AnalysisWarnings
-            // 
-            this.AnalysisWarnings.AutoSize = true;
-            this.AnalysisWarnings.Location = new System.Drawing.Point(164, 195);
-            this.AnalysisWarnings.Margin = new System.Windows.Forms.Padding(5);
-            this.AnalysisWarnings.Name = "AnalysisWarnings";
-            this.AnalysisWarnings.Size = new System.Drawing.Size(45, 20);
-            this.AnalysisWarnings.TabIndex = 28;
-            this.AnalysisWarnings.Text = "None";
-            // 
-            // label26
-            // 
-            this.label26.AutoSize = true;
-            this.label26.Location = new System.Drawing.Point(67, 75);
-            this.label26.Margin = new System.Windows.Forms.Padding(5);
-            this.label26.Name = "label26";
-            this.label26.Size = new System.Drawing.Size(87, 20);
-            this.label26.TabIndex = 15;
-            this.label26.Text = "Connection:";
-            // 
-            // AnalysisErrors
-            // 
-            this.AnalysisErrors.AutoSize = true;
-            this.AnalysisErrors.Location = new System.Drawing.Point(164, 165);
-            this.AnalysisErrors.Margin = new System.Windows.Forms.Padding(5);
-            this.AnalysisErrors.Name = "AnalysisErrors";
-            this.AnalysisErrors.Size = new System.Drawing.Size(45, 20);
-            this.AnalysisErrors.TabIndex = 27;
-            this.AnalysisErrors.Text = "None";
-            // 
-            // label25
-            // 
-            this.label25.AutoSize = true;
-            this.label25.Location = new System.Drawing.Point(67, 105);
-            this.label25.Margin = new System.Windows.Forms.Padding(5);
-            this.label25.Name = "label25";
-            this.label25.Size = new System.Drawing.Size(46, 20);
-            this.label25.TabIndex = 16;
-            this.label25.Text = "State:";
-            // 
-            // AnalysisUptime
-            // 
-            this.AnalysisUptime.AutoSize = true;
-            this.AnalysisUptime.Location = new System.Drawing.Point(164, 135);
-            this.AnalysisUptime.Margin = new System.Windows.Forms.Padding(5);
-            this.AnalysisUptime.Name = "AnalysisUptime";
-            this.AnalysisUptime.Size = new System.Drawing.Size(45, 20);
-            this.AnalysisUptime.TabIndex = 26;
-            this.AnalysisUptime.Text = "None";
-            // 
-            // label24
-            // 
-            this.label24.AutoSize = true;
-            this.label24.Location = new System.Drawing.Point(67, 135);
-            this.label24.Margin = new System.Windows.Forms.Padding(5);
-            this.label24.Name = "label24";
-            this.label24.Size = new System.Drawing.Size(61, 20);
-            this.label24.TabIndex = 17;
-            this.label24.Text = "Uptime:";
-            // 
-            // AnalysisState
-            // 
-            this.AnalysisState.AutoSize = true;
-            this.AnalysisState.Location = new System.Drawing.Point(164, 105);
-            this.AnalysisState.Margin = new System.Windows.Forms.Padding(5);
-            this.AnalysisState.Name = "AnalysisState";
-            this.AnalysisState.Size = new System.Drawing.Size(45, 20);
-            this.AnalysisState.TabIndex = 25;
-            this.AnalysisState.Text = "None";
-            // 
-            // label23
-            // 
-            this.label23.AutoSize = true;
-            this.label23.Location = new System.Drawing.Point(67, 165);
-            this.label23.Margin = new System.Windows.Forms.Padding(5);
-            this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(50, 20);
-            this.label23.TabIndex = 18;
-            this.label23.Text = "Errors:";
-            // 
-            // AnalysisConnection
-            // 
-            this.AnalysisConnection.AutoSize = true;
-            this.AnalysisConnection.Location = new System.Drawing.Point(164, 75);
-            this.AnalysisConnection.Margin = new System.Windows.Forms.Padding(5);
-            this.AnalysisConnection.Name = "AnalysisConnection";
-            this.AnalysisConnection.Size = new System.Drawing.Size(45, 20);
-            this.AnalysisConnection.TabIndex = 24;
-            this.AnalysisConnection.Text = "None";
-            // 
-            // label22
-            // 
-            this.label22.AutoSize = true;
-            this.label22.Location = new System.Drawing.Point(67, 195);
-            this.label22.Margin = new System.Windows.Forms.Padding(5);
-            this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(73, 20);
-            this.label22.TabIndex = 19;
-            this.label22.Text = "Warnings:";
-            // 
-            // label21
-            // 
-            this.label21.AutoSize = true;
-            this.label21.Location = new System.Drawing.Point(67, 225);
-            this.label21.Margin = new System.Windows.Forms.Padding(5);
-            this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(77, 20);
-            this.label21.TabIndex = 20;
-            this.label21.Text = "Evaluated:";
-            // 
-            // AnalysisProgressBarRed
-            // 
-            this.AnalysisProgressBarRed.BackColor = System.Drawing.Color.Red;
-            this.AnalysisProgressBarRed.Location = new System.Drawing.Point(6, 32);
-            this.AnalysisProgressBarRed.Name = "AnalysisProgressBarRed";
-            this.AnalysisProgressBarRed.Size = new System.Drawing.Size(222, 17);
-            this.AnalysisProgressBarRed.TabIndex = 31;
-            // 
-            // ViewAnalysisServiceLogs
-            // 
-            this.ViewAnalysisServiceLogs.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.ViewAnalysisServiceLogs.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ViewAnalysisServiceLogs.Location = new System.Drawing.Point(513, 351);
-            this.ViewAnalysisServiceLogs.Name = "ViewAnalysisServiceLogs";
-            this.ViewAnalysisServiceLogs.Size = new System.Drawing.Size(155, 37);
-            this.ViewAnalysisServiceLogs.TabIndex = 23;
-            this.ViewAnalysisServiceLogs.Text = "View analysis log";
-            this.ViewAnalysisServiceLogs.UseVisualStyleBackColor = true;
-            this.ViewAnalysisServiceLogs.Click += new System.EventHandler(this.ViewAnalysisServiceLogs_Click);
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.CollectionServiceProgressBar);
-            this.groupBox1.Controls.Add(this.RefreshCollectionServiceInfo);
-            this.groupBox1.Controls.Add(this.CollectionCollected);
-            this.groupBox1.Controls.Add(this.CollectionWarnings);
-            this.groupBox1.Controls.Add(this.CollectionErrors);
-            this.groupBox1.Controls.Add(this.CollectionUptime);
-            this.groupBox1.Controls.Add(this.CollectionState);
-            this.groupBox1.Controls.Add(this.CollectionConnection);
-            this.groupBox1.Controls.Add(this.label6);
-            this.groupBox1.Controls.Add(this.label5);
-            this.groupBox1.Controls.Add(this.label4);
-            this.groupBox1.Controls.Add(this.label3);
-            this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Controls.Add(this.CollectionProgressBarRed);
-            this.groupBox1.Location = new System.Drawing.Point(6, 6);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(315, 345);
-            this.groupBox1.TabIndex = 0;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Collection service info";
-            // 
-            // CollectionServiceProgressBar
-            // 
-            this.CollectionServiceProgressBar.Location = new System.Drawing.Point(6, 32);
-            this.CollectionServiceProgressBar.Name = "CollectionServiceProgressBar";
-            this.CollectionServiceProgressBar.Size = new System.Drawing.Size(222, 17);
-            this.CollectionServiceProgressBar.TabIndex = 16;
-            // 
-            // RefreshCollectionServiceInfo
-            // 
-            this.RefreshCollectionServiceInfo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.RefreshCollectionServiceInfo.Location = new System.Drawing.Point(234, 26);
-            this.RefreshCollectionServiceInfo.Name = "RefreshCollectionServiceInfo";
-            this.RefreshCollectionServiceInfo.Size = new System.Drawing.Size(75, 29);
-            this.RefreshCollectionServiceInfo.TabIndex = 15;
-            this.RefreshCollectionServiceInfo.Text = "Refresh";
-            this.RefreshCollectionServiceInfo.UseVisualStyleBackColor = true;
-            this.RefreshCollectionServiceInfo.Click += new System.EventHandler(this.RefreshCollectionServiceInfo_Click);
-            // 
-            // CollectionCollected
-            // 
-            this.CollectionCollected.AutoSize = true;
-            this.CollectionCollected.Location = new System.Drawing.Point(164, 225);
-            this.CollectionCollected.Margin = new System.Windows.Forms.Padding(5);
-            this.CollectionCollected.Name = "CollectionCollected";
-            this.CollectionCollected.Size = new System.Drawing.Size(45, 20);
-            this.CollectionCollected.TabIndex = 14;
-            this.CollectionCollected.Text = "None";
-            // 
-            // CollectionWarnings
-            // 
-            this.CollectionWarnings.AutoSize = true;
-            this.CollectionWarnings.Location = new System.Drawing.Point(164, 195);
-            this.CollectionWarnings.Margin = new System.Windows.Forms.Padding(5);
-            this.CollectionWarnings.Name = "CollectionWarnings";
-            this.CollectionWarnings.Size = new System.Drawing.Size(45, 20);
-            this.CollectionWarnings.TabIndex = 13;
-            this.CollectionWarnings.Text = "None";
-            // 
-            // CollectionErrors
-            // 
-            this.CollectionErrors.AutoSize = true;
-            this.CollectionErrors.Location = new System.Drawing.Point(164, 165);
-            this.CollectionErrors.Margin = new System.Windows.Forms.Padding(5);
-            this.CollectionErrors.Name = "CollectionErrors";
-            this.CollectionErrors.Size = new System.Drawing.Size(45, 20);
-            this.CollectionErrors.TabIndex = 12;
-            this.CollectionErrors.Text = "None";
-            // 
-            // CollectionUptime
-            // 
-            this.CollectionUptime.AutoSize = true;
-            this.CollectionUptime.Location = new System.Drawing.Point(164, 135);
-            this.CollectionUptime.Margin = new System.Windows.Forms.Padding(5);
-            this.CollectionUptime.Name = "CollectionUptime";
-            this.CollectionUptime.Size = new System.Drawing.Size(45, 20);
-            this.CollectionUptime.TabIndex = 11;
-            this.CollectionUptime.Text = "None";
-            // 
-            // CollectionState
-            // 
-            this.CollectionState.AutoSize = true;
-            this.CollectionState.Location = new System.Drawing.Point(164, 105);
-            this.CollectionState.Margin = new System.Windows.Forms.Padding(5);
-            this.CollectionState.Name = "CollectionState";
-            this.CollectionState.Size = new System.Drawing.Size(45, 20);
-            this.CollectionState.TabIndex = 10;
-            this.CollectionState.Text = "None";
-            // 
-            // CollectionConnection
-            // 
-            this.CollectionConnection.AutoSize = true;
-            this.CollectionConnection.Location = new System.Drawing.Point(164, 75);
-            this.CollectionConnection.Margin = new System.Windows.Forms.Padding(5);
-            this.CollectionConnection.Name = "CollectionConnection";
-            this.CollectionConnection.Size = new System.Drawing.Size(45, 20);
-            this.CollectionConnection.TabIndex = 9;
-            this.CollectionConnection.Text = "None";
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(67, 225);
-            this.label6.Margin = new System.Windows.Forms.Padding(5);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(75, 20);
-            this.label6.TabIndex = 5;
-            this.label6.Text = "Collected:";
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(67, 195);
-            this.label5.Margin = new System.Windows.Forms.Padding(5);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(73, 20);
-            this.label5.TabIndex = 4;
-            this.label5.Text = "Warnings:";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(67, 165);
-            this.label4.Margin = new System.Windows.Forms.Padding(5);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(50, 20);
-            this.label4.TabIndex = 3;
-            this.label4.Text = "Errors:";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(67, 135);
-            this.label3.Margin = new System.Windows.Forms.Padding(5);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(61, 20);
-            this.label3.TabIndex = 2;
-            this.label3.Text = "Uptime:";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(67, 105);
-            this.label2.Margin = new System.Windows.Forms.Padding(5);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(46, 20);
-            this.label2.TabIndex = 1;
-            this.label2.Text = "State:";
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(67, 75);
-            this.label1.Margin = new System.Windows.Forms.Padding(5);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(87, 20);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Connection:";
-            // 
-            // CollectionProgressBarRed
-            // 
-            this.CollectionProgressBarRed.BackColor = System.Drawing.Color.Red;
-            this.CollectionProgressBarRed.Location = new System.Drawing.Point(6, 32);
-            this.CollectionProgressBarRed.Name = "CollectionProgressBarRed";
-            this.CollectionProgressBarRed.Size = new System.Drawing.Size(222, 17);
-            this.CollectionProgressBarRed.TabIndex = 17;
+            StartCollectionService.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            StartCollectionService.FlatStyle = FlatStyle.Flat;
+            StartCollectionService.Location = new Point(205, 77);
+            StartCollectionService.Margin = new Padding(3, 2, 3, 2);
+            StartCollectionService.Name = "StartCollectionService";
+            StartCollectionService.Size = new Size(153, 38);
+            StartCollectionService.TabIndex = 0;
+            StartCollectionService.Text = "Start collection service";
+            StartCollectionService.UseVisualStyleBackColor = true;
+            StartCollectionService.Click += StartCollectionService_Click;
             // 
             // ViewCollectionServiceLogs
             // 
-            this.ViewCollectionServiceLogs.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ViewCollectionServiceLogs.Location = new System.Drawing.Point(166, 351);
-            this.ViewCollectionServiceLogs.Name = "ViewCollectionServiceLogs";
-            this.ViewCollectionServiceLogs.Size = new System.Drawing.Size(155, 37);
-            this.ViewCollectionServiceLogs.TabIndex = 8;
-            this.ViewCollectionServiceLogs.Text = "View collection log";
-            this.ViewCollectionServiceLogs.UseVisualStyleBackColor = true;
-            this.ViewCollectionServiceLogs.Click += new System.EventHandler(this.ViewCollectionServiceLogs_Click);
+            ViewCollectionServiceLogs.FlatStyle = FlatStyle.Flat;
+            ViewCollectionServiceLogs.Location = new Point(4, 77);
+            ViewCollectionServiceLogs.Margin = new Padding(3, 2, 3, 2);
+            ViewCollectionServiceLogs.Name = "ViewCollectionServiceLogs";
+            ViewCollectionServiceLogs.Size = new Size(153, 38);
+            ViewCollectionServiceLogs.TabIndex = 8;
+            ViewCollectionServiceLogs.Text = "View collection log";
+            ViewCollectionServiceLogs.UseVisualStyleBackColor = true;
+            ViewCollectionServiceLogs.Click += ViewCollectionServiceLogs_Click;
+            // 
+            // StopCollectionService
+            // 
+            StopCollectionService.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            StopCollectionService.FlatStyle = FlatStyle.Flat;
+            StopCollectionService.Location = new Point(205, 77);
+            StopCollectionService.Margin = new Padding(3, 2, 3, 2);
+            StopCollectionService.Name = "StopCollectionService";
+            StopCollectionService.Size = new Size(153, 38);
+            StopCollectionService.TabIndex = 4;
+            StopCollectionService.Text = "Stop collection service";
+            StopCollectionService.UseVisualStyleBackColor = true;
+            StopCollectionService.Click += StopCollectionService_Click;
+            // 
+            // groupBox1
+            // 
+            groupBox1.Controls.Add(CollectionServiceProgressBar);
+            groupBox1.Controls.Add(RefreshCollectionServiceInfo);
+            groupBox1.Controls.Add(CollectionCollected);
+            groupBox1.Controls.Add(CollectionWarnings);
+            groupBox1.Controls.Add(CollectionErrors);
+            groupBox1.Controls.Add(CollectionUptime);
+            groupBox1.Controls.Add(CollectionState);
+            groupBox1.Controls.Add(CollectionConnection);
+            groupBox1.Controls.Add(label6);
+            groupBox1.Controls.Add(label5);
+            groupBox1.Controls.Add(label4);
+            groupBox1.Controls.Add(label3);
+            groupBox1.Controls.Add(label2);
+            groupBox1.Controls.Add(label1);
+            groupBox1.Controls.Add(CollectionProgressBarRed);
+            groupBox1.Location = new Point(6, 5);
+            groupBox1.Margin = new Padding(3, 2, 3, 2);
+            groupBox1.Name = "groupBox1";
+            groupBox1.Padding = new Padding(3, 2, 3, 2);
+            groupBox1.Size = new Size(279, 227);
+            groupBox1.TabIndex = 0;
+            groupBox1.TabStop = false;
+            groupBox1.Text = "Collection service state";
+            // 
+            // CollectionServiceProgressBar
+            // 
+            CollectionServiceProgressBar.Location = new Point(5, 24);
+            CollectionServiceProgressBar.Margin = new Padding(3, 2, 3, 2);
+            CollectionServiceProgressBar.Name = "CollectionServiceProgressBar";
+            CollectionServiceProgressBar.Size = new Size(194, 13);
+            CollectionServiceProgressBar.TabIndex = 16;
+            // 
+            // RefreshCollectionServiceInfo
+            // 
+            RefreshCollectionServiceInfo.FlatStyle = FlatStyle.Flat;
+            RefreshCollectionServiceInfo.Location = new Point(205, 20);
+            RefreshCollectionServiceInfo.Margin = new Padding(3, 2, 3, 2);
+            RefreshCollectionServiceInfo.Name = "RefreshCollectionServiceInfo";
+            RefreshCollectionServiceInfo.Size = new Size(66, 27);
+            RefreshCollectionServiceInfo.TabIndex = 15;
+            RefreshCollectionServiceInfo.Text = "Refresh";
+            RefreshCollectionServiceInfo.UseVisualStyleBackColor = true;
+            RefreshCollectionServiceInfo.Click += RefreshCollectionServiceInfo_Click;
+            // 
+            // CollectionCollected
+            // 
+            CollectionCollected.AutoSize = true;
+            CollectionCollected.Location = new Point(144, 169);
+            CollectionCollected.Margin = new Padding(4);
+            CollectionCollected.Name = "CollectionCollected";
+            CollectionCollected.Size = new Size(36, 15);
+            CollectionCollected.TabIndex = 14;
+            CollectionCollected.Text = "None";
+            // 
+            // CollectionWarnings
+            // 
+            CollectionWarnings.AutoSize = true;
+            CollectionWarnings.Location = new Point(144, 146);
+            CollectionWarnings.Margin = new Padding(4);
+            CollectionWarnings.Name = "CollectionWarnings";
+            CollectionWarnings.Size = new Size(36, 15);
+            CollectionWarnings.TabIndex = 13;
+            CollectionWarnings.Text = "None";
+            // 
+            // CollectionErrors
+            // 
+            CollectionErrors.AutoSize = true;
+            CollectionErrors.Location = new Point(144, 124);
+            CollectionErrors.Margin = new Padding(4);
+            CollectionErrors.Name = "CollectionErrors";
+            CollectionErrors.Size = new Size(36, 15);
+            CollectionErrors.TabIndex = 12;
+            CollectionErrors.Text = "None";
+            // 
+            // CollectionUptime
+            // 
+            CollectionUptime.AutoSize = true;
+            CollectionUptime.Location = new Point(144, 101);
+            CollectionUptime.Margin = new Padding(4);
+            CollectionUptime.Name = "CollectionUptime";
+            CollectionUptime.Size = new Size(36, 15);
+            CollectionUptime.TabIndex = 11;
+            CollectionUptime.Text = "None";
+            // 
+            // CollectionState
+            // 
+            CollectionState.AutoSize = true;
+            CollectionState.Location = new Point(144, 79);
+            CollectionState.Margin = new Padding(4);
+            CollectionState.Name = "CollectionState";
+            CollectionState.Size = new Size(36, 15);
+            CollectionState.TabIndex = 10;
+            CollectionState.Text = "None";
+            // 
+            // CollectionConnection
+            // 
+            CollectionConnection.AutoSize = true;
+            CollectionConnection.Location = new Point(144, 56);
+            CollectionConnection.Margin = new Padding(4);
+            CollectionConnection.Name = "CollectionConnection";
+            CollectionConnection.Size = new Size(36, 15);
+            CollectionConnection.TabIndex = 9;
+            CollectionConnection.Text = "None";
+            // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Location = new Point(59, 169);
+            label6.Margin = new Padding(4);
+            label6.Name = "label6";
+            label6.Size = new Size(60, 15);
+            label6.TabIndex = 5;
+            label6.Text = "Collected:";
+            // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Location = new Point(59, 146);
+            label5.Margin = new Padding(4);
+            label5.Name = "label5";
+            label5.Size = new Size(60, 15);
+            label5.TabIndex = 4;
+            label5.Text = "Warnings:";
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Location = new Point(59, 124);
+            label4.Margin = new Padding(4);
+            label4.Name = "label4";
+            label4.Size = new Size(40, 15);
+            label4.TabIndex = 3;
+            label4.Text = "Errors:";
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new Point(59, 101);
+            label3.Margin = new Padding(4);
+            label3.Name = "label3";
+            label3.Size = new Size(49, 15);
+            label3.TabIndex = 2;
+            label3.Text = "Uptime:";
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Location = new Point(59, 79);
+            label2.Margin = new Padding(4);
+            label2.Name = "label2";
+            label2.Size = new Size(36, 15);
+            label2.TabIndex = 1;
+            label2.Text = "State:";
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(59, 56);
+            label1.Margin = new Padding(4);
+            label1.Name = "label1";
+            label1.Size = new Size(72, 15);
+            label1.TabIndex = 0;
+            label1.Text = "Connection:";
+            // 
+            // CollectionProgressBarRed
+            // 
+            CollectionProgressBarRed.BackColor = Color.Red;
+            CollectionProgressBarRed.Location = new Point(5, 24);
+            CollectionProgressBarRed.Margin = new Padding(3, 2, 3, 2);
+            CollectionProgressBarRed.Name = "CollectionProgressBarRed";
+            CollectionProgressBarRed.Size = new Size(194, 13);
+            CollectionProgressBarRed.TabIndex = 17;
+            // 
+            // tabPage2
+            // 
+            tabPage2.Controls.Add(groupBox10);
+            tabPage2.Controls.Add(groupBox11);
+            tabPage2.Controls.Add(groupBox2);
+            tabPage2.Location = new Point(4, 24);
+            tabPage2.Name = "tabPage2";
+            tabPage2.Padding = new Padding(3);
+            tabPage2.Size = new Size(574, 415);
+            tabPage2.TabIndex = 1;
+            tabPage2.Text = "Analysis Service";
+            tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // groupBox10
+            // 
+            groupBox10.Controls.Add(groupBox14);
+            groupBox10.Controls.Add(groupBox12);
+            groupBox10.Location = new Point(291, 5);
+            groupBox10.Margin = new Padding(3, 2, 3, 2);
+            groupBox10.Name = "groupBox10";
+            groupBox10.Padding = new Padding(3, 2, 3, 2);
+            groupBox10.Size = new Size(280, 227);
+            groupBox10.TabIndex = 25;
+            groupBox10.TabStop = false;
+            groupBox10.Text = "Host configuration";
+            // 
+            // groupBox14
+            // 
+            groupBox14.Controls.Add(AnalysisServiceEndpoint);
+            groupBox14.Controls.Add(ApplyAnalysisServiceEndpoint);
+            groupBox14.Location = new Point(6, 147);
+            groupBox14.Name = "groupBox14";
+            groupBox14.Size = new Size(274, 75);
+            groupBox14.TabIndex = 35;
+            groupBox14.TabStop = false;
+            groupBox14.Text = "Current host";
+            // 
+            // AnalysisServiceEndpoint
+            // 
+            AnalysisServiceEndpoint.DropDownStyle = ComboBoxStyle.DropDownList;
+            AnalysisServiceEndpoint.FormattingEnabled = true;
+            AnalysisServiceEndpoint.Location = new Point(57, 21);
+            AnalysisServiceEndpoint.Margin = new Padding(3, 2, 3, 2);
+            AnalysisServiceEndpoint.Name = "AnalysisServiceEndpoint";
+            AnalysisServiceEndpoint.Size = new Size(153, 23);
+            AnalysisServiceEndpoint.TabIndex = 31;
+            // 
+            // ApplyAnalysisServiceEndpoint
+            // 
+            ApplyAnalysisServiceEndpoint.FlatStyle = FlatStyle.Flat;
+            ApplyAnalysisServiceEndpoint.Location = new Point(57, 46);
+            ApplyAnalysisServiceEndpoint.Margin = new Padding(3, 2, 3, 2);
+            ApplyAnalysisServiceEndpoint.Name = "ApplyAnalysisServiceEndpoint";
+            ApplyAnalysisServiceEndpoint.Size = new Size(153, 25);
+            ApplyAnalysisServiceEndpoint.TabIndex = 33;
+            ApplyAnalysisServiceEndpoint.Text = "Сonnect";
+            ApplyAnalysisServiceEndpoint.UseVisualStyleBackColor = true;
+            ApplyAnalysisServiceEndpoint.Click += ApplyAnalysisServiceEndpoint_Click_1;
+            // 
+            // groupBox12
+            // 
+            groupBox12.Controls.Add(AnalysisServiceHosts);
+            groupBox12.Controls.Add(DeleteAnalysisServiceHost);
+            groupBox12.Controls.Add(AddAnalysisServiceHost);
+            groupBox12.Controls.Add(NewAnalysisHost);
+            groupBox12.Location = new Point(6, 16);
+            groupBox12.Name = "groupBox12";
+            groupBox12.Size = new Size(271, 127);
+            groupBox12.TabIndex = 34;
+            groupBox12.TabStop = false;
+            groupBox12.Text = "Saved hosts";
+            // 
+            // AnalysisServiceHosts
+            // 
+            AnalysisServiceHosts.FormattingEnabled = true;
+            AnalysisServiceHosts.ItemHeight = 15;
+            AnalysisServiceHosts.Location = new Point(57, 20);
+            AnalysisServiceHosts.Margin = new Padding(3, 2, 3, 2);
+            AnalysisServiceHosts.Name = "AnalysisServiceHosts";
+            AnalysisServiceHosts.Size = new Size(153, 49);
+            AnalysisServiceHosts.TabIndex = 1;
+            // 
+            // DeleteAnalysisServiceHost
+            // 
+            DeleteAnalysisServiceHost.FlatStyle = FlatStyle.Flat;
+            DeleteAnalysisServiceHost.Location = new Point(136, 96);
+            DeleteAnalysisServiceHost.Margin = new Padding(3, 2, 3, 2);
+            DeleteAnalysisServiceHost.Name = "DeleteAnalysisServiceHost";
+            DeleteAnalysisServiceHost.Size = new Size(74, 25);
+            DeleteAnalysisServiceHost.TabIndex = 7;
+            DeleteAnalysisServiceHost.Text = "Delete";
+            DeleteAnalysisServiceHost.UseVisualStyleBackColor = true;
+            DeleteAnalysisServiceHost.Click += DeleteAnalysisServiceHost_Click;
+            // 
+            // AddAnalysisServiceHost
+            // 
+            AddAnalysisServiceHost.FlatStyle = FlatStyle.Flat;
+            AddAnalysisServiceHost.Location = new Point(57, 96);
+            AddAnalysisServiceHost.Margin = new Padding(3, 2, 3, 2);
+            AddAnalysisServiceHost.Name = "AddAnalysisServiceHost";
+            AddAnalysisServiceHost.Size = new Size(74, 25);
+            AddAnalysisServiceHost.TabIndex = 6;
+            AddAnalysisServiceHost.Text = "Add";
+            AddAnalysisServiceHost.UseVisualStyleBackColor = true;
+            AddAnalysisServiceHost.Click += AddAnalysisServiceHost_Click;
+            // 
+            // NewAnalysisHost
+            // 
+            NewAnalysisHost.Location = new Point(57, 71);
+            NewAnalysisHost.Margin = new Padding(3, 2, 3, 2);
+            NewAnalysisHost.Name = "NewAnalysisHost";
+            NewAnalysisHost.PlaceholderText = "New host...";
+            NewAnalysisHost.Size = new Size(153, 23);
+            NewAnalysisHost.TabIndex = 9;
+            // 
+            // groupBox11
+            // 
+            groupBox11.Controls.Add(ViewAnalysisServiceLogs);
+            groupBox11.Controls.Add(ClearEvaluatedDatabase);
+            groupBox11.Controls.Add(StopAnalysisService);
+            groupBox11.Controls.Add(AnalysisLogDate);
+            groupBox11.Controls.Add(StartAnalysisService);
+            groupBox11.Location = new Point(6, 237);
+            groupBox11.Name = "groupBox11";
+            groupBox11.Size = new Size(565, 172);
+            groupBox11.TabIndex = 24;
+            groupBox11.TabStop = false;
+            groupBox11.Text = "Control";
+            // 
+            // ViewAnalysisServiceLogs
+            // 
+            ViewAnalysisServiceLogs.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            ViewAnalysisServiceLogs.FlatStyle = FlatStyle.Flat;
+            ViewAnalysisServiceLogs.Location = new Point(5, 77);
+            ViewAnalysisServiceLogs.Margin = new Padding(3, 2, 3, 2);
+            ViewAnalysisServiceLogs.Name = "ViewAnalysisServiceLogs";
+            ViewAnalysisServiceLogs.Size = new Size(153, 38);
+            ViewAnalysisServiceLogs.TabIndex = 23;
+            ViewAnalysisServiceLogs.Text = "View analysis log";
+            ViewAnalysisServiceLogs.UseVisualStyleBackColor = true;
+            ViewAnalysisServiceLogs.Click += ViewAnalysisServiceLogs_Click;
+            // 
+            // ClearEvaluatedDatabase
+            // 
+            ClearEvaluatedDatabase.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            ClearEvaluatedDatabase.FlatStyle = FlatStyle.Flat;
+            ClearEvaluatedDatabase.Location = new Point(407, 77);
+            ClearEvaluatedDatabase.Margin = new Padding(3, 2, 3, 2);
+            ClearEvaluatedDatabase.Name = "ClearEvaluatedDatabase";
+            ClearEvaluatedDatabase.Size = new Size(153, 38);
+            ClearEvaluatedDatabase.TabIndex = 3;
+            ClearEvaluatedDatabase.Text = "Clear results";
+            ClearEvaluatedDatabase.UseVisualStyleBackColor = true;
+            ClearEvaluatedDatabase.Click += ClearEvaluatedDatabase_Click;
+            // 
+            // StopAnalysisService
+            // 
+            StopAnalysisService.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            StopAnalysisService.FlatStyle = FlatStyle.Flat;
+            StopAnalysisService.Location = new Point(205, 77);
+            StopAnalysisService.Margin = new Padding(3, 2, 3, 2);
+            StopAnalysisService.Name = "StopAnalysisService";
+            StopAnalysisService.Size = new Size(153, 38);
+            StopAnalysisService.TabIndex = 5;
+            StopAnalysisService.Text = "Stop analysis service";
+            StopAnalysisService.UseVisualStyleBackColor = true;
+            StopAnalysisService.Click += StopAnalysisService_Click;
+            // 
+            // AnalysisLogDate
+            // 
+            AnalysisLogDate.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            AnalysisLogDate.Location = new Point(5, 50);
+            AnalysisLogDate.Margin = new Padding(3, 2, 3, 2);
+            AnalysisLogDate.Name = "AnalysisLogDate";
+            AnalysisLogDate.Size = new Size(153, 23);
+            AnalysisLogDate.TabIndex = 18;
+            // 
+            // StartAnalysisService
+            // 
+            StartAnalysisService.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            StartAnalysisService.FlatStyle = FlatStyle.Flat;
+            StartAnalysisService.Location = new Point(205, 77);
+            StartAnalysisService.Margin = new Padding(3, 2, 3, 2);
+            StartAnalysisService.Name = "StartAnalysisService";
+            StartAnalysisService.Size = new Size(153, 38);
+            StartAnalysisService.TabIndex = 1;
+            StartAnalysisService.Text = "Start analysis service";
+            StartAnalysisService.UseVisualStyleBackColor = true;
+            StartAnalysisService.Click += StartAnalysisService_Click;
+            // 
+            // groupBox2
+            // 
+            groupBox2.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            groupBox2.Controls.Add(AnalysisServiceProgressBar);
+            groupBox2.Controls.Add(RefreshAnalysisServiceInfo);
+            groupBox2.Controls.Add(AnalysisEvaluated);
+            groupBox2.Controls.Add(AnalysisWarnings);
+            groupBox2.Controls.Add(label26);
+            groupBox2.Controls.Add(AnalysisErrors);
+            groupBox2.Controls.Add(label25);
+            groupBox2.Controls.Add(AnalysisUptime);
+            groupBox2.Controls.Add(label24);
+            groupBox2.Controls.Add(AnalysisState);
+            groupBox2.Controls.Add(label23);
+            groupBox2.Controls.Add(AnalysisConnection);
+            groupBox2.Controls.Add(label22);
+            groupBox2.Controls.Add(label21);
+            groupBox2.Controls.Add(AnalysisProgressBarRed);
+            groupBox2.Location = new Point(6, 5);
+            groupBox2.Margin = new Padding(3, 2, 3, 2);
+            groupBox2.Name = "groupBox2";
+            groupBox2.Padding = new Padding(3, 2, 3, 2);
+            groupBox2.Size = new Size(279, 227);
+            groupBox2.TabIndex = 1;
+            groupBox2.TabStop = false;
+            groupBox2.Text = "Analysis service info";
+            // 
+            // AnalysisServiceProgressBar
+            // 
+            AnalysisServiceProgressBar.Location = new Point(5, 24);
+            AnalysisServiceProgressBar.Margin = new Padding(3, 2, 3, 2);
+            AnalysisServiceProgressBar.Name = "AnalysisServiceProgressBar";
+            AnalysisServiceProgressBar.Size = new Size(194, 13);
+            AnalysisServiceProgressBar.TabIndex = 30;
+            // 
+            // RefreshAnalysisServiceInfo
+            // 
+            RefreshAnalysisServiceInfo.FlatStyle = FlatStyle.Flat;
+            RefreshAnalysisServiceInfo.Location = new Point(205, 20);
+            RefreshAnalysisServiceInfo.Margin = new Padding(3, 2, 3, 2);
+            RefreshAnalysisServiceInfo.Name = "RefreshAnalysisServiceInfo";
+            RefreshAnalysisServiceInfo.Size = new Size(66, 26);
+            RefreshAnalysisServiceInfo.TabIndex = 16;
+            RefreshAnalysisServiceInfo.Text = "Refresh";
+            RefreshAnalysisServiceInfo.UseVisualStyleBackColor = true;
+            RefreshAnalysisServiceInfo.Click += RefreshAnalysisServiceInfo_Click;
+            // 
+            // AnalysisEvaluated
+            // 
+            AnalysisEvaluated.AutoSize = true;
+            AnalysisEvaluated.Location = new Point(144, 169);
+            AnalysisEvaluated.Margin = new Padding(4);
+            AnalysisEvaluated.Name = "AnalysisEvaluated";
+            AnalysisEvaluated.Size = new Size(36, 15);
+            AnalysisEvaluated.TabIndex = 29;
+            AnalysisEvaluated.Text = "None";
+            // 
+            // AnalysisWarnings
+            // 
+            AnalysisWarnings.AutoSize = true;
+            AnalysisWarnings.Location = new Point(144, 146);
+            AnalysisWarnings.Margin = new Padding(4);
+            AnalysisWarnings.Name = "AnalysisWarnings";
+            AnalysisWarnings.Size = new Size(36, 15);
+            AnalysisWarnings.TabIndex = 28;
+            AnalysisWarnings.Text = "None";
+            // 
+            // label26
+            // 
+            label26.AutoSize = true;
+            label26.Location = new Point(59, 56);
+            label26.Margin = new Padding(4);
+            label26.Name = "label26";
+            label26.Size = new Size(72, 15);
+            label26.TabIndex = 15;
+            label26.Text = "Connection:";
+            // 
+            // AnalysisErrors
+            // 
+            AnalysisErrors.AutoSize = true;
+            AnalysisErrors.Location = new Point(144, 124);
+            AnalysisErrors.Margin = new Padding(4);
+            AnalysisErrors.Name = "AnalysisErrors";
+            AnalysisErrors.Size = new Size(36, 15);
+            AnalysisErrors.TabIndex = 27;
+            AnalysisErrors.Text = "None";
+            // 
+            // label25
+            // 
+            label25.AutoSize = true;
+            label25.Location = new Point(59, 79);
+            label25.Margin = new Padding(4);
+            label25.Name = "label25";
+            label25.Size = new Size(36, 15);
+            label25.TabIndex = 16;
+            label25.Text = "State:";
+            // 
+            // AnalysisUptime
+            // 
+            AnalysisUptime.AutoSize = true;
+            AnalysisUptime.Location = new Point(144, 101);
+            AnalysisUptime.Margin = new Padding(4);
+            AnalysisUptime.Name = "AnalysisUptime";
+            AnalysisUptime.Size = new Size(36, 15);
+            AnalysisUptime.TabIndex = 26;
+            AnalysisUptime.Text = "None";
+            // 
+            // label24
+            // 
+            label24.AutoSize = true;
+            label24.Location = new Point(59, 101);
+            label24.Margin = new Padding(4);
+            label24.Name = "label24";
+            label24.Size = new Size(49, 15);
+            label24.TabIndex = 17;
+            label24.Text = "Uptime:";
+            // 
+            // AnalysisState
+            // 
+            AnalysisState.AutoSize = true;
+            AnalysisState.Location = new Point(144, 79);
+            AnalysisState.Margin = new Padding(4);
+            AnalysisState.Name = "AnalysisState";
+            AnalysisState.Size = new Size(36, 15);
+            AnalysisState.TabIndex = 25;
+            AnalysisState.Text = "None";
+            // 
+            // label23
+            // 
+            label23.AutoSize = true;
+            label23.Location = new Point(59, 124);
+            label23.Margin = new Padding(4);
+            label23.Name = "label23";
+            label23.Size = new Size(40, 15);
+            label23.TabIndex = 18;
+            label23.Text = "Errors:";
+            // 
+            // AnalysisConnection
+            // 
+            AnalysisConnection.AutoSize = true;
+            AnalysisConnection.Location = new Point(144, 56);
+            AnalysisConnection.Margin = new Padding(4);
+            AnalysisConnection.Name = "AnalysisConnection";
+            AnalysisConnection.Size = new Size(36, 15);
+            AnalysisConnection.TabIndex = 24;
+            AnalysisConnection.Text = "None";
+            // 
+            // label22
+            // 
+            label22.AutoSize = true;
+            label22.Location = new Point(59, 146);
+            label22.Margin = new Padding(4);
+            label22.Name = "label22";
+            label22.Size = new Size(60, 15);
+            label22.TabIndex = 19;
+            label22.Text = "Warnings:";
+            // 
+            // label21
+            // 
+            label21.AutoSize = true;
+            label21.Location = new Point(59, 169);
+            label21.Margin = new Padding(4);
+            label21.Name = "label21";
+            label21.Size = new Size(61, 15);
+            label21.TabIndex = 20;
+            label21.Text = "Evaluated:";
+            // 
+            // AnalysisProgressBarRed
+            // 
+            AnalysisProgressBarRed.BackColor = Color.Red;
+            AnalysisProgressBarRed.Location = new Point(5, 24);
+            AnalysisProgressBarRed.Margin = new Padding(3, 2, 3, 2);
+            AnalysisProgressBarRed.Name = "AnalysisProgressBarRed";
+            AnalysisProgressBarRed.Size = new Size(194, 13);
+            AnalysisProgressBarRed.TabIndex = 31;
             // 
             // Tabs
             // 
-            this.Tabs.Controls.Add(this.MainTab);
-            this.Tabs.Controls.Add(this.ConfigureTab);
-            this.Tabs.Controls.Add(this.VkCollectorTab);
-            this.Tabs.Controls.Add(this.ReportsTab);
-            this.Tabs.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.Tabs.ItemSize = new System.Drawing.Size(100, 40);
-            this.Tabs.Location = new System.Drawing.Point(0, 0);
-            this.Tabs.Name = "Tabs";
-            this.Tabs.SelectedIndex = 0;
-            this.Tabs.Size = new System.Drawing.Size(682, 653);
-            this.Tabs.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
-            this.Tabs.TabIndex = 0;
+            Tabs.Controls.Add(MainTab);
+            Tabs.Controls.Add(ConfigureTab);
+            Tabs.Controls.Add(VkCollectorTab);
+            Tabs.Controls.Add(ReportsTab);
+            Tabs.Dock = DockStyle.Fill;
+            Tabs.ItemSize = new Size(100, 40);
+            Tabs.Location = new Point(0, 0);
+            Tabs.Margin = new Padding(3, 2, 3, 2);
+            Tabs.Name = "Tabs";
+            Tabs.SelectedIndex = 0;
+            Tabs.Size = new Size(598, 496);
+            Tabs.SizeMode = TabSizeMode.Fixed;
+            Tabs.TabIndex = 0;
             // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(682, 653);
-            this.Controls.Add(this.Tabs);
-            this.MinimumSize = new System.Drawing.Size(700, 700);
-            this.Name = "MainForm";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
-            this.VkCollectorTab.ResumeLayout(false);
-            this.groupBox8.ResumeLayout(false);
-            this.groupBox8.PerformLayout();
-            this.ReportsTab.ResumeLayout(false);
-            this.groupBox4.ResumeLayout(false);
-            this.groupBox4.PerformLayout();
-            this.ConfigureTab.ResumeLayout(false);
-            this.groupBox6.ResumeLayout(false);
-            this.groupBox6.PerformLayout();
-            this.groupBox10.ResumeLayout(false);
-            this.groupBox10.PerformLayout();
-            this.groupBox5.ResumeLayout(false);
-            this.groupBox5.PerformLayout();
-            this.groupBox7.ResumeLayout(false);
-            this.groupBox7.PerformLayout();
-            this.MainTab.ResumeLayout(false);
-            this.groupBox3.ResumeLayout(false);
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
-            this.Tabs.ResumeLayout(false);
-            this.ResumeLayout(false);
-
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(598, 496);
+            Controls.Add(Tabs);
+            Margin = new Padding(3, 2, 3, 2);
+            MinimumSize = new Size(614, 535);
+            Name = "MainForm";
+            FormClosing += MainForm_FormClosing;
+            VkCollectorTab.ResumeLayout(false);
+            groupBox8.ResumeLayout(false);
+            groupBox8.PerformLayout();
+            ReportsTab.ResumeLayout(false);
+            groupBox4.ResumeLayout(false);
+            groupBox4.PerformLayout();
+            ConfigureTab.ResumeLayout(false);
+            groupBox6.ResumeLayout(false);
+            groupBox6.PerformLayout();
+            groupBox5.ResumeLayout(false);
+            groupBox5.PerformLayout();
+            MainTab.ResumeLayout(false);
+            ServicesTabs.ResumeLayout(false);
+            tabPage1.ResumeLayout(false);
+            groupBox7.ResumeLayout(false);
+            groupBox13.ResumeLayout(false);
+            groupBox9.ResumeLayout(false);
+            groupBox9.PerformLayout();
+            groupBox3.ResumeLayout(false);
+            groupBox1.ResumeLayout(false);
+            groupBox1.PerformLayout();
+            tabPage2.ResumeLayout(false);
+            groupBox10.ResumeLayout(false);
+            groupBox14.ResumeLayout(false);
+            groupBox12.ResumeLayout(false);
+            groupBox12.PerformLayout();
+            groupBox11.ResumeLayout(false);
+            groupBox2.ResumeLayout(false);
+            groupBox2.PerformLayout();
+            Tabs.ResumeLayout(false);
+            ResumeLayout(false);
         }
 
         #endregion
@@ -1466,27 +1565,9 @@
         private Button SaveConfiguration;
         private Button SetLocalConfig;
         private GroupBox groupBox6;
-        private GroupBox groupBox10;
-        private Button ApplyAnalysisServiceEndpoint;
-        private Label label20;
-        public ComboBox AnalysisServiceEndpoint;
-        public ListBox AnalysisServiceHosts;
-        private TextBox NewAnalysisHost;
-        private Label label28;
-        private Button AddAnalysisServiceHost;
-        private Button DeleteAnalysisServiceHost;
         private TextBox ObserveDelay;
         private Label label8;
         private GroupBox groupBox5;
-        private GroupBox groupBox7;
-        private Button ApplyNewCollectionServiceEndpoint;
-        private Label label7;
-        public ComboBox CollectionServiceEndpoint;
-        public ListBox CollectionServiceHosts;
-        private TextBox NewCollectionHost;
-        private Label label27;
-        private Button DeleteCollectionServiceHost;
-        private Button AddCollectionServiceHost;
         private TextBox PostQueueSize;
         private Label label31;
         private TextBox ScanCommentsDelay;
@@ -1494,13 +1575,10 @@
         private Label label29;
         private TextBox ScanPostDelay;
         private TabPage MainTab;
-        private GroupBox groupBox3;
-        private Button StartAll;
         private Button ClearEvaluatedDatabase;
         private Button ClearCommentsDatabase;
         private Button StartAnalysisService;
         private Button StartCollectionService;
-        private Button StopAll;
         private Button StopAnalysisService;
         private Button StopCollectionService;
         private GroupBox groupBox2;
@@ -1541,5 +1619,28 @@
         private ProgressBar AnalysisServiceProgressBar;
         private Panel AnalysisProgressBarRed;
         private Panel CollectionProgressBarRed;
+        private TabControl ServicesTabs;
+        private TabPage tabPage1;
+        private TabPage tabPage2;
+        private GroupBox groupBox3;
+        private GroupBox groupBox7;
+        private Button ApplyNewCollectionServiceEndpoint;
+        public ComboBox CollectionServiceEndpoint;
+        public ListBox CollectionServiceHosts;
+        private TextBox NewCollectionHost;
+        private Button DeleteCollectionServiceHost;
+        private Button AddCollectionServiceHost;
+        private GroupBox groupBox9;
+        private GroupBox groupBox11;
+        private GroupBox groupBox10;
+        private Button ApplyAnalysisServiceEndpoint;
+        public ComboBox AnalysisServiceEndpoint;
+        public ListBox AnalysisServiceHosts;
+        private TextBox NewAnalysisHost;
+        private Button AddAnalysisServiceHost;
+        private Button DeleteAnalysisServiceHost;
+        private GroupBox groupBox12;
+        private GroupBox groupBox13;
+        private GroupBox groupBox14;
     }
 }

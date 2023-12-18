@@ -1,4 +1,4 @@
-﻿namespace DevTool.Models;
+﻿namespace DevTool.Models.ServiceInfoModel;
 
 public class ServiceInfo
 {
@@ -9,16 +9,4 @@ public class ServiceInfo
     public int WarningsCount { get; set; }
     public int CollectedCommentsCount { get; set; }
     public int EvaluatedCommentsCount { get; set; }
-}
-
-public enum ConnectionState
-{
-    Connected,
-    Disconnected,
-}
-
-public enum State
-{
-    Up,
-    Down,
 }

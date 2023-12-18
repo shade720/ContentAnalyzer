@@ -1,4 +1,4 @@
-﻿namespace DevTool.Models;
+﻿namespace DevTool.Models.ConfigurationModel;
 public class Configuration
 {
     public string ConnectionString { get; init; }

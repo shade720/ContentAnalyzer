@@ -1,9 +1,8 @@
-﻿using System.Diagnostics;
-using OfficeOpenXml.Style;
+﻿using Common.SharedDomain;
 using OfficeOpenXml;
-using Common.SharedDomain;
+using OfficeOpenXml.Style;
 
-namespace DevTool.Models;
+namespace DevTool.BLL;
 
 public static class Reporter
 {
@@ -21,7 +20,8 @@ public static class Reporter
             package.Workbook.Worksheets
                 .Add("Evaluation results");
 
-        sheet.Cells[1, 1, 1, 9].LoadFromArrays(new object[][] { new[]
+        sheet.Cells[1, 1, 1, 9].LoadFromArrays(new[]
+        { new object[]
         {
             "Text",
             "Category",
@@ -72,7 +72,6 @@ public static class Reporter
         sheet.Column(7).Hidden = true;
         sheet.Column(8).Hidden = true;
         sheet.Column(9).Hidden = true;
-
 
         sheet.Cells[1, 1, 1, 8].Style.Font.Bold = true;
 

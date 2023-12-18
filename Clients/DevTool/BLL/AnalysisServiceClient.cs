@@ -1,23 +1,46 @@
 ﻿using Common.SharedDomain;
 using DataAnalysisClient;
 using Google.Protobuf.WellKnownTypes;
+using Grpc.Net.Client;
 
-namespace DevTool.Models;
+namespace DevTool.BLL;
 
-internal class AnalysisServiceClient : ServiceClient<EvaluatedComment>
+public class AnalysisServiceClient
 {
     private readonly DataAnalysis.DataAnalysisClient _dataAnalysisClient;
-    public AnalysisServiceClient(string dataAnalysisServiceHost) : base(dataAnalysisServiceHost)
+
+    public AnalysisServiceClient(string dataAnalysisServiceHost)
     {
-        _dataAnalysisClient = new DataAnalysis.DataAnalysisClient(Channel);
+        _dataAnalysisClient = new DataAnalysis.DataAnalysisClient(GrpcChannel.ForAddress(dataAnalysisServiceHost));
     }
 
-    public override void ClearDatabase()
+    public async Task StartService()
     {
-        _dataAnalysisClient.ClearEvaluatedDatabaseAsync(new ClearEvaluatedDatabaseRequest());
+        await _dataAnalysisClient.StartAnalysisServiceAsync(new StartAnalysisServiceRequest());
     }
 
-    public override IEnumerable<EvaluatedComment> GetResults(CommentsQueryFilter filter)
+    public async Task StopService()
+    {
+        await _dataAnalysisClient.StopAnalysisServiceAsync(new StopAnalysisServiceRequest());
+    }
+
+    public async Task LoadConfiguration(string settings)
+    {
+        await _dataAnalysisClient.SetConfigurationAsync(new SetConfigurationRequest { Settings = settings });
+    }
+
+    public async Task ClearDatabase()
+    {
+        await _dataAnalysisClient.ClearEvaluatedDatabaseAsync(new ClearEvaluatedDatabaseRequest());
+    }
+
+    public async Task<string> GetLogFile(DateTime date)
+    {
+        var result = await _dataAnalysisClient.GetLogsAsync(new LogRequest { LogDate = Timestamp.FromDateTime(date.ToUniversalTime()) });
+        return result.LogFile.ToStringUtf8();
+    }
+
+    public async Task<IEnumerable<EvaluatedComment>> GetResults(CommentsQueryFilter filter)
     {
         var requestFilter = new CommentsQueryFilterProto
         {
@@ -27,7 +50,7 @@ internal class AnalysisServiceClient : ServiceClient<EvaluatedComment>
             FromDate = new Timestamp { Seconds = new DateTimeOffset(filter.FromDate).ToUnixTimeSeconds() },
             ToDate = new Timestamp { Seconds = new DateTimeOffset(filter.ToDate).ToUnixTimeSeconds() }
         };
-        var comments = _dataAnalysisClient.GetEvaluatedCommentsAsync(new EvaluatedCommentsRequest { Filter = requestFilter }).ResponseAsync.Result;
+        var comments = await _dataAnalysisClient.GetEvaluatedCommentsAsync(new EvaluatedCommentsRequest { Filter = requestFilter });
         return comments.EvaluatedComments.Select(evaluateResultProto => new EvaluatedComment
         {
             Id = evaluateResultProto.Id,
@@ -45,29 +68,5 @@ internal class AnalysisServiceClient : ServiceClient<EvaluatedComment>
             EvaluateCategory = evaluateResultProto.EvaluateCategory,
             EvaluateProbability = evaluateResultProto.EvaluateProbability
         });
-    }
-    public override void LoadConfiguration(string settings)
-    {
-        _dataAnalysisClient.SetConfigurationAsync(new SetConfigurationRequest { Settings = settings });
-    }
-    public override void StartService()
-    {
-        _dataAnalysisClient.StartAnalysisServiceAsync(new StartAnalysisServiceRequest());
-    }
-
-    public override void StopService()
-    {
-        _dataAnalysisClient.StopAnalysisServiceAsync(new StopAnalysisServiceRequest());
-    }
-
-    protected override string GetLogFile(DateTime date)
-    {
-        var result = _dataAnalysisClient.GetLogsAsync(new LogRequest { LogDate = Timestamp.FromDateTime(date.ToUniversalTime()) }).ResponseAsync.Result;
-        return result.LogFile.ToStringUtf8();
-    }
-
-    public new void Dispose()
-    {
-        Channel.Dispose();
     }
 }

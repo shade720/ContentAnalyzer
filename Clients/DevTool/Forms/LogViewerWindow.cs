@@ -1,17 +1,17 @@
-﻿using DevTool.Models;
+﻿using DevTool.Models.LogModel;
 
 namespace DevTool.Forms;
 
 public partial class LogViewerWindow : Form
 {
-    private IEnumerable<LogInfo> Logs;
-    public LogViewerWindow(IEnumerable<LogInfo> logs)
+    private IEnumerable<LogEntry> Logs;
+    public LogViewerWindow(IEnumerable<LogEntry> logs)
     {
         InitializeComponent();
         Logs = logs;
     }
 
-    private void FillLogDataGrid(IEnumerable<LogInfo> logs)
+    private void FillLogDataGrid(IEnumerable<LogEntry> logs)
     {
         LogDataGrid.Rows.Clear();
         foreach (var log in logs)
