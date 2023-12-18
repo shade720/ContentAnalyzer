@@ -1,6 +1,6 @@
-using Interface.Forms;
+using ContentAnalyzer.Frontend.Desktop.Forms;
 
-namespace Interface;
+namespace ContentAnalyzer.Frontend.Desktop;
 
 internal static class Program
 {

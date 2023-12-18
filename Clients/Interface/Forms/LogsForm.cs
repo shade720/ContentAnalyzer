@@ -1,4 +1,6 @@
-﻿namespace Interface.Forms;
+﻿using ContentAnalyzer.Frontend.Desktop;
+
+namespace Interface.Forms;
 
 public partial class LogsForm : Form
 {

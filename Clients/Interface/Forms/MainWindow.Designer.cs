@@ -1,4 +1,4 @@
-﻿namespace Interface.Forms
+﻿namespace ContentAnalyzer.Frontend.Desktop.Forms
 {
     partial class MainWindow
     {
@@ -29,459 +29,460 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
-            this.UpperPanel = new System.Windows.Forms.Panel();
-            this.MinimizeWindowButton = new System.Windows.Forms.Button();
-            this.CloseButton = new System.Windows.Forms.Button();
-            this.BottomPanel = new System.Windows.Forms.Panel();
-            this.ErrorsCountLabel = new System.Windows.Forms.Label();
-            this.AnalysisServiceStateLabel = new System.Windows.Forms.Label();
-            this.UptimeLabel = new System.Windows.Forms.Label();
-            this.StatePanel = new System.Windows.Forms.Panel();
-            this.StateLabel = new System.Windows.Forms.Label();
-            this.CollectorServiceStateLabel = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.LeftPanel = new System.Windows.Forms.Panel();
-            this.TitleLabel = new System.Windows.Forms.Label();
-            this.StartStopButtonContainer = new System.Windows.Forms.Panel();
-            this.StartServiceButton = new System.Windows.Forms.Button();
-            this.StopServiceButton = new System.Windows.Forms.Button();
-            this.ShowAllCommentsButton = new System.Windows.Forms.Button();
-            this.ShowSelectedComments = new System.Windows.Forms.Button();
-            this.ConfigureServiceButton = new System.Windows.Forms.Button();
-            this.ViewLogsButton = new System.Windows.Forms.Button();
-            this.ServiceInfoPanel = new System.Windows.Forms.Panel();
-            this.SelectedCommentsFoundLabel = new System.Windows.Forms.Label();
-            this.CommentsFoundLabel = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.CentralPanel = new System.Windows.Forms.Panel();
-            this.UpperPanel.SuspendLayout();
-            this.BottomPanel.SuspendLayout();
-            this.StatePanel.SuspendLayout();
-            this.LeftPanel.SuspendLayout();
-            this.StartStopButtonContainer.SuspendLayout();
-            this.ServiceInfoPanel.SuspendLayout();
-            this.SuspendLayout();
+            UpperPanel = new Panel();
+            MinimizeWindowButton = new Button();
+            CloseButton = new Button();
+            BottomPanel = new Panel();
+            ErrorsCountLabel = new Label();
+            AnalysisServiceStateLabel = new Label();
+            UptimeLabel = new Label();
+            StatePanel = new Panel();
+            StateLabel = new Label();
+            CollectorServiceStateLabel = new Label();
+            label6 = new Label();
+            label5 = new Label();
+            label7 = new Label();
+            label3 = new Label();
+            LeftPanel = new Panel();
+            TitleLabel = new Label();
+            StartStopButtonContainer = new Panel();
+            StartServiceButton = new Button();
+            StopServiceButton = new Button();
+            ShowAllCommentsButton = new Button();
+            ShowSelectedComments = new Button();
+            ConfigureServiceButton = new Button();
+            ViewLogsButton = new Button();
+            ServiceInfoPanel = new Panel();
+            SelectedCommentsFoundLabel = new Label();
+            CommentsFoundLabel = new Label();
+            label4 = new Label();
+            label2 = new Label();
+            label1 = new Label();
+            CentralPanel = new Panel();
+            UpperPanel.SuspendLayout();
+            BottomPanel.SuspendLayout();
+            StatePanel.SuspendLayout();
+            LeftPanel.SuspendLayout();
+            StartStopButtonContainer.SuspendLayout();
+            ServiceInfoPanel.SuspendLayout();
+            SuspendLayout();
             // 
             // UpperPanel
             // 
-            this.UpperPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.UpperPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(153)))), ((int)(((byte)(255)))));
-            this.UpperPanel.Controls.Add(this.MinimizeWindowButton);
-            this.UpperPanel.Controls.Add(this.CloseButton);
-            this.UpperPanel.Location = new System.Drawing.Point(0, 0);
-            this.UpperPanel.Name = "UpperPanel";
-            this.UpperPanel.Size = new System.Drawing.Size(1382, 44);
-            this.UpperPanel.TabIndex = 1;
-            this.UpperPanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.UpperPanel_MouseDown);
-            this.UpperPanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.UpperPanel_MouseMove);
+            UpperPanel.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            UpperPanel.BackColor = Color.FromArgb(51, 153, 255);
+            UpperPanel.Controls.Add(MinimizeWindowButton);
+            UpperPanel.Controls.Add(CloseButton);
+            UpperPanel.Location = new Point(0, 0);
+            UpperPanel.Margin = new Padding(3, 2, 3, 2);
+            UpperPanel.Name = "UpperPanel";
+            UpperPanel.Size = new Size(1209, 33);
+            UpperPanel.TabIndex = 1;
+            UpperPanel.MouseDown += UpperPanel_MouseDown;
+            UpperPanel.MouseMove += UpperPanel_MouseMove;
             // 
             // MinimizeWindowButton
             // 
-            this.MinimizeWindowButton.BackColor = System.Drawing.SystemColors.Window;
-            this.MinimizeWindowButton.FlatAppearance.BorderSize = 0;
-            this.MinimizeWindowButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.MinimizeWindowButton.Image = ((System.Drawing.Image)(resources.GetObject("MinimizeWindowButton.Image")));
-            this.MinimizeWindowButton.Location = new System.Drawing.Point(1294, 6);
-            this.MinimizeWindowButton.Name = "MinimizeWindowButton";
-            this.MinimizeWindowButton.Size = new System.Drawing.Size(33, 33);
-            this.MinimizeWindowButton.TabIndex = 1;
-            this.MinimizeWindowButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.MinimizeWindowButton.UseVisualStyleBackColor = false;
-            this.MinimizeWindowButton.Click += new System.EventHandler(this.MinimizeWindowButton_Click);
+            MinimizeWindowButton.BackColor = SystemColors.Window;
+            MinimizeWindowButton.FlatAppearance.BorderSize = 0;
+            MinimizeWindowButton.FlatStyle = FlatStyle.Flat;
+            MinimizeWindowButton.Image = (Image)resources.GetObject("MinimizeWindowButton.Image");
+            MinimizeWindowButton.Location = new Point(1132, 4);
+            MinimizeWindowButton.Margin = new Padding(3, 2, 3, 2);
+            MinimizeWindowButton.Name = "MinimizeWindowButton";
+            MinimizeWindowButton.Size = new Size(29, 25);
+            MinimizeWindowButton.TabIndex = 1;
+            MinimizeWindowButton.TextImageRelation = TextImageRelation.ImageAboveText;
+            MinimizeWindowButton.UseVisualStyleBackColor = false;
+            MinimizeWindowButton.Click += MinimizeWindowButton_Click;
             // 
             // CloseButton
             // 
-            this.CloseButton.BackColor = System.Drawing.SystemColors.Window;
-            this.CloseButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.CloseButton.FlatAppearance.BorderSize = 0;
-            this.CloseButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.CloseButton.Image = ((System.Drawing.Image)(resources.GetObject("CloseButton.Image")));
-            this.CloseButton.Location = new System.Drawing.Point(1335, 4);
-            this.CloseButton.Name = "CloseButton";
-            this.CloseButton.Size = new System.Drawing.Size(35, 35);
-            this.CloseButton.TabIndex = 0;
-            this.CloseButton.UseVisualStyleBackColor = false;
-            this.CloseButton.Click += new System.EventHandler(this.CloseButton_Click);
+            CloseButton.BackColor = SystemColors.Window;
+            CloseButton.BackgroundImageLayout = ImageLayout.Stretch;
+            CloseButton.FlatAppearance.BorderSize = 0;
+            CloseButton.FlatStyle = FlatStyle.Flat;
+            CloseButton.Image = (Image)resources.GetObject("CloseButton.Image");
+            CloseButton.Location = new Point(1168, 3);
+            CloseButton.Margin = new Padding(3, 2, 3, 2);
+            CloseButton.Name = "CloseButton";
+            CloseButton.Size = new Size(31, 26);
+            CloseButton.TabIndex = 0;
+            CloseButton.UseVisualStyleBackColor = false;
+            CloseButton.Click += CloseButton_Click;
             // 
             // BottomPanel
             // 
-            this.BottomPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.BottomPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(153)))), ((int)(((byte)(255)))));
-            this.BottomPanel.Controls.Add(this.ErrorsCountLabel);
-            this.BottomPanel.Controls.Add(this.AnalysisServiceStateLabel);
-            this.BottomPanel.Controls.Add(this.UptimeLabel);
-            this.BottomPanel.Controls.Add(this.StatePanel);
-            this.BottomPanel.Controls.Add(this.CollectorServiceStateLabel);
-            this.BottomPanel.Controls.Add(this.label6);
-            this.BottomPanel.Controls.Add(this.label5);
-            this.BottomPanel.Controls.Add(this.label7);
-            this.BottomPanel.Controls.Add(this.label3);
-            this.BottomPanel.Location = new System.Drawing.Point(0, 908);
-            this.BottomPanel.Margin = new System.Windows.Forms.Padding(3, 0, 3, 3);
-            this.BottomPanel.Name = "BottomPanel";
-            this.BottomPanel.Size = new System.Drawing.Size(1382, 74);
-            this.BottomPanel.TabIndex = 2;
+            BottomPanel.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            BottomPanel.BackColor = Color.FromArgb(51, 153, 255);
+            BottomPanel.Controls.Add(ErrorsCountLabel);
+            BottomPanel.Controls.Add(AnalysisServiceStateLabel);
+            BottomPanel.Controls.Add(UptimeLabel);
+            BottomPanel.Controls.Add(StatePanel);
+            BottomPanel.Controls.Add(CollectorServiceStateLabel);
+            BottomPanel.Controls.Add(label6);
+            BottomPanel.Controls.Add(label5);
+            BottomPanel.Controls.Add(label7);
+            BottomPanel.Controls.Add(label3);
+            BottomPanel.Location = new Point(0, 681);
+            BottomPanel.Margin = new Padding(3, 0, 3, 2);
+            BottomPanel.Name = "BottomPanel";
+            BottomPanel.Size = new Size(1209, 56);
+            BottomPanel.TabIndex = 2;
             // 
             // ErrorsCountLabel
             // 
-            this.ErrorsCountLabel.AutoSize = true;
-            this.ErrorsCountLabel.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.ErrorsCountLabel.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.ErrorsCountLabel.Location = new System.Drawing.Point(556, 43);
-            this.ErrorsCountLabel.Name = "ErrorsCountLabel";
-            this.ErrorsCountLabel.Size = new System.Drawing.Size(17, 20);
-            this.ErrorsCountLabel.TabIndex = 10;
-            this.ErrorsCountLabel.Text = "0";
+            ErrorsCountLabel.AutoSize = true;
+            ErrorsCountLabel.Font = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            ErrorsCountLabel.ForeColor = SystemColors.ButtonHighlight;
+            ErrorsCountLabel.Location = new Point(486, 32);
+            ErrorsCountLabel.Name = "ErrorsCountLabel";
+            ErrorsCountLabel.Size = new Size(15, 17);
+            ErrorsCountLabel.TabIndex = 10;
+            ErrorsCountLabel.Text = "0";
             // 
             // AnalysisServiceStateLabel
             // 
-            this.AnalysisServiceStateLabel.AutoSize = true;
-            this.AnalysisServiceStateLabel.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.AnalysisServiceStateLabel.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.AnalysisServiceStateLabel.Location = new System.Drawing.Point(420, 43);
-            this.AnalysisServiceStateLabel.Name = "AnalysisServiceStateLabel";
-            this.AnalysisServiceStateLabel.Size = new System.Drawing.Size(53, 20);
-            this.AnalysisServiceStateLabel.TabIndex = 12;
-            this.AnalysisServiceStateLabel.Text = "Down";
+            AnalysisServiceStateLabel.AutoSize = true;
+            AnalysisServiceStateLabel.Font = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            AnalysisServiceStateLabel.ForeColor = SystemColors.ButtonHighlight;
+            AnalysisServiceStateLabel.Location = new Point(368, 32);
+            AnalysisServiceStateLabel.Name = "AnalysisServiceStateLabel";
+            AnalysisServiceStateLabel.Size = new Size(42, 17);
+            AnalysisServiceStateLabel.TabIndex = 12;
+            AnalysisServiceStateLabel.Text = "Down";
             // 
             // UptimeLabel
             // 
-            this.UptimeLabel.AutoSize = true;
-            this.UptimeLabel.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.UptimeLabel.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.UptimeLabel.Location = new System.Drawing.Point(556, 14);
-            this.UptimeLabel.Name = "UptimeLabel";
-            this.UptimeLabel.Size = new System.Drawing.Size(17, 20);
-            this.UptimeLabel.TabIndex = 9;
-            this.UptimeLabel.Text = "0";
+            UptimeLabel.AutoSize = true;
+            UptimeLabel.Font = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            UptimeLabel.ForeColor = SystemColors.ButtonHighlight;
+            UptimeLabel.Location = new Point(486, 10);
+            UptimeLabel.Name = "UptimeLabel";
+            UptimeLabel.Size = new Size(15, 17);
+            UptimeLabel.TabIndex = 9;
+            UptimeLabel.Text = "0";
             // 
             // StatePanel
             // 
-            this.StatePanel.BackColor = System.Drawing.Color.Red;
-            this.StatePanel.Controls.Add(this.StateLabel);
-            this.StatePanel.Dock = System.Windows.Forms.DockStyle.Left;
-            this.StatePanel.Location = new System.Drawing.Point(0, 0);
-            this.StatePanel.Name = "StatePanel";
-            this.StatePanel.Size = new System.Drawing.Size(275, 74);
-            this.StatePanel.TabIndex = 4;
+            StatePanel.BackColor = Color.Red;
+            StatePanel.Controls.Add(StateLabel);
+            StatePanel.Dock = DockStyle.Left;
+            StatePanel.Location = new Point(0, 0);
+            StatePanel.Margin = new Padding(3, 2, 3, 2);
+            StatePanel.Name = "StatePanel";
+            StatePanel.Size = new Size(241, 56);
+            StatePanel.TabIndex = 4;
             // 
             // StateLabel
             // 
-            this.StateLabel.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.StateLabel.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.StateLabel.Location = new System.Drawing.Point(72, 27);
-            this.StateLabel.Name = "StateLabel";
-            this.StateLabel.Size = new System.Drawing.Size(127, 23);
-            this.StateLabel.TabIndex = 0;
-            this.StateLabel.Text = "Not working";
-            this.StateLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            StateLabel.Font = new Font("Century Gothic", 12F, FontStyle.Bold, GraphicsUnit.Point);
+            StateLabel.ForeColor = SystemColors.ButtonHighlight;
+            StateLabel.Location = new Point(63, 13);
+            StateLabel.Name = "StateLabel";
+            StateLabel.Size = new Size(111, 28);
+            StateLabel.TabIndex = 0;
+            StateLabel.Text = "Not working";
+            StateLabel.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // CollectorServiceStateLabel
             // 
-            this.CollectorServiceStateLabel.AutoSize = true;
-            this.CollectorServiceStateLabel.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.CollectorServiceStateLabel.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.CollectorServiceStateLabel.Location = new System.Drawing.Point(420, 14);
-            this.CollectorServiceStateLabel.Name = "CollectorServiceStateLabel";
-            this.CollectorServiceStateLabel.Size = new System.Drawing.Size(53, 20);
-            this.CollectorServiceStateLabel.TabIndex = 11;
-            this.CollectorServiceStateLabel.Text = "Down";
+            CollectorServiceStateLabel.AutoSize = true;
+            CollectorServiceStateLabel.Font = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            CollectorServiceStateLabel.ForeColor = SystemColors.ButtonHighlight;
+            CollectorServiceStateLabel.Location = new Point(368, 10);
+            CollectorServiceStateLabel.Name = "CollectorServiceStateLabel";
+            CollectorServiceStateLabel.Size = new Size(42, 17);
+            CollectorServiceStateLabel.TabIndex = 11;
+            CollectorServiceStateLabel.Text = "Down";
             // 
             // label6
             // 
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label6.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.label6.Location = new System.Drawing.Point(278, 14);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(143, 20);
-            this.label6.TabIndex = 5;
-            this.label6.Text = "Collector service: ";
+            label6.AutoSize = true;
+            label6.Font = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            label6.ForeColor = SystemColors.ButtonHighlight;
+            label6.Location = new Point(243, 10);
+            label6.Name = "label6";
+            label6.Size = new Size(117, 17);
+            label6.TabIndex = 5;
+            label6.Text = "Collector service: ";
             // 
             // label5
             // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label5.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.label5.Location = new System.Drawing.Point(501, 43);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(56, 20);
-            this.label5.TabIndex = 4;
-            this.label5.Text = "Errors: ";
+            label5.AutoSize = true;
+            label5.Font = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            label5.ForeColor = SystemColors.ButtonHighlight;
+            label5.Location = new Point(438, 32);
+            label5.Name = "label5";
+            label5.Size = new Size(45, 17);
+            label5.TabIndex = 4;
+            label5.Text = "Errors: ";
             // 
             // label7
             // 
-            this.label7.AutoSize = true;
-            this.label7.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label7.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.label7.Location = new System.Drawing.Point(290, 43);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(131, 20);
-            this.label7.TabIndex = 6;
-            this.label7.Text = "Analysis service: ";
+            label7.AutoSize = true;
+            label7.Font = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            label7.ForeColor = SystemColors.ButtonHighlight;
+            label7.Location = new Point(254, 32);
+            label7.Name = "label7";
+            label7.Size = new Size(107, 17);
+            label7.TabIndex = 6;
+            label7.Text = "Analysis service: ";
             // 
             // label3
             // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label3.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.label3.Location = new System.Drawing.Point(488, 14);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(69, 20);
-            this.label3.TabIndex = 2;
-            this.label3.Text = "Uptime: ";
+            label3.AutoSize = true;
+            label3.Font = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            label3.ForeColor = SystemColors.ButtonHighlight;
+            label3.Location = new Point(427, 10);
+            label3.Name = "label3";
+            label3.Size = new Size(57, 17);
+            label3.TabIndex = 2;
+            label3.Text = "Uptime: ";
             // 
             // LeftPanel
             // 
-            this.LeftPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.LeftPanel.BackColor = System.Drawing.SystemColors.ActiveBorder;
-            this.LeftPanel.Controls.Add(this.TitleLabel);
-            this.LeftPanel.Controls.Add(this.StartStopButtonContainer);
-            this.LeftPanel.Controls.Add(this.ShowAllCommentsButton);
-            this.LeftPanel.Controls.Add(this.ShowSelectedComments);
-            this.LeftPanel.Controls.Add(this.ConfigureServiceButton);
-            this.LeftPanel.Controls.Add(this.ViewLogsButton);
-            this.LeftPanel.Controls.Add(this.ServiceInfoPanel);
-            this.LeftPanel.Location = new System.Drawing.Point(0, 44);
-            this.LeftPanel.Name = "LeftPanel";
-            this.LeftPanel.Size = new System.Drawing.Size(275, 938);
-            this.LeftPanel.TabIndex = 3;
+            LeftPanel.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
+            LeftPanel.BackColor = SystemColors.ActiveBorder;
+            LeftPanel.Controls.Add(TitleLabel);
+            LeftPanel.Controls.Add(StartStopButtonContainer);
+            LeftPanel.Controls.Add(ShowAllCommentsButton);
+            LeftPanel.Controls.Add(ShowSelectedComments);
+            LeftPanel.Controls.Add(ConfigureServiceButton);
+            LeftPanel.Controls.Add(ViewLogsButton);
+            LeftPanel.Controls.Add(ServiceInfoPanel);
+            LeftPanel.Location = new Point(0, 33);
+            LeftPanel.Margin = new Padding(3, 2, 3, 2);
+            LeftPanel.Name = "LeftPanel";
+            LeftPanel.Size = new Size(241, 704);
+            LeftPanel.TabIndex = 3;
             // 
             // TitleLabel
             // 
-            this.TitleLabel.BackColor = System.Drawing.SystemColors.Menu;
-            this.TitleLabel.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.TitleLabel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.TitleLabel.Font = new System.Drawing.Font("Century Gothic", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.TitleLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(153)))), ((int)(((byte)(255)))));
-            this.TitleLabel.Location = new System.Drawing.Point(0, 1);
-            this.TitleLabel.Name = "TitleLabel";
-            this.TitleLabel.Size = new System.Drawing.Size(275, 70);
-            this.TitleLabel.TabIndex = 1;
-            this.TitleLabel.Text = "Content Analyzer";
-            this.TitleLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            TitleLabel.BackColor = SystemColors.Menu;
+            TitleLabel.Dock = DockStyle.Bottom;
+            TitleLabel.FlatStyle = FlatStyle.Flat;
+            TitleLabel.Font = new Font("Century Gothic", 13.8F, FontStyle.Bold, GraphicsUnit.Point);
+            TitleLabel.ForeColor = Color.FromArgb(51, 153, 255);
+            TitleLabel.Location = new Point(0, -1);
+            TitleLabel.Name = "TitleLabel";
+            TitleLabel.Size = new Size(241, 52);
+            TitleLabel.TabIndex = 1;
+            TitleLabel.Text = "Content Analyzer";
+            TitleLabel.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // StartStopButtonContainer
             // 
-            this.StartStopButtonContainer.Controls.Add(this.StartServiceButton);
-            this.StartStopButtonContainer.Controls.Add(this.StopServiceButton);
-            this.StartStopButtonContainer.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.StartStopButtonContainer.Location = new System.Drawing.Point(0, 71);
-            this.StartStopButtonContainer.Margin = new System.Windows.Forms.Padding(0);
-            this.StartStopButtonContainer.Name = "StartStopButtonContainer";
-            this.StartStopButtonContainer.Size = new System.Drawing.Size(275, 90);
-            this.StartStopButtonContainer.TabIndex = 0;
+            StartStopButtonContainer.Controls.Add(StartServiceButton);
+            StartStopButtonContainer.Controls.Add(StopServiceButton);
+            StartStopButtonContainer.Dock = DockStyle.Bottom;
+            StartStopButtonContainer.Location = new Point(0, 51);
+            StartStopButtonContainer.Margin = new Padding(0);
+            StartStopButtonContainer.Name = "StartStopButtonContainer";
+            StartStopButtonContainer.Size = new Size(241, 68);
+            StartStopButtonContainer.TabIndex = 0;
             // 
             // StartServiceButton
             // 
-            this.StartServiceButton.BackColor = System.Drawing.SystemColors.Menu;
-            this.StartServiceButton.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.StartServiceButton.FlatAppearance.BorderSize = 0;
-            this.StartServiceButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.StartServiceButton.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.StartServiceButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(153)))), ((int)(((byte)(255)))));
-            this.StartServiceButton.Location = new System.Drawing.Point(0, 0);
-            this.StartServiceButton.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
-            this.StartServiceButton.Name = "StartServiceButton";
-            this.StartServiceButton.Size = new System.Drawing.Size(275, 90);
-            this.StartServiceButton.TabIndex = 0;
-            this.StartServiceButton.Text = "Start Service";
-            this.StartServiceButton.UseVisualStyleBackColor = false;
-            this.StartServiceButton.Click += new System.EventHandler(this.StartDataCollectionServiceButton_Click);
+            StartServiceButton.BackColor = SystemColors.Menu;
+            StartServiceButton.Dock = DockStyle.Fill;
+            StartServiceButton.FlatAppearance.BorderSize = 0;
+            StartServiceButton.FlatStyle = FlatStyle.Flat;
+            StartServiceButton.Font = new Font("Century Gothic", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            StartServiceButton.ForeColor = Color.FromArgb(51, 153, 255);
+            StartServiceButton.Location = new Point(0, 0);
+            StartServiceButton.Margin = new Padding(3, 0, 3, 0);
+            StartServiceButton.Name = "StartServiceButton";
+            StartServiceButton.Size = new Size(241, 68);
+            StartServiceButton.TabIndex = 0;
+            StartServiceButton.Text = "Start Service";
+            StartServiceButton.UseVisualStyleBackColor = false;
+            StartServiceButton.Click += StartDataCollectionServiceButton_Click;
             // 
             // StopServiceButton
             // 
-            this.StopServiceButton.BackColor = System.Drawing.SystemColors.Menu;
-            this.StopServiceButton.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.StopServiceButton.FlatAppearance.BorderSize = 0;
-            this.StopServiceButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.StopServiceButton.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.StopServiceButton.ForeColor = System.Drawing.SystemColors.Highlight;
-            this.StopServiceButton.Location = new System.Drawing.Point(0, 0);
-            this.StopServiceButton.Name = "StopServiceButton";
-            this.StopServiceButton.Size = new System.Drawing.Size(275, 90);
-            this.StopServiceButton.TabIndex = 1;
-            this.StopServiceButton.Text = "Stop Service";
-            this.StopServiceButton.UseVisualStyleBackColor = false;
-            this.StopServiceButton.Click += new System.EventHandler(this.StopDataCollectionServiceButton_Click);
+            StopServiceButton.BackColor = SystemColors.Menu;
+            StopServiceButton.Dock = DockStyle.Fill;
+            StopServiceButton.FlatAppearance.BorderSize = 0;
+            StopServiceButton.FlatStyle = FlatStyle.Flat;
+            StopServiceButton.Font = new Font("Century Gothic", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            StopServiceButton.ForeColor = SystemColors.Highlight;
+            StopServiceButton.Location = new Point(0, 0);
+            StopServiceButton.Margin = new Padding(3, 2, 3, 2);
+            StopServiceButton.Name = "StopServiceButton";
+            StopServiceButton.Size = new Size(241, 68);
+            StopServiceButton.TabIndex = 1;
+            StopServiceButton.Text = "Stop Service";
+            StopServiceButton.UseVisualStyleBackColor = false;
+            StopServiceButton.Click += StopDataCollectionServiceButton_Click;
             // 
             // ShowAllCommentsButton
             // 
-            this.ShowAllCommentsButton.BackColor = System.Drawing.SystemColors.Menu;
-            this.ShowAllCommentsButton.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.ShowAllCommentsButton.FlatAppearance.BorderSize = 0;
-            this.ShowAllCommentsButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ShowAllCommentsButton.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.ShowAllCommentsButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(153)))), ((int)(((byte)(255)))));
-            this.ShowAllCommentsButton.Location = new System.Drawing.Point(0, 161);
-            this.ShowAllCommentsButton.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
-            this.ShowAllCommentsButton.Name = "ShowAllCommentsButton";
-            this.ShowAllCommentsButton.Size = new System.Drawing.Size(275, 90);
-            this.ShowAllCommentsButton.TabIndex = 2;
-            this.ShowAllCommentsButton.Text = "All comments";
-            this.ShowAllCommentsButton.UseVisualStyleBackColor = false;
-            this.ShowAllCommentsButton.Click += new System.EventHandler(this.ShowAllCommentsButton_Click);
+            ShowAllCommentsButton.BackColor = SystemColors.Menu;
+            ShowAllCommentsButton.Dock = DockStyle.Bottom;
+            ShowAllCommentsButton.FlatAppearance.BorderSize = 0;
+            ShowAllCommentsButton.FlatStyle = FlatStyle.Flat;
+            ShowAllCommentsButton.Font = new Font("Century Gothic", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            ShowAllCommentsButton.ForeColor = Color.FromArgb(51, 153, 255);
+            ShowAllCommentsButton.Location = new Point(0, 119);
+            ShowAllCommentsButton.Margin = new Padding(3, 0, 3, 0);
+            ShowAllCommentsButton.Name = "ShowAllCommentsButton";
+            ShowAllCommentsButton.Size = new Size(241, 68);
+            ShowAllCommentsButton.TabIndex = 2;
+            ShowAllCommentsButton.Text = "All comments";
+            ShowAllCommentsButton.UseVisualStyleBackColor = false;
+            ShowAllCommentsButton.Click += ShowAllCommentsButton_Click;
             // 
             // ShowSelectedComments
             // 
-            this.ShowSelectedComments.BackColor = System.Drawing.SystemColors.Menu;
-            this.ShowSelectedComments.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.ShowSelectedComments.FlatAppearance.BorderSize = 0;
-            this.ShowSelectedComments.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ShowSelectedComments.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.ShowSelectedComments.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(153)))), ((int)(((byte)(255)))));
-            this.ShowSelectedComments.Location = new System.Drawing.Point(0, 251);
-            this.ShowSelectedComments.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
-            this.ShowSelectedComments.Name = "ShowSelectedComments";
-            this.ShowSelectedComments.Size = new System.Drawing.Size(275, 90);
-            this.ShowSelectedComments.TabIndex = 11;
-            this.ShowSelectedComments.Text = "Selected comments";
-            this.ShowSelectedComments.UseVisualStyleBackColor = false;
-            this.ShowSelectedComments.Click += new System.EventHandler(this.ShowSelectedComments_Click);
+            ShowSelectedComments.BackColor = SystemColors.Menu;
+            ShowSelectedComments.Dock = DockStyle.Bottom;
+            ShowSelectedComments.FlatAppearance.BorderSize = 0;
+            ShowSelectedComments.FlatStyle = FlatStyle.Flat;
+            ShowSelectedComments.Font = new Font("Century Gothic", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            ShowSelectedComments.ForeColor = Color.FromArgb(51, 153, 255);
+            ShowSelectedComments.Location = new Point(0, 187);
+            ShowSelectedComments.Margin = new Padding(3, 0, 3, 0);
+            ShowSelectedComments.Name = "ShowSelectedComments";
+            ShowSelectedComments.Size = new Size(241, 68);
+            ShowSelectedComments.TabIndex = 11;
+            ShowSelectedComments.Text = "Selected comments";
+            ShowSelectedComments.UseVisualStyleBackColor = false;
+            ShowSelectedComments.Click += ShowSelectedComments_Click;
             // 
             // ConfigureServiceButton
             // 
-            this.ConfigureServiceButton.BackColor = System.Drawing.SystemColors.Menu;
-            this.ConfigureServiceButton.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.ConfigureServiceButton.FlatAppearance.BorderSize = 0;
-            this.ConfigureServiceButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ConfigureServiceButton.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.ConfigureServiceButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(153)))), ((int)(((byte)(255)))));
-            this.ConfigureServiceButton.Location = new System.Drawing.Point(0, 341);
-            this.ConfigureServiceButton.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
-            this.ConfigureServiceButton.Name = "ConfigureServiceButton";
-            this.ConfigureServiceButton.Size = new System.Drawing.Size(275, 90);
-            this.ConfigureServiceButton.TabIndex = 0;
-            this.ConfigureServiceButton.Text = "Configure";
-            this.ConfigureServiceButton.UseVisualStyleBackColor = false;
-            this.ConfigureServiceButton.Click += new System.EventHandler(this.ConfigureServiceButton_Click);
+            ConfigureServiceButton.BackColor = SystemColors.Menu;
+            ConfigureServiceButton.Dock = DockStyle.Bottom;
+            ConfigureServiceButton.FlatAppearance.BorderSize = 0;
+            ConfigureServiceButton.FlatStyle = FlatStyle.Flat;
+            ConfigureServiceButton.Font = new Font("Century Gothic", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            ConfigureServiceButton.ForeColor = Color.FromArgb(51, 153, 255);
+            ConfigureServiceButton.Location = new Point(0, 255);
+            ConfigureServiceButton.Margin = new Padding(3, 0, 3, 0);
+            ConfigureServiceButton.Name = "ConfigureServiceButton";
+            ConfigureServiceButton.Size = new Size(241, 68);
+            ConfigureServiceButton.TabIndex = 0;
+            ConfigureServiceButton.Text = "Configure";
+            ConfigureServiceButton.UseVisualStyleBackColor = false;
+            ConfigureServiceButton.Click += ConfigureServiceButton_Click;
             // 
             // ViewLogsButton
             // 
-            this.ViewLogsButton.BackColor = System.Drawing.SystemColors.Menu;
-            this.ViewLogsButton.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.ViewLogsButton.FlatAppearance.BorderSize = 0;
-            this.ViewLogsButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ViewLogsButton.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.ViewLogsButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(153)))), ((int)(((byte)(255)))));
-            this.ViewLogsButton.Location = new System.Drawing.Point(0, 431);
-            this.ViewLogsButton.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
-            this.ViewLogsButton.Name = "ViewLogsButton";
-            this.ViewLogsButton.Size = new System.Drawing.Size(275, 90);
-            this.ViewLogsButton.TabIndex = 10;
-            this.ViewLogsButton.Text = "Logs";
-            this.ViewLogsButton.UseVisualStyleBackColor = false;
-            this.ViewLogsButton.Click += new System.EventHandler(this.ViewLogsButton_Click);
+            ViewLogsButton.BackColor = SystemColors.Menu;
+            ViewLogsButton.Dock = DockStyle.Bottom;
+            ViewLogsButton.FlatAppearance.BorderSize = 0;
+            ViewLogsButton.FlatStyle = FlatStyle.Flat;
+            ViewLogsButton.Font = new Font("Century Gothic", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            ViewLogsButton.ForeColor = Color.FromArgb(51, 153, 255);
+            ViewLogsButton.Location = new Point(0, 323);
+            ViewLogsButton.Margin = new Padding(3, 0, 3, 0);
+            ViewLogsButton.Name = "ViewLogsButton";
+            ViewLogsButton.Size = new Size(241, 68);
+            ViewLogsButton.TabIndex = 10;
+            ViewLogsButton.Text = "Logs";
+            ViewLogsButton.UseVisualStyleBackColor = false;
+            ViewLogsButton.Click += ViewLogsButton_Click;
             // 
             // ServiceInfoPanel
             // 
-            this.ServiceInfoPanel.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.ServiceInfoPanel.Controls.Add(this.SelectedCommentsFoundLabel);
-            this.ServiceInfoPanel.Controls.Add(this.CommentsFoundLabel);
-            this.ServiceInfoPanel.Controls.Add(this.label4);
-            this.ServiceInfoPanel.Controls.Add(this.label2);
-            this.ServiceInfoPanel.Controls.Add(this.label1);
-            this.ServiceInfoPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.ServiceInfoPanel.Location = new System.Drawing.Point(0, 521);
-            this.ServiceInfoPanel.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
-            this.ServiceInfoPanel.Name = "ServiceInfoPanel";
-            this.ServiceInfoPanel.Size = new System.Drawing.Size(275, 417);
-            this.ServiceInfoPanel.TabIndex = 9;
+            ServiceInfoPanel.BackColor = SystemColors.ControlLight;
+            ServiceInfoPanel.Controls.Add(SelectedCommentsFoundLabel);
+            ServiceInfoPanel.Controls.Add(CommentsFoundLabel);
+            ServiceInfoPanel.Controls.Add(label4);
+            ServiceInfoPanel.Controls.Add(label2);
+            ServiceInfoPanel.Controls.Add(label1);
+            ServiceInfoPanel.Dock = DockStyle.Bottom;
+            ServiceInfoPanel.Location = new Point(0, 391);
+            ServiceInfoPanel.Margin = new Padding(3, 0, 3, 0);
+            ServiceInfoPanel.Name = "ServiceInfoPanel";
+            ServiceInfoPanel.Size = new Size(241, 313);
+            ServiceInfoPanel.TabIndex = 9;
             // 
             // SelectedCommentsFoundLabel
             // 
-            this.SelectedCommentsFoundLabel.AutoSize = true;
-            this.SelectedCommentsFoundLabel.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.SelectedCommentsFoundLabel.Location = new System.Drawing.Point(191, 90);
-            this.SelectedCommentsFoundLabel.Name = "SelectedCommentsFoundLabel";
-            this.SelectedCommentsFoundLabel.Size = new System.Drawing.Size(17, 20);
-            this.SelectedCommentsFoundLabel.TabIndex = 8;
-            this.SelectedCommentsFoundLabel.Text = "0";
+            SelectedCommentsFoundLabel.AutoSize = true;
+            SelectedCommentsFoundLabel.Font = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            SelectedCommentsFoundLabel.Location = new Point(167, 68);
+            SelectedCommentsFoundLabel.Name = "SelectedCommentsFoundLabel";
+            SelectedCommentsFoundLabel.Size = new Size(15, 17);
+            SelectedCommentsFoundLabel.TabIndex = 8;
+            SelectedCommentsFoundLabel.Text = "0";
             // 
             // CommentsFoundLabel
             // 
-            this.CommentsFoundLabel.AutoSize = true;
-            this.CommentsFoundLabel.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.CommentsFoundLabel.Location = new System.Drawing.Point(191, 59);
-            this.CommentsFoundLabel.Name = "CommentsFoundLabel";
-            this.CommentsFoundLabel.Size = new System.Drawing.Size(17, 20);
-            this.CommentsFoundLabel.TabIndex = 7;
-            this.CommentsFoundLabel.Text = "0";
+            CommentsFoundLabel.AutoSize = true;
+            CommentsFoundLabel.Font = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            CommentsFoundLabel.Location = new Point(167, 44);
+            CommentsFoundLabel.Name = "CommentsFoundLabel";
+            CommentsFoundLabel.Size = new Size(15, 17);
+            CommentsFoundLabel.TabIndex = 7;
+            CommentsFoundLabel.Text = "0";
             // 
             // label4
             // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label4.Location = new System.Drawing.Point(79, 9);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(106, 21);
-            this.label4.TabIndex = 3;
-            this.label4.Text = "Service Info";
+            label4.AutoSize = true;
+            label4.Font = new Font("Century Gothic", 10.2F, FontStyle.Regular, GraphicsUnit.Point);
+            label4.Location = new Point(69, 7);
+            label4.Name = "label4";
+            label4.Size = new Size(87, 19);
+            label4.TabIndex = 3;
+            label4.Text = "Service Info";
             // 
             // label2
             // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label2.Location = new System.Drawing.Point(30, 90);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(162, 20);
-            this.label2.TabIndex = 1;
-            this.label2.Text = "Selected comments: ";
+            label2.AutoSize = true;
+            label2.Font = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            label2.Location = new Point(26, 68);
+            label2.Name = "label2";
+            label2.Size = new Size(135, 17);
+            label2.TabIndex = 1;
+            label2.Text = "Selected comments: ";
             // 
             // label1
             // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label1.Location = new System.Drawing.Point(50, 59);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(142, 20);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Comments found: ";
+            label1.AutoSize = true;
+            label1.Font = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            label1.Location = new Point(44, 44);
+            label1.Name = "label1";
+            label1.Size = new Size(115, 17);
+            label1.TabIndex = 0;
+            label1.Text = "Comments found: ";
             // 
             // CentralPanel
             // 
-            this.CentralPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.CentralPanel.BackColor = System.Drawing.SystemColors.InactiveCaption;
-            this.CentralPanel.Location = new System.Drawing.Point(275, 44);
-            this.CentralPanel.Margin = new System.Windows.Forms.Padding(0);
-            this.CentralPanel.Name = "CentralPanel";
-            this.CentralPanel.Size = new System.Drawing.Size(1107, 864);
-            this.CentralPanel.TabIndex = 6;
+            CentralPanel.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            CentralPanel.BackColor = SystemColors.InactiveCaption;
+            CentralPanel.Location = new Point(241, 33);
+            CentralPanel.Margin = new Padding(0);
+            CentralPanel.Name = "CentralPanel";
+            CentralPanel.Size = new Size(969, 648);
+            CentralPanel.TabIndex = 6;
             // 
             // MainWindow
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1382, 982);
-            this.ControlBox = false;
-            this.Controls.Add(this.CentralPanel);
-            this.Controls.Add(this.BottomPanel);
-            this.Controls.Add(this.LeftPanel);
-            this.Controls.Add(this.UpperPanel);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Name = "MainWindow";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Load += new System.EventHandler(this.MainWindow_Load);
-            this.UpperPanel.ResumeLayout(false);
-            this.BottomPanel.ResumeLayout(false);
-            this.BottomPanel.PerformLayout();
-            this.StatePanel.ResumeLayout(false);
-            this.LeftPanel.ResumeLayout(false);
-            this.StartStopButtonContainer.ResumeLayout(false);
-            this.ServiceInfoPanel.ResumeLayout(false);
-            this.ServiceInfoPanel.PerformLayout();
-            this.ResumeLayout(false);
-
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(1209, 736);
+            ControlBox = false;
+            Controls.Add(CentralPanel);
+            Controls.Add(BottomPanel);
+            Controls.Add(LeftPanel);
+            Controls.Add(UpperPanel);
+            FormBorderStyle = FormBorderStyle.None;
+            Margin = new Padding(3, 2, 3, 2);
+            Name = "MainWindow";
+            StartPosition = FormStartPosition.CenterScreen;
+            Load += MainWindow_Load;
+            UpperPanel.ResumeLayout(false);
+            BottomPanel.ResumeLayout(false);
+            BottomPanel.PerformLayout();
+            StatePanel.ResumeLayout(false);
+            LeftPanel.ResumeLayout(false);
+            StartStopButtonContainer.ResumeLayout(false);
+            ServiceInfoPanel.ResumeLayout(false);
+            ServiceInfoPanel.PerformLayout();
+            ResumeLayout(false);
         }
 
         #endregion

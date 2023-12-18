@@ -1,8 +1,9 @@
 using System.ComponentModel;
 using System.Diagnostics;
+using Interface.Forms;
 using Timer = System.Windows.Forms.Timer;
 
-namespace Interface.Forms;
+namespace ContentAnalyzer.Frontend.Desktop.Forms;
 
 public partial class MainWindow : Form
 {
@@ -41,7 +42,7 @@ public partial class MainWindow : Form
 
     private async void StartDataCollectionServiceButton_Click(object sender, EventArgs e)
     {
-        await Task.Run(()=>
+        await Task.Run(() =>
         {
             _services.StartDataCollectionService();
             _services.StartDataAnalysisService();
@@ -127,7 +128,7 @@ public partial class MainWindow : Form
     private void CloseButton_Click(object sender, EventArgs e)
     {
         if (StateLabel.Text == @"Working") StopService();
-        
+
         Application.Exit();
     }
 
@@ -144,7 +145,7 @@ public partial class MainWindow : Form
     }
 
     private Point _lastLocation;
-    
+
 
     private void UpperPanel_MouseMove(object sender, MouseEventArgs e)
     {

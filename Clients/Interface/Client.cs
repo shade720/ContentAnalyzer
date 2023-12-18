@@ -3,7 +3,8 @@ using DataAnalysisServiceClient;
 using DataCollectionServiceClient;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Net.Client;
-namespace Interface;
+
+namespace ContentAnalyzer.Frontend.Desktop;
 
 public class Client
 {
@@ -32,17 +33,17 @@ public class Client
 
     public List<Comment> GetComments(int startIndex)
     {
-        var comments = _dataCollectionClient.GetCommentsFrom(new GetCommentsRequest {StartIndex = startIndex});
+        var comments = _dataCollectionClient.GetCommentsFrom(new GetCommentsRequest { StartIndex = startIndex });
         return comments.Result.Select(comment => new Comment
-            {
-                Id = comment.Id,
-                CommentId = comment.CommentId,
-                AuthorId = comment.AuthorId,
-                GroupId = comment.GroupId,
-                PostDate = comment.PostDate.ToDateTime(),
-                PostId = comment.PostId,
-                Text = comment.Text
-            })
+        {
+            Id = comment.Id,
+            CommentId = comment.CommentId,
+            AuthorId = comment.AuthorId,
+            GroupId = comment.GroupId,
+            PostDate = comment.PostDate.ToDateTime(),
+            PostId = comment.PostId,
+            Text = comment.Text
+        })
             .ToList();
     }
 
@@ -68,7 +69,7 @@ public class Client
 
     public List<EvaluatedComment> GetEvaluateResults(int startIndex)
     {
-        var comments = _dataAnalysisClient.GetEvaluateResultsFrom(new EvaluateResultsRequest { StartIndex = startIndex});
+        var comments = _dataAnalysisClient.GetEvaluateResultsFrom(new EvaluateResultsRequest { StartIndex = startIndex });
         return comments.Result.Select(evaluateResultProto => new EvaluatedComment
         {
             Id = evaluateResultProto.Id,
@@ -90,13 +91,13 @@ public class Client
 
     public string GetDataCollectionServiceLogs(DateTime date)
     {
-        var result = _dataCollectionClient.GetLogs(new DataCollectionServiceClient.LogRequest { LogDate = Timestamp.FromDateTime(date.ToUniversalTime())});
+        var result = _dataCollectionClient.GetLogs(new DataCollectionServiceClient.LogRequest { LogDate = Timestamp.FromDateTime(date.ToUniversalTime()) });
         return result.LogFile.ToStringUtf8();
     }
 
     public string GetDataAnalysisServiceLogs(DateTime date)
     {
-        var result = _dataAnalysisClient.GetLogs(new DataAnalysisServiceClient.LogRequest { LogDate = Timestamp.FromDateTime(date.ToUniversalTime())});
+        var result = _dataAnalysisClient.GetLogs(new DataAnalysisServiceClient.LogRequest { LogDate = Timestamp.FromDateTime(date.ToUniversalTime()) });
         return result.LogFile.ToStringUtf8();
     }
 

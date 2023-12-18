@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31919.166
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Interface", "Clients\Interface\Interface.csproj", "{BC8CA66A-33D5-4B27-B017-1CABD3CE6AD4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ContentAnalyzer.Frontend.Desktop", "Clients\Interface\ContentAnalyzer.Frontend.Desktop.csproj", "{BC8CA66A-33D5-4B27-B017-1CABD3CE6AD4}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common", "Common\Common.csproj", "{CB10C88F-907D-40A9-83B3-FA97C4AC2E99}"
 EndProject

@@ -1,4 +1,4 @@
-﻿namespace Interface.Forms
+﻿namespace ContentAnalyzer.Frontend.Desktop.Forms
 {
     partial class SelectedCommentsForm
     {

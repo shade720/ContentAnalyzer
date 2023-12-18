@@ -1,6 +1,6 @@
 ﻿using Common.SharedDomain;
 
-namespace Interface.Forms;
+namespace ContentAnalyzer.Frontend.Desktop.Forms;
 
 public partial class SelectedCommentsForm : Form
 {

@@ -9,8 +9,8 @@ namespace DevTool.Forms;
 
 internal partial class MainForm : Form
 {
-    private ServiceClient<Comment> _collectionServiceClient;
-    private ServiceClient<EvaluatedComment> _analysisServiceClient;
+    private CollectionServiceClient _collectionServiceClient;
+    private AnalysisServiceClient _analysisServiceClient;
 
     public MainForm()
     {
@@ -25,17 +25,9 @@ internal partial class MainForm : Form
 
         _analysisServiceClient = new AnalysisServiceClient(AnalysisServiceEndpoint.Text);
         _collectionServiceClient = new CollectionServiceClient(CollectionServiceEndpoint.Text);
-        _analysisServiceClient.OnServiceInfoProgress = new Progress<ServiceInfo>(RefreshAnalysisInfo);
-        _collectionServiceClient.OnServiceInfoProgress = new Progress<ServiceInfo>(RefreshCollectionInfo);
-
-        _collectionServiceClient.OnProgressBarStep = new Progress<bool>(CollectionProgressBarStep);
-        _analysisServiceClient.OnProgressBarStep = new Progress<bool>(AnalysisProgressBarStep);
 
         AnalysisServiceProgressBar.Value = 0;
         CollectionServiceProgressBar.Value = 0;
-
-        _analysisServiceClient.StartPolling();
-        _collectionServiceClient.StartPolling();
     }
 
     #region MainTab
@@ -55,12 +47,12 @@ internal partial class MainForm : Form
 
     private void RefreshCollectionServiceInfo_Click(object sender, EventArgs e)
     {
-        _collectionServiceClient.Poll();
+        //_collectionServiceClient.Poll();
     }
 
     private void RefreshAnalysisServiceInfo_Click(object sender, EventArgs e)
     {
-        _analysisServiceClient.Poll();
+        //_analysisServiceClient.Poll();
     }
 
     private void RefreshCollectionInfo(ServiceInfo serviceInfo)
@@ -112,29 +104,29 @@ internal partial class MainForm : Form
 
     private void ViewCollectionServiceLogs_Click(object sender, EventArgs e)
     {
-        new LogViewerWindow(_collectionServiceClient.GetLog(DateTime.Parse(CollectionLogDate.Text))).Show();
+        //new LogViewerWindow(_collectionServiceClient.GetLog(DateTime.Parse(CollectionLogDate.Text))).Show();
     }
 
     private void ViewAnalysisServiceLogs_Click(object sender, EventArgs e)
     {
-        new LogViewerWindow(_analysisServiceClient.GetLog(DateTime.Parse(AnalysisLogDate.Text))).Show();
+        //new LogViewerWindow(_analysisServiceClient.GetLog(DateTime.Parse(AnalysisLogDate.Text))).Show();
     }
 
     private void ApplyNewCollectionServiceEndpoint_Click_1(object sender, EventArgs e)
     {
-        _collectionServiceClient.StopPolling();
-        _collectionServiceClient.Dispose();
-        _collectionServiceClient = new CollectionServiceClient(CollectionServiceEndpoint.Text);
-        _collectionServiceClient.StartPolling();
+        //_collectionServiceClient.StopPolling();
+        //_collectionServiceClient.Dispose();
+       // _collectionServiceClient = new CollectionServiceClient(CollectionServiceEndpoint.Text);
+        //_collectionServiceClient.StartPolling();
     }
 
 
     private void ApplyAnalysisServiceEndpoint_Click_1(object sender, EventArgs e)
     {
-        _analysisServiceClient.StopPolling();
-        _analysisServiceClient.Dispose();
-        _analysisServiceClient = new AnalysisServiceClient(AnalysisServiceEndpoint.Text);
-        _analysisServiceClient.StartPolling();
+        //_analysisServiceClient.StopPolling();
+        //_analysisServiceClient.Dispose();
+        //_analysisServiceClient = new AnalysisServiceClient(AnalysisServiceEndpoint.Text);
+        //_analysisServiceClient.StartPolling();
     }
 
     #endregion
@@ -183,7 +175,7 @@ internal partial class MainForm : Form
         Task.Run(() =>
         {
             _collectionServiceClient.StopService();
-            _collectionServiceClient.Poll();
+            //_collectionServiceClient.Poll();
         }).ContinueWith(result =>
         {
             if (result.IsCompleted)
@@ -205,7 +197,7 @@ internal partial class MainForm : Form
         Task.Run(() =>
         {
             _analysisServiceClient.StopService();
-            _analysisServiceClient.Poll();
+            //_analysisServiceClient.Poll();
         }).ContinueWith(result =>
         {
             if (result.IsCompleted)
@@ -426,14 +418,14 @@ internal partial class MainForm : Form
             ToDate = toDate
         };
 
-        Task.Run(() => Reporter.OpenReport(SaveFileDialog.FileName, _analysisServiceClient.GetResults(filter)))
-            .ContinueWith(result =>
-            {
-                MessageBox.Show(result.IsCompleted
-                    ? @"The report was created successfully"
-                    : $"Error: \r\n{result.Exception.Message}\r\n{result.Exception.StackTrace}");
-                OpenReport.Enabled = true;
-            }, CancellationToken.None, TaskContinuationOptions.None, TaskScheduler.FromCurrentSynchronizationContext());
+        //Task.Run(() => Reporter.OpenReport(SaveFileDialog.FileName, //_analysisServiceClient.GetResults(filter)))
+            //.ContinueWith(result =>
+            //{
+                //MessageBox.Show(result.IsCompleted
+                    //? @"The report was created successfully"
+                    //: $"Error: \r\n{result.Exception.Message}\r\n{result.Exception.StackTrace}");
+                //OpenReport.Enabled = true;
+            //}, CancellationToken.None, TaskContinuationOptions.None, TaskScheduler.FromCurrentSynchronizationContext());
     }
 
     #region CheckBoxHandlers
@@ -529,7 +521,5 @@ internal partial class MainForm : Form
 
     private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
     {
-        _analysisServiceClient.StopPolling();
-        _collectionServiceClient.StopPolling();
     }
 }

@@ -38,6 +38,6 @@ public class LogsSynchronizer
 
     private void Poll()
     {
-        _collectionServiceClient.GetLogFile();
+        //_collectionServiceClient.GetLogFile();
     }
 }
