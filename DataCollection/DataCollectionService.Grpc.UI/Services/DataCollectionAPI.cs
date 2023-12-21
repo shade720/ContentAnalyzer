@@ -49,6 +49,7 @@ public class DataCollectionAPI : DataCollection.DataCollectionBase
             AuthorId = request.Filter.AuthorId,
             PostId = request.Filter.PostId,
             GroupId = request.Filter.GroupId,
+            Text = request.Filter.Text,
             FromDate = request.Filter.FromDate.ToDateTime(),
             ToDate = request.Filter.ToDate.ToDateTime()
         };
@@ -72,21 +73,20 @@ public class DataCollectionAPI : DataCollection.DataCollectionBase
         return new ClearCommentsDatabaseReply();
     }
 
-    public override Task<LogReply> GetLogs(LogRequest request, ServerCallContext context)
+    public override async Task<LogReply> GetLogs(LogRequest request, ServerCallContext context)
     {
         var logDate = request.LogDate.ToDateTime().ToLocalTime();
 
-        var requiredFilePath = Directory.GetFiles(@"./Logs/", $"log{logDate:yyyyMMdd}*.txt").SingleOrDefault();
+        var requiredFilePath = Directory.GetFiles("./Logs/").FirstOrDefault(x => x.Contains($"{logDate:yyyyMMdd}"));
 
         if (requiredFilePath is null)
         {
             Log.Logger.Error("Log file for {date} does not exist", logDate.ToString("yyyyMMdd"));
-            return Task.FromResult(new LogReply());
+            return new LogReply();
         }
 
-        using var fileStream = new FileStream(requiredFilePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-
-        return Task.FromResult(new LogReply { LogFile = ByteString.FromStream(fileStream) });
+        await using var fileStream = new FileStream(requiredFilePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+        return new LogReply { LogFile = await ByteString.FromStreamAsync(fileStream) };
     }
 
     public override async Task<SetConfigurationReply> SetConfiguration(SetConfigurationRequest request, ServerCallContext context)

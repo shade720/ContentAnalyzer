@@ -34,10 +34,10 @@ public class CommentRepository : ICommentsRepository
         Log.Logger.Information("{0} comments collected", context.Comments.Count());
     }
 
-    public async Task<IQueryable<Comment>> GetRange(CommentsQueryFilter filter)
+    public async Task<List<Comment>> GetRange(CommentsQueryFilter filter)
     {
         await using var context = await _contextFactory.CreateDbContextAsync();
-        return context.Comments.Where(c => c.Id > filter.Id);
+        return context.Comments.Where(c => c.Id > filter.Id).ToList();
     }
 
     public async Task Clear()

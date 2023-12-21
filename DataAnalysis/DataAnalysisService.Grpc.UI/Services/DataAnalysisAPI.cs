@@ -51,6 +51,8 @@ public class DataAnalysisAPI : DataAnalysis.DataAnalysisBase
             AuthorId = request.Filter.AuthorId,
             PostId = request.Filter.PostId,
             GroupId = request.Filter.GroupId,
+            Text = request.Filter.Text,
+            Category = request.Filter.Category,
             FromDate = request.Filter.FromDate.ToDateTime(),
             ToDate = request.Filter.ToDate.ToDateTime()
         };
@@ -73,7 +75,7 @@ public class DataAnalysisAPI : DataAnalysis.DataAnalysisBase
                 },
                 EvaluateCategory = evaluateResult.EvaluateCategory,
                 EvaluateProbability = evaluateResult.EvaluateProbability
-            });
+            }).ToArray();
 
         return new EvaluatedCommentsReply { EvaluatedComments = { new RepeatedField<EvaluatedCommentProto> { range } } };
     }
@@ -82,7 +84,7 @@ public class DataAnalysisAPI : DataAnalysis.DataAnalysisBase
     {
         var logDate = request.LogDate.ToDateTime().ToLocalTime();
 
-        var requiredFilePath = Directory.GetFiles(@"./Logs/", $"log{logDate:yyyyMMdd}*.txt").SingleOrDefault();
+        var requiredFilePath = Directory.GetFiles("./Logs/").FirstOrDefault(x => x.Contains($"{logDate:yyyyMMdd}"));
         if (requiredFilePath is null)
         {
             Log.Logger.Error("Log file for {date} does not exist", logDate.ToString("yyyyMMdd"));

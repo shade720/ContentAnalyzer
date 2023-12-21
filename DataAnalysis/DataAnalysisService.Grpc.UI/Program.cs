@@ -16,10 +16,11 @@ Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
     .WriteTo.Console()
     .WriteTo.File(
-        logFolderPath + "/log-{Date}.txt",
+        logFolderPath + "/log.txt",
         LogEventLevel.Information,
         outputTemplate: "`~{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level}] {Message:lj}{NewLine}{Exception}",
-        retainedFileCountLimit: 3)
+        rollingInterval: RollingInterval.Day,
+        retainedFileCountLimit: 30)
     .CreateLogger();
 
 var builder = WebApplication.CreateBuilder(args);

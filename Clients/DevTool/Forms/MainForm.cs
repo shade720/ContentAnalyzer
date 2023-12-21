@@ -500,8 +500,6 @@ internal partial class MainForm : Form
         });
     }
 
-    #endregion
-
     private void NonFiringState(Action action)
     {
         TodayCheckBox.CheckedChanged -= TodayCheckBox_CheckedChanged!;
@@ -516,6 +514,8 @@ internal partial class MainForm : Form
         LastMonthCheckBox.CheckedChanged += LastMonthCheckBox_CheckedChanged!;
         SelectedDateCheckBox.CheckedChanged += SelectedDateCheckBox_CheckedChanged!;
     }
+
+    #endregion
 
     #endregion
 

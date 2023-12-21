@@ -18,11 +18,10 @@ public class CommentsRepository : ICommentsRepository
         throw new NotImplementedException();
     }
 
-    public async Task<IQueryable<Comment>> GetRange(CommentsQueryFilter? filter)
+    public async Task<List<Comment>> GetRange(CommentsQueryFilter? filter)
     {
         await using var context = await _contextFactory.CreateDbContextAsync();
-        var filteredComments = context.Comments.Where(c => !c.IncludedInEvaluatedComments.Any()).ToList();
-        return filteredComments.AsQueryable();
+        return context.Comments.Where(c => !c.IncludedInEvaluatedComments.Any()).ToList();
     }
 
     public Task Clear()

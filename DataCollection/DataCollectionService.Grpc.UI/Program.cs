@@ -9,14 +9,19 @@ using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Serilog.Events;
 
+var logFolderPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Logs");
+if (!Directory.Exists(logFolderPath))
+    Directory.CreateDirectory(logFolderPath);
+
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
     .WriteTo.Console()
-    .WriteTo.RollingFile(
-        @".\Logs\log{Date}.txt",
+    .WriteTo.File(
+        logFolderPath + "/log.txt",
         LogEventLevel.Information,
         outputTemplate: "`~{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level}] {Message:lj}{NewLine}{Exception}",
-        retainedFileCountLimit: 3)
+        rollingInterval: RollingInterval.Day,
+        retainedFileCountLimit: 30)
     .CreateLogger();
 
 var builder = WebApplication.CreateBuilder(args);

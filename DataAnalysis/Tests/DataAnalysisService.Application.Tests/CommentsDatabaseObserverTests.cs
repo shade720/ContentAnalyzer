@@ -44,7 +44,7 @@ public class CommentsDatabaseObserverTests
                 PostDate = new DateTime(2023,11,06),
                 Text = "Тестовый комментарий №3"
             },
-        }.AsQueryable();
+        };
 
         _commentsRepositoryMock
             .Setup(x => x.GetRange(null))

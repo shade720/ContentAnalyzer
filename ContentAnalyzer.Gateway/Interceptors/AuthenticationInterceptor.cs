@@ -23,16 +23,19 @@ public class AuthenticationInterceptor : Interceptor
     {
         var incomingUsername = context.RequestHeaders.GetValue("Username");
         var incomingPassword = context.RequestHeaders.GetValue("Password");
-        if (string.IsNullOrEmpty(incomingUsername) || string.IsNullOrEmpty(incomingPassword))
+        if (!context.Method.Contains("AddUser") && (string.IsNullOrEmpty(incomingUsername) || string.IsNullOrEmpty(incomingPassword)))
+        {
+            _logger.LogError("No username or password provided");
             throw new AuthenticationException("No username or password provided");
+        }
 
         var extractedToken = new Token
         {
-            UserName = incomingUsername, 
-            TokenData = incomingPassword
+            UserName = incomingUsername!, 
+            TokenData = incomingPassword!
         };
 
-        if (await _tokenManager.CheckToken(extractedToken))
+        if (context.Method.Contains("AddUser") || await _tokenManager.CheckToken(extractedToken))
         {
             _logger.LogInformation("Request authenticated successfully. Username/Method: {Username} / {Method}",
                 incomingUsername, context.Method);

@@ -30,8 +30,10 @@ message CommentsQueryFilterProto{
 	int64 PostId = 1;
 	int64 GroupId = 2;
 	int64 AuthorId = 3;
-	google.protobuf.Timestamp FromDate = 4;
-	google.protobuf.Timestamp ToDate = 5;
+	string Text = 4;
+	string Category = 5;
+	google.protobuf.Timestamp FromDate = 6;
+	google.protobuf.Timestamp ToDate = 7;
 }
 
 message EvaluatedCommentProto{

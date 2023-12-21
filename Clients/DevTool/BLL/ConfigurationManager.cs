@@ -1,31 +1,32 @@
 ﻿using DevTool.Models.ConfigurationModel;
 using Newtonsoft.Json;
 
-namespace DevTool.BLL;
-
-internal static class ConfigurationManager
+namespace DevTool.BLL
 {
-    public static Configuration? GetConfiguration()
+    internal static class ConfigurationManager
     {
-        if (!File.Exists(@"configuration.json")) return null;
-        var configFile = File.ReadAllText(@"configuration.json");
-        return JsonConvert.DeserializeObject<Configuration>(configFile);
-    }
+        public static Configuration? GetConfiguration()
+        {
+            if (!File.Exists(@"configuration.json")) return null;
+            var configFile = File.ReadAllText(@"configuration.json");
+            return JsonConvert.DeserializeObject<Configuration>(configFile);
+        }
 
-    public static void SaveConfiguration(Configuration configuration)
-    {
-        File.WriteAllText(@"configuration.json", JsonConvert.SerializeObject(configuration));
-    }
+        public static void SaveConfiguration(Configuration configuration)
+        {
+            File.WriteAllText(@"configuration.json", JsonConvert.SerializeObject(configuration));
+        }
 
-    public static VkConfiguration? GetVkConfiguration()
-    {
-        if (!File.Exists(@"vkSettings.json")) return null;
-        var configFile = File.ReadAllText(@"vkSettings.json");
-        return JsonConvert.DeserializeObject<VkConfiguration>(configFile);
-    }
+        public static VkConfiguration? GetVkConfiguration()
+        {
+            if (!File.Exists(@"vkSettings.json")) return null;
+            var configFile = File.ReadAllText(@"vkSettings.json");
+            return JsonConvert.DeserializeObject<VkConfiguration>(configFile);
+        }
 
-    public static void SaveVkConfiguration(VkConfiguration configuration)
-    {
-        File.WriteAllText(@"vkSettings.json", JsonConvert.SerializeObject(configuration));
+        public static void SaveVkConfiguration(VkConfiguration configuration)
+        {
+            File.WriteAllText(@"vkSettings.json", JsonConvert.SerializeObject(configuration));
+        }
     }
 }

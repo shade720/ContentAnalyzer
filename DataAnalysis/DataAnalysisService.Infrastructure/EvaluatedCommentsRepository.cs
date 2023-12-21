@@ -23,7 +23,7 @@ public class EvaluatedCommentsRepository : IEvaluatedCommentsRepository
         Log.Logger.Information("{0} comments evaluated", context.EvaluatedComments.Count());
     }
 
-    public async Task<IQueryable<EvaluatedComment>> GetRange(CommentsQueryFilter filter)
+    public async Task<List<EvaluatedComment>> GetRange(CommentsQueryFilter filter)
     {
         await using var context = await _contextFactory.CreateDbContextAsync();
         return context.EvaluatedComments
@@ -33,7 +33,9 @@ public class EvaluatedCommentsRepository : IEvaluatedCommentsRepository
                 .Where(c => filter.GroupId <= 0 || c.RelatedComment.GroupId == filter.GroupId)
                 .Where(c => filter.FromDate.Year <= 1970 || c.RelatedComment.PostDate > filter.FromDate)
                 .Where(c => filter.ToDate.Year <= 1970 || c.RelatedComment.PostDate < filter.ToDate)
-                .AsQueryable();
+                .Where(c => string.IsNullOrEmpty(filter.Text) || c.RelatedComment.Text.Contains(filter.Text))
+                .Where(c => string.IsNullOrEmpty(filter.Category) || c.EvaluateCategory.Contains(filter.Category))
+                .ToList();
     }
 
     public async Task Clear()

@@ -11,8 +11,9 @@ public class DataCollectionServiceClient
     {
         if (configuration is null)
             throw new ArgumentNullException(nameof(configuration));
-        var host = configuration["DataCollectionServiceHost"];
-        if (host is null)
+        var hostFromEnvironment = Environment.GetEnvironmentVariable("DATA_COLLECTION_SERVICE_HOST");
+        var host = !string.IsNullOrEmpty(hostFromEnvironment) ? hostFromEnvironment : configuration["DataCollectionServiceHost"];
+        if (string.IsNullOrEmpty(host))
             throw new ArgumentNullException(nameof(host));
         var grpcChannel = GrpcChannel.ForAddress(host);
         _dataCollectionClient = new DataCollection.DataCollectionClient(grpcChannel);

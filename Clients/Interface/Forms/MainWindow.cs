@@ -1,53 +1,78 @@
-using System.ComponentModel;
-using System.Diagnostics;
-using Interface.Forms;
-using Timer = System.Windows.Forms.Timer;
+using ContentAnalyzer.Frontend.Desktop.BusinessLogicLayer;
+using ContentAnalyzer.Frontend.Desktop.Models;
 
 namespace ContentAnalyzer.Frontend.Desktop.Forms;
 
 public partial class MainWindow : Form
 {
-    private readonly AllCommentsForm _allCommentsForm;
-    private readonly SelectedCommentsForm _selectedCommentsForm;
-    private readonly ConfigureServiceForm _configureServiceForm = new();
-    private readonly LogsForm _logsForm;
-    private readonly Timer _timer = new();
-    private readonly Stopwatch _stopwatch = new();
-    private readonly Client _services;
+    private readonly ProcessedCommentsForm _selectedCommentsForm;
+    private readonly ConfigureServiceForm _configureServiceForm;
+    private readonly LogForm _logForm;
+
+    private readonly BackendClientFactory _backendClientFactory;
 
     public MainWindow()
     {
-        _services = new Client(_configureServiceForm.DataAnalysisServiceHost.Text, _configureServiceForm.DataCollectionServiceHost.Text);
-        _logsForm = new LogsForm(_services);
-        _allCommentsForm = new AllCommentsForm(this, _services);
-        _selectedCommentsForm = new SelectedCommentsForm(this, _services);
         InitializeComponent();
-        _allCommentsForm.TopLevel = false;
+        _backendClientFactory = new BackendClientFactory();
+
+        _configureServiceForm = new ConfigureServiceForm(_backendClientFactory);
+        _logForm = new LogForm(this, _backendClientFactory);
+        _selectedCommentsForm = new ProcessedCommentsForm(_backendClientFactory);
+
         _selectedCommentsForm.TopLevel = false;
         _configureServiceForm.TopLevel = false;
-        _logsForm.TopLevel = false;
-        CentralPanel.Controls.Add(_allCommentsForm);
+        _logForm.TopLevel = false;
+
         CentralPanel.Controls.Add(_selectedCommentsForm);
         CentralPanel.Controls.Add(_configureServiceForm);
-        CentralPanel.Controls.Add(_logsForm);
-        _timer.Interval = 1000;
-        _timer.Tick += TimerOnTick;
-
+        CentralPanel.Controls.Add(_logForm);
     }
 
-    private void TimerOnTick(object? sender, EventArgs e)
+    private void MainWindow_Load(object sender, EventArgs e)
     {
-        UptimeLabel.Text = _stopwatch.Elapsed.ToString(@"dd\.hh\:mm\:ss");
+        _selectedCommentsForm.Show();
+        _logForm.Hide();
+        _configureServiceForm.Hide();
     }
 
     private async void StartDataCollectionServiceButton_Click(object sender, EventArgs e)
     {
-        await Task.Run(() =>
+        using var backendClient = _backendClientFactory.GetClient();
+        if (backendClient is null)
         {
-            _services.StartDataCollectionService();
-            _services.StartDataAnalysisService();
-            _services.StartAllAnalyzeModels();
-        });
+            MessageBox.Show(@"There is no connection to the services", @"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            return;
+        }
+        try
+        {
+            await backendClient.StartDataCollectionServiceAsync();
+            await backendClient.StartDataAnalysisServiceAsync();
+        }
+        catch (Exception exception)
+        {
+            MessageBox.Show($"There is no connection to the services\r\n\n{exception.Message}", @"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+
+        ServicesUpChangeControls();
+    }
+
+    public void SetBackendState(BackendState state)
+    {
+        ErrorsCountLabel.Text = state.ErrorsCount.ToString();
+        WarningsCountLabel.Text = state.WarningsCount.ToString();
+        ProcessedCommentsLabel.Text = state.ProcessedComments.ToString();
+        CollectorServiceStateLabel.Text = state.CollectionServiceState.ToString();
+        AnalysisServiceStateLabel.Text = state.AnalysisServiceState.ToString();
+        if (state.CollectionServiceState == ServiceState.Up || 
+            state.AnalysisServiceState == ServiceState.Up)
+            ServicesUpChangeControls();
+        else
+            ServicesDownChangeControls();
+    }
+
+    private void ServicesUpChangeControls()
+    {
         StartServiceButton.Hide();
         StopServiceButton.Show();
         StatePanel.BackColor = Color.Chartreuse;
@@ -55,17 +80,10 @@ public partial class MainWindow : Form
         StateLabel.BackColor = Color.Chartreuse;
         CollectorServiceStateLabel.Text = @"Up";
         AnalysisServiceStateLabel.Text = @"Up";
-        _timer.Start();
-        _stopwatch.Start();
-        var _ = _allCommentsForm.DisplayActualData();
-        var __ = _selectedCommentsForm.DisplayActualData();
     }
 
-    private async void StopDataCollectionServiceButton_Click(object sender, EventArgs e)
+    private void ServicesDownChangeControls()
     {
-        _allCommentsForm.StopDisplayData();
-        _selectedCommentsForm.StopDisplayData();
-        await Task.Run(StopService);
         StartServiceButton.Show();
         StopServiceButton.Hide();
         StatePanel.BackColor = Color.Red;
@@ -73,70 +91,55 @@ public partial class MainWindow : Form
         StateLabel.BackColor = Color.Red;
         CollectorServiceStateLabel.Text = @"Down";
         AnalysisServiceStateLabel.Text = @"Down";
-        _timer.Stop();
-        _stopwatch.Stop();
-        _stopwatch.Reset();
     }
 
-    private void StopService()
+    private async void StopDataCollectionServiceButton_Click(object sender, EventArgs e)
     {
-        _services.StopDataCollectionService();
-        _services.StopAllModels();
-        _services.StopDataAnalysisService();
-    }
+        using var backendClient = _backendClientFactory.GetClient();
+        if (backendClient is null)
+        {
+            MessageBox.Show(@"There is no connection to the services", @"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            return;
+        }
+        try
+        {
+            await backendClient.StopDataCollectionServiceAsync();
+            await backendClient.StopDataAnalysisServiceAsync();
+        }
+        catch (Exception exception)
+        {
+            MessageBox.Show($"There is no connection to the services\r\n{exception.Message}", @"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
 
-    private void MainWindow_Load(object sender, EventArgs e)
-    {
-        _allCommentsForm.Hide();
-        _selectedCommentsForm.Hide();
-        _logsForm.Show();
-        _configureServiceForm.Hide();
-    }
-
-    private void ShowAllCommentsButton_Click(object sender, EventArgs e)
-    {
-        _allCommentsForm.Show();
-        _selectedCommentsForm.Hide();
-        _logsForm.Hide();
-        _configureServiceForm.Hide();
+        ServicesDownChangeControls();
     }
 
     private void ShowSelectedComments_Click(object sender, EventArgs e)
     {
-        _allCommentsForm.Hide();
         _selectedCommentsForm.Show();
-        _logsForm.Hide();
+        _logForm.Hide();
         _configureServiceForm.Hide();
     }
 
     private void ConfigureServiceButton_Click(object sender, EventArgs e)
     {
-        _allCommentsForm.Hide();
         _selectedCommentsForm.Hide();
-        _logsForm.Hide();
+        _logForm.Hide();
         _configureServiceForm.Show();
     }
 
     private void ViewLogsButton_Click(object sender, EventArgs e)
     {
-        _allCommentsForm.Hide();
         _selectedCommentsForm.Hide();
-        _logsForm.Show();
+        _logForm.Show();
         _configureServiceForm.Hide();
     }
 
+    #region ControlPanel
+
     private void CloseButton_Click(object sender, EventArgs e)
     {
-        if (StateLabel.Text == @"Working") StopService();
-
         Application.Exit();
-    }
-
-    protected override void OnClosing(CancelEventArgs e)
-    {
-        _services.StopDataCollectionService();
-        _services.StopAllModels();
-        _services.StopDataAnalysisService();
     }
 
     private void MinimizeWindowButton_Click(object sender, EventArgs e)
@@ -145,7 +148,6 @@ public partial class MainWindow : Form
     }
 
     private Point _lastLocation;
-
 
     private void UpperPanel_MouseMove(object sender, MouseEventArgs e)
     {
@@ -158,4 +160,6 @@ public partial class MainWindow : Form
     {
         _lastLocation = e.Location;
     }
+
+    #endregion
 }

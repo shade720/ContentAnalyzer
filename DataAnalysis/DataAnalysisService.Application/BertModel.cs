@@ -46,6 +46,7 @@ public class BertModel : IArtificialIntelligenceModel
 
     public PredictResult Predict(string sentence)
     {
+        Log.Logger.Information("{Model} predicting sentence: {Text}", Title, sentence);
         sentence = RemoveSpecialCharacters(TrimToLength(sentence, MaxSentenceLength));
 
         var tokens = _tokenizer.Tokenize(sentence);

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Serilog;
 
 namespace ContentAnalyzer.Gateway.EFCoreIdentity;
 
@@ -22,7 +23,15 @@ public class TokenManager
 
     public async Task<bool> CheckToken(Token token)
     {
-        var result = await _signInManager.PasswordSignInAsync(token.UserName, token.TokenData, false, false);
-        return result.Succeeded;
+        try
+        {
+            var result = await _signInManager.PasswordSignInAsync(token.UserName, token.TokenData, false, false);
+            return result.Succeeded;
+        }
+        catch (Exception e)
+        {
+            Log.Error("Message: {0}\r\nStack Trace:{1}", e.Message, e.StackTrace);
+            return false;
+        }
     }
 }

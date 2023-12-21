@@ -9,12 +9,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Protos\gateway.proto" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="EPPlus.Core" Version="1.5.4" />
     <PackageReference Include="Google.Protobuf" Version="3.20.0" />
     <PackageReference Include="Grpc.Net.Client" Version="2.45.0" />
     <PackageReference Include="Grpc.Tools" Version="2.45.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
   </ItemGroup>
 
   <ItemGroup>
@@ -37,8 +43,7 @@
   </ItemGroup>
 
   <ItemGroup>
-	  <Protobuf Include="Protos\collection.proto" GrpcServices="Client" />
-	  <Protobuf Include="Protos\analysis.proto" GrpcServices="Client" />
+    <Protobuf Include="Protos\gateway.proto" GrpcServices="Client" />
   </ItemGroup>
 
 </Project>

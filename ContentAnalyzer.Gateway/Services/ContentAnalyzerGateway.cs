@@ -78,6 +78,7 @@ public class ContentAnalyzerGateway : GatewayService.GatewayService.GatewayServi
                 PostId = request.Filter.PostId,
                 GroupId = request.Filter.GroupId,
                 AuthorId = request.Filter.AuthorId,
+                Text = request.Filter.Text,
                 FromDate = request.Filter.FromDate,
                 ToDate = request.Filter.ToDate
             }
@@ -109,6 +110,8 @@ public class ContentAnalyzerGateway : GatewayService.GatewayService.GatewayServi
                 PostId = request.Filter.PostId,
                 GroupId = request.Filter.GroupId,
                 AuthorId = request.Filter.AuthorId,
+                Text = request.Filter.Text,
+                Category = request.Filter.Category,
                 FromDate = request.Filter.FromDate,
                 ToDate = request.Filter.ToDate
             }
@@ -164,24 +167,13 @@ public class ContentAnalyzerGateway : GatewayService.GatewayService.GatewayServi
 
     public override async Task<LogReply> GetCollectionServiceLogs(LogRequest request, ServerCallContext context)
     {
-        var logfile = await _dataCollectionService.GetCollectionServiceLogs(new DataCollectionService.LogRequest
-        {
-            LogDate = request.LogDate
-        });
-        return new LogReply
-        {
-            LogFile = logfile.LogFile
-
-        };
+        var logfile = await _dataCollectionService.GetCollectionServiceLogs(new DataCollectionService.LogRequest { LogDate = request.LogDate });
+        return new LogReply { LogFile = logfile.LogFile };
     }
 
     public override async Task<LogReply> GetAnalysisServiceLogs(LogRequest request, ServerCallContext context)
     {
-        var logfile = await _dataAnalysisService
-            .GetAnalysisServiceLogs(new DataAnalysisService.LogRequest {LogDate = request.LogDate});
-        return new LogReply
-        {
-            LogFile = logfile.LogFile
-        };
+        var logfile = await _dataAnalysisService.GetAnalysisServiceLogs(new DataAnalysisService.LogRequest { LogDate = request.LogDate });
+        return new LogReply { LogFile = logfile.LogFile };
     }
 }

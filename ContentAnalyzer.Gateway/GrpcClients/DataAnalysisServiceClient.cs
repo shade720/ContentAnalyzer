@@ -11,8 +11,9 @@ public class DataAnalysisServiceClient
     {
         if (configuration is null)
             throw new ArgumentNullException(nameof(configuration));
-        var host = configuration["DataAnalysisServiceHost"];
-        if (host is null)
+        var hostFromEnvironment = Environment.GetEnvironmentVariable("DATA_ANALYSIS_SERVICE_HOST");
+        var host = !string.IsNullOrEmpty(hostFromEnvironment) ? hostFromEnvironment : configuration["DataAnalysisServiceHost"];
+        if (string.IsNullOrEmpty(host))
             throw new ArgumentNullException(nameof(host));
         var grpcChannel = GrpcChannel.ForAddress(host);
         _dataAnalysisClient = new DataAnalysis.DataAnalysisClient(grpcChannel);
