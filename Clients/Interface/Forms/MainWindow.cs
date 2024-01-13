@@ -64,7 +64,7 @@ public partial class MainWindow : Form
         ProcessedCommentsLabel.Text = state.ProcessedComments.ToString();
         CollectorServiceStateLabel.Text = state.CollectionServiceState.ToString();
         AnalysisServiceStateLabel.Text = state.AnalysisServiceState.ToString();
-        if (state.CollectionServiceState == ServiceState.Up || 
+        if (state.CollectionServiceState == ServiceState.Up ||
             state.AnalysisServiceState == ServiceState.Up)
             ServicesUpChangeControls();
         else
@@ -76,10 +76,10 @@ public partial class MainWindow : Form
         StartServiceButton.Hide();
         StopServiceButton.Show();
         StatePanel.BackColor = Color.Chartreuse;
-        StateLabel.Text = @"Working";
+        StateLabel.Text = @"В работе";
         StateLabel.BackColor = Color.Chartreuse;
-        CollectorServiceStateLabel.Text = @"Up";
-        AnalysisServiceStateLabel.Text = @"Up";
+        CollectorServiceStateLabel.Text = @"Работает";
+        AnalysisServiceStateLabel.Text = @"Работает";
     }
 
     private void ServicesDownChangeControls()
@@ -87,10 +87,10 @@ public partial class MainWindow : Form
         StartServiceButton.Show();
         StopServiceButton.Hide();
         StatePanel.BackColor = Color.Red;
-        StateLabel.Text = @"Not working";
+        StateLabel.Text = @"Не в работе";
         StateLabel.BackColor = Color.Red;
-        CollectorServiceStateLabel.Text = @"Down";
-        AnalysisServiceStateLabel.Text = @"Down";
+        CollectorServiceStateLabel.Text = @"Не работает";
+        AnalysisServiceStateLabel.Text = @"Не работает";
     }
 
     private async void StopDataCollectionServiceButton_Click(object sender, EventArgs e)

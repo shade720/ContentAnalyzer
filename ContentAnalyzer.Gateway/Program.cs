@@ -54,6 +54,8 @@ builder.Services.AddScoped<DataAnalysisServiceClient>();
 
 builder.Services.AddGrpc(options =>
 {
+    options.MaxReceiveMessageSize = 1024 * 1024 * 1024;
+    options.MaxSendMessageSize = 1024 * 1024 * 1024;
     options.Interceptors.Add<AuthenticationInterceptor>();
 });
 

@@ -13,7 +13,7 @@ public class BertModelFactoryTests
         var sut = new BertModelFactory(config);
 
         // Act
-        var actualModel = sut.CreateArtificialIntelligenceModel(modelConfigurationKey);
+        var actualModel = sut.CreateAIModel(modelConfigurationKey);
         
         // Assert
         Assert.Equal(modelConfigurationKey, actualModel.Title);

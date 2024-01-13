@@ -10,17 +10,17 @@ public class DataAnalyzerTests
 {
     private readonly DataAnalyzer _sut;
 
-    private readonly Mock<IArtificialIntelligenceModelFactory> _artificialIntelligenceModelFactoryMock;
+    private readonly Mock<IAIModelFactory> _artificialIntelligenceModelFactoryMock;
     private readonly Mock<ICommentsObserver> _commentsObserverMock;
     private readonly Mock<IEvaluatedCommentsRepository> _evaluatedCommentsRepositoryMock;
-    private readonly Mock<IArtificialIntelligenceModel> _artificialIntelligenceModelMock;
+    private readonly Mock<IAIModel> _artificialIntelligenceModelMock;
 
     public DataAnalyzerTests()
     {
-        _artificialIntelligenceModelFactoryMock = new Mock<IArtificialIntelligenceModelFactory>();
+        _artificialIntelligenceModelFactoryMock = new Mock<IAIModelFactory>();
         _commentsObserverMock = new Mock<ICommentsObserver>();
         _evaluatedCommentsRepositoryMock = new Mock<IEvaluatedCommentsRepository>();
-        _artificialIntelligenceModelMock = new Mock<IArtificialIntelligenceModel>();
+        _artificialIntelligenceModelMock = new Mock<IAIModel>();
 
         var config = ConfigurationProvider.GetConfiguration();
         _sut = new DataAnalyzer(
@@ -69,7 +69,7 @@ public class DataAnalyzerTests
             .Returns(expectedPredictResult);
 
         _artificialIntelligenceModelFactoryMock
-            .Setup(x => x.CreateArtificialIntelligenceModel(modelKey))
+            .Setup(x => x.CreateAIModel(modelKey))
             .Returns(_artificialIntelligenceModelMock.Object);
 
         // Act
@@ -86,7 +86,7 @@ public class DataAnalyzerTests
         Assert.Equal(expectedIsStarted, actualIsStarted);
 
         _artificialIntelligenceModelFactoryMock
-            .Verify(x => x.CreateArtificialIntelligenceModel(modelKey),  Times.Once());
+            .Verify(x => x.CreateAIModel(modelKey),  Times.Once());
 
         _commentsObserverMock
             .Verify(x => x.StartObserving(), Times.Once);
@@ -146,7 +146,7 @@ public class DataAnalyzerTests
             .Returns(expectedPredictResult);
 
         _artificialIntelligenceModelFactoryMock
-            .Setup(x => x.CreateArtificialIntelligenceModel(modelKey))
+            .Setup(x => x.CreateAIModel(modelKey))
             .Returns(_artificialIntelligenceModelMock.Object);
 
         // Act
@@ -167,7 +167,7 @@ public class DataAnalyzerTests
         Assert.Equal(expectedIsStarted, actualIsStarted);
 
         _artificialIntelligenceModelFactoryMock
-            .Verify(x => x.CreateArtificialIntelligenceModel(modelKey), Times.Once());
+            .Verify(x => x.CreateAIModel(modelKey), Times.Once());
 
         _commentsObserverMock
             .Verify(x => x.StartObserving(), Times.Once);
@@ -242,7 +242,7 @@ public class DataAnalyzerTests
             .Returns(expectedPredictResult);
 
         _artificialIntelligenceModelFactoryMock
-            .Setup(x => x.CreateArtificialIntelligenceModel(modelKey))
+            .Setup(x => x.CreateAIModel(modelKey))
             .Returns(_artificialIntelligenceModelMock.Object);
 
         // Act
@@ -263,7 +263,7 @@ public class DataAnalyzerTests
         Assert.Equal(expectedIsStarted, actualIsStarted);
 
         _artificialIntelligenceModelFactoryMock
-            .Verify(x => x.CreateArtificialIntelligenceModel(modelKey), Times.Exactly(2));
+            .Verify(x => x.CreateAIModel(modelKey), Times.Exactly(2));
 
         _commentsObserverMock
             .Verify(x => x.StartObserving(), Times.Once);

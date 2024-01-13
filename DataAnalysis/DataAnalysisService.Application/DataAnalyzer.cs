@@ -7,10 +7,10 @@ namespace DataAnalysisService.Application;
 
 public class DataAnalyzer : IDisposable
 {
-    private Dictionary<string, IArtificialIntelligenceModel> _artificialIntelligenceModels;
+    private Dictionary<string, IAIModel> _artificialIntelligenceModels;
 
     private readonly IConfiguration _configuration;
-    private readonly IArtificialIntelligenceModelFactory _artificialIntelligenceModelFactory;
+    private readonly IAIModelFactory _iaiModelFactory;
 
     private readonly ICommentsObserver _commentsObserver;
     private readonly IEvaluatedCommentsRepository _evaluatedCommentsRepository;
@@ -19,13 +19,13 @@ public class DataAnalyzer : IDisposable
 
     public DataAnalyzer(
         IConfiguration configuration,
-        IArtificialIntelligenceModelFactory artificialIntelligenceModelFactory,
+        IAIModelFactory iaiModelFactory,
         ICommentsObserver commentsObserver,
         IEvaluatedCommentsRepository evaluatedCommentsRepository)
     {
         _configuration = configuration;
-        _artificialIntelligenceModelFactory = artificialIntelligenceModelFactory;
-        _artificialIntelligenceModels = new Dictionary<string, IArtificialIntelligenceModel>();
+        _iaiModelFactory = iaiModelFactory;
+        _artificialIntelligenceModels = new Dictionary<string, IAIModel>();
 
         _commentsObserver = commentsObserver;
         _commentsObserver.OnNewInfoEvent += ProcessComment;
@@ -40,7 +40,7 @@ public class DataAnalyzer : IDisposable
             .GetChildren()
             .ToDictionary(
                 x => x.Key,
-                x => _artificialIntelligenceModelFactory.CreateArtificialIntelligenceModel(x.Key));
+                x => _iaiModelFactory.CreateAIModel(x.Key));
 
         _commentsObserver.StartObserving();
     }
@@ -78,7 +78,7 @@ public class DataAnalyzer : IDisposable
             {
                 Log.Logger.Fatal("{message} {stackTrace}", e.Message, e.StackTrace);
                 model.Dispose();
-                _artificialIntelligenceModels[key] = _artificialIntelligenceModelFactory.CreateArtificialIntelligenceModel(key);
+                _artificialIntelligenceModels[key] = _iaiModelFactory.CreateAIModel(key);
             }
         }
     }

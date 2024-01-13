@@ -30,10 +30,14 @@ builder.Configuration.SetBasePath(Environment.CurrentDirectory)
     .AddJsonFile($"appsettings.{Environment.UserDomainName}.json", optional: true, reloadOnChange: true)
     .AddEnvironmentVariables();
 
-builder.Services.AddGrpc();
+builder.Services.AddGrpc(options =>
+{
+    options.MaxReceiveMessageSize = 1024 * 1024 * 1024;
+    options.MaxSendMessageSize = 1024 * 1024 * 1024;
+});
 
 builder.Services.AddSingleton<DataAnalyzer>();
-builder.Services.AddSingleton<IArtificialIntelligenceModelFactory, BertModelFactory>();
+builder.Services.AddSingleton<IAIModelFactory, BertModelFactory>();
 builder.Services.AddSingleton<ICommentsObserver, CommentsDatabaseObserver>();
 builder.Services.AddSingleton<ICommentsRepository, CommentsRepository>();
 builder.Services.AddSingleton<IEvaluatedCommentsRepository, EvaluatedCommentsRepository>();

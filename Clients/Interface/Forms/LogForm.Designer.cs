@@ -106,7 +106,7 @@
             // 
             // Date
             // 
-            Date.HeaderText = "Date";
+            Date.HeaderText = "Дата";
             Date.MinimumWidth = 6;
             Date.Name = "Date";
             Date.ReadOnly = true;
@@ -114,7 +114,7 @@
             // 
             // Level
             // 
-            Level.HeaderText = "Level";
+            Level.HeaderText = "Уровень";
             Level.MinimumWidth = 6;
             Level.Name = "Level";
             Level.ReadOnly = true;
@@ -122,7 +122,7 @@
             // 
             // Message
             // 
-            Message.HeaderText = "Message";
+            Message.HeaderText = "Сообщение";
             Message.MinimumWidth = 6;
             Message.Name = "Message";
             Message.ReadOnly = true;
@@ -135,7 +135,7 @@
             SearchTextbox.Margin = new Padding(0);
             SearchTextbox.Multiline = true;
             SearchTextbox.Name = "SearchTextbox";
-            SearchTextbox.PlaceholderText = "Search for...";
+            SearchTextbox.PlaceholderText = "Ищем...";
             SearchTextbox.Size = new Size(1002, 30);
             SearchTextbox.TabIndex = 1;
             // 
@@ -177,7 +177,7 @@
             SearchButton.Name = "SearchButton";
             SearchButton.Size = new Size(107, 30);
             SearchButton.TabIndex = 4;
-            SearchButton.Text = "Search";
+            SearchButton.Text = "Поиск";
             SearchButton.UseVisualStyleBackColor = false;
             SearchButton.Click += SearchButton_Click;
             // 
@@ -186,11 +186,11 @@
             label4.AutoSize = true;
             label4.Font = new Font("Century Gothic", 11.25F, FontStyle.Bold, GraphicsUnit.Point);
             label4.ForeColor = SystemColors.MenuHighlight;
-            label4.Location = new Point(917, 781);
+            label4.Location = new Point(911, 781);
             label4.Name = "label4";
-            label4.Size = new Size(28, 18);
+            label4.Size = new Size(34, 18);
             label4.TabIndex = 24;
-            label4.Text = "To:";
+            label4.Text = "До:";
             // 
             // RefreshButton
             // 
@@ -202,7 +202,7 @@
             RefreshButton.Name = "RefreshButton";
             RefreshButton.Size = new Size(121, 54);
             RefreshButton.TabIndex = 23;
-            RefreshButton.Text = "Refresh";
+            RefreshButton.Text = "Обновить";
             RefreshButton.UseVisualStyleBackColor = false;
             RefreshButton.Click += RefreshButton_Click;
             // 
@@ -214,17 +214,18 @@
             ToDate.Name = "ToDate";
             ToDate.Size = new Size(146, 26);
             ToDate.TabIndex = 22;
+            ToDate.Value = new DateTime(2023, 12, 28, 0, 0, 0, 0);
             // 
             // label14
             // 
             label14.AutoSize = true;
             label14.Font = new Font("Century Gothic", 11.25F, FontStyle.Bold, GraphicsUnit.Point);
             label14.ForeColor = SystemColors.MenuHighlight;
-            label14.Location = new Point(897, 752);
+            label14.Location = new Point(921, 752);
             label14.Name = "label14";
-            label14.Size = new Size(48, 18);
+            label14.Size = new Size(24, 18);
             label14.TabIndex = 21;
-            label14.Text = "From:";
+            label14.Text = "С:";
             // 
             // FromDate
             // 
@@ -234,6 +235,7 @@
             FromDate.Name = "FromDate";
             FromDate.Size = new Size(146, 26);
             FromDate.TabIndex = 20;
+            FromDate.Value = new DateTime(2023, 12, 28, 0, 0, 0, 0);
             // 
             // SourceComboBox
             // 
@@ -243,7 +245,7 @@
             SourceComboBox.Font = new Font("Century Gothic", 11.25F, FontStyle.Bold, GraphicsUnit.Point);
             SourceComboBox.ForeColor = SystemColors.MenuHighlight;
             SourceComboBox.FormattingEnabled = true;
-            SourceComboBox.Items.AddRange(new object[] { "All", "Collection service", "Analysis service" });
+            SourceComboBox.Items.AddRange(new object[] { "Все", "Сервис сбора", "Сервис анализа" });
             SourceComboBox.Location = new Point(678, 746);
             SourceComboBox.Name = "SourceComboBox";
             SourceComboBox.Size = new Size(200, 26);
@@ -254,11 +256,11 @@
             label1.AutoSize = true;
             label1.Font = new Font("Century Gothic", 11.25F, FontStyle.Bold, GraphicsUnit.Point);
             label1.ForeColor = SystemColors.MenuHighlight;
-            label1.Location = new Point(608, 749);
+            label1.Location = new Point(588, 749);
             label1.Name = "label1";
-            label1.Size = new Size(64, 18);
+            label1.Size = new Size(84, 18);
             label1.TabIndex = 26;
-            label1.Text = "Source:";
+            label1.Text = "Источник:";
             // 
             // LogForm
             // 

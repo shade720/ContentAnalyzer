@@ -28,16 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
-            DataGridViewCellStyle dataGridViewCellStyle5 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle6 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle7 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle8 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
             SelectedCommentsDataGridView = new DataGridView();
-            DateColumn = new DataGridViewTextBoxColumn();
-            TextColumn = new DataGridViewTextBoxColumn();
-            CategoryColumn = new DataGridViewTextBoxColumn();
-            SimilarityColumn = new DataGridViewTextBoxColumn();
-            LinkColumn = new DataGridViewLinkColumn();
             groupBox1 = new GroupBox();
             OpenExcelReportButton = new Button();
             groupBox4 = new GroupBox();
@@ -64,6 +59,11 @@
             DisplayedRowsLabel = new Label();
             label3 = new Label();
             SaveReportDialog = new SaveFileDialog();
+            DateColumn = new DataGridViewTextBoxColumn();
+            TextColumn = new DataGridViewTextBoxColumn();
+            CategoryColumn = new DataGridViewTextBoxColumn();
+            SimilarityColumn = new DataGridViewTextBoxColumn();
+            LinkColumn = new DataGridViewLinkColumn();
             ((System.ComponentModel.ISupportInitialize)SelectedCommentsDataGridView).BeginInit();
             groupBox1.SuspendLayout();
             groupBox4.SuspendLayout();
@@ -78,89 +78,51 @@
             SelectedCommentsDataGridView.BackgroundColor = SystemColors.ControlLightLight;
             SelectedCommentsDataGridView.BorderStyle = BorderStyle.None;
             SelectedCommentsDataGridView.CellBorderStyle = DataGridViewCellBorderStyle.Raised;
-            dataGridViewCellStyle5.Alignment = DataGridViewContentAlignment.TopCenter;
-            dataGridViewCellStyle5.BackColor = Color.White;
-            dataGridViewCellStyle5.Font = new Font("Century Gothic", 12F, FontStyle.Bold, GraphicsUnit.Point);
-            dataGridViewCellStyle5.ForeColor = SystemColors.MenuHighlight;
-            dataGridViewCellStyle5.SelectionBackColor = SystemColors.MenuHighlight;
-            dataGridViewCellStyle5.SelectionForeColor = Color.White;
-            dataGridViewCellStyle5.WrapMode = DataGridViewTriState.True;
-            SelectedCommentsDataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.TopCenter;
+            dataGridViewCellStyle1.BackColor = Color.White;
+            dataGridViewCellStyle1.Font = new Font("Century Gothic", 12F, FontStyle.Bold, GraphicsUnit.Point);
+            dataGridViewCellStyle1.ForeColor = SystemColors.MenuHighlight;
+            dataGridViewCellStyle1.SelectionBackColor = SystemColors.MenuHighlight;
+            dataGridViewCellStyle1.SelectionForeColor = Color.White;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
+            SelectedCommentsDataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             SelectedCommentsDataGridView.ColumnHeadersHeight = 29;
             SelectedCommentsDataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             SelectedCommentsDataGridView.Columns.AddRange(new DataGridViewColumn[] { DateColumn, TextColumn, CategoryColumn, SimilarityColumn, LinkColumn });
-            dataGridViewCellStyle6.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle6.BackColor = Color.White;
-            dataGridViewCellStyle6.Font = new Font("Century Gothic", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            dataGridViewCellStyle6.ForeColor = SystemColors.MenuHighlight;
-            dataGridViewCellStyle6.SelectionBackColor = SystemColors.MenuHighlight;
-            dataGridViewCellStyle6.SelectionForeColor = Color.White;
-            dataGridViewCellStyle6.WrapMode = DataGridViewTriState.True;
-            SelectedCommentsDataGridView.DefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = Color.White;
+            dataGridViewCellStyle2.Font = new Font("Century Gothic", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            dataGridViewCellStyle2.ForeColor = SystemColors.MenuHighlight;
+            dataGridViewCellStyle2.SelectionBackColor = SystemColors.MenuHighlight;
+            dataGridViewCellStyle2.SelectionForeColor = Color.White;
+            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
+            SelectedCommentsDataGridView.DefaultCellStyle = dataGridViewCellStyle2;
             SelectedCommentsDataGridView.EnableHeadersVisualStyles = false;
             SelectedCommentsDataGridView.GridColor = SystemColors.ControlLightLight;
             SelectedCommentsDataGridView.Location = new Point(5, 171);
             SelectedCommentsDataGridView.Margin = new Padding(3, 2, 3, 2);
             SelectedCommentsDataGridView.Name = "SelectedCommentsDataGridView";
             SelectedCommentsDataGridView.ReadOnly = true;
-            dataGridViewCellStyle7.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle7.BackColor = Color.White;
-            dataGridViewCellStyle7.Font = new Font("Century Gothic", 12F, FontStyle.Bold, GraphicsUnit.Point);
-            dataGridViewCellStyle7.ForeColor = Color.White;
-            dataGridViewCellStyle7.SelectionBackColor = SystemColors.MenuHighlight;
-            dataGridViewCellStyle7.SelectionForeColor = Color.White;
-            dataGridViewCellStyle7.WrapMode = DataGridViewTriState.True;
-            SelectedCommentsDataGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = Color.White;
+            dataGridViewCellStyle3.Font = new Font("Century Gothic", 12F, FontStyle.Bold, GraphicsUnit.Point);
+            dataGridViewCellStyle3.ForeColor = Color.White;
+            dataGridViewCellStyle3.SelectionBackColor = SystemColors.MenuHighlight;
+            dataGridViewCellStyle3.SelectionForeColor = Color.White;
+            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
+            SelectedCommentsDataGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
             SelectedCommentsDataGridView.RowHeadersVisible = false;
             SelectedCommentsDataGridView.RowHeadersWidth = 51;
-            dataGridViewCellStyle8.BackColor = SystemColors.ControlLightLight;
-            dataGridViewCellStyle8.Font = new Font("Century Gothic", 11.25F, FontStyle.Regular, GraphicsUnit.Point);
-            dataGridViewCellStyle8.ForeColor = SystemColors.InfoText;
-            dataGridViewCellStyle8.SelectionBackColor = SystemColors.MenuHighlight;
-            dataGridViewCellStyle8.SelectionForeColor = Color.White;
-            dataGridViewCellStyle8.WrapMode = DataGridViewTriState.True;
-            SelectedCommentsDataGridView.RowsDefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle4.BackColor = SystemColors.ControlLightLight;
+            dataGridViewCellStyle4.Font = new Font("Century Gothic", 11.25F, FontStyle.Regular, GraphicsUnit.Point);
+            dataGridViewCellStyle4.ForeColor = SystemColors.InfoText;
+            dataGridViewCellStyle4.SelectionBackColor = SystemColors.MenuHighlight;
+            dataGridViewCellStyle4.SelectionForeColor = Color.White;
+            dataGridViewCellStyle4.WrapMode = DataGridViewTriState.True;
+            SelectedCommentsDataGridView.RowsDefaultCellStyle = dataGridViewCellStyle4;
             SelectedCommentsDataGridView.RowTemplate.Height = 29;
             SelectedCommentsDataGridView.Size = new Size(1201, 575);
             SelectedCommentsDataGridView.TabIndex = 0;
-            // 
-            // DateColumn
-            // 
-            DateColumn.HeaderText = "Date";
-            DateColumn.MinimumWidth = 6;
-            DateColumn.Name = "DateColumn";
-            DateColumn.ReadOnly = true;
-            DateColumn.Width = 125;
-            // 
-            // TextColumn
-            // 
-            TextColumn.HeaderText = "Text";
-            TextColumn.MinimumWidth = 6;
-            TextColumn.Name = "TextColumn";
-            TextColumn.ReadOnly = true;
-            TextColumn.Width = 620;
-            // 
-            // CategoryColumn
-            // 
-            CategoryColumn.HeaderText = "Category";
-            CategoryColumn.MinimumWidth = 6;
-            CategoryColumn.Name = "CategoryColumn";
-            CategoryColumn.ReadOnly = true;
-            CategoryColumn.Width = 150;
-            // 
-            // SimilarityColumn
-            // 
-            SimilarityColumn.HeaderText = "Similarity";
-            SimilarityColumn.MinimumWidth = 6;
-            SimilarityColumn.Name = "SimilarityColumn";
-            SimilarityColumn.ReadOnly = true;
-            SimilarityColumn.Width = 180;
-            // 
-            // LinkColumn
-            // 
-            LinkColumn.HeaderText = "Link";
-            LinkColumn.Name = "LinkColumn";
-            LinkColumn.ReadOnly = true;
             // 
             // groupBox1
             // 
@@ -179,16 +141,16 @@
             groupBox1.Size = new Size(1210, 794);
             groupBox1.TabIndex = 2;
             groupBox1.TabStop = false;
-            groupBox1.Text = "Processed comments";
+            groupBox1.Text = "Обработанные комментарии";
             // 
             // OpenExcelReportButton
             // 
             OpenExcelReportButton.FlatStyle = FlatStyle.Flat;
-            OpenExcelReportButton.Location = new Point(1041, 751);
+            OpenExcelReportButton.Location = new Point(1024, 751);
             OpenExcelReportButton.Name = "OpenExcelReportButton";
-            OpenExcelReportButton.Size = new Size(169, 38);
+            OpenExcelReportButton.Size = new Size(186, 38);
             OpenExcelReportButton.TabIndex = 17;
-            OpenExcelReportButton.Text = "Open Excel Report";
+            OpenExcelReportButton.Text = "Открыть .xlsx отчёт";
             OpenExcelReportButton.UseVisualStyleBackColor = true;
             OpenExcelReportButton.Click += OpenExcelReportButton_Click;
             // 
@@ -222,7 +184,7 @@
             groupBox4.Size = new Size(1204, 143);
             groupBox4.TabIndex = 16;
             groupBox4.TabStop = false;
-            groupBox4.Text = "Filter";
+            groupBox4.Text = "Фильтр";
             // 
             // SelectedDateRadioButton
             // 
@@ -230,42 +192,43 @@
             SelectedDateRadioButton.Font = new Font("Century Gothic", 11.25F, FontStyle.Bold, GraphicsUnit.Point);
             SelectedDateRadioButton.Location = new Point(823, 24);
             SelectedDateRadioButton.Name = "SelectedDateRadioButton";
-            SelectedDateRadioButton.Size = new Size(134, 22);
+            SelectedDateRadioButton.Size = new Size(159, 22);
             SelectedDateRadioButton.TabIndex = 32;
-            SelectedDateRadioButton.Text = "Selected date:";
+            SelectedDateRadioButton.Text = "Выбранная дата:";
             SelectedDateRadioButton.UseVisualStyleBackColor = true;
+            SelectedDateRadioButton.CheckedChanged += SelectedDateRadioButton_CheckedChanged;
             // 
             // LastMonthRadioButton
             // 
             LastMonthRadioButton.AutoSize = true;
             LastMonthRadioButton.Font = new Font("Century Gothic", 11.25F, FontStyle.Bold, GraphicsUnit.Point);
-            LastMonthRadioButton.Location = new Point(695, 108);
+            LastMonthRadioButton.Location = new Point(658, 108);
             LastMonthRadioButton.Name = "LastMonthRadioButton";
-            LastMonthRadioButton.Size = new Size(103, 22);
+            LastMonthRadioButton.Size = new Size(165, 22);
             LastMonthRadioButton.TabIndex = 31;
-            LastMonthRadioButton.Text = "Last month";
+            LastMonthRadioButton.Text = "Последний месяц";
             LastMonthRadioButton.UseVisualStyleBackColor = true;
             // 
             // LastWeekRadioButton
             // 
             LastWeekRadioButton.AutoSize = true;
             LastWeekRadioButton.Font = new Font("Century Gothic", 11.25F, FontStyle.Bold, GraphicsUnit.Point);
-            LastWeekRadioButton.Location = new Point(694, 80);
+            LastWeekRadioButton.Location = new Point(657, 80);
             LastWeekRadioButton.Name = "LastWeekRadioButton";
-            LastWeekRadioButton.Size = new Size(98, 22);
+            LastWeekRadioButton.Size = new Size(168, 22);
             LastWeekRadioButton.TabIndex = 30;
-            LastWeekRadioButton.Text = "Last week";
+            LastWeekRadioButton.Text = "Последняя неделя";
             LastWeekRadioButton.UseVisualStyleBackColor = true;
             // 
             // Last3DaysRadioButton
             // 
             Last3DaysRadioButton.AutoSize = true;
             Last3DaysRadioButton.Font = new Font("Century Gothic", 11.25F, FontStyle.Bold, GraphicsUnit.Point);
-            Last3DaysRadioButton.Location = new Point(694, 52);
+            Last3DaysRadioButton.Location = new Point(657, 52);
             Last3DaysRadioButton.Name = "Last3DaysRadioButton";
-            Last3DaysRadioButton.Size = new Size(104, 22);
+            Last3DaysRadioButton.Size = new Size(155, 22);
             Last3DaysRadioButton.TabIndex = 29;
-            Last3DaysRadioButton.Text = "Last 3 days";
+            Last3DaysRadioButton.Text = "Последние 3 дня";
             Last3DaysRadioButton.UseVisualStyleBackColor = true;
             // 
             // TodayRadioButton
@@ -273,12 +236,12 @@
             TodayRadioButton.AutoSize = true;
             TodayRadioButton.Checked = true;
             TodayRadioButton.Font = new Font("Century Gothic", 11.25F, FontStyle.Bold, GraphicsUnit.Point);
-            TodayRadioButton.Location = new Point(694, 24);
+            TodayRadioButton.Location = new Point(657, 24);
             TodayRadioButton.Name = "TodayRadioButton";
-            TodayRadioButton.Size = new Size(71, 22);
+            TodayRadioButton.Size = new Size(91, 22);
             TodayRadioButton.TabIndex = 28;
             TodayRadioButton.TabStop = true;
-            TodayRadioButton.Text = "Today";
+            TodayRadioButton.Text = "Сегодня";
             TodayRadioButton.UseVisualStyleBackColor = true;
             // 
             // label7
@@ -287,9 +250,9 @@
             label7.Font = new Font("Century Gothic", 11.25F, FontStyle.Bold, GraphicsUnit.Point);
             label7.Location = new Point(303, 42);
             label7.Name = "label7";
-            label7.Size = new Size(82, 18);
+            label7.Size = new Size(92, 18);
             label7.TabIndex = 27;
-            label7.Text = "Category:";
+            label7.Text = "Категория:";
             // 
             // CategoryFilterTextBox
             // 
@@ -303,11 +266,11 @@
             // 
             label12.AutoSize = true;
             label12.Font = new Font("Century Gothic", 11.25F, FontStyle.Bold, GraphicsUnit.Point);
-            label12.Location = new Point(43, 98);
+            label12.Location = new Point(25, 98);
             label12.Name = "label12";
-            label12.Size = new Size(40, 18);
+            label12.Size = new Size(114, 18);
             label12.TabIndex = 25;
-            label12.Text = "Text:";
+            label12.Text = "Содержание:";
             // 
             // TextFilterTextBox
             // 
@@ -323,9 +286,9 @@
             label5.Font = new Font("Century Gothic", 11.25F, FontStyle.Bold, GraphicsUnit.Point);
             label5.Location = new Point(303, 70);
             label5.Name = "label5";
-            label5.Size = new Size(60, 18);
+            label5.Size = new Size(59, 18);
             label5.TabIndex = 23;
-            label5.Text = "Author:";
+            label5.Text = "Автор:";
             // 
             // AuthorFilterTextBox
             // 
@@ -339,11 +302,11 @@
             // 
             label2.AutoSize = true;
             label2.Font = new Font("Century Gothic", 11.25F, FontStyle.Bold, GraphicsUnit.Point);
-            label2.Location = new Point(43, 70);
+            label2.Location = new Point(25, 70);
             label2.Name = "label2";
-            label2.Size = new Size(40, 18);
+            label2.Size = new Size(66, 18);
             label2.TabIndex = 21;
-            label2.Text = "Post:";
+            label2.Text = "Запись:";
             // 
             // PostFilterTextBox
             // 
@@ -357,21 +320,21 @@
             // 
             label4.AutoSize = true;
             label4.Font = new Font("Century Gothic", 11.25F, FontStyle.Bold, GraphicsUnit.Point);
-            label4.Location = new Point(843, 86);
+            label4.Location = new Point(833, 86);
             label4.Name = "label4";
-            label4.Size = new Size(28, 18);
+            label4.Size = new Size(34, 18);
             label4.TabIndex = 19;
-            label4.Text = "To:";
+            label4.Text = "До:";
             // 
             // label1
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Century Gothic", 11.25F, FontStyle.Bold, GraphicsUnit.Point);
-            label1.Location = new Point(43, 42);
+            label1.Location = new Point(25, 42);
             label1.Name = "label1";
-            label1.Size = new Size(97, 18);
+            label1.Size = new Size(115, 18);
             label1.TabIndex = 17;
-            label1.Text = "Community:";
+            label1.Text = "Сообщество:";
             // 
             // CommunityFilterTextBox
             // 
@@ -388,7 +351,7 @@
             RefreshButton.Name = "RefreshButton";
             RefreshButton.Size = new Size(121, 54);
             RefreshButton.TabIndex = 14;
-            RefreshButton.Text = "Refresh";
+            RefreshButton.Text = "Обновить";
             RefreshButton.UseVisualStyleBackColor = true;
             RefreshButton.Click += RefreshButton_Click;
             // 
@@ -406,11 +369,11 @@
             // 
             label14.AutoSize = true;
             label14.Font = new Font("Century Gothic", 11.25F, FontStyle.Bold, GraphicsUnit.Point);
-            label14.Location = new Point(823, 57);
+            label14.Location = new Point(843, 57);
             label14.Name = "label14";
-            label14.Size = new Size(48, 18);
+            label14.Size = new Size(24, 18);
             label14.TabIndex = 7;
-            label14.Text = "From:";
+            label14.Text = "С:";
             // 
             // FromDate
             // 
@@ -444,6 +407,44 @@
             label3.TabIndex = 14;
             label3.Text = "Displayed rows: ";
             // 
+            // DateColumn
+            // 
+            DateColumn.HeaderText = "Дата";
+            DateColumn.MinimumWidth = 6;
+            DateColumn.Name = "DateColumn";
+            DateColumn.ReadOnly = true;
+            DateColumn.Width = 125;
+            // 
+            // TextColumn
+            // 
+            TextColumn.HeaderText = "Текст";
+            TextColumn.MinimumWidth = 6;
+            TextColumn.Name = "TextColumn";
+            TextColumn.ReadOnly = true;
+            TextColumn.Width = 620;
+            // 
+            // CategoryColumn
+            // 
+            CategoryColumn.HeaderText = "Категория";
+            CategoryColumn.MinimumWidth = 6;
+            CategoryColumn.Name = "CategoryColumn";
+            CategoryColumn.ReadOnly = true;
+            CategoryColumn.Width = 150;
+            // 
+            // SimilarityColumn
+            // 
+            SimilarityColumn.HeaderText = "Сходство";
+            SimilarityColumn.MinimumWidth = 6;
+            SimilarityColumn.Name = "SimilarityColumn";
+            SimilarityColumn.ReadOnly = true;
+            // 
+            // LinkColumn
+            // 
+            LinkColumn.HeaderText = "Ссылка";
+            LinkColumn.Name = "LinkColumn";
+            LinkColumn.ReadOnly = true;
+            LinkColumn.Width = 180;
+            // 
             // ProcessedCommentsForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -475,11 +476,6 @@
         private Label label14;
         private DateTimePicker FromDate;
         private Button RefreshButton;
-        private DataGridViewTextBoxColumn DateColumn;
-        private DataGridViewTextBoxColumn TextColumn;
-        private DataGridViewTextBoxColumn CategoryColumn;
-        private DataGridViewTextBoxColumn SimilarityColumn;
-        private DataGridViewLinkColumn LinkColumn;
         private Label label1;
         private TextBox CommunityFilterTextBox;
         private Label label4;
@@ -498,5 +494,10 @@
         private RadioButton Last3DaysRadioButton;
         private RadioButton TodayRadioButton;
         private RadioButton SelectedDateRadioButton;
+        private DataGridViewTextBoxColumn DateColumn;
+        private DataGridViewTextBoxColumn TextColumn;
+        private DataGridViewTextBoxColumn CategoryColumn;
+        private DataGridViewTextBoxColumn SimilarityColumn;
+        private DataGridViewLinkColumn LinkColumn;
     }
 }

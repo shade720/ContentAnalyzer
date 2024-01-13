@@ -1,5 +1,6 @@
 ﻿using Common.SharedDomain;
 using ContentAnalyzer.Frontend.Desktop.BusinessLogicLayer;
+using System;
 
 namespace ContentAnalyzer.Frontend.Desktop.Forms;
 
@@ -50,7 +51,7 @@ public partial class ProcessedCommentsForm : Form
         DisplayedRowsLabel.Text = SelectedCommentsDataGridView.Rows.Count.ToString();
     }
 
-    private async void RefreshButton_Click(object sender, EventArgs e)
+    private CommentsQueryFilter GetCurrentFilter()
     {
         var fromDate = DateTime.UnixEpoch;
         var toDate = DateTime.UnixEpoch;
@@ -80,6 +81,12 @@ public partial class ProcessedCommentsForm : Form
             FromDate = fromDate,
             ToDate = toDate
         };
+        return filter;
+    }
+
+    private async void RefreshButton_Click(object sender, EventArgs e)
+    {
+
         using var backendClient = _backendClientFactory.GetClient();
         if (backendClient is null)
         {
@@ -88,7 +95,7 @@ public partial class ProcessedCommentsForm : Form
         }
         try
         {
-            var evaluatedComments = await backendClient.GetEvaluatedCommentsAsync(filter);
+            var evaluatedComments = await backendClient.GetEvaluatedCommentsAsync(GetCurrentFilter());
             UpdateControls(evaluatedComments);
         }
         catch (Exception exception)
@@ -109,12 +116,19 @@ public partial class ProcessedCommentsForm : Form
             return;
         try
         {
-            var evaluatedComments = await backendClient.GetEvaluatedCommentsAsync(new CommentsQueryFilter());
+            var evaluatedComments = await backendClient.GetEvaluatedCommentsAsync(GetCurrentFilter());
             _reporter.OpenReport(SaveReportDialog.FileName, evaluatedComments);
+            MessageBox.Show(@"The report was created successfully!", @"Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
         catch (Exception exception)
         {
             MessageBox.Show($"There is no connection to the services\r\n\n{exception.Message}", @"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
+    }
+
+    private void SelectedDateRadioButton_CheckedChanged(object sender, EventArgs e)
+    {
+        ToDate.Enabled = SelectedDateRadioButton.Checked;
+        FromDate.Enabled = SelectedDateRadioButton.Checked;
     }
 }

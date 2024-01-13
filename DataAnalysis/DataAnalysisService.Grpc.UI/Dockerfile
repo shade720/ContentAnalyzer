@@ -1,4 +1,5 @@
-# docker run --name DataAnalysisService -d -it -p 5052:80 -p 5062:443 -e POSTGRES_CONNECTION_STRING="Host=host.docker.internal;Port=32768;Database=ContentAnalyzerDatabase;Username=postgres;Password=postgrespw" unh0ly/data-analysis-service
+# docker run --name DataAnalysisService -d -it -p 5052:80 -p 5062:443 -e POSTGRES_CONNECTION_STRING="Host=host.docker.internal;Port=32768;Database=ContentAnalyzerDatabase;Username=postgres;Password=postgrespw" -v //c/Users/Shade/Desktop/Resources:/app/Resources unh0ly/data-analysis-service
+
 # docker build -f DataAnalysis\DataAnalysisService.Grpc.UI\Dockerfile -t unh0ly/data-analysis-service:latest .
 # docker push unh0ly/data-analysis-service
 

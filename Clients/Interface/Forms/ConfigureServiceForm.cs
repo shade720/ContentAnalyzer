@@ -51,6 +51,8 @@ public partial class ConfigureServiceForm : Form
 
     private void DeleteBackendHost_Click(object sender, EventArgs e)
     {
+        if (BackendHosts.SelectedIndex < 0)
+            return;
         BackendHosts.Items.RemoveAt(BackendHosts.SelectedIndex);
         CurrentBackendHost.Items.Clear();
         CurrentBackendHost.Items.AddRange(BackendHosts.Items.OfType<string>().ToArray());
@@ -65,20 +67,7 @@ public partial class ConfigureServiceForm : Form
             PostQueueSize = int.Parse(PostQueueSize.Text)
         };
         ConfigurationManager.SaveCollectionConfiguration(currentConfig);
-
-        var currentAppConfig = new AppConfiguration
-        {
-            BackendHosts = new List<string>(BackendHosts.Items.OfType<string>()),
-            CurrentBackendHost = CurrentBackendHost.Text,
-            BackendLogin = LoginTextBox.Text,
-            BackendToken = TokenTextBox.Text,
-            ScanCommentsDelay = int.Parse(ScanCommentsDelay.Text),
-            ScanPostDelay = int.Parse(ScanPostDelay.Text),
-            PostQueueSize = int.Parse(PostQueueSize.Text),
-            ObserveDelay = int.Parse(ObserveDelay.Text),
-        };
-
-        ConfigurationManager.SaveAppConfiguration(currentAppConfig);
+        MessageBox.Show(@"The configuration has been saved successfully", @"Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
     }
 
     private async void LoadCollectionServiceConfiguration_Click(object sender, EventArgs e)
@@ -99,6 +88,7 @@ public partial class ConfigureServiceForm : Form
         try
         {
             await backendClient.LoadCollectionServiceConfiguration(configuration);
+            MessageBox.Show(@"The configuration has been loaded successfully", @"Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
         catch (Exception exception)
         {
@@ -113,20 +103,7 @@ public partial class ConfigureServiceForm : Form
             ObserveDelay = int.Parse(ObserveDelay.Text),
         };
         ConfigurationManager.SaveAnalysisConfiguration(currentConfig);
-
-        var currentAppConfig = new AppConfiguration
-        {
-            BackendHosts = new List<string>(BackendHosts.Items.OfType<string>()),
-            CurrentBackendHost = CurrentBackendHost.Text,
-            BackendLogin = LoginTextBox.Text,
-            BackendToken = TokenTextBox.Text,
-            ScanCommentsDelay = int.Parse(ScanCommentsDelay.Text),
-            ScanPostDelay = int.Parse(ScanPostDelay.Text),
-            PostQueueSize = int.Parse(PostQueueSize.Text),
-            ObserveDelay = int.Parse(ObserveDelay.Text),
-        };
-
-        ConfigurationManager.SaveAppConfiguration(currentAppConfig);
+        MessageBox.Show(@"The configuration has been saved successfully", @"Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
     }
 
     private async void LoadAnalysisServiceConfiguration_Click(object sender, EventArgs e)
@@ -147,10 +124,28 @@ public partial class ConfigureServiceForm : Form
         try
         {
             await backendClient.LoadAnalysisServiceConfiguration(configuration);
+            MessageBox.Show(@"The configuration has been loaded successfully", @"Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
         catch (Exception exception)
         {
             MessageBox.Show($"There is no connection to the services\r\n\n{exception.Message}", @"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
+    }
+
+    private void SaveAppConfigButton_Click(object sender, EventArgs e)
+    {
+        var currentAppConfig = new AppConfiguration
+        {
+            BackendHosts = new List<string>(BackendHosts.Items.OfType<string>()),
+            CurrentBackendHost = CurrentBackendHost.Text,
+            BackendLogin = LoginTextBox.Text,
+            BackendToken = TokenTextBox.Text,
+            ScanCommentsDelay = int.Parse(string.IsNullOrEmpty(ScanCommentsDelay.Text) ? "0" : ScanCommentsDelay.Text),
+            ScanPostDelay = int.Parse(string.IsNullOrEmpty(ScanPostDelay.Text) ? "0" : ScanPostDelay.Text),
+            PostQueueSize = int.Parse(string.IsNullOrEmpty(PostQueueSize.Text) ? "0" : PostQueueSize.Text),
+            ObserveDelay = int.Parse(string.IsNullOrEmpty(ObserveDelay.Text) ? "0" : ObserveDelay.Text),
+        };
+        ConfigurationManager.SaveAppConfiguration(currentAppConfig);
+        MessageBox.Show(@"The configuration has been saved successfully", @"Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
     }
 }

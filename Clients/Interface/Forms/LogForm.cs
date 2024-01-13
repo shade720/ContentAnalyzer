@@ -131,9 +131,9 @@ public partial class LogForm : Form
         {
             result.AddRange(source switch
             {
-                "All" => LogFileParser(await backendClient.GetDataCollectionServiceLogsAsync(day)).Concat(LogFileParser(await backendClient.GetDataAnalysisServiceLogsAsync(day))),
-                "Collection service" => LogFileParser(await backendClient.GetDataCollectionServiceLogsAsync(day)),
-                "Analysis service" => LogFileParser(await backendClient.GetDataAnalysisServiceLogsAsync(day)),
+                "Все" => LogFileParser(await backendClient.GetDataCollectionServiceLogsAsync(day)).Concat(LogFileParser(await backendClient.GetDataAnalysisServiceLogsAsync(day))),
+                "Сервис сбора" => LogFileParser(await backendClient.GetDataCollectionServiceLogsAsync(day)),
+                "Сервис анализа" => LogFileParser(await backendClient.GetDataAnalysisServiceLogsAsync(day)),
                 _ => result
             });
         }

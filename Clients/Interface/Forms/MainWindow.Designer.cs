@@ -138,7 +138,7 @@
             StateLabel.Name = "StateLabel";
             StateLabel.Size = new Size(111, 28);
             StateLabel.TabIndex = 0;
-            StateLabel.Text = "Not working";
+            StateLabel.Text = "Не в работе";
             StateLabel.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // ErrorsCountLabel
@@ -146,7 +146,7 @@
             ErrorsCountLabel.AutoSize = true;
             ErrorsCountLabel.Font = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point);
             ErrorsCountLabel.ForeColor = SystemColors.ActiveCaptionText;
-            ErrorsCountLabel.Location = new Point(184, 88);
+            ErrorsCountLabel.Location = new Point(210, 88);
             ErrorsCountLabel.Name = "ErrorsCountLabel";
             ErrorsCountLabel.Size = new Size(15, 17);
             ErrorsCountLabel.TabIndex = 10;
@@ -157,55 +157,55 @@
             AnalysisServiceStateLabel.AutoSize = true;
             AnalysisServiceStateLabel.Font = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point);
             AnalysisServiceStateLabel.ForeColor = SystemColors.ActiveCaptionText;
-            AnalysisServiceStateLabel.Location = new Point(163, 223);
+            AnalysisServiceStateLabel.Location = new Point(141, 223);
             AnalysisServiceStateLabel.Name = "AnalysisServiceStateLabel";
-            AnalysisServiceStateLabel.Size = new Size(42, 17);
+            AnalysisServiceStateLabel.Size = new Size(84, 17);
             AnalysisServiceStateLabel.TabIndex = 12;
-            AnalysisServiceStateLabel.Text = "Down";
+            AnalysisServiceStateLabel.Text = "не работает";
             // 
             // CollectorServiceStateLabel
             // 
             CollectorServiceStateLabel.AutoSize = true;
             CollectorServiceStateLabel.Font = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point);
             CollectorServiceStateLabel.ForeColor = SystemColors.ActiveCaptionText;
-            CollectorServiceStateLabel.Location = new Point(163, 201);
+            CollectorServiceStateLabel.Location = new Point(141, 201);
             CollectorServiceStateLabel.Name = "CollectorServiceStateLabel";
-            CollectorServiceStateLabel.Size = new Size(42, 17);
+            CollectorServiceStateLabel.Size = new Size(84, 17);
             CollectorServiceStateLabel.TabIndex = 11;
-            CollectorServiceStateLabel.Text = "Down";
+            CollectorServiceStateLabel.Text = "не работает";
             // 
             // label6
             // 
             label6.AutoSize = true;
             label6.Font = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point);
             label6.ForeColor = SystemColors.ActiveCaptionText;
-            label6.Location = new Point(40, 201);
+            label6.Location = new Point(27, 201);
             label6.Name = "label6";
-            label6.Size = new Size(117, 17);
+            label6.Size = new Size(103, 17);
             label6.TabIndex = 5;
-            label6.Text = "Collector service: ";
+            label6.Text = "Сервис сбора: ";
             // 
             // label5
             // 
             label5.AutoSize = true;
             label5.Font = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point);
             label5.ForeColor = SystemColors.ActiveCaptionText;
-            label5.Location = new Point(40, 88);
+            label5.Location = new Point(18, 88);
             label5.Name = "label5";
-            label5.Size = new Size(42, 17);
+            label5.Size = new Size(60, 17);
             label5.TabIndex = 4;
-            label5.Text = "Errors:";
+            label5.Text = "Ошибки:";
             // 
             // label7
             // 
             label7.AutoSize = true;
             label7.Font = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point);
             label7.ForeColor = SystemColors.ActiveCaptionText;
-            label7.Location = new Point(40, 223);
+            label7.Location = new Point(27, 223);
             label7.Name = "label7";
-            label7.Size = new Size(107, 17);
+            label7.Size = new Size(112, 17);
             label7.TabIndex = 6;
-            label7.Text = "Analysis service: ";
+            label7.Text = "Сервис анализа: ";
             // 
             // LeftPanel
             // 
@@ -236,7 +236,7 @@
             ViewLogsButton.Name = "ViewLogsButton";
             ViewLogsButton.Size = new Size(241, 68);
             ViewLogsButton.TabIndex = 10;
-            ViewLogsButton.Text = "Logs";
+            ViewLogsButton.Text = "Журнал";
             ViewLogsButton.UseVisualStyleBackColor = false;
             ViewLogsButton.Click += ViewLogsButton_Click;
             // 
@@ -253,7 +253,7 @@
             ConfigureServiceButton.Name = "ConfigureServiceButton";
             ConfigureServiceButton.Size = new Size(241, 68);
             ConfigureServiceButton.TabIndex = 0;
-            ConfigureServiceButton.Text = "Configure";
+            ConfigureServiceButton.Text = "Конфигурация";
             ConfigureServiceButton.UseVisualStyleBackColor = false;
             ConfigureServiceButton.Click += ConfigureServiceButton_Click;
             // 
@@ -270,7 +270,7 @@
             ShowSelectedComments.Name = "ShowSelectedComments";
             ShowSelectedComments.Size = new Size(241, 68);
             ShowSelectedComments.TabIndex = 11;
-            ShowSelectedComments.Text = "Сomments";
+            ShowSelectedComments.Text = "Комментарии";
             ShowSelectedComments.UseVisualStyleBackColor = false;
             ShowSelectedComments.Click += ShowSelectedComments_Click;
             // 
@@ -298,7 +298,7 @@
             StopServiceButton.Name = "StopServiceButton";
             StopServiceButton.Size = new Size(241, 0);
             StopServiceButton.TabIndex = 1;
-            StopServiceButton.Text = "Stop Service";
+            StopServiceButton.Text = "Остановить сервис";
             StopServiceButton.UseVisualStyleBackColor = false;
             StopServiceButton.Click += StopDataCollectionServiceButton_Click;
             // 
@@ -315,7 +315,7 @@
             StartServiceButton.Name = "StartServiceButton";
             StartServiceButton.Size = new Size(241, 68);
             StartServiceButton.TabIndex = 0;
-            StartServiceButton.Text = "Start Service";
+            StartServiceButton.Text = "Запустить сервис";
             StartServiceButton.UseVisualStyleBackColor = false;
             StartServiceButton.Click += StartDataCollectionServiceButton_Click;
             // 
@@ -345,7 +345,7 @@
             WarningsCountLabel.AutoSize = true;
             WarningsCountLabel.Font = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point);
             WarningsCountLabel.ForeColor = SystemColors.ActiveCaptionText;
-            WarningsCountLabel.Location = new Point(184, 66);
+            WarningsCountLabel.Location = new Point(210, 66);
             WarningsCountLabel.Name = "WarningsCountLabel";
             WarningsCountLabel.Size = new Size(15, 17);
             WarningsCountLabel.TabIndex = 14;
@@ -356,17 +356,17 @@
             label3.AutoSize = true;
             label3.Font = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point);
             label3.ForeColor = SystemColors.ActiveCaptionText;
-            label3.Location = new Point(40, 66);
+            label3.Location = new Point(18, 66);
             label3.Name = "label3";
-            label3.Size = new Size(66, 17);
+            label3.Size = new Size(115, 17);
             label3.TabIndex = 13;
-            label3.Text = "Warnings:";
+            label3.Text = "Предупреждения:";
             // 
             // ProcessedCommentsLabel
             // 
             ProcessedCommentsLabel.AutoSize = true;
             ProcessedCommentsLabel.Font = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            ProcessedCommentsLabel.Location = new Point(184, 45);
+            ProcessedCommentsLabel.Location = new Point(210, 45);
             ProcessedCommentsLabel.Name = "ProcessedCommentsLabel";
             ProcessedCommentsLabel.Size = new Size(15, 17);
             ProcessedCommentsLabel.TabIndex = 8;
@@ -376,21 +376,21 @@
             // 
             label4.AutoSize = true;
             label4.Font = new Font("Century Gothic", 10.2F, FontStyle.Regular, GraphicsUnit.Point);
-            label4.Location = new Point(76, 11);
+            label4.Location = new Point(43, 12);
             label4.Name = "label4";
-            label4.Size = new Size(87, 19);
+            label4.Size = new Size(157, 19);
             label4.TabIndex = 3;
-            label4.Text = "Service Info";
+            label4.Text = "Состояние сервисов";
             // 
             // label2
             // 
             label2.AutoSize = true;
             label2.Font = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            label2.Location = new Point(40, 45);
+            label2.Location = new Point(18, 45);
             label2.Name = "label2";
-            label2.Size = new Size(138, 17);
+            label2.Size = new Size(186, 17);
             label2.TabIndex = 1;
-            label2.Text = "Processed comments:";
+            label2.Text = "Обработаные комментарии:";
             // 
             // TitleLabel
             // 

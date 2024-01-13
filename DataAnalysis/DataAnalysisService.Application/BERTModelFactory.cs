@@ -3,7 +3,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace DataAnalysisService.Application;
 
-public class BertModelFactory : IArtificialIntelligenceModelFactory
+public class BertModelFactory : IAIModelFactory
 {
     private readonly IConfiguration _configuration;
 
@@ -12,7 +12,7 @@ public class BertModelFactory : IArtificialIntelligenceModelFactory
         _configuration = configuration;
     }
 
-    public IArtificialIntelligenceModel CreateArtificialIntelligenceModel(string configurationKey)
+    public IAIModel CreateAIModel(string configurationKey)
     {
         var modelConfig = _configuration.GetSection("BertModels").GetSection(configurationKey);
         return new BertModel(

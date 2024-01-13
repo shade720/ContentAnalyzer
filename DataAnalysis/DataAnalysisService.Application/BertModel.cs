@@ -9,7 +9,7 @@ using System.Text;
 
 namespace DataAnalysisService.Application;
 
-public class BertModel : IArtificialIntelligenceModel
+public class BertModel : IAIModel
 {
     public string Title { get; }
 

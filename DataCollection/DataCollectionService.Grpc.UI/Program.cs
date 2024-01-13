@@ -27,7 +27,11 @@ Log.Logger = new LoggerConfiguration()
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Logging.ClearProviders().AddSerilog(Log.Logger);
-builder.Services.AddGrpc();
+builder.Services.AddGrpc(options =>
+{
+    options.MaxReceiveMessageSize = 1024 * 1024 * 1024;
+    options.MaxSendMessageSize = 1024 * 1024 * 1024;
+});
 
 builder.Services.AddSingleton<ICollector, VkCollector>();
 builder.Services.AddSingleton<IVkApi, VkApi>(_ =>

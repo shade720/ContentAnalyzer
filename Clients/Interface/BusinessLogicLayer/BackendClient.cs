@@ -21,7 +21,11 @@ public class BackendClient : IDisposable
             {"Username", login},
             {"Password", token}
         };
-        _backendChannel = GrpcChannel.ForAddress(backendHost);
+        _backendChannel = GrpcChannel.ForAddress(backendHost, new GrpcChannelOptions
+        {
+            MaxSendMessageSize = 1024 * 1024 * 1024,
+            MaxReceiveMessageSize = 1024 * 1024 * 1024,
+        });
         _backendGatewayClient = new GatewayService.GatewayService.GatewayServiceClient(_backendChannel);
     }
 
